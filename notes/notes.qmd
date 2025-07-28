@@ -21,7 +21,7 @@ format: gfm
 
 # Week 01 (Aug 25, 27; Jan 5, 7)
 
-## Regression and Machine Learning (Aug 25, Jan 5)
+## Regression and Machine Learning (Aug 25; Jan 5)
 
 ### Introductions
 
@@ -48,8 +48,12 @@ format: gfm
 ### Stories
 
 - Mathematics, Statistics, Economics; Computer Science, AI, Machine Learning; and Data Analytics
+- This fractured history is a reason why there are is so much terminology to keep track of
 - What is regression and ML? What is the relationship and overlap?
-- Supervised vs. unsupervised vs. reinforcement learning -- functional mapping (see PML)
+- Data analytics vs. data mining vs. data science (PML p. 27-28)
+- Supervised vs. unsupervised vs. reinforcement learning
+- Supervised learning is learning a mapping function from inputs to outputs $f: X \rightarrow Y$
+- Regression and classification, $y \in \\R$ vs. $y \in \{1, \ldots, C\}$
 - Descriptive statistics, inferential statistics, and decision theory?
 - Models *extract information* from the data to inform decisions in the presence of uncertainty
 - All models predict, some are interpretable, fewer still are causal; is the model consistent with your objective?
@@ -57,7 +61,7 @@ format: gfm
 - Exercise: Read case and summarize the objective and the ideal data; narrate a business problem, it's objective, and the ideal data
 - Wrapping up
 
-## Modeling Workflow (Aug 27, Jan 7)
+## Modeling Workflow (Aug 27; Jan 7)
 
 ### Before Data
 
@@ -66,22 +70,23 @@ format: gfm
 - Consider: objective/loss function, data generation process/ideal dataset
 - Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
 - Actions, states of the world, objective function (payoff/loss)
-- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix?
+- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize beneift/minimize loss
 - Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
 - Reference DAGs in DATA 5620
 - Build: Translate story into a mathematical model -- a functional mapping of inputs to output
 - Using linear models to formalize this story and probability distributions to quantify uncertainty
 - Models are simplifications of reality, but the goal is to capture the essence of the data generation process
+- No free lunch theorem: which model is best depends on the application
 - Generative models, use to generate or simulate data to evaluate assumptions, prepare for an analysis, test code (recover parameters)
 - Activity: Discuss with your groups what kind of loss function, data generating process makes sense for your problem
 
 ### Using Data
 
-- Explore: Summarize and visualize the data, data dictionary
+- Explore: Summarize and visualize the data, data dictionary; X as design matrix, N and P
 - Prepare: Preprocess the data (what transformations?), compare the data to what you've simulated to see if you're missing something from your model
 - Diagnose: Check assumptions, specific to linear models or other kinds of models (or is that just part of prepare?)
 - Fit: Fit/train/calibrate the model on training data (lots of different models, libraries we can use -- needs to be consistent with our objective)
-- Evaluate: Parameter estimates (including uncertainty), considering significance, and overall (predictive) model fit
+- Evaluate: Parameter estimates (including uncertainty), considering significance, and overall (predictive) model fit on testing data
 - Predict: Use the model to make predictions on new data, including uncertainty in those predictions
 - Activity: Speed dialogue to discuss favorite libraries you use for working with data
 
@@ -95,19 +100,75 @@ format: gfm
 
 # Week 02 (Sept 3; Jan 12, 14)
 
-## Probability
+## Decision Theory (Sept 3; Jan 12)
+
+Move details from Modeling Workflow down
+
+# Week 03 (Sept 8, 10; Jan 21)
+
+## Probability and Statistics (Sept 8; Jan 14)
+
+A probabilistic approach to machine learning enhances the principled, unifying framework provided by decision theory. This includes Bayesian statistics, where we treat all unknowns as random variables and can directly use probability distributions to quantify uncertainty in our estimates, and frequentist statistics, where we treat data as random and indirectly use probability distributions to quantify uncertainty in our estimates. The direct, Bayesian approach is arguably more intuitive, especially for applied students, while the indirect, frequentist approach is less computationally intensive. The hope is that introducing them in contrast and as complements will enhance student understanding of modeling generally and combat the problem of student overfitting to a set list of procedures.
+
+- Probability as uncertainty: directly and indirectly, Bayesian and frequentist (PML p. 33)
+- Try using the introduction from my teaching demo?
+
+### Uncertainty
+
+- Getting started (solution, schedule, and workflow)
+- Probability as a unifying framework for machine learning (PML p. 1)
+- Bayes vs. frequentist probability?
+- Uncertainty from not knowing the true data generating process vs. naturally occuring uncertainty in the data (PML p. 7, 33-34)
+- Axioms and basic definitions, set theory
+
+### Random Variables and Distributions
+
+- Use an experiment to illustrate the difference between random and fixed variables: Need something fixed to learn about the random variable
+- RVs, discrete and continous, PMF and PDF
+- Distributions, supports
+- Normal vs. uniform distributions, etc.
+- Joint and marginal distributions
+- Expectations, conditional expectation; Means, variance, standard deviation, mode, limitations of summaries (PML p. 43)
+- Bayes rule
+- Why Normal? (PML p. 60)
+
+### 
+
+- CLT? Monte Carlo? (PML p. 71-72)
+- Covariance and correlation?
+- Correlation does not imply causation, and the lack of correlation does not imply lack of causation
+- Data and parameters $f(X; \theta)$
+- Wrapping up
+
+### Statistics
+
+- Learning parameters from data, estimating parameters, model fitting, training, calibration
+- Likelihood as our data generating process, the evidence for the data we see?
+- MLE: Pick the parameters that assign the highest probability to the training data (PML p. 105)
+- MLE as a point approximation of the posterior distribution with a uniform prior (PML p. 106)
+- MLE to OLS
+
+- Points, intervals, and distributions
+- Bayes: Grid Approximation to ABC?
+- Sampling distributions vs. posterior distributions, bootstrap as poor man's posterior
+
+- Interpreting parameter estimates
+- Confidence intervals and bootstrapping
 
 See https://allendowney.github.io/ElementsOfDataScience/ 
 See https://allendowney.github.io/ThinkStats/
 See https://sta210-s22.github.io/website/
 
-- Uncertainty
-- RVs, distributions
-- set theory
-- expectations, conditional expectation
-- Bayes theory
+## Linear Models (Sept 10; Jan 21)
 
-### Module 1 (Slides 1-17)
+- Regression is also referred to as linear regression or, more generally, a linear model
+- Key property is the expected value (mu) of the output is assumed to be a linear function of the inputs (X)
+- Line isn't great, but we can do non-linear transofmrations on the predictors while still keeping a linear model
+
+- SLR, MLR
+- Simulating data and recovering parameters
+
+### Module 1 (Slides 1-17, Slides 18-38)
 
 Correlation coefficient
 Outcome vs. explanatory variables
@@ -116,30 +177,6 @@ Deterministic vs. probabilistic
 Parameter definitions
 Error is a function of unknown parameters.
 A residual is an "estimate" of this error.
-
-# Week 03 (Sept 8, 10; Jan 21)
-
-## Statistics
-
-A probabilistic approach to machine learning enhances the principled, unifying framework provided by decision theory. This includes Bayesian statistics, where we treat all unknowns as random variables and can directly use probability distributions to quantify uncertainty in our estimates, and frequentist statistics, where we treat data as random and indirectly use probability distributions to quantify uncertainty in our estimates. The direct, Bayesian approach is arguably more intuitive, especially for applied students, while the indirect, frequentist approach is less computationally intensive. The hope is that introducing them in contrast and as complements will enhance student understanding of modeling generally and combat the problem of student overfitting to a set list of procedures.
-
-- Probability as uncertainty: directly and indirectly, Bayesian and frequentist
-- Try using the introduction from my teaching demo?
-- Points, intervals, and distributions
-- MLE, Bootstrap
-- Bayes: Grid Approximation to ABC?
-- regression and classification
-- Interpreting parameter estimates
-- Confidence intervals and bootstrapping
-
-## Linear Models
-
-- SLR, MLR
-- Simulating data and recovering parameters
-
-### Module 1 (Slides 18-38)
-
-Normal vs. uniform distributions
 Interpreting the slope parameter
 Residuals
 OLS intuition
@@ -154,17 +191,24 @@ How is the iid assumption formally described?
 Does iid persist in the case of grouped observations?
 Using graphical diagnostics of assumptions
 
+
+
+
+
+
+
 # Week 04 (Sept 15, 17; Jan 26, 28) POSIT CONF
 
-## Prepare Data
+## Continuous Predictors
 
-- Feature engineering, transformations, and dummy coding
+- Exploration and preparation
+- Feature engineering, transformations
 - Be sure to include +1 for log transforms
 
-## Prior Predictions
+## Discrete Predictors
 
-- Prior predictive checks?
-- Frequentist equivalance?
+- Exploration and preparation
+- Dummy/one-hot and index coding
 
 ### Module 2 (Slides 9-34, 35-54)
 
@@ -182,10 +226,19 @@ Code: All graphical and numerical diagnostics
 
 - Validity: Data is relevant to the objective, no missing variables.
 - Representativeness: Data is representative of the population or process.
-- Additivity and Linearity: The relationship between the outcome and predictors is additive and linear in parameters.
+- Additivity: The relationship between the outcome and predictors is additive.
+- Linearity: The mean is a linear function of the predictors.
 - Independence: Observations are independent of each other.
-- Equal Variance of Errors: Homoscedasticity or constant variance of errors across all levels of predictors.
+- Constant Variance: Homoscedasticity or constant variance of errors across all levels of predictors.
 - Normality of Errors: Errors are normally distributed?
+
+- Omitted and included variable bias
+- Multicollinearity
+
+## Fitting and Interpreting Models
+
+- Parameter estimates
+- Significance, confidence intervals, and p-values
 
 ### Module 3 (Slides 1-6, 7-28)
 
@@ -199,11 +252,12 @@ Confidence intervals are about uncertainty in parameter estimates (i.e., paramet
 
 # Week 06 (Sept 29, Oct 1; Feb 9, 11)
 
-## Model Evaluation
+## Model Evaluation and Prediction
 
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
+- Overfitting and underfitting
 
-## Posterior Predictions
+## Communicating Results
 
 ### Module 3 (Slides 29-36)
 
@@ -229,8 +283,11 @@ Presentations
 
 
 
-
 ----- CASE TWO -----
+
+- Student evaluations
+- Student panel invitation
+- Post-quiz for research project
 
 # Week 08 (Oct 13, 15; Feb 23, 25)
 
@@ -245,6 +302,9 @@ Code: Create a scatterplot matrix, correlation matrix (plus a heat map), fitting
 # Week 09 (Oct 20, 22; Mar 2, 4)
 
 ## Regularization
+
+- Penalize the regression to learn "regular" (i.e., generalizable) features
+- Shrinkage toward the MLE
 
 ## Hyperparameter Tuning
 
@@ -293,6 +353,8 @@ Code: EDA, interactions plots, dummy coding, creating interactions
 
 ## Multilevel Models
 
+- Motivate with Simpson's paradox (PML p. 80)
+
 ## Module 7 (Slides 1-21, 22-35)
 
 Logistic regression basics, including maximum likelihood estimation
@@ -323,7 +385,7 @@ Are there students who *only* take the introduction to ML?
 PCA on its own and then PCA as part of PCR
 Code: Using PCA and PCR for continuous and discrete outcomes
 
-# Week 15 (Dec 1, 3; Apr 20, 22)
+# Week 15 (Dec 1, 3; Apr 20)
 
 Presentations
 

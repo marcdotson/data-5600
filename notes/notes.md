@@ -54,7 +54,7 @@
 
 # Week 01 (Aug 25, 27; Jan 5, 7)
 
-## Regression and Machine Learning (Aug 25, Jan 5)
+## Regression and Machine Learning (Aug 25; Jan 5)
 
 ### Introductions
 
@@ -87,8 +87,11 @@
 - Mathematics, Statistics, Economics; Computer Science, AI, Machine
   Learning; and Data Analytics
 - What is regression and ML? What is the relationship and overlap?
-- Supervised vs. unsupervised vs. reinforcement learning – functional
-  mapping (see PML)
+- Supervised vs. unsupervised vs. reinforcement learning
+- Supervised learning is learning a mapping function from inputs to
+  outputs $f: X \rightarrow Y$
+- Regression and classification, $y \in \\R$
+  vs. $y \in \{1, \ldots, C\}$
 - Descriptive statistics, inferential statistics, and decision theory?
 - Models *extract information* from the data to inform decisions in the
   presence of uncertainty
@@ -99,7 +102,7 @@
   narrate a business problem, it’s objective, and the ideal data
 - Wrapping up
 
-## Modeling Workflow (Aug 27, Jan 7)
+## Modeling Workflow (Aug 27; Jan 7)
 
 ### Before Data
 
@@ -111,7 +114,7 @@
   decision making in the presence of uncertainty
 - Actions, states of the world, objective function (payoff/loss)
 - Illustrate decision theory with a pros and cons list? then a
-  payoff/loss matrix?
+  payoff/loss matrix? maximize beneift/minimize loss
 - Stories – modeling as storytelling, starts as a narrative and then
   gets mathematized
 - Reference DAGs in DATA 5620
@@ -128,7 +131,8 @@
 
 ### Using Data
 
-- Explore: Summarize and visualize the data, data dictionary
+- Explore: Summarize and visualize the data, data dictionary; X as
+  design matrix, N and P
 - Prepare: Preprocess the data (what transformations?), compare the data
   to what you’ve simulated to see if you’re missing something from your
   model
@@ -138,7 +142,7 @@
   models, libraries we can use – needs to be consistent with our
   objective)
 - Evaluate: Parameter estimates (including uncertainty), considering
-  significance, and overall (predictive) model fit
+  significance, and overall (predictive) model fit on testing data
 - Predict: Use the model to make predictions on new data, including
   uncertainty in those predictions
 - Activity: Speed dialogue to discuss favorite libraries you use for
@@ -158,17 +162,38 @@
 
 # Week 02 (Sept 3; Jan 12, 14)
 
-## Probability
+## Probability (Sept 3; Jan 12)
+
+### Fixed and Random Variables
+
+- Getting started (solution, schedule, and workflow)
+
+- Probability as a unifying framework for machine learning (PML p. 1)
+
+- Data and parameters $f(X; \theta)$
+
+- Uncertainty from not knowing the true data generating process
+  vs. naturally occuring uncertainty in the data (PML p. 7)
+
+- RVs, distributions
+
+- Normal vs. uniform distributions
+
+- set theory
+
+- expectations, conditional expectation
+
+- Bayes theory
+
+### 
+
+### 
+
+- Wrapping up
 
 See https://allendowney.github.io/ElementsOfDataScience/ See
 https://allendowney.github.io/ThinkStats/ See
 https://sta210-s22.github.io/website/
-
-- Uncertainty
-- RVs, distributions
-- set theory
-- expectations, conditional expectation
-- Bayes theory
 
 ### Module 1 (Slides 1-17)
 
@@ -179,7 +204,7 @@ error.
 
 # Week 03 (Sept 8, 10; Jan 21)
 
-## Statistics
+## Statistics (Sept 8; Jan 14)
 
 A probabilistic approach to machine learning enhances the principled,
 unifying framework provided by decision theory. This includes Bayesian
@@ -198,22 +223,23 @@ set list of procedures.
   frequentist
 - Try using the introduction from my teaching demo?
 - Points, intervals, and distributions
-- MLE, Bootstrap
+- Likelihood as our data generating process
+- MLE (with a loss function, PML p. 8), Bootstrap?, OLS
 - Bayes: Grid Approximation to ABC?
 - regression and classification
 - Interpreting parameter estimates
 - Confidence intervals and bootstrapping
 
-## Linear Models
+## Linear Models (Sept 10; Jan 21)
 
 - SLR, MLR
 - Simulating data and recovering parameters
 
 ### Module 1 (Slides 18-38)
 
-Normal vs. uniform distributions Interpreting the slope parameter
-Residuals OLS intuition Danger with extrapolating MSE as an estimate of
-variance Code: Scatterplots, correlation, OLS, and MSE by hand
+Interpreting the slope parameter Residuals OLS intuition Danger with
+extrapolating MSE as an estimate of variance Code: Scatterplots,
+correlation, OLS, and MSE by hand
 
 ### Module 2 (Slides 1-8)
 
@@ -223,15 +249,16 @@ observations? Using graphical diagnostics of assumptions
 
 # Week 04 (Sept 15, 17; Jan 26, 28) POSIT CONF
 
-## Prepare Data
+## Continuous Predictors
 
-- Feature engineering, transformations, and dummy coding
+- Exploration and preparation
+- Feature engineering, transformations
 - Be sure to include +1 for log transforms
 
-## Prior Predictions
+## Discrete Predictors
 
-- Prior predictive checks?
-- Frequentist equivalance?
+- Exploration and preparation
+- Dummy and index coding
 
 ### Module 2 (Slides 9-34, 35-54)
 
@@ -246,14 +273,28 @@ Code: All graphical and numerical diagnostics
 ## Assumptions and Diagnostics
 
 - Validity: Data is relevant to the objective, no missing variables.
+
 - Representativeness: Data is representative of the population or
   process.
+
 - Additivity and Linearity: The relationship between the outcome and
   predictors is additive and linear in parameters.
+
 - Independence: Observations are independent of each other.
+
 - Equal Variance of Errors: Homoscedasticity or constant variance of
   errors across all levels of predictors.
+
 - Normality of Errors: Errors are normally distributed?
+
+- Omitted and included variable bias
+
+- Multicollinearity
+
+## Fitting and Interpreting Models
+
+- Parameter estimates
+- Significance, confidence intervals, and p-values
 
 ### Module 3 (Slides 1-6, 7-28)
 
@@ -268,11 +309,12 @@ are fixed)
 
 # Week 06 (Sept 29, Oct 1; Feb 9, 11)
 
-## Model Evaluation
+## Model Evaluation and Prediction
 
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
+- Overfitting and underfitting
 
-## Posterior Predictions
+## Communicating Results
 
 ### Module 3 (Slides 29-36)
 
@@ -297,6 +339,10 @@ assumptions
 Presentations
 
 —– CASE TWO —–
+
+- Student evaluations
+- Student panel invitation
+- Post-quiz for research project
 
 # Week 08 (Oct 13, 15; Feb 23, 25)
 
@@ -389,6 +435,6 @@ decision trees and random forests as well/instead? Are there students
 who *only* take the introduction to ML? PCA on its own and then PCA as
 part of PCR Code: Using PCA and PCR for continuous and discrete outcomes
 
-# Week 15 (Dec 1, 3; Apr 20, 22)
+# Week 15 (Dec 1, 3; Apr 20)
 
 Presentations
