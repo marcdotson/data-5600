@@ -19,44 +19,79 @@ format: gfm
 - Interviews (30%): During the first two weeks of class, during the two weeks in the middle of the semester, and during the final two weeks of class each student will have a required 10-minute interview with me where we discuss the course and their efforts and evaluate their understanding in the form of an oral exam.
 - Projects (50%): Students will complete two group projects, one focused on multiple regression and the second focused on multiple regression or classification. The groups will both present and submit a technical report developed on a GitHub repository. A week before the presentations, they will submit a draft of their slides to get feedback and have time for revision. The other students in the class, as well as the group members themselves, will help evaluate each of the presentations.
 
------ CASE ONE -----
-
 # Week 01 (Aug 25, 27; Jan 5, 7)
 
-## Regression and Machine Learning
+## Regression and Machine Learning (Aug 25, Jan 5)
 
-- Introductions: What business applications fascinate you? What's something you really enjoy doing?
-- Stories -- modeling as storytelling
-- Analytics as using data to inform decisions in the presence of uncertainty
-- Business applications for analytics
-- What is regression and ML? What is the relationship and overlap?
-- Regression and ML: History lesson about related fields: Let me tell you a story: Mathematics, Statistics, Economics; Computer Science, AI, Machine Learning; and Data Analytics.
-- Supervised vs. unsupervised vs. reinforcement learning -- functional mapping (see PML)
-- All models predict, some are interpretable, fewere still are causal; is the model consistent with your objective?
-- illustrate decision theory with a pros and cons list? then a payoff/loss matrix?
-- Reviewing essentials from syllabus
-- Discuss the Goldilocks zone for AI use, reference Copilot
-- Forming groups, finding data -- happy to help!
+### Introductions
+
+- Getting started (schedule)
+- What is your major? What business problems interest you?
+- Personal introduction
+- Activity: Form groups (of size X), move to sit together, discuss interests
+
+### Course Overview
+
+- Analytics is using data to inform decisions in the presence of uncertainty
+- Summarize the course objectives, skills
+- CV entry (also in the syllabus)
+- What makes this course different from DATA 3100 and 3300?
+- What makes this course different from DATA 3500?
+- Discuss DATA 5610, 5620, and 5630
+- How to learn and the place of assessments
+- Breakdown of grades: At this level, your assessmenmts should be aligned with what you will be expected to do in practice
 - Reference data-stack as recommended tools for the course
-- CV entry (as part of the syllabus)
+- Discuss the Goldilocks zone for AI use, reference Copilot
+- Getting help
+- Activity: Look at syllabus, discuss what you're excited/nervous about, questions
 
-## Workflow
+### Stories
 
-Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty. While we can and should provide a variety of business “cases” to illustrate applications, we can’t cover every possible application. Decision theory facilitates the generalization of a principled approach to any kind of application. It also helps embed data analysts in the details of the business problem so they can better communicate the implications of their analysis to the decision makers. Decision theory is clearly not used in every discipline, but it can be used in every discipline. This framework can both help differentiate our students and improve the practice of data analytics.
+- Mathematics, Statistics, Economics; Computer Science, AI, Machine Learning; and Data Analytics
+- What is regression and ML? What is the relationship and overlap?
+- Supervised vs. unsupervised vs. reinforcement learning -- functional mapping (see PML)
+- Descriptive statistics, inferential statistics, and decision theory?
+- Models *extract information* from the data to inform decisions in the presence of uncertainty
+- All models predict, some are interpretable, fewer still are causal; is the model consistent with your objective?
+- Business applications for analytics
+- Exercise: Read case and summarize the objective and the ideal data; narrate a business problem, it's objective, and the ideal data
+- Wrapping up
 
-- High-level overview of the workflow
-- descriptive statistics, inferential statistics, and decision theory
-- Decision theory and decision science
-- actions
-- states of the world
-- objective/payoff/loss functions
+## Modeling Workflow (Aug 27, Jan 7)
 
-### Module 0 (Slides 1-18, 19-30)
+### Before Data
 
-Supervised and unsupervised learning in ML
-Prediction vs. interpretability/causality
-DATA 3100 stats terminology review
-Modeling; everything is regression
+- Getting started (solution, schedule, and workflow)
+- High-level overview of the (interpretable) modeling workflow
+- Consider: objective/loss function, data generation process/ideal dataset
+- Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
+- Actions, states of the world, objective function (payoff/loss)
+- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix?
+- Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
+- Reference DAGs in DATA 5620
+- Build: Translate story into a mathematical model -- a functional mapping of inputs to output
+- Using linear models to formalize this story and probability distributions to quantify uncertainty
+- Models are simplifications of reality, but the goal is to capture the essence of the data generation process
+- Generative models, use to generate or simulate data to evaluate assumptions, prepare for an analysis, test code (recover parameters)
+- Activity: Discuss with your groups what kind of loss function, data generating process makes sense for your problem
+
+### Using Data
+
+- Explore: Summarize and visualize the data, data dictionary
+- Prepare: Preprocess the data (what transformations?), compare the data to what you've simulated to see if you're missing something from your model
+- Diagnose: Check assumptions, specific to linear models or other kinds of models (or is that just part of prepare?)
+- Fit: Fit/train/calibrate the model on training data (lots of different models, libraries we can use -- needs to be consistent with our objective)
+- Evaluate: Parameter estimates (including uncertainty), considering significance, and overall (predictive) model fit
+- Predict: Use the model to make predictions on new data, including uncertainty in those predictions
+- Activity: Speed dialogue to discuss favorite libraries you use for working with data
+
+### Communication
+
+- Communicate: Report and present the results in a way that is understood by a mixed audience
+- Everything you've worked on is to inform the managerial decision, so if you don't it's like giving up at the end of the race
+- Discuss good and bad examples of communicating modeling results
+- Exercise: Finish setting up a data stack, write about which part of the modeling workflow you're most/least comfortoable with, use Quarto to render the document
+- Wrapping up
 
 # Week 02 (Sept 3; Jan 12, 14)
 
