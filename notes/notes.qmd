@@ -5,6 +5,8 @@ format: gfm
 
 # What I Did
 
+I revised the course consistent with the pedagogical research begun last year to study the effect of a probabilistic and decision theoretic approach to machine learning on student confidence and understanding. This included framing the course with decision theoretic objectives and a probabilistic modeling workflow and referring to this unifying framework throughout the semester. I also responded to student and peer feedback.
+
 - Organized the course better, including using the decision theoretic objectives and probabilistic modeling workflow as a unifying framework.
 - Replaced homework assignments with exercises leading up to two instead of three projects. Exercises provide more consistent practice and include opportunities for reflection and preparation for upcoming class topics.
 - Detailed two business cases, one for each unit, to reduce the cognitive burden of switching between many datasets and allowing for greater depth for each application to better inform student project work.
@@ -21,11 +23,11 @@ format: gfm
 
 # Week 01 (Aug 25, 27; Jan 5, 7)
 
-## Regression and Machine Learning (Aug 25; Jan 5)
+## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5)
 
 ### Introductions
 
-- Getting started (schedule)
+- Get started (schedule)
 - What is your major? What business problems interest you?
 - Personal introduction
 - Activity: Form groups (of size X), move to sit together, discuss interests
@@ -59,54 +61,74 @@ format: gfm
 - All models predict, some are interpretable, fewer still are causal; is the model consistent with your objective?
 - Business applications for analytics
 - Exercise: Read case and summarize the objective and the ideal data; narrate a business problem, it's objective, and the ideal data
-- Wrapping up
+- Wrap up
 
 ## Modeling Workflow (Aug 27; Jan 7)
 
 ### Before Data
 
-- Getting started (solution, schedule, and workflow)
+- Get started (solution, schedule, and workflow)
 - High-level overview of the (interpretable) modeling workflow
-- Consider: objective/loss function, data generation process/ideal dataset
-- Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
-- Actions, states of the world, objective function (payoff/loss)
-- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize beneift/minimize loss
+- Focus on being transparent and direct with objectives and assumptions
+- Plan/Narrate: objective/loss function, data generation process/ideal dataset
 - Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
-- Reference DAGs in DATA 5620
-- Build: Translate story into a mathematical model -- a functional mapping of inputs to output
-- Using linear models to formalize this story and probability distributions to quantify uncertainty
-- Models are simplifications of reality, but the goal is to capture the essence of the data generation process
-- No free lunch theorem: which model is best depends on the application
-- Generative models, use to generate or simulate data to evaluate assumptions, prepare for an analysis, test code (recover parameters)
+- Build/Assemble: Translate story into mathematical models -- a functional mapping of inputs to output and how you will evaluate it (loss function)
 - Activity: Discuss with your groups what kind of loss function, data generating process makes sense for your problem
 
 ### Using Data
 
 - Explore: Summarize and visualize the data, data dictionary; X as design matrix, N and P
-- Prepare: Preprocess the data (what transformations?), compare the data to what you've simulated to see if you're missing something from your model
-- Diagnose: Check assumptions, specific to linear models or other kinds of models (or is that just part of prepare?)
+- Reconcile: Data and Model. Preprocess the data (what transformations?), compare the data to what you've simulated to see if you're missing something from your model. Check assumptions, specific to linear models or other kinds of models (or is that just part of prepare?). Careful with overfitting. Sensitivity analysis.
 - Fit: Fit/train/calibrate the model on training data (lots of different models, libraries we can use -- needs to be consistent with our objective)
 - Evaluate: Parameter estimates (including uncertainty), considering significance, and overall (predictive) model fit on testing data
 - Predict: Use the model to make predictions on new data, including uncertainty in those predictions
 - Activity: Speed dialogue to discuss favorite libraries you use for working with data
 
-### Communication
+### Communicating Results
 
 - Communicate: Report and present the results in a way that is understood by a mixed audience
 - Everything you've worked on is to inform the managerial decision, so if you don't it's like giving up at the end of the race
 - Discuss good and bad examples of communicating modeling results
 - Exercise: Finish setting up a data stack, write about which part of the modeling workflow you're most/least comfortoable with, use Quarto to render the document
-- Wrapping up
+- Wrap up
 
 # Week 02 (Sept 3; Jan 12, 14)
 
-## Decision Theory (Sept 3; Jan 12)
+## Decisions and Data / Loss and Likelihood Functions / Payoffs, Losses, and Likelihoods (Sept 3; Jan 12)
 
-Move details from Modeling Workflow down
+### Decision Theory
+
+- Get started (solution, schedule, and workflow)
+- Introduce the case and start illustrating in more detail the modeling workflow
+- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize beneift/minimize loss
+- Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
+- Actions, states of the world, objective function (payoff/loss) (starting on BID p. 239)
+- Activity: 
+
+### Data Generating Process
+
+- Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
+- Reference DAGs in DATA 5620
+- Using linear models to formalize this story and probability distributions to quantify uncertainty
+- Models are simplifications of reality, but the goal is to capture the essence of the data generation process
+- No free lunch theorem: which model is best depends on the application
+- Activity: 
+
+### Loss and Likelihoods Functions
+
+- Example loss functions -- or just focus on a linear profit function?
+- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
+- Maximize profit, maximize market share, minimize churn, etc.
+- What are the inputs into the function? Parameters -- the states of the world -- along with what actions to take?
+- Example likelihoods (as models of the data generating process)
+- Generative models, use to generate or simulate data to evaluate assumptions, prepare for an analysis, test code (recover parameters)
+- Signal simulating data
+- Exercise: 
+- Wrap up
 
 # Week 03 (Sept 8, 10; Jan 21)
 
-## Probability and Statistics (Sept 8; Jan 14)
+## Probability and Statistics / Probabilistic Machine Learning (Sept 8; Jan 14)
 
 A probabilistic approach to machine learning enhances the principled, unifying framework provided by decision theory. This includes Bayesian statistics, where we treat all unknowns as random variables and can directly use probability distributions to quantify uncertainty in our estimates, and frequentist statistics, where we treat data as random and indirectly use probability distributions to quantify uncertainty in our estimates. The direct, Bayesian approach is arguably more intuitive, especially for applied students, while the indirect, frequentist approach is less computationally intensive. The hope is that introducing them in contrast and as complements will enhance student understanding of modeling generally and combat the problem of student overfitting to a set list of procedures.
 
@@ -115,7 +137,7 @@ A probabilistic approach to machine learning enhances the principled, unifying f
 
 ### Uncertainty
 
-- Getting started (solution, schedule, and workflow)
+- Get started (solution, schedule, and workflow)
 - Probability as a unifying framework for machine learning (PML p. 1)
 - Bayes vs. frequentist probability?
 - Uncertainty from not knowing the true data generating process vs. naturally occuring uncertainty in the data (PML p. 7, 33-34)
@@ -138,7 +160,7 @@ A probabilistic approach to machine learning enhances the principled, unifying f
 - Covariance and correlation?
 - Correlation does not imply causation, and the lack of correlation does not imply lack of causation
 - Data and parameters $f(X; \theta)$
-- Wrapping up
+- Wrap up
 
 ### Statistics
 
@@ -159,7 +181,7 @@ See https://allendowney.github.io/ElementsOfDataScience/
 See https://allendowney.github.io/ThinkStats/
 See https://sta210-s22.github.io/website/
 
-## Linear Models (Sept 10; Jan 21)
+## Linear Regression (Sept 10; Jan 21)
 
 - Regression is also referred to as linear regression or, more generally, a linear model
 - Key property is the expected value (mu) of the output is assumed to be a linear function of the inputs (X)

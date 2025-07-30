@@ -3,6 +3,14 @@
 
 # What I Did
 
+I revised the course consistent with the pedagogical research begun last
+year to study the effect of a probabilistic and decision theoretic
+approach to machine learning on student confidence and understanding.
+This included framing the course with decision theoretic objectives and
+a probabilistic modeling workflow and referring to this unifying
+framework throughout the semester. I also responded to student and peer
+feedback.
+
 - Organized the course better, including using the decision theoretic
   objectives and probabilistic modeling workflow as a unifying
   framework.
@@ -54,11 +62,11 @@
 
 # Week 01 (Aug 25, 27; Jan 5, 7)
 
-## Regression and Machine Learning (Aug 25; Jan 5)
+## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5)
 
 ### Introductions
 
-- Getting started (schedule)
+- Get started (schedule)
 - What is your major? What business problems interest you?
 - Personal introduction
 - Activity: Form groups (of size X), move to sit together, discuss
@@ -86,7 +94,10 @@
 
 - Mathematics, Statistics, Economics; Computer Science, AI, Machine
   Learning; and Data Analytics
+- This fractured history is a reason why there are is so much
+  terminology to keep track of
 - What is regression and ML? What is the relationship and overlap?
+- Data analytics vs. data mining vs. data science (PML p. 27-28)
 - Supervised vs. unsupervised vs. reinforcement learning
 - Supervised learning is learning a mapping function from inputs to
   outputs $f: X \rightarrow Y$
@@ -100,32 +111,22 @@
 - Business applications for analytics
 - Exercise: Read case and summarize the objective and the ideal data;
   narrate a business problem, it’s objective, and the ideal data
-- Wrapping up
+- Wrap up
 
 ## Modeling Workflow (Aug 27; Jan 7)
 
 ### Before Data
 
-- Getting started (solution, schedule, and workflow)
+- Get started (solution, schedule, and workflow)
 - High-level overview of the (interpretable) modeling workflow
-- Consider: objective/loss function, data generation process/ideal
+- Focus on being transparent and direct with objectives and assumptions
+- Plan/Narrate: objective/loss function, data generation process/ideal
   dataset
-- Decision theory is a principled, unifying framework for informing
-  decision making in the presence of uncertainty
-- Actions, states of the world, objective function (payoff/loss)
-- Illustrate decision theory with a pros and cons list? then a
-  payoff/loss matrix? maximize beneift/minimize loss
 - Stories – modeling as storytelling, starts as a narrative and then
   gets mathematized
-- Reference DAGs in DATA 5620
-- Build: Translate story into a mathematical model – a functional
-  mapping of inputs to output
-- Using linear models to formalize this story and probability
-  distributions to quantify uncertainty
-- Models are simplifications of reality, but the goal is to capture the
-  essence of the data generation process
-- Generative models, use to generate or simulate data to evaluate
-  assumptions, prepare for an analysis, test code (recover parameters)
+- Build/Assemble: Translate story into mathematical models – a
+  functional mapping of inputs to output and how you will evaluate it
+  (loss function)
 - Activity: Discuss with your groups what kind of loss function, data
   generating process makes sense for your problem
 
@@ -133,11 +134,11 @@
 
 - Explore: Summarize and visualize the data, data dictionary; X as
   design matrix, N and P
-- Prepare: Preprocess the data (what transformations?), compare the data
-  to what you’ve simulated to see if you’re missing something from your
-  model
-- Diagnose: Check assumptions, specific to linear models or other kinds
-  of models (or is that just part of prepare?)
+- Reconcile: Data and Model. Preprocess the data (what
+  transformations?), compare the data to what you’ve simulated to see if
+  you’re missing something from your model. Check assumptions, specific
+  to linear models or other kinds of models (or is that just part of
+  prepare?). Careful with overfitting. Sensitivity analysis.
 - Fit: Fit/train/calibrate the model on training data (lots of different
   models, libraries we can use – needs to be consistent with our
   objective)
@@ -148,7 +149,7 @@
 - Activity: Speed dialogue to discuss favorite libraries you use for
   working with data
 
-### Communication
+### Communicating Results
 
 - Communicate: Report and present the results in a way that is
   understood by a mixed audience
@@ -158,53 +159,54 @@
 - Exercise: Finish setting up a data stack, write about which part of
   the modeling workflow you’re most/least comfortoable with, use Quarto
   to render the document
-- Wrapping up
+- Wrap up
 
 # Week 02 (Sept 3; Jan 12, 14)
 
-## Probability (Sept 3; Jan 12)
+## Decisions and Data / Loss and Likelihood Functions / Payoffs, Losses, and Likelihoods (Sept 3; Jan 12)
 
-### Fixed and Random Variables
+### Decision Theory
 
-- Getting started (solution, schedule, and workflow)
+- Get started (solution, schedule, and workflow)
+- Introduce the case and start illustrating in more detail the modeling
+  workflow
+- Illustrate decision theory with a pros and cons list? then a
+  payoff/loss matrix? maximize beneift/minimize loss
+- Decision theory is a principled, unifying framework for informing
+  decision making in the presence of uncertainty
+- Actions, states of the world, objective function (payoff/loss)
+  (starting on BID p. 239)
+- Activity:
 
-- Probability as a unifying framework for machine learning (PML p. 1)
+### Data Generating Process
 
-- Data and parameters $f(X; \theta)$
+- Stories – modeling as storytelling, starts as a narrative and then
+  gets mathematized
+- Reference DAGs in DATA 5620
+- Using linear models to formalize this story and probability
+  distributions to quantify uncertainty
+- Models are simplifications of reality, but the goal is to capture the
+  essence of the data generation process
+- No free lunch theorem: which model is best depends on the application
+- Activity:
 
-- Uncertainty from not knowing the true data generating process
-  vs. naturally occuring uncertainty in the data (PML p. 7)
+### Loss and Likelihoods Functions
 
-- RVs, distributions
-
-- Normal vs. uniform distributions
-
-- set theory
-
-- expectations, conditional expectation
-
-- Bayes theory
-
-### 
-
-### 
-
-- Wrapping up
-
-See https://allendowney.github.io/ElementsOfDataScience/ See
-https://allendowney.github.io/ThinkStats/ See
-https://sta210-s22.github.io/website/
-
-### Module 1 (Slides 1-17)
-
-Correlation coefficient Outcome vs. explanatory variables Definition of
-SLR Deterministic vs. probabilistic Parameter definitions Error is a
-function of unknown parameters. A residual is an “estimate” of this
-error.
+- Example loss functions – or just focus on a linear profit function?
+- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
+- Maximize profit, maximize market share, minimize churn, etc.
+- What are the inputs into the function? Parameters – the states of the
+  world – along with what actions to take?
+- Example likelihoods (as models of the data generating process)
+- Generative models, use to generate or simulate data to evaluate
+  assumptions, prepare for an analysis, test code (recover parameters)
+- Signal simulating data
+- Exercise:
+- Wrap up
 
 # Week 03 (Sept 8, 10; Jan 21)
 
-## Statistics (Sept 8; Jan 14)
+## Probability and Statistics / Probabilistic Machine Learning (Sept 8; Jan 14)
 
 A probabilistic approach to machine learning enhances the principled,
 unifying framework provided by decision theory. This includes Bayesian
@@ -220,25 +222,94 @@ of modeling generally and combat the problem of student overfitting to a
 set list of procedures.
 
 - Probability as uncertainty: directly and indirectly, Bayesian and
-  frequentist
+  frequentist (PML p. 33)
 - Try using the introduction from my teaching demo?
+
+### Uncertainty
+
+- Get started (solution, schedule, and workflow)
+- Probability as a unifying framework for machine learning (PML p. 1)
+- Bayes vs. frequentist probability?
+- Uncertainty from not knowing the true data generating process
+  vs. naturally occuring uncertainty in the data (PML p. 7, 33-34)
+- Axioms and basic definitions, set theory
+
+### Random Variables and Distributions
+
+- Use an experiment to illustrate the difference between random and
+  fixed variables: Need something fixed to learn about the random
+  variable
+- RVs, discrete and continous, PMF and PDF
+- Distributions, supports
+- Normal vs. uniform distributions, etc.
+- Joint and marginal distributions
+- Expectations, conditional expectation; Means, variance, standard
+  deviation, mode, limitations of summaries (PML p. 43)
+- Bayes rule
+- Why Normal? (PML p. 60)
+
+### 
+
+- CLT? Monte Carlo? (PML p. 71-72)
+- Covariance and correlation?
+- Correlation does not imply causation, and the lack of correlation does
+  not imply lack of causation
+- Data and parameters $f(X; \theta)$
+- Wrap up
+
+### Statistics
+
+- Learning parameters from data, estimating parameters, model fitting,
+  training, calibration
+
+- Likelihood as our data generating process, the evidence for the data
+  we see?
+
+- MLE: Pick the parameters that assign the highest probability to the
+  training data (PML p. 105)
+
+- MLE as a point approximation of the posterior distribution with a
+  uniform prior (PML p. 106)
+
+- MLE to OLS
+
 - Points, intervals, and distributions
-- Likelihood as our data generating process
-- MLE (with a loss function, PML p. 8), Bootstrap?, OLS
+
 - Bayes: Grid Approximation to ABC?
-- regression and classification
+
+- Sampling distributions vs. posterior distributions, bootstrap as poor
+  man’s posterior
+
 - Interpreting parameter estimates
+
 - Confidence intervals and bootstrapping
 
-## Linear Models (Sept 10; Jan 21)
+See https://allendowney.github.io/ElementsOfDataScience/ See
+https://allendowney.github.io/ThinkStats/ See
+https://sta210-s22.github.io/website/
+
+## Linear Regression (Sept 10; Jan 21)
+
+- Regression is also referred to as linear regression or, more
+  generally, a linear model
+
+- Key property is the expected value (mu) of the output is assumed to be
+  a linear function of the inputs (X)
+
+- Line isn’t great, but we can do non-linear transofmrations on the
+  predictors while still keeping a linear model
 
 - SLR, MLR
+
 - Simulating data and recovering parameters
 
-### Module 1 (Slides 18-38)
+### Module 1 (Slides 1-17, Slides 18-38)
 
-Interpreting the slope parameter Residuals OLS intuition Danger with
-extrapolating MSE as an estimate of variance Code: Scatterplots,
+Correlation coefficient Outcome vs. explanatory variables Definition of
+SLR Deterministic vs. probabilistic Parameter definitions Error is a
+function of unknown parameters. A residual is an “estimate” of this
+error. Interpreting the slope parameter Residuals OLS intuition Danger
+with extrapolating MSE as an estimate of variance Code: Scatterplots,
 correlation, OLS, and MSE by hand
 
 ### Module 2 (Slides 1-8)
@@ -258,7 +329,7 @@ observations? Using graphical diagnostics of assumptions
 ## Discrete Predictors
 
 - Exploration and preparation
-- Dummy and index coding
+- Dummy/one-hot and index coding
 
 ### Module 2 (Slides 9-34, 35-54)
 
@@ -277,13 +348,15 @@ Code: All graphical and numerical diagnostics
 - Representativeness: Data is representative of the population or
   process.
 
-- Additivity and Linearity: The relationship between the outcome and
-  predictors is additive and linear in parameters.
+- Additivity: The relationship between the outcome and predictors is
+  additive.
+
+- Linearity: The mean is a linear function of the predictors.
 
 - Independence: Observations are independent of each other.
 
-- Equal Variance of Errors: Homoscedasticity or constant variance of
-  errors across all levels of predictors.
+- Constant Variance: Homoscedasticity or constant variance of errors
+  across all levels of predictors.
 
 - Normality of Errors: Errors are normally distributed?
 
@@ -359,6 +432,10 @@ partial regression plots)
 
 ## Regularization
 
+- Penalize the regression to learn “regular” (i.e., generalizable)
+  features
+- Shrinkage toward the MLE
+
 ## Hyperparameter Tuning
 
 ## Module 5 (Slides 1-12, 13-38)
@@ -405,6 +482,8 @@ interactions plots, dummy coding, creating interactions
 # Week 12 (Nov 10, 12; Mar 30, Apr 1)
 
 ## Multilevel Models
+
+- Motivate with Simpson’s paradox (PML p. 80)
 
 ## Module 7 (Slides 1-21, 22-35)
 
