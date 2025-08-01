@@ -60,19 +60,19 @@ feedback.
   as well as the group members themselves, will help evaluate each of
   the presentations.
 
-# Week 01 (Aug 25, 27; Jan 5, 7)
+# Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
-## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5)
+## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5; May 4)
 
 ### Introductions
 
-- Get started (schedule)
+- Get started (schedule w/o dates?)
 - What is your major? What business problems interest you?
 - Personal introduction
 - Activity: Form groups (of size X), move to sit together, discuss
   interests
 
-### Course Overview
+### Course/Syllabus Overview
 
 - Analytics is using data to inform decisions in the presence of
   uncertainty
@@ -96,6 +96,7 @@ feedback.
   Learning; and Data Analytics
 - This fractured history is a reason why there are is so much
   terminology to keep track of
+- “Standing on the shoulders of giants”
 - What is regression and ML? What is the relationship and overlap?
 - Data analytics vs. data mining vs. data science (PML p. 27-28)
 - Supervised vs. unsupervised vs. reinforcement learning
@@ -109,24 +110,26 @@ feedback.
 - All models predict, some are interpretable, fewer still are causal; is
   the model consistent with your objective?
 - Business applications for analytics
-- Exercise: Read case and summarize the objective and the ideal data;
-  narrate a business problem, it’s objective, and the ideal data
+- Exercise: Read case and describe how you might use regression and ML
+  to inform the decision
 - Wrap up
 
-## Modeling Workflow (Aug 27; Jan 7)
+## Modeling Workflow (Aug 27; Jan 7; May 6)
 
 ### Before Data
 
-- Get started (solution, schedule, and workflow)
-- High-level overview of the (interpretable) modeling workflow
-- Focus on being transparent and direct with objectives and assumptions
-- Plan/Narrate: objective/loss function, data generation process/ideal
-  dataset
+- Get started (solution, schedule w/o dates?, and workflow)
+- High-level overview of the (interpretable) modeling workflow (with the
+  case as application?)
+- Focus on being open/transparent and direct with objectives and
+  assumptions
+- Plan: objective/loss function, data generation process/ideal dataset
+- Stories – implicitly we weight pros and cons when making a decision –
+  narrate this objective
 - Stories – modeling as storytelling, starts as a narrative and then
   gets mathematized
-- Build/Assemble: Translate story into mathematical models – a
-  functional mapping of inputs to output and how you will evaluate it
-  (loss function)
+- Build: Translate story into mathematical models – a functional mapping
+  of your objective (loss function) inputs to output (likelihood)
 - Activity: Discuss with your groups what kind of loss function, data
   generating process makes sense for your problem
 
@@ -156,57 +159,92 @@ feedback.
 - Everything you’ve worked on is to inform the managerial decision, so
   if you don’t it’s like giving up at the end of the race
 - Discuss good and bad examples of communicating modeling results
-- Exercise: Finish setting up a data stack, write about which part of
-  the modeling workflow you’re most/least comfortoable with, use Quarto
-  to render the document
+- Exercise: Summarize the case’s objective and the ideal data
 - Wrap up
 
-# Week 02 (Sept 3; Jan 12, 14)
+# Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
-## Decisions and Data / Loss and Likelihood Functions / Payoffs, Losses, and Likelihoods (Sept 3; Jan 12)
+## Decisions and Data / Loss and Likelihood Functions / Payoffs, Losses, and Likelihoods (Sept 3; Jan 12; May 11)
 
-### Decision Theory
+### Decisions
 
-- Get started (solution, schedule, and workflow)
-- Introduce the case and start illustrating in more detail the modeling
+- Get started (solution, schedule w/o dates?, and workflow)
+
+- Use the case to start illustrating in more detail the modeling
   workflow
-- Illustrate decision theory with a pros and cons list? then a
-  payoff/loss matrix? maximize beneift/minimize loss
+
 - Decision theory is a principled, unifying framework for informing
   decision making in the presence of uncertainty
+
+- Need to communicate with domain experts to understand the problem and
+  how to inform the decision
+
+- Illustrate decision theory with a pros and cons list? then a
+  payoff/loss matrix? maximize utility/minimize loss
+
+- Maximize profit, maximize market share, minimize churn, etc.
+
+- Equivalence of utility and loss functions: u(a, s) = - l(a, s) (or
+  l(a, s) = - u(a, s))
+
 - Actions, states of the world, objective function (payoff/loss)
   (starting on BID p. 239)
+
+- Illustrate first with decision making under *certainty*
+
+- Consider clearing up the difference between uncertainty and risk (BID
+  p. 199)?
+
+- Profit and revenue as a function of demand
+
+- Understand or assume costs (consumer goods 20% markup)
+
+- Example loss functions – or just focus on a linear profit function?
+
+- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
+
+- What are the inputs into the function? Parameters – the states of the
+  world – along with what actions to take?
+
+- The fact that we don’t know the state of the world is what motivates
+  probability and statistics
+
 - Activity:
 
 ### Data Generating Process
 
 - Stories – modeling as storytelling, starts as a narrative and then
   gets mathematized
+
+- One way to consider this is what data would you need to inform your
+  decision? Or what is the ideal dataset for your objective?
+
 - Reference DAGs in DATA 5620
+
 - Using linear models to formalize this story and probability
   distributions to quantify uncertainty
+
 - Models are simplifications of reality, but the goal is to capture the
   essence of the data generation process
+
 - No free lunch theorem: which model is best depends on the application
-- Activity:
 
-### Loss and Likelihoods Functions
-
-- Example loss functions – or just focus on a linear profit function?
-- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
-- Maximize profit, maximize market share, minimize churn, etc.
-- What are the inputs into the function? Parameters – the states of the
-  world – along with what actions to take?
 - Example likelihoods (as models of the data generating process)
+
 - Generative models, use to generate or simulate data to evaluate
   assumptions, prepare for an analysis, test code (recover parameters)
+
 - Signal simulating data
+
+- Activity:
+
 - Exercise:
+
 - Wrap up
 
-# Week 03 (Sept 8, 10; Jan 21)
+# Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
-## Probability and Statistics / Probabilistic Machine Learning (Sept 8; Jan 14)
+## Probability and Statistics / Probabilistic Machine Learning (Sept 8; Jan 14; May 13)
 
 A probabilistic approach to machine learning enhances the principled,
 unifying framework provided by decision theory. This includes Bayesian
@@ -223,7 +261,11 @@ set list of procedures.
 
 - Probability as uncertainty: directly and indirectly, Bayesian and
   frequentist (PML p. 33)
+
 - Try using the introduction from my teaching demo?
+
+- Why teach both? If all you have is a hammer, everything looks like a
+  nail. And it’s often easier to understand a thing in contrast.
 
 ### Uncertainty
 
@@ -288,7 +330,7 @@ See https://allendowney.github.io/ElementsOfDataScience/ See
 https://allendowney.github.io/ThinkStats/ See
 https://sta210-s22.github.io/website/
 
-## Linear Regression (Sept 10; Jan 21)
+## Linear Regression (Sept 10; Jan 21; May 18)
 
 - Regression is also referred to as linear regression or, more
   generally, a linear model
@@ -318,7 +360,7 @@ Diagnostics for assumptions before inference How is the iid assumption
 formally described? Does iid persist in the case of grouped
 observations? Using graphical diagnostics of assumptions
 
-# Week 04 (Sept 15, 17; Jan 26, 28) POSIT CONF
+# Week 04 (Sept 15, 17; Jan 26, 28; May 27) POSIT CONF
 
 ## Continuous Predictors
 
@@ -339,7 +381,7 @@ come from? Using numerical diagnostics of assumptions How to remediate
 invalidated assumptions Interpreting estimates with transformations
 Code: All graphical and numerical diagnostics
 
-# Week 05 (Sept 22, 24; Feb 2, 4)
+# Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
 ## Assumptions and Diagnostics
 
@@ -380,7 +422,7 @@ error Equivalence of p-values and confidence intervals Confidence
 intervals are about uncertainty in parameter estimates (i.e., parameters
 are fixed)
 
-# Week 06 (Sept 29, Oct 1; Feb 9, 11)
+# Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
 ## Model Evaluation and Prediction
 
@@ -407,7 +449,7 @@ and prediction bands, and model fit statistics
 Interpreting multiple slopes Adding multicollinearity to the list of
 assumptions
 
-# Week 07 (Oct 6, 8; Feb 18)
+# Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
 
 Presentations
 
@@ -417,7 +459,7 @@ Presentations
 - Student panel invitation
 - Post-quiz for research project
 
-# Week 08 (Oct 13, 15; Feb 23, 25)
+# Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
 
 ### Module 4 (Slides 17-39, 40-55)
 
@@ -428,7 +470,7 @@ overfitting Code: Create a scatterplot matrix, correlation matrix (plus
 a heat map), fitting multiple linear regression, diagnostics (including
 partial regression plots)
 
-# Week 09 (Oct 20, 22; Mar 2, 4)
+# Week 09 (Oct 20, 22; Mar 2, 4; Jul 6, 8)
 
 ## Regularization
 
@@ -448,7 +490,7 @@ Cross-validation without one static test dataset? What about leakage?
 Are variable selection and shrinkage methods primarily used for
 multicollinearity? AIC and BIC
 
-# Week 10 (Oct 27, 29; Mar 16, 18)
+# Week 10 (Oct 27, 29; Mar 16, 18; Jul 13, 15)
 
 ## Feature Engineering
 
@@ -466,7 +508,7 @@ regression and shrinkage methods with manual hyperparameter tuning
 Dummy variables and the “dummy variable trap” Interpretation, synonyms,
 etc.
 
-# Week 11 (Nov 3, 5; Mar 23, 25)
+# Week 11 (Nov 3, 5; Mar 23, 25; Jul 20, 22)
 
 ## PCR
 
@@ -479,13 +521,13 @@ about https://www.scikit-yb.org/en/latest/index.html? What about models
 built to bring assumption verification, etc. to scikit-learn? Code: EDA,
 interactions plots, dummy coding, creating interactions
 
-# Week 12 (Nov 10, 12; Mar 30, Apr 1)
+# Week 12 (Nov 10, 12; Mar 30, Apr 1; Jul 27, 29)
 
 ## Multilevel Models
 
 - Motivate with Simpson’s paradox (PML p. 80)
 
-## Module 7 (Slides 1-21, 22-35)
+## Module 7 (Slides 1-21, 22-35; Aug 3, 5)
 
 Logistic regression basics, including maximum likelihood estimation Why
 not introduce training/testing split earlier without cross-validation?
