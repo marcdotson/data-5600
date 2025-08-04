@@ -53,6 +53,7 @@ I revised the course consistent with the pedagogical research begun last year to
 - This fractured history is a reason why there are is so much terminology to keep track of
 - "Standing on the shoulders of giants"
 - What is regression and ML? What is the relationship and overlap?
+- Where the name "regression" comes from -- extreme values "regressing" to the mean
 - Data analytics vs. data mining vs. data science (PML p. 27-28)
 - Supervised vs. unsupervised vs. reinforcement learning
 - Supervised learning is learning a mapping function from inputs to outputs $f: X \rightarrow Y$
