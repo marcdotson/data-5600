@@ -31,12 +31,16 @@ By the end of this course, you will be able to:
 
 ## Data Stack
 
-This course is heavily focused on skill-building. Each student will need
-to bring a laptop, either their own or one rented from USU. All course
-materials will be [available on Canvas](https://usu.instructure.com).
-While students are welcome to use their preferred tools, the following
-[data stack](https://github.com/marcdotson/data-stack) is recommended
-and certain tools are required, as indicated below.
+This course is heavily focused on skill-building.
+
+![](./figures/example-resume.png)
+
+Each student will need to bring a laptop, either their own or one rented
+from USU. All course materials will be [available on
+Canvas](https://usu.instructure.com). While students are welcome to use
+their preferred tools, the following [data
+stack](https://github.com/marcdotson/data-stack) is recommended and
+certain tools are required, as indicated below.
 
 ### Python
 
@@ -87,7 +91,7 @@ training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#quarto)
 for more details on using Quarto, including how to use Quarto to render
 a Jupyter notebook into a PDF.
 
-### AI
+### Copilot
 
 Students have access through Utah State to Copilot and may use their
 preferred AI to assist in studying and completing assignments. However,
@@ -97,10 +101,6 @@ concepts in new ways. AI can also be a detriment to learning, including
 when students use AI to think for them. See the [data stack
 training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#ai)
 for details on using AI responsibly.
-
-## Resume Building
-
-Example…
 
 ## Studying
 
