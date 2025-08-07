@@ -1,27 +1,16 @@
-# DATA 5600 Introduction to Regression and Machine Learning for
-Analytics
 
 
-**Class**: Monday and Wednesday 1:30-2:45 pm
+# DATA 5600 Introduction to Regression and Machine Learning for Analytics
 
+- Monday and Wednesday 1:30-2:45 pm
 - Room: HH 260
-
-**Instructor**: Marc Dotson
-
-- Contact: <marc.dotson@usu.edu>
-- Office Hours: Tuesday and Thursday 3-5 pm, or by appointment, EBB 705
-  or
-  [Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1)
-
-## Description
 
 This course introduces supervised learning for business applications.
 Students learn about model building, feature engineering, parameter
 estimation, hyperparameter tuning, model evaluation, and communication.
 The course is focused on interpretable regression and classification
 models, including simple, multiple, and logistic regression.
-Prerequisites/Restrictions: DATA 3100, ~~DATA 3300~~, and DATA 3500 (may
-be taken concurrently)
+Prerequisites: DATA 3100 and DATA 3300
 
 By the end of this course, you will be able to:
 
@@ -32,6 +21,13 @@ By the end of this course, you will be able to:
 3.  Build and interpret appropriate models that use data to inform
     business decisions.
 4.  Clearly present model results in a business context.
+
+## Office Hours
+
+- Marc Dotson <marc.dotson@usu.edu>
+- Tuesday and Thursday 3-5 pm, or by appointment
+- EBB 705 or
+  [Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1)
 
 ## Tools
 
@@ -77,6 +73,19 @@ allow you to develop an online portfolio of work.
 
 [Quarto](#sec-quarto) for communicating results with presentations,
 reports, dashboards, etc.
+
+### AI
+
+Learning is our goal. In DATA 5600, generative AI tools can be very
+useful. They can help debug code, provide example quiz questions for you
+to test your knowledge, and help explain concepts in new ways. I am very
+excited about these tools and encourage their use for learning. You will
+need to use your judgement to determine how to best utilize these tools.
+They “succeed as a tool, fail as a crutch” (Carly Fox from our
+department), and while you can use AI tools to help you with
+assignments, make sure you are using them to facilitate your learning
+and not to just check a box. “Let’s get better together faster” (Lianne
+Wappett from our department).
 
 For more details, refer to the [data stack
 training](https://github.com/marcdotson/data-stack).
