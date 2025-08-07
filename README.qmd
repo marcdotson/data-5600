@@ -5,7 +5,7 @@ format: gfm
 # DATA 5600 Introduction to Regression and Machine Learning for Analytics
 
 - Monday and Wednesday 1:30-2:45 pm
-- Room: HH 260
+- Huntsman Hall 260
 
 This course introduces supervised learning for business applications. Students learn about model building, feature engineering, parameter estimation, hyperparameter tuning, model evaluation, and communication. The course is focused on interpretable regression and classification models, including simple, multiple, and logistic regression. Prerequisites: DATA 3100 and DATA 3300
 
@@ -18,35 +18,36 @@ By the end of this course, you will be able to:
 
 ## Office Hours
 
-- Marc Dotson [marc.dotson@usu.edu](mailto:marc.dotson@usu.edu)
-- Tuesday and Thursday 3-5 pm, or by appointment
-- EBB 705 or [Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1)
+- Tuesday and Thursday 3-5 pm or [by appointment](mailto:marc.dotson@usu.edu)
+- Eccles Business Building 705 or [over Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1)
 
-## Tools
+## Data Stack
 
-This course is heavily focused on skill-building. Each student will need to bring a laptop, either their own or one rented from USU. All course materials will be [available on Canvas](https://usu.instructure.com). While students are welcome to use their preferred tools, the following [data stack](https://github.com/marcdotson/data-stack) is recommended and will be demonstrated throughout the course.
+This course is heavily focused on skill-building. Each student will need to bring a laptop, either their own or one rented from USU. All course materials will be [available on Canvas](https://usu.instructure.com). While students are welcome to use their preferred tools, the following [data stack](https://github.com/marcdotson/data-stack) is recommended and certain tools are required, as indicated below.
 
 ### Python
 
-[Python](https://github.com/marcdotson/data-stack?tab=readme-ov-file#python) is a general purpose, open source programming language developed by computer scientists. It is the most commonly used programming language for data wrangling, visualizations, and modeling.
+[Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is a general purpose, open source programming language developed by computer scientists. It is the most commonly used programming language for data wrangling, visualizations, and modeling. Python will be required for the course. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#python) for details on how to best install and manage Python versions and project environments.
 
 ### Positron
 
-A code editor or integrated development environment (IDE), outside of an open source programming language, is arguably your most important tool as a data analyst or data engineer. [Positron](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron) is a next-generation data analytics and data engineering IDE. Built on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs.
+A code editor or integrated development environment (IDE), outside of an open source programming language, is a data analyst's most important tool. [Positron](https://positron.posit.co) is a next-generation data analytics IDE. Built on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron) for a summary of Positron's data-friendly features.
 
 ### GitHub
 
-Git is a powerful collaboration and [version control system](https://peerj.com/preprints/3159v2/). While it is the industry standard for software development, it is easy to adopt this framework to provide structure for data analytics as well. GitHub is an online hosting service where each project lives in its own repository maintained by me as the mentor. After a project is completed, you can copy (i.e., *fork*) the project repository for you to maintain. Learning to use Git and GitHub not only aids in collaboration, it will ultimately allow you to develop an online portfolio of work.
+GitHub is an online hosting service for project repositories managed using Git, a powerful collaboration and [version control system](https://peerj.com/preprints/3159v2/) and the industry standard for software development and data projects. Git and GitHub facilitates collaboration on a single code base and enables students to organize an online portfolio of work. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#github) for the basics of using Git and GitHub and a [project template](https://github.com/marcdotson/project-template).
 
 ### Quarto
 
-[Quarto](#sec-quarto) for communicating results with presentations, reports, dashboards, etc.
+[Quarto](https://quarto.org) is an open source publishing system that combines text, code, and output. Quarto documents are similar to Jupyter notebooks, except the content can be rendered into a variety of formats, including PDFs, Word documents, PowerPoint presentations, Revealjs slide decks, interactive dashboards, websites, etc. While Quarto is not required for the course, students will be required to submit code and output in a PDF format. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#quarto) for more details on using Quarto, including how to use Quarto to render a Jupyter notebook into a PDF.
 
 ### AI
 
-Learning is our goal. In DATA 5600, generative AI tools can be very useful. They can help debug code, provide example quiz questions for you to test your knowledge, and help explain concepts in new ways. I am very excited about these tools and encourage their use for learning. You will need to use your judgement to determine how to best utilize these tools. They "succeed as a tool, fail as a crutch" (Carly Fox from our department), and while you can use AI tools to help you with assignments, make sure you are using them to facilitate your learning and not to just check a box. "Let’s get better together faster" (Lianne Wappett from our department).
+Students have access through Utah State to Copilot and may use their preferred AI to assist in studying and completing assignments. However, students must remember that the objective of this course is learning. AI can contribute to learning, including helping to debug code and explain concepts in new ways. AI can also be a detriment to learning, including when students use AI to think for them. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#ai) for details on using AI responsibly.
 
-For more details, refer to the [data stack training](https://github.com/marcdotson/data-stack).
+## Resume Building
+
+Example...
 
 ## Studying
 
