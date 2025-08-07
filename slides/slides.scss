@@ -2,18 +2,18 @@
 @import url(https://fonts.googleapis.com/css?family=News+Cycle:400,700);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
 
-@font-face {
-  font-family: 'Avallon';
-  src: url('../avallon.tff') format('tff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+// @font-face {
+//   font-family: 'Avallon';
+//   src: url('../avallon.tff') format('tff');
+//   font-weight: normal;
+//   font-style: normal;
+//   font-display: swap;
+// }
 
-/* Apply to Reveal.js */
-.reveal {
-  font-family: 'Avallon', sans-serif;
-}
+// /* Apply to Reveal.js */
+// .reveal {
+//   font-family: 'Avallon', sans-serif;
+// }
 
 // fonts
 $font-family-sans-serif: Lato, sans-serif;
@@ -33,12 +33,20 @@ $tangerine: #F58220;
 $sunflower: #F6BD17;
 $sand: #D1CBBD;
 
+// // colors
+// $body-bg: $fighting-white;
+// $body-color: $black;
+// $secondary: $aggie-blue;
+// $tertiary: $gray;
+// $link-color: $sky-blue;
+// $selection-bg: rgba(0, 0, 0, 0.99);
+
 // colors
-$body-bg: $fighting-white;
-$body-color: $black;
-$secondary: $aggie-blue;
-$tertiary: $gray;
-$link-color: $sky-blue;
+$body-bg: #fff;
+$body-color: #000;
+$secondary: #486790;
+$tertiary: #3869a5;
+$link-color: #7aafde;
 $selection-bg: rgba(0, 0, 0, 0.99);
 
 // headings
@@ -56,7 +64,7 @@ $mermaid-fg-color: $secondary;
 }
 
 .reveal section h2 {
-  color: $aggie-blue;
+  color: $secondary;
 }
 
 .h-center {
