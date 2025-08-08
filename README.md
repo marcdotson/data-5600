@@ -6,13 +6,14 @@
 - Huntsman Hall 260
 
 This course introduces supervised learning for business applications.
-Students learn about model building, feature engineering, parameter
+Students learn about the modeling process through project-based
+coursework, including model building, feature engineering, parameter
 estimation, hyperparameter tuning, model evaluation, and communication.
 The course is focused on interpretable regression and classification
 models, including simple, multiple, and logistic regression.
 Prerequisites: DATA 3100 and DATA 3300
 
-By the end of this course, you will be able to:
+By the end of this course, students will be able to:
 
 1.  Explain the importance of regression and machine learning in
     business.
@@ -31,14 +32,9 @@ By the end of this course, you will be able to:
 
 ## Data Stack
 
-This course is heavily focused on skill-building.
-
-![](./figures/example-resume.png)
-
 Each student will need to bring a laptop, either their own or one rented
-from USU. All course materials will be [available on
-Canvas](https://usu.instructure.com). While students are welcome to use
-their preferred tools, the following [data
+from Utah State. While students are welcome to use their preferred
+tools, the following [data
 stack](https://github.com/marcdotson/data-stack) is recommended and
 certain tools are required, as indicated below.
 
@@ -93,40 +89,43 @@ a Jupyter notebook into a PDF.
 
 ### Copilot
 
-Students have access through Utah State to Copilot and may use their
-preferred AI to assist in studying and completing assignments. However,
-students must remember that the objective of this course is learning. AI
-can contribute to learning, including helping to debug code and explain
-concepts in new ways. AI can also be a detriment to learning, including
-when students use AI to think for them. See the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#ai)
+Students may use their preferred AI to assist in studying and completing
+assignments. All students have access to Copilot through Utah State.
+However, students must remember that the objective of this course is
+learning. AI can contribute to learning, including helping to debug code
+and explain concepts in new ways. AI can also be a detriment to
+learning, including when students use AI to think for them. See the
+[data stack
+training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#copilot)
 for details on using AI responsibly.
 
-## Studying
+## Study and Success
 
-Students should consider the following study tips.
+Students should focus on understanding concepts and mastering skills by
+using the following study tips.
 
-1.  Prepare for class by studying the assigned materials, taking notes,
-    and coming with questions.
-2.  Take notes, ask questions, and participate in class discussions.
-3.  Consistently apply what you’re learning to your project.
-4.  Work with classmates and utilize office hours.
-5.  Use your class repository to organize all notes and project work.
+1.  Prepare for class by previewing material and identifying questions.
+2.  Engage during class by asking questions, taking notes, and actively
+    coding.
+3.  Apply what you learn in class by completing exercises and working on
+    projects.
+4.  Evaluate what you’re learning by reviewing exercise solutions and
+    taking quizzes.
+5.  Reinforce what you’re learning by utilizing office hours and working
+    with classmates.
 
-Students should consider the following coding tips.
+After completing the course, student resumes should reflect the tools,
+skills, and methods they have learned and showcase the projects they
+have completed. For example:
 
-1.  Learn by doing: Code in class and complete exercises.
-2.  Pay *careful* attention to details.
-3.  Don’t code from scratch. Start with previous work and solutions.
-4.  Look at and emulate good code.
-5.  Literally sketch what transformed data should look like in the end.
+![](./figures/example-resume.png)
 
 ## Assessment
 
-All assignments are due on Canvas at the start of the class session they
-are associated with in the schedule.
-
-Letter grades will follow the standard rubric.
+Assignments are designed to be consistent with what students will be
+expected to do in practice. No credit will be given for late work unless
+an arrangement is made **prior to the relevant deadline**. Letter grades
+will follow the standard rubric.
 
 |     |         |     |        |     |        |
 |:----|:--------|:----|:-------|:----|:-------|
@@ -135,51 +134,49 @@ Letter grades will follow the standard rubric.
 | B+  | 87-89%  | C   | 73-76% | D-  | 60-62% |
 | B   | 83-86%  | C-  | 70-72% | E   | 0-59%  |
 
-No credit will be given for late work unless an arrangement is made
-prior to the deadline. Students are encouraged to review your graded
-work and ask questions to avoid repeated mistakes. Grades will be
-determined as follows.
+Students are encouraged to review their graded work and ask questions to
+avoid repeated mistakes. Letter grades will be determined as follows.
 
 ### Exercises (20%)
 
-Each lecture ends with an exercise that is due at the beginning of the
-following class when a student will be called on at random to share
-their solution. While students are encouraged to work together, each
-student is required to submit their own work. Additionally, for each
-exercise every student will be randomly assigned to review one other
-student’s exercise.
+Each lecture ends with an exercise that is due before the following
+class when a student will be called on at random to share their
+solution. While students are encouraged to work together, each student
+is required to submit their own work. Additionally, for each exercise
+every student will be randomly assigned to review one other student’s
+exercise.
 
-Students won’t get credit if they don’t submit their solution on time,
-aren’t present and prepared to share when called on at random, or don’t
-complete their randomly assigned review.
+Students won’t get credit for an exercise if they don’t submit their
+exercise on time, aren’t present and prepared to share their exercise
+when called on at random, or don’t complete their randomly assigned
+exercise review.
 
 ### Quizzes (30%)
 
 While students are encouraged to study in groups, each of the quizzes is
 to be completed individually, without assistance from other classmates.
-Each quiz will be available on Canvas during the associated lectures and
-is intended to be used as a gauge of how well students understand the
+Each quiz will be available during the associated lectures and is
+intended to be used as a gauge of how well students understand the
 course material.
 
-<!-- ### Interviews
-&#10;During the first two weeks of class, during the two weeks in the middle of the semester, and during the final two weeks of class each student will have a required 10-minute interview with me where we discuss the course and their efforts and evaluate their understanding in the form of an oral exam. -->
+<!-- ### Interviews (30%)
+&#10;During the first two weeks of class, during the two weeks in the middle of the semester, and during the final two weeks of class each student will have a required 10-minute interview with me where we discuss the course and their efforts and evaluate their understanding. -->
 
 ### Projects (50%)
 
 Students will complete two group projects, one focused on multiple
-regression and the second focused on classification. The groups will
-both present and submit a technical report developed on a GitHub
-repository. The week before the presentations, they will submit a draft
-of their slides to get feedback and have time for revision. The other
-students in the class, as well as the group members themselves, will
-help evaluate each of the presentations.
+regression and another focused on classification. The groups will both
+present and submit a technical report. The week before the
+presentations, they will submit a draft of their slides to get feedback
+and have time for revision. The other students in the class, as well as
+the group members themselves, will help evaluate each of the
+presentations.
 
 ## Schedule
 
 Please note that the instructor reserves the right to change the
-syllabus, including the schedule, at any time and for any reason. In
-such circumstances, he will provide students sufficient advance notice
-as it relates to assignment deadlines.
+following schedule at any time and provide students sufficient notice as
+it relates to assignment deadlines.
 
 ### Week 01
 
@@ -191,3 +188,63 @@ as it relates to assignment deadlines.
 - Decisions and Data
 
 ### Week 03
+
+- Probability and Statistics
+- Linear Regression
+
+### Week 04
+
+- Continuous Predictors
+- Discrete Predictors
+
+### Week 05
+
+- Assumptions and Diagnostics
+- Fitting and Interpreting Linear Regression
+
+### Week 06
+
+- Model Evaluation and Prediction
+- Communicating Results
+
+### Week 07
+
+- Presentations
+
+### Week 08
+
+- Generalized Linear Models
+- Classification
+
+### Week 09
+
+- Logistic Regression
+- Fitting and Interpreting Logistic Regression
+
+### Week 10
+
+- Regularization
+- Variable Selection
+
+### Week 11
+
+- Hyperparameter Tuning
+- Cross-Validation
+
+### Week 12
+
+- Dimension Reduction
+- PCR
+
+### Week 13
+
+- Interactions
+- Multilevel Models
+
+### Week 14
+
+- Thanksgiving Break
+
+### Week 15
+
+- Presentations
