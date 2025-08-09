@@ -1,56 +1,34 @@
 /*-- scss:defaults --*/
-@import url(https://fonts.googleapis.com/css?family=News+Cycle:400,700);
+// import fonts
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
-
-// @font-face {
-//   font-family: 'Avallon';
-//   src: url('../avallon.tff') format('tff');
-//   font-weight: normal;
-//   font-style: normal;
-//   font-display: swap;
-// }
-
-// /* Apply to Reveal.js */
-// .reveal {
-//   font-family: 'Avallon', sans-serif;
-// }
+@import url(https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap);
 
 // fonts
+$presentation-heading-font: Lato, sans-serif;
 $font-family-sans-serif: Lato, sans-serif;
 $presentation-font-size-root: 30px;
 
-// utah state colors
+// custom colors
 $aggie-blue: #0F2439;
 $fighting-white: #FFFFFF;
 $gray: #A2AAAD;
 $black: #000000;
-$hunter-green: #006242;
-$sage-green: #6B9E85;
 $sky-blue: #288DC2;
 $electric-blue: #01ADD8;
+$hunter-green: #006242;
+$sage-green: #6B9E85;
 $watermelon: #F16278;
 $tangerine: #F58220;
 $sunflower: #F6BD17;
 $sand: #D1CBBD;
 
-// // colors
-// $body-bg: $fighting-white;
-// $body-color: $black;
-// $secondary: $aggie-blue;
-// $tertiary: $gray;
-// $link-color: $sky-blue;
-// $selection-bg: rgba(0, 0, 0, 0.99);
-
 // colors
-$body-bg: #fff;
-$body-color: #000;
-$secondary: #486790;
-$tertiary: #3869a5;
-$link-color: #7aafde;
+$body-bg: $fighting-white;
+$body-color: $black;
+$secondary: $sky-blue;
+$tertiary: $gray;
+$link-color: $electric-blue;
 $selection-bg: rgba(0, 0, 0, 0.99);
-
-// headings
-$presentation-heading-font: "News Cycle", sans-serif;
 
 // diagrams
 $mermaid-bg-color: $body-bg;
@@ -59,8 +37,26 @@ $mermaid-node-fg-color: $secondary;
 $mermaid-fg-color: $secondary;
 
 /*-- scss:rules --*/
+#title-slide .title {
+  font-family: "Permanent Marker", cursive;
+}
+
 .reveal .slide-number > a[href*='title-slide'] {
   display: none;
+}
+
+.reveal .permanent-marker-font {
+  font-family: "Permanent Marker", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2em;
+}
+
+.reveal .lato-font {
+  font-family: Lato, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.5em;
 }
 
 .reveal section h2 {
