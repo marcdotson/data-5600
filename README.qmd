@@ -7,14 +7,13 @@ format: gfm
 - Monday and Wednesday 1:30-2:45 pm
 - Huntsman Hall 260
 
-This course introduces supervised learning for business applications. Students learn about the modeling process through project-based coursework, including model building, feature engineering, parameter estimation, hyperparameter tuning, model evaluation, and communication. The course is focused on interpretable regression and classification models, including simple, multiple, and logistic regression. Prerequisites: DATA 3100 and DATA 3300
+This course introduces machine learning for business applications, including linear, logistic, and penalized regression. Students learn about the modeling process by building models and communicating results for real-world problems. The course focuses on the assumptions and evaluation of interpretable models. Prerequisites: DATA 3100 and DATA 3300
 
 By the end of this course, students will be able to:
 
-1. Explain the importance of regression and machine learning in business.
-2. Demonstrate cleaning and structuring data for regression and machine learning.
-3. Build and interpret appropriate models that use data to inform business decisions.
-4. Clearly present model results in a business context.
+1. Build, evaluate, and interpret models to extract insights and inform decision-making by non-technical stakeholders.
+2. Diagnose and address violations of model assumptions to ensure appropriate model use.
+3. Clearly communicate model results in a business context.
 
 ## Office Hours
 
