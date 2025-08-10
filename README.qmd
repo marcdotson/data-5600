@@ -26,23 +26,73 @@ Each student will need to bring a laptop, either their own or one rented from Ut
 
 ### Python
 
+:::: {.columns}
+
+::: {.column width="60%"}
 [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is a general purpose, open source programming language developed by computer scientists. It is the most commonly used programming language for data wrangling, visualizations, and modeling. Python will be required for the course. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#python) for details on how to best install and manage Python versions and project environments.
+:::
+
+::: {.column width="40%"}
+![](/figures/logo_python.png)
+:::
+
+::::
 
 ### Positron
 
+:::: {.columns}
+
+::: {.column width="40%"}
+![](/figures/logo_positron.png)
+:::
+
+::: {.column width="60%"}
 A code editor or integrated development environment (IDE), outside of an open source programming language, is a data analyst's most important tool. [Positron](https://positron.posit.co) is a next-generation data analytics IDE. Built on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron) for a summary of Positron's data-friendly features.
+:::
+
+::::
 
 ### GitHub
 
+:::: {.columns}
+
+::: {.column width="60%"}
 GitHub is an online hosting service for project repositories managed using Git, a powerful collaboration and [version control system](https://peerj.com/preprints/3159v2/) and the industry standard for software development and data projects. Git and GitHub facilitates collaboration on a single code base and enables students to organize an online portfolio of work. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#github) for the basics of using Git and GitHub and a [project template](https://github.com/marcdotson/project-template).
+:::
+
+::: {.column width="40%"}
+![](/figures/logo_github.png)
+:::
+
+::::
 
 ### Quarto
 
-[Quarto](https://quarto.org) is an open source publishing system that combines text, code, and output. Quarto documents are similar to Jupyter notebooks, except the content can be rendered into a variety of formats, including PDFs, Word documents, PowerPoint presentations, Revealjs slide decks, interactive dashboards, websites, etc. While Quarto is not required for the course, students will be required to submit code and output in a PDF format. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#quarto) for more details on using Quarto, including how to use Quarto to render a Jupyter notebook into a PDF.
+:::: {.columns}
+
+::: {.column width="40%"}
+![](/figures/logo_quarto.png)
+:::
+
+::: {.column width="60%"}
+[Quarto](https://quarto.org) is an open source publishing system that combines text, code, and output. Quarto documents are similar to Jupyter notebooks, except the content can be rendered into a variety of formats, including PDFs, Word documents, PowerPoint presentations, Revealjs slide decks, interactive dashboards, websites, etc. While Quarto is not required for the course, students will be required to submit code and output in a PDF format. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#quarto) for more details on Quarto, including how to use Quarto to render a Jupyter notebook into a PDF.
+:::
+
+::::
 
 ### Copilot
 
+:::: {.columns}
+
+::: {.column width="60%"}
 Students may use their preferred AI to assist in studying and completing assignments. All students have access to Copilot through Utah State. However, students must remember that the objective of this course is learning. AI can contribute to learning, including helping to debug code and explain concepts in new ways. AI can also be a detriment to learning, including when students use AI to think for them. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#copilot) for details on using AI responsibly.
+:::
+
+::: {.column width="40%"}
+![](/figures/logo_copilot.png)
+:::
+
+::::
 
 ## Study and Success
 
