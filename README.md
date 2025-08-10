@@ -37,10 +37,6 @@ certain tools are required, as indicated below.
 
 ### Python
 
-<div class="columns">
-
-<div class="column" width="60%">
-
 [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is
 a general purpose, open source programming language developed by
 computer scientists. It is the most commonly used programming language
@@ -50,27 +46,7 @@ training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#python)
 for details on how to best install and manage Python versions and
 project environments.
 
-</div>
-
-<div class="column" width="40%">
-
-![](./figures/logo_python.png)
-
-</div>
-
-</div>
-
 ### Positron
-
-<div class="columns">
-
-<div class="column" width="40%">
-
-![](./figures/logo_positron.png)
-
-</div>
-
-<div class="column" width="60%">
 
 A code editor or integrated development environment (IDE), outside of an
 open source programming language, is a data analyst’s most important
@@ -83,15 +59,7 @@ with essential data tools common to language-specific IDEs. See the
 training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron)
 for a summary of Positron’s data-friendly features.
 
-</div>
-
-</div>
-
 ### GitHub
-
-<div class="columns">
-
-<div class="column" width="60%">
 
 GitHub is an online hosting service for project repositories managed
 using Git, a powerful collaboration and [version control
@@ -103,27 +71,7 @@ training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#github)
 for the basics of using Git and GitHub and a [project
 template](https://github.com/marcdotson/project-template).
 
-</div>
-
-<div class="column" width="40%">
-
-![](./figures/logo_github.png)
-
-</div>
-
-</div>
-
 ### Quarto
-
-<div class="columns">
-
-<div class="column" width="40%">
-
-![](./figures/logo_quarto.png)
-
-</div>
-
-<div class="column" width="60%">
 
 [Quarto](https://quarto.org) is an open source publishing system that
 combines text, code, and output. Quarto documents are similar to Jupyter
@@ -136,15 +84,7 @@ training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#quarto)
 for more details on Quarto, including how to use Quarto to render a
 Jupyter notebook into a PDF.
 
-</div>
-
-</div>
-
 ### Copilot
-
-<div class="columns">
-
-<div class="column" width="60%">
 
 Students may use their preferred AI to assist in studying and completing
 assignments. All students have access to Copilot through Utah State.
@@ -155,16 +95,6 @@ learning, including when students use AI to think for them. See the
 [data stack
 training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#copilot)
 for details on using AI responsibly.
-
-</div>
-
-<div class="column" width="40%">
-
-![](./figures/logo_copilot.png)
-
-</div>
-
-</div>
 
 ## Study and Success
 
