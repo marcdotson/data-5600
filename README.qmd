@@ -30,11 +30,11 @@ Each student will need to bring a laptop, either their own or one rented from Ut
 
 ### Positron
 
-A code editor or integrated development environment (IDE), outside of an open source programming language, is a data analyst's most important tool. [Positron](https://positron.posit.co) is a next-generation data analytics IDE. Built on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron) for a summary of Positron's data-friendly features.
+A code editor or integrated development environment (IDE), outside of an open source programming language, is a data analyst's most important tool. [Positron](https://positron.posit.co) is a next-generation data science IDE. Built on VS Code's [open source core](https://github.com/microsoft/vscode), Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron) for a summary of Positron's data-friendly features.
 
 ### GitHub
 
-GitHub is an online hosting service for project repositories managed using Git, a powerful collaboration and [version control system](https://peerj.com/preprints/3159v2/) and the industry standard for software development and data projects. Git and GitHub facilitates collaboration on a single code base and enables students to organize an online portfolio of work. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#github) for the basics of using Git and GitHub and a [project template](https://github.com/marcdotson/project-template).
+[GitHub](https://github.com/about) is an online hosting service for project repositories managed using Git, a powerful collaboration and [version control system](https://peerj.com/preprints/3159v2/) and the industry standard for software development and data projects. Git and GitHub facilitates collaboration on a single code base and enables students to organize an online portfolio of work. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#github) for the basics of using Git and GitHub and a [project template](https://github.com/marcdotson/project-template).
 
 ### Quarto
 
@@ -42,7 +42,7 @@ GitHub is an online hosting service for project repositories managed using Git, 
 
 ### Copilot
 
-Students may use their preferred AI to assist in studying and completing assignments. All students have access to Copilot through Utah State. However, students must remember that the objective of this course is learning. AI can contribute to learning, including helping to debug code and explain concepts in new ways. AI can also be a detriment to learning, including when students use AI to think for them. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#copilot) for details on using AI responsibly.
+Students may use their preferred AI to assist in studying and completing assignments. All students have access to [Copilot](https://www.microsoft.com/en-us/microsoft-copilot/copilot-101/what-is-copilot) through Utah State. However, students must remember that the objective of this course is learning. AI can contribute to learning, including helping to debug code and explain concepts in new ways. AI can also be a detriment to learning, including when students use AI to think for them. See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#copilot) for details on getting access to Copilot and a discussion on using AI responsibly.
 
 ## Study and Success
 
@@ -57,6 +57,17 @@ Students should focus on understanding concepts and mastering skills by using th
 After completing the course, student resumes should reflect the tools, skills, and methods they have learned and showcase the projects they have completed. For example:
 
 ![](/figures/example-resume.png)
+
+```{mermaid}
+%%{init: {
+  "theme": "base",
+  "themeVariables": { "fontFamily": "Lato, sans-serif", "fontSize": "18px", "primaryColor": "#288DC2", 
+  "lineColor": "#FFFFFF", "primaryBorderColor": "#000000", "primaryTextColor": "#FFFFFF" },
+  "flowchart": { "htmlLabels": false, "wrappingWidth": 160, "diagramPadding": 8, "nodeSpacing": 35, "rankSpacing": 35 }
+}}%%
+flowchart LR
+C["DATA 5600"] --> D["DATA 5610"] & E["DATA 5620"] & F["DATA 5630"]
+```
 
 ## Assessment
 
@@ -73,21 +84,21 @@ Students are encouraged to review their graded work and ask questions to avoid r
 
 ### Exercises (20%)
 
-Each lecture ends with an exercise that is due before the following class when a student will be called on at random to share their solution. While students are encouraged to work together, each student is required to submit their own work. Additionally, for each exercise every student will be randomly assigned to review one other student’s exercise.
+Each lecture ends with an exercise that is due before the following class when a student will be called on at random to share their exercise solution. While students are encouraged to work together, each student is required to submit their own work. Additionally, for each exercise every student will be randomly assigned to review one other student’s exercise.
 
-Students won’t get credit for an exercise if they don’t submit their exercise on time, aren’t present and prepared to share their exercise when called on at random, or don’t complete their randomly assigned exercise review.
+Students won’t get credit for an exercise if they don’t submit their exercise on time, aren’t prepared to share their exercise when called on at random, or don’t complete their randomly assigned exercise review on time.
 
 ### Quizzes (30%)
 
-While students are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates. Each quiz will be available during the associated lectures and is intended to be used as a gauge of how well students understand the course material.
+Each quiz will be available during the associated lectures and is intended to be used as a gauge of how well students understand the course material. While students are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates.
 
 <!-- ### Interviews (30%)
 
-During the first two weeks of class, during the two weeks in the middle of the semester, and during the final two weeks of class each student will have a required 10-minute interview with me where we discuss the course and their efforts and evaluate their understanding. -->
+During the first two weeks of class, during the two weeks in the middle of the semester, and during the final two weeks of class, each student will have a required 10-minute interview with the instructor where they discuss the course and their efforts and answer questions to evaluate their understanding of the course material. -->
 
 ### Projects (50%)
 
-Students will complete two group projects, one focused on multiple regression and another focused on classification. The groups will both present and submit a technical report. The week before the presentations, they will submit a draft of their slides to get feedback and have time for revision. The other students in the class, as well as the group members themselves, will help evaluate each of the presentations.
+Students will complete two group projects, one focused on multiple regression and another focused on classification. The groups will both present and submit a technical report. The week before the presentations, groups will submit a draft of their slides to get feedback and have time for revision. The other students in the class, as well as the group members themselves, will help evaluate each of the presentations.
 
 ## Schedule
 
