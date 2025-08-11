@@ -119,7 +119,7 @@ have completed. For example:
 ``` mermaid
 %%{init: {
   "theme": "base",
-  "themeVariables": { "fontFamily": "Lato, sans-serif", "fontSize": "18px", "primaryColor": "#288DC2", 
+  "themeVariables": { "fontSize": "12px", "primaryColor": "#288DC2", 
   "lineColor": "#FFFFFF", "primaryBorderColor": "#000000", "primaryTextColor": "#FFFFFF" },
   "flowchart": { "htmlLabels": false, "wrappingWidth": 160, "diagramPadding": 8, "nodeSpacing": 35, "rankSpacing": 35 }
 }}%%
