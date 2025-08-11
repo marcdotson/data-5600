@@ -11,14 +11,14 @@ This course introduces machine learning for business applications, including lin
 
 By the end of this course, students will be able to:
 
-1. Build, evaluate, and interpret models to extract insights and inform decision-making by non-technical stakeholders.
+1. Build, evaluate, and interpret models to inform decision-making by non-technical stakeholders.
 2. Diagnose and address violations of model assumptions to ensure appropriate model use.
-3. Clearly communicate model results in a business context.
+3. Communicate model results clearly in a business context.
 
-## Office Hours
+<!-- ## Office Hours
 
 - Tuesday and Thursday 3-5 pm or [by appointment](mailto:marc.dotson@usu.edu)
-- Eccles Business Building 705 or [over Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1)
+- Eccles Business Building 705 or [over Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1) -->
 
 ## Data Stack
 
