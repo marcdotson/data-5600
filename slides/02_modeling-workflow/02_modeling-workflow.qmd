@@ -1,0 +1,48 @@
+---
+title: "Untitled"
+format: html
+---
+
+## Identify | Specify the Managerial Decision and Evaluate Data
+
+To inform managerial decision-making there needs to be a decision to begin with. Having a well-defined managerial decision is what separates data analytics from **data mining**.
+
+What data is needed should be evaluated with the managerial decision in mind and not the *other way around*.
+
+## Import | Acquire the Needed Data
+
+While primary data is gathered specifically to serve the research objectives at hand, secondary data was gathered for another purpose. Consult the original and most current source whenever possible and understand its context (i.e., use the **data dictionary**).
+
+- Who collected it?
+- Why was it collected?
+- When was it collected?
+- What was collected?
+- How was it collected?
+
+Acquiring secondary data may require interfacing with databases, using APIs, scraping the Web, etc.
+
+## Tidy and Transform | Wrangle the Data
+
+Secondary data can be **messy**. Data wrangling includes whatever tidying, cleaning, mutating, munging, selecting, transforming, renaming, fusing, or filtering is needed to get the data into the needed form to summarize and model.
+
+This can be *tedious*.
+
+## Visualize | Summarize the Data
+
+Summarizing data is initially about discovery. It includes computing **statistics** (i.e., numerical summaries) and **data visualization** (i.e., graphical summaries).
+
+- Summarizing data is closely tied with data wrangling.
+- Summarizing data is often not an end in itself.
+
+## Model | Inference and Prediction
+
+Models *extract information* from the data to inform our managerial decision.
+
+- In order to inform the marketing mix, the models we use are often inferential.
+- Some managerial decisions only rely on prediction.
+
+## Communicate | Report and Create Data Products
+
+Effectively communicating marketing insights brings us full circle and highlights the necessity of domain expertise.
+
+The analyst needs to **interpret results in a way that clearly informs the managerial decision**. You may hear this referred to as "storytelling."

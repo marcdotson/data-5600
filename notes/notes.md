@@ -37,29 +37,6 @@ feedback.
   including discussing with a neighbor, raising hands, speed dialogue,
   and whiteboarding concepts.
 
-# Assessment
-
-- Exercises (20%): At the beginning of each class, a student will be
-  called on at random to walk through and share their solution.
-  Additionally, for each exercise every student will be randomly
-  assigned to review one other student’s exercise. Students won’t get
-  credit if they don’t submit their solution on time, aren’t present and
-  prepared to share when called on at random, or don’t complete their
-  randomly assigned review.
-- Interviews (30%): During the first two weeks of class, during the two
-  weeks in the middle of the semester, and during the final two weeks of
-  class each student will have a required 10-minute interview with me
-  where we discuss the course and their efforts and evaluate their
-  understanding in the form of an oral exam.
-- Projects (50%): Students will complete two group projects, one focused
-  on multiple regression and the second focused on multiple regression
-  or classification. The groups will both present and submit a technical
-  report developed on a GitHub repository. A week before the
-  presentations, they will submit a draft of their slides to get
-  feedback and have time for revision. The other students in the class,
-  as well as the group members themselves, will help evaluate each of
-  the presentations.
-
 # Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
 ## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5; May 4)
@@ -77,7 +54,7 @@ feedback.
 - Analytics is using data to inform decisions in the presence of
   uncertainty
 - Summarize the course objectives, skills
-- CV entry (also in the syllabus)
+- CV entry
 - What makes this course different from DATA 3100 and 3300?
 - What makes this course different from DATA 3500?
 - Discuss DATA 5610, 5620, and 5630
@@ -98,6 +75,8 @@ feedback.
   terminology to keep track of
 - “Standing on the shoulders of giants”
 - What is regression and ML? What is the relationship and overlap?
+- Where the name “regression” comes from – extreme values “regressing”
+  to the mean
 - Data analytics vs. data mining vs. data science (PML p. 27-28)
 - Supervised vs. unsupervised vs. reinforcement learning
 - Supervised learning is learning a mapping function from inputs to
@@ -111,7 +90,7 @@ feedback.
   the model consistent with your objective?
 - Business applications for analytics
 - Exercise: Read case and describe how you might use regression and ML
-  to inform the decision
+  to inform the decision, complete the class survey
 - Wrap up
 
 ## Modeling Workflow (Aug 27; Jan 7; May 6)
