@@ -1,66 +1,295 @@
 ---
-title: "Regression and Machine Learning"
+title: "Regression and <br>Machine Learning"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
   data-background-color: "#0F2439"
 format: 
   revealjs:
-    theme: ../style.scss # Modified simple theme.
-    slide-number: c/t    # Numbered slides current/total.
-    self-contained: true # Render to a single HTML file.
+    theme: ../slides.scss # Modified slides theme.
+    slide-number: c/t     # Numbered slides current/total.
+    self-contained: true  # Render to a single HTML file.
 execute:
-  eval: false
-  echo: true
+  eval: true
+  echo: false
 ---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Preview
+
+- Make introductions
+- Form groups to work on projects
+- Walk through an overview of the course
+- Provide some context for what we'll be studying
+
+# Introductions
+
+## DATA 5600
+
+This course introduces **machine learning** for **business applications**, including linear, logistic, and penalized regression. Students learn about the modeling process by building models and communicating results for **real-world problems**. The course focuses on the assumptions and evaluation of **interpretable models**. Prerequisites: DATA 3100 and **DATA 3300**
+
+By the end of this course, students will be able to:
+
+1. Build, evaluate, and interpret models to **inform** decision-making by **non-technical stakeholders**.
+2. Diagnose and address violations of model assumptions to **ensure appropriate model use**.
+3. **Communicate model results clearly** in a business context.
 
 ## 
 
-::: {font="Avallon"}
-Getting Started
+:::: {.columns .v-center}
+
+::: {.column width="40%"}
+![](../../figures/dotson-family.png){fig-align="center"}
 :::
 
-*Summary*
+::: {.column width="60%"}
+::: {.incremental}
+- Studied journalism, international relations, and statistics
+- Studied international political economy
+- Worked in marketing research
+- Studied quantitative marketing
+- Eight years teaching at BYU
+- Second year teaching at Utah State
+- Rachel teaches high school English
+- Four kids aged 8 to 18
+- Once compared by a student to "a nerdy Spider-Man villain"
+:::
+:::
 
-- Defined marketing analytics.
-- Discussed the FAQ.
-- Walked through the marketing analytics process.
+::::
 
-*Next Time*
+# What are you studying? What business problems are you interested in? {background-color="#006242"}
 
-- Getting started with R.
-- Transforming data with {dplyr}.
+# Data Stack
 
-*Artwork by @allison_horst*
+## 
 
-# Why are you in DATA 5600?
+:::: {.columns .v-center}
 
-## Marketing Analytics
+::: {.column width="60%"}
+::: {.incremental}
+- [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is a general purpose, open source programming language
+- It is the most commonly used programming language for data analytics
+- Python will be required for the course
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#python) for details on how to best install and manage Python versions and project environments
+:::
+:::
 
-Analytics is the process of **using data to inform managerial decision-making**.
+::: {.column width="40%"}
+![](../../figures/logo_python.png){fig-align="center"}
+:::
 
-- What are the key managerial decisions in marketing?
-- What is the difference between *inform* and *drive*?
-- What are some examples of marketing analytics in practice?
+::::
 
-To accomplish this, in this course we will be learning to analyze data in R.
+## 
 
-## FAQ | What am I expected to know *now*?
+:::: {.columns .v-center}
 
-Nothing. (Well, nothing about coding.)
+::: {.column width="40%"}
+![](../../figures/logo_positron.png){fig-align="center"}
+:::
 
-## FAQ | What makes this course different from MKTG 401?
+::: {.column width="60%"}
+::: {.incremental}
+- A code editor or integrated development environment (IDE) is a critical data tool
+- I recommend [Positron](https://positron.posit.co), a next-generation data science IDE
+- Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron) for a summary of Positron's data-friendly features
+:::
+:::
 
-- We focus on **secondary data** instead of **primary data**.
-- Secondary data is messy and comes from many different sources.
-- Coding (i.e., "advanced Excel") allows us to do almost anything.
-- This is a data analysis deep dive: more details, more technical.
+::::
 
-## FAQ | What makes this course different from MSB 325?
+## 
 
-- This a deeper dive into data analysis.
-- Class is interactive.
-- Many students find they learn more.
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+::: {.incremental}
+- GitHub hosts version-controlled project repositories managed with Git
+- It is the industry standard for software development and data projects
+- Using GitHub enables collaboration and the creation of a portfolio of work
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#github) for the basics of using Git and GitHub and a [project template](https://github.com/marcdotson/project-template)
+:::
+:::
+
+::: {.column width="40%"}
+![](../../figures/logo_github.png){fig-align="center"}
+:::
+
+::::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="40%"}
+![](../../figures/logo_quarto.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- [Quarto](https://quarto.org) is an open source publishing system that combines text, code, and output
+- Quarto documents are similar to Jupyter notebooks that can be rendered into a variety of formats
+- It is not required for the course, by you will be required to submit code and output in a PDF format
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#quarto) for more details on Quarto, including how to use Quarto to render a Jupyter notebook into a PDF
+:::
+:::
+
+::::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+::: {.incremental}
+- You may use your preferred AI to assist in studying and completing assignments, but you have access to Copilot
+- Please remember that the objective of this course is learning
+- AI can contribute to learning, including helping to debug code and explain concepts
+- AI can be a detriment to learning, including when students use AI to think for them
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#copilot) for details on getting access to Copilot and a discussion on using AI responsibly
+:::
+:::
+
+::: {.column width="40%"}
+![](../../figures/logo_copilot.png){fig-align="center"}
+:::
+
+::::
+
+## 
+
+:::: {.columns .v-center}
+![](../../figures/meme_ai-learning.png){fig-align="center"}
+::::
+
+# Study and Success
+
+## Study tips
+
+Your focus should be on **understanding** concepts and **mastering** skills
+
+::: {.incremental}
+1. Prepare for class by previewing material and identifying questions
+2. Engage during class by asking questions, taking notes, and actively coding
+3. Apply what you learn in class by completing exercises and working on projects
+4. Evaluate what you're learning by reviewing exercise solutions and taking quizzes
+5. Reinforce what you're learning by utilizing office hours and working with classmates
+:::
+
+## 
+
+:::: {.columns .v-center}
+![](../../figures/example-resume.png){fig-align="center"}
+::::
+
+# Assessment
+
+## Goals and deadlines
+
+Assignments are designed to be consistent with what you will be **expected to do in practice**
+
+::: {.fragment fragment-index=1}
+No credit will be given for late work unless an arrangement is made **prior to the relevant deadline**
+:::
+
+::: {.fragment fragment-index=2}
+Letter grades will follow the standard rubric
+
+|    |         |    |        |    |        |
+| :- | :------ | :- | :----- | :- | :----- |
+| A  | 93-100% | B- | 80-82% | D+ | 67-69% |
+| A- | 90-92%  | C+ | 77-79% | D  | 63-66% |
+| B+ | 87-89%  | C  | 73-76% | D- | 60-62% |
+| B  | 83-86%  | C- | 70-72% | E  | 0-59%  |
+:::
+
+::: {.fragment fragment-index=3}
+Please review your graded work and ask questions to avoid repeated mistakes
+:::
+
+## Exercises (20%)
+
+Each lecture ends with an exercise that is due before the following class when one of you will be called on at random to share your exercise solution
+
+::: {.fragment fragment-index=1}
+You are encouraged to work together, but you are required to submit your own work
+:::
+
+::: {.fragment fragment-index=2}
+For each exercise, you will be randomly assigned to review one other student’s exercise
+:::
+
+::: {.fragment fragment-index=3}
+You won’t get credit for an exercise if you:
+
+::: {.incremental}
+1. Don’t submit your exercise on time
+2. Aren’t prepared to share your exercise solution when called on at random
+3. Don’t complete your randomly assigned exercise review on time
+:::
+:::
+
+## Quizzes (30%)
+
+Each quiz will be available during the associated lectures and is intended to be used as a gauge of how well students understand the course material
+
+While students are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates
+
+<!-- ## Interviews (30%)
+
+During the first two weeks of class, during the two weeks in the middle of the semester, and during the final two weeks of class, you will have a required 10-minute interview with me to:
+
+::: {.incremental}
+1. Discuss the course and your efforts
+2. Answer questions to evaluate your understanding of the course material
+::: -->
+
+## Projects (50%)
+
+You will complete two group projects, one focused on multiple regression and another focused on classification
+
+::: {.fragment fragment-index=1}
+The groups will both present and submit a technical report
+:::
+
+::: {.fragment fragment-index=2}
+The week before the presentations, groups will submit a draft of their slides to get feedback and have time for revision
+:::
+
+::: {.fragment fragment-index=3}
+The other students in the class, as well as the group members themselves, will help evaluate each of the presentations
+:::
+
+# What questions do you have about the course? {background-color="#006242"}
+
+
+
+
+
+
+## 
+
+Math -> Statistics -> Economics
+Math -> Computer Science -> ML
+
+ANIMATE to States - Econ - ML?
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## FAQ | Why are we using R?
 
@@ -198,26 +427,28 @@ Effectively communicating marketing insights brings us full circle and highlight
 
 The analyst needs to **interpret results in a way that clearly informs the managerial decision**. You may hear this referred to as "storytelling."
 
-## Wrapping Up
+## {background-color="#006242"}
 
-*Summary*
+### Exercise 01 {.lato-font}
 
-- Defined marketing analytics.
-- Discussed the FAQ.
-- Walked through the marketing analytics process.
-
-*Next Time*
-
-- Getting started with R.
-- Transforming data with {dplyr}.
-
-*Artwork by @allison_horst*
-
-## Exercise 01
-
-1. Read the syllabus. 
+1. Read the syllabus.
 2. Sign up for [Posit Cloud](http://posit.cloud) and join the course [here](https://posit.cloud/spaces/322372/join?access_code=_6edH0PA4_FTpmCCKGH-0p3kDHs3lEcBVlXdO3JD).
 3. Email me with questions or concerns you haven't had answered and/or what topics you're most excited to cover.
 4. Read the case and write how you might meet the expectations (no more than one page).
 5. Submit your response as a Word document on Canvas by the beginning of class Thursday and be prepared to share with the class.
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Introduced the course and ourselves
+- Formed groups and started thinking about project ideas
+- Walked through an overview of the course and answered questions
+- Provided some context for what we'll be studying this semester
+
+#### Next Time
+
+- Walk through a high-level overview of the modeling workflow
 

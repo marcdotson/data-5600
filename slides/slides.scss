@@ -1,5 +1,4 @@
 /*-- scss:defaults --*/
-// import fonts
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
 @import url(https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap);
 
@@ -26,15 +25,9 @@ $sand: #D1CBBD;
 $body-bg: $fighting-white;
 $body-color: $black;
 $secondary: $sky-blue;
-$tertiary: $gray;
+$tertiary: $hunter-green;
 $link-color: $electric-blue;
 $selection-bg: rgba(0, 0, 0, 0.99);
-
-// diagrams
-$mermaid-bg-color: $body-bg;
-$mermaid-edge-color: $secondary;
-$mermaid-node-fg-color: $secondary;
-$mermaid-fg-color: $secondary;
 
 /*-- scss:rules --*/
 #title-slide .title {
@@ -56,7 +49,7 @@ $mermaid-fg-color: $secondary;
   font-family: Lato, sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 1.5em;
+  font-size: 1.75em;
 }
 
 .reveal section h2 {
