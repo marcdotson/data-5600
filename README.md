@@ -5,16 +5,15 @@
 - Monday and Wednesday 1:30-2:45 pm
 - Huntsman Hall 260
 
-This course introduces machine learning for business applications,
-including linear, logistic, and penalized regression. Students learn
-about the modeling process by building models and communicating results
-for real-world problems. The course focuses on the assumptions and
-evaluation of interpretable models. Prerequisites: DATA 3100 and DATA
-3300
+This course introduces machine learning for business analytics,
+including linear, logistic, and penalized regression. Students apply the
+modeling workflow by building interpretable models, evaluating
+assumptions, and communicating results for real-world problems.
+Prerequisites: DATA 3100 and DATA 3300
 
 By the end of this course, students will be able to:
 
-1.  Build, evaluate, and interpret models to inform decision-making by
+1.  Build, evaluate, and interpret models to inform decision-making for
     non-technical stakeholders.
 2.  Diagnose and address violations of model assumptions to ensure
     appropriate model use.
@@ -116,16 +115,12 @@ have completed. For example:
 
 ![](./figures/example-resume.png)
 
-``` mermaid
-%%{init: {
-  "theme": "base",
-  "themeVariables": { "fontSize": "12px", "primaryColor": "#288DC2", 
-  "lineColor": "#FFFFFF", "primaryBorderColor": "#000000", "primaryTextColor": "#FFFFFF" },
-  "flowchart": { "htmlLabels": false, "wrappingWidth": 160, "diagramPadding": 8, "nodeSpacing": 35, "rankSpacing": 35 }
-}}%%
-flowchart LR
-C["DATA 5600"] --> D["DATA 5610"] & E["DATA 5620"] & F["DATA 5630"]
-```
+DATA 5600 provides the foundation as a prerequisite for subsequent
+courses in the modeling sequence. This includes DATA 5610 Advanced
+Machine Learning for Analytics, DATA 5620 Advanced Regression for Causal
+Inference, and DATA 5630 Deep Forecasting.
+
+![](./figures/modeling-sequence.png)
 
 ## Assessment
 

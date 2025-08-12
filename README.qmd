@@ -58,6 +58,10 @@ After completing the course, student resumes should reflect the tools, skills, a
 
 ![](/figures/example-resume.png)
 
+DATA 5600 provides the foundation as a prerequisite for subsequent courses in the modeling sequence. This includes DATA 5610 Advanced Machine Learning for Analytics, DATA 5620 Advanced Regression for Causal Inference, and DATA 5630 Deep Forecasting.
+
+![](/figures/modeling-sequence.png)
+
 ## Assessment
 
 Assignments are designed to be consistent with what students will be expected to do in practice. No credit will be given for late work unless an arrangement is made **prior to the relevant deadline**. Letter grades will follow the standard rubric.

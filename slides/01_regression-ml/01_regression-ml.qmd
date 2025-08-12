@@ -183,9 +183,15 @@ Your focus should be on **understanding** concepts and **mastering** skills
 
 ## 
 
-:::: {.columns .v-center}
+::: {.columns .v-center}
 ![](../../figures/example-resume.png){fig-align="center"}
-::::
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/modeling-sequence.png){fig-align="center"}
+:::
 
 # Assessment
 
