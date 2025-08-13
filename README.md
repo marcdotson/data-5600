@@ -38,7 +38,7 @@ a general purpose, open source programming language developed by
 computer scientists. It is the most commonly used programming language
 for data wrangling, visualizations, and modeling. Python will be
 required for the course. See the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#python)
+training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-python)
 for details on how to best install and manage Python versions and
 project environments.
 
@@ -58,12 +58,12 @@ for a summary of Positron’s data-friendly features.
 ### GitHub
 
 [GitHub](https://github.com/about) is an online hosting service for
-project repositories managed using Git, a powerful collaboration and
-[version control system](https://peerj.com/preprints/3159v2/) and the
-industry standard for software development and data projects. Git and
-GitHub facilitates collaboration on a single code base and enables
-students to organize an online portfolio of work. See the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#github)
+project repositories managed using Git, a powerful [version control
+system](https://peerj.com/preprints/3159v2/) and the industry standard
+for software development and data projects. Git and GitHub facilitates
+collaboration on a single code base and enables students to organize an
+online portfolio of work. See the [data stack
+training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-github)
 for the basics of using Git and GitHub and a [project
 template](https://github.com/marcdotson/project-template).
 
@@ -76,7 +76,7 @@ including PDFs, Word documents, PowerPoint presentations, Revealjs slide
 decks, interactive dashboards, websites, etc. While Quarto is not
 required for the course, students will be required to submit code and
 output in a PDF format. See the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#quarto)
+training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-quarto)
 for more details on Quarto, including how to use Quarto to render a
 Jupyter notebook into a PDF.
 
@@ -84,13 +84,12 @@ Jupyter notebook into a PDF.
 
 Students may use their preferred AI to assist in studying and completing
 assignments. All students have access to
-[Copilot](https://www.microsoft.com/en-us/microsoft-copilot/copilot-101/what-is-copilot)
-through Utah State. However, students must remember that the objective
-of this course is learning. AI can contribute to learning, including
-helping to debug code and explain concepts in new ways. AI can also be a
-detriment to learning, including when students use AI to think for them.
-See the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#copilot)
+[Copilot](https://copilot.usu.edu/) through Utah State. However,
+students must remember that the objective of this course is learning. AI
+can contribute to learning, including helping to debug code and explain
+concepts in new ways. AI can also be a detriment to learning, including
+when students use AI to think for them. See the [data stack
+training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-copilot)
 for details on getting access to Copilot and a discussion on using AI
 responsibly.
 
@@ -162,7 +161,7 @@ of the quizzes is to be completed individually, without assistance from
 other classmates.
 
 <!-- ### Interviews (30%)
-&#10;During the first two weeks of class, during the two weeks in the middle of the semester, and during the final two weeks of class, each student will have a required 10-minute interview with the instructor where they discuss the course and their efforts and answer questions to evaluate their understanding of the course material. -->
+&#10;During the first two weeks of class, the two weeks in the middle of the semester, and the final two weeks of class, each student will have a required interview with the instructor where they will discuss the course and their efforts and answer questions to evaluate their understanding of the course material. -->
 
 ### Projects (50%)
 
