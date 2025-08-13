@@ -19,10 +19,6 @@ I revised the course consistent with the pedagogical research begun last year to
 
 ## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5; May 4)
 
-### Course/Syllabus Overview
-
-- What makes this course different from DATA 3100 and 3300?
-- Discuss DATA 5610, 5620, and 5630?
 - Activity: Look at syllabus, discuss what you're excited/nervous about, questions
 
 ### Stories

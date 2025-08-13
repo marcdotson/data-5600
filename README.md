@@ -125,8 +125,12 @@ Inference, and DATA 5630 Deep Forecasting.
 
 Assignments are designed to be consistent with what students will be
 expected to do in practice. No credit will be given for late work unless
-an arrangement is made **prior to the relevant deadline**. Letter grades
-will follow the standard rubric.
+an arrangement is made **prior to the relevant deadline**. Students are
+encouraged to review their graded work and ask questions to avoid
+repeated mistakes.
+
+Letter grades will follow the standard rubric and will be determined as
+follows.
 
 |     |         |     |        |     |        |
 |:----|:--------|:----|:-------|:----|:-------|
@@ -135,17 +139,14 @@ will follow the standard rubric.
 | B+  | 87-89%  | C   | 73-76% | D-  | 60-62% |
 | B   | 83-86%  | C-  | 70-72% | E   | 0-59%  |
 
-Students are encouraged to review their graded work and ask questions to
-avoid repeated mistakes. Letter grades will be determined as follows.
-
 ### Exercises (20%)
 
 Each lecture ends with an exercise that is due before the following
-class when a student will be called on at random to share their exercise
-solution. While students are encouraged to work together, each student
-is required to submit their own work. Additionally, for each exercise
-every student will be randomly assigned to review one other student’s
-exercise.
+class. While students are encouraged to work together, each student is
+required to submit their own work. Each class begins with a student
+being called on at random to share their exercise solution.
+Additionally, for each exercise, every student will be randomly assigned
+to review one other student’s exercise solution.
 
 Students won’t get credit for an exercise if they don’t submit their
 exercise on time, aren’t prepared to share their exercise when called on
