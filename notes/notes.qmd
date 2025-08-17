@@ -15,9 +15,7 @@ I revised the course consistent with the pedagogical research begun last year to
 - Included more live coding in class instruction (as well as discussing error messages) and by starting class with a student called on at random to share their solution to the exercise due for that class.
 - Provided more opportunities for student participation beyond live coding by including question slides as prompts for activities, including discussing with a neighbor, raising hands, speed dialogue, and whiteboarding concepts.
 
-# Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
-
-## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5; May 4)
+## Notes
 
 - Use minimal scales for grades (e.g., "Excellent," "Good," "Needs Improvement")
 - Use rubrics as a set of guiding questions rather than a checklist
@@ -30,13 +28,15 @@ I revised the course consistent with the pedagogical research begun last year to
 
 - QR code for adding me on LinkedIn
 
-- Activity: Look at syllabus, discuss what you're excited/nervous about, questions
+# Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
+
+## Regression and Machine Learning (Aug 25; Jan 5; May 4)
 
 ### Stories
 
-- Mathematics, Statistics, Economics; Computer Science, AI, Machine Learning; and Data Analytics
 - This fractured history is a reason why there are is so much terminology to keep track of
 - "Standing on the shoulders of giants"
+
 - What is regression and ML? What is the relationship and overlap?
 - Where the name "regression" comes from -- extreme values "regressing" to the mean
 - Data analytics vs. data mining vs. data science (PML p. 27-28)

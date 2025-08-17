@@ -61,7 +61,7 @@ By the end of this course, students will be able to:
 
 ::::
 
-# What are you studying? What business problems are you interested in? {background-color="#006242"}
+# What are you studying? What business problems are you interested in? What is your dream job? {background-color="#006242"}
 
 # Study and Success
 
@@ -269,16 +269,57 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 - The other students in the class, as well as the group members themselves, will help evaluate each of the presentations
 :::
 
-# Review the syllabus. What questions do you have about the course? {background-color="#006242"}
+# Review the syllabus. What questions do you have? What about the course makes you excited or nervous?{background-color="#006242"}
 
 # Stories
 
 ## 
 
-Math -> Statistics -> Economics
-Math -> Computer Science -> ML
+::: {.columns .v-center}
+![](../../figures/history_math.png){fig-align="center"}
+:::
 
-To States - Econ - ML?
+## 
+
+::: {.columns .v-center}
+![](../../figures/history_stats.png){fig-align="center"}
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/history_econ.png){fig-align="center"}
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/history_computer-science.png){fig-align="center"}
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/history_ai.png){fig-align="center"}
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/history_ml.png){fig-align="center"}
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/history_all.png){fig-align="center"}
+:::
+
+
+
+## Regression and Machine Learning
+
+
 
 ## {background-color="#006242"}
 
