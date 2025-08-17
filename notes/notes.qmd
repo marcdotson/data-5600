@@ -19,6 +19,17 @@ I revised the course consistent with the pedagogical research begun last year to
 
 ## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5; May 4)
 
+- Use minimal scales for grades (e.g., "Excellent," "Good," "Needs Improvement")
+- Use rubrics as a set of guiding questions rather than a checklist
+- Learn names so you can call on students to share
+
+- Activities and exercises to have an AI produce code and then have students evaluate
+- Activities and exercises to provide an AI prompt to ask students questions to help them evalute their understanding, a practice interview
+- Demonstrate how to use AI in class, how to present to a non-technical audience
+- Demonstrate presenting on a project as part of the communication session
+
+- QR code for adding me on LinkedIn
+
 - Activity: Look at syllabus, discuss what you're excited/nervous about, questions
 
 ### Stories

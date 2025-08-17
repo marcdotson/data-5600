@@ -23,6 +23,39 @@ By the end of this course, students will be able to:
 &#10;- Tuesday and Thursday 3-5 pm or [by appointment](mailto:marc.dotson@usu.edu)
 - Eccles Business Building 705 or [over Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1) -->
 
+## Study and Success
+
+Successful students in this course will demonstrate conceptual
+understanding and skill mastery by applying the modeling workflow within
+their chosen business context and as part of a group. Each student is an
+essential member of a community of learners and should consider the
+instructor as both a teacher and a mentor.
+
+Students can focus on learning by using the following study tips:
+
+1.  Prepare for class by previewing material and identifying questions.
+2.  Engage during class by asking questions, taking notes, and actively
+    coding.
+3.  Apply what you learn in class by completing exercises and working on
+    projects.
+4.  Evaluate what you’re learning by reviewing and reflecting on course
+    materials and exercise solutions.
+5.  Reinforce what you’re learning by utilizing office hours and working
+    with classmates.
+
+After completing the course, student resumes should reflect the tools,
+skills, and methods they have learned and showcase the projects they
+have completed. For example:
+
+![](./figures/example-resume.png)
+
+DATA 5600 provides the foundation as a prerequisite for subsequent
+courses in the modeling sequence. This includes DATA 5610 Advanced
+Machine Learning for Analytics, DATA 5620 Advanced Regression for Causal
+Inference, and DATA 5630 Deep Forecasting.
+
+![](./figures/modeling-sequence.png)
+
 ## Data Stack
 
 Each student will need to bring a laptop, either their own or one rented
@@ -90,40 +123,12 @@ can contribute to learning, including helping to debug code and explain
 concepts in new ways. AI can also be a detriment to learning, including
 when students use AI to think for them. See the [data stack
 training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-copilot)
-for details on getting access to Copilot and a discussion on using AI
+for details on getting access to AI and a discussion on using AI
 responsibly.
-
-## Study and Success
-
-Students should focus on understanding concepts and mastering skills by
-using the following study tips.
-
-1.  Prepare for class by previewing material and identifying questions.
-2.  Engage during class by asking questions, taking notes, and actively
-    coding.
-3.  Apply what you learn in class by completing exercises and working on
-    projects.
-4.  Evaluate what you’re learning by reviewing exercise solutions and
-    taking quizzes.
-5.  Reinforce what you’re learning by utilizing office hours and working
-    with classmates.
-
-After completing the course, student resumes should reflect the tools,
-skills, and methods they have learned and showcase the projects they
-have completed. For example:
-
-![](./figures/example-resume.png)
-
-DATA 5600 provides the foundation as a prerequisite for subsequent
-courses in the modeling sequence. This includes DATA 5610 Advanced
-Machine Learning for Analytics, DATA 5620 Advanced Regression for Causal
-Inference, and DATA 5630 Deep Forecasting.
-
-![](./figures/modeling-sequence.png)
 
 ## Assessment
 
-Assignments are designed to be consistent with what students will be
+Assignments are designed to be aligned with what students will be
 expected to do in practice. No credit will be given for late work unless
 an arrangement is made **prior to the relevant deadline**. Students are
 encouraged to review their graded work and ask questions to avoid
@@ -141,12 +146,14 @@ follows.
 
 ### Exercises (20%)
 
-Each lecture ends with an exercise that is due before the following
-class. While students are encouraged to work together, each student is
-required to submit their own work. Each class begins with a student
-being called on at random to share their exercise solution.
-Additionally, for each exercise, every student will be randomly assigned
-to review one other student’s exercise solution.
+Each lecture ends with an exercise designed to help students practice
+what was covered in class and prepare to apply it to their projects.
+Each exercise is due before the following class. While students are
+encouraged to work together, each student is required to submit their
+own work. Each class begins with a student being called on at random to
+share their exercise solution. Additionally, for each exercise, every
+student will be randomly assigned to review one other student’s exercise
+solution.
 
 Students won’t get credit for an exercise if they don’t submit their
 exercise on time, aren’t prepared to share their exercise when called on
@@ -155,30 +162,37 @@ time.
 
 ### Quizzes (30%)
 
-Each quiz will be available during the associated lectures and is
-intended to be used as a gauge of how well students understand the
-course material. While students are encouraged to study in groups, each
-of the quizzes is to be completed individually, without assistance from
-other classmates.
+Quizzes are designed to help students evaluate how well they understand
+the course material. Each quiz will be available during the associated
+lectures. Students can retake the quiz as many times as needed before
+the due date.
+
+While students are encouraged to study in groups, each of the quizzes is
+to be completed individually, without assistance from other classmates.
 
 <!-- ### Interviews (30%)
-&#10;During the first two weeks of class, the two weeks in the middle of the semester, and the final two weeks of class, each student will have a required interview with the instructor where they will discuss the course and their efforts and answer questions to evaluate their understanding of the course material. -->
+&#10;Interviews are an opportunity for students to practice discussing regression and machine learning. Students will individually demonstrate their conceptual understanding of the course material, including their efforts in exercise and project work, and evaluate their performance in the course.
+&#10;Interviews will be scheduled with the instructor at the beginning, middle, and end of the semester during office hours or by appointment.-->
 
 ### Projects (50%)
 
-Students will complete two group projects, one focused on multiple
-regression and another focused on classification. The groups will both
-present and submit a technical report. The week before the
-presentations, groups will submit a draft of their slides to get
-feedback and have time for revision. The other students in the class, as
-well as the group members themselves, will help evaluate each of the
-presentations.
+Projects are the ultimate demonstration of learning by doing in the
+course, serving as the means for students to apply their conceptual
+understanding and skill mastery as a group within their business domain
+of interest. Students will complete two group projects, one focused on
+multiple regression and another focused on classification. The groups
+will both present and submit a technical report.
+
+The week before the presentations, groups will submit a draft of their
+slides to get feedback and have time for revision. The other students in
+the class, as well as the group members themselves, will help evaluate
+each of the presentations.
 
 ## Schedule
 
 Please note that the instructor reserves the right to change the
-following schedule at any time and provide students sufficient notice as
-it relates to assignment deadlines.
+following schedule at any time and will provide students sufficient
+notice as it relates to assignment deadlines.
 
 ### Week 01
 

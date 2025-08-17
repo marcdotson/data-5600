@@ -22,20 +22,20 @@ execute:
 
 - Make introductions
 - Form groups to work on projects
-- Walk through an overview of the course
+- Walk through the course syllabus
 - Provide some context for what we'll be studying
 
 # Introductions
 
 ## DATA 5600
 
-This course introduces **machine learning** for **business analytics**, including linear, logistic, and penalized regression. Students apply the **modeling workflow** by building **interpretable models**, evaluating assumptions, and communicating results for **real-world problems**. Prerequisites: DATA 3100 and DATA 3300
+This course introduces machine learning for **business analytics**, including linear, logistic, and penalized regression. Students apply the modeling workflow by building **interpretable models**, evaluating assumptions, and communicating results for **real-world problems**. Prerequisites: DATA 3100 and DATA 3300
 
 By the end of this course, students will be able to:
 
-1. Build, evaluate, and interpret models to **inform** decision-making for **non-technical stakeholders**.
-2. Diagnose and address violations of model assumptions to **ensure appropriate model use**.
-3. **Communicate model results clearly** in a business context.
+1. Build, evaluate, and interpret models to inform decision-making for non-technical stakeholders.
+2. Diagnose and address violations of model assumptions to ensure appropriate model use.
+3. Communicate model results clearly in a business context.
 
 ## 
 
@@ -62,6 +62,44 @@ By the end of this course, students will be able to:
 ::::
 
 # What are you studying? What business problems are you interested in? {background-color="#006242"}
+
+# Study and Success
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+Success in this course is demonstrating conceptual understanding and skill mastery by applying the modeling workflow in your chosen business context and as part of a group
+
+You are each an essential member of a community of learners and should consider me as both a teacher and a mentor
+:::
+
+::: {.column width="40%"}
+![](../../figures/logo_asc.png){fig-align="center"}
+:::
+
+::::
+
+## Focus on learning
+
+1. Prepare for class by previewing material and identifying questions
+2. Engage during class by asking questions, taking notes, and actively coding
+3. Apply what you learn in class by completing exercises and working on projects
+4. Evaluate what you're learning by reviewing and reflecting on course materials and exercise solutions
+5. Reinforce what you're learning by utilizing office hours and working with classmates
+
+## 
+
+::: {.v-center}
+![](../../figures/example-resume.png){fig-align="center"}
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/modeling-sequence.png){fig-align="center"}
+:::
 
 # Data Stack
 
@@ -151,7 +189,7 @@ By the end of this course, students will be able to:
 - Please remember that the objective of this course is learning
 - AI can contribute to learning, including helping to debug code and explain concepts
 - AI can be a detriment to learning, including when students use AI to think for them
-- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-copilot) for details on getting access to Copilot and a discussion on using AI responsibly
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-copilot) for details on getting access to AI and a discussion on using AI responsibly
 :::
 :::
 
@@ -167,37 +205,11 @@ By the end of this course, students will be able to:
 ![](../../figures/meme_ai-learning.png){fig-align="center"}
 :::
 
-# Study and Success
-
-## Study tips
-
-Your focus should be on **understanding** concepts and **mastering** skills
-
-::: {.incremental}
-1. Prepare for class by previewing material and identifying questions
-2. Engage during class by asking questions, taking notes, and actively coding
-3. Apply what you learn in class by completing exercises and working on projects
-4. Evaluate what you're learning by reviewing exercise solutions and taking quizzes
-5. Reinforce what you're learning by utilizing office hours and working with classmates
-:::
-
-## 
-
-::: {.v-center}
-![](../../figures/example-resume.png){fig-align="center"}
-:::
-
-## 
-
-::: {.v-center}
-![](../../figures/modeling-sequence.png){fig-align="center"}
-:::
-
 # Assessment
 
 ## Goals and deadlines
 
-Assignments are designed to be consistent with what you will be **expected to do in practice**
+Assignments are designed to be aligned with what you will be **expected to do in practice**
 
 ::: {.incremental}
 - No credit will be given for late work unless an arrangement is made **prior to the relevant deadline**
@@ -216,44 +228,48 @@ Assignments are designed to be consistent with what you will be **expected to do
 
 ## Exercises (20%)
 
-Each lecture ends with an exercise that is due before the following class
+Each lecture ends with an exercise designed to help you practice what was covered in class and prepare to apply it to your projects
 
 ::: {.incremental}
+- Each exercise is due before the following class
 - You are encouraged to work together, but you are required to submit your own work
-- Each class begins with a student being called on at random to share their exercise solution
+- Each class begins with one of you being called on at random to share your exercise solution
 - For each exercise, you will be randomly assigned to review one other student’s exercise solution
 - You won’t get credit for an exercise if you don’t submit your exercise on time, aren’t prepared to share your exercise solution when called on at random, or don’t complete your randomly assigned exercise review on time
 :::
 
 ## Quizzes (30%)
 
-Each quiz will be available during the associated lectures and is intended to be used as a gauge of how well students understand the course material
-
-While students are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates
-
-## Interviews (30%)
-
-During the first two weeks of class, the two weeks in the middle of the semester, and the final two weeks of class, you will have a required interview with me to:
+Quizzes are designed to help you evaluate how well you understand the course material
 
 ::: {.incremental}
-1. Discuss the course and your efforts
-2. Answer questions to evaluate your understanding of the course material
+- Each quiz will be available during the associated lectures
+- You can retake the quiz as many times as needed before the due date
+- While you are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates
 :::
+
+<!-- ## Interviews (30%)
+
+Interviews are an opportunity for you to practice discussing regression and machine learning
+
+::: {.incremental}
+- You will demonstrate your conceptual understanding of the course material, including your efforts in exercise and project work
+- We will also evaluate your performance in the course
+- Interviews will be scheduled with me at the beginning, middle, and end of the semester during office hours or by appointment
+::: -->
 
 ## Projects (50%)
 
-You will complete two group projects, one focused on multiple regression and another focused on classification
+Projects are the ultimate demonstration of learning by doing in the course, serving as the means for you to apply your conceptual understanding and skill mastery as a group within your business domain of interest
 
 ::: {.incremental}
-- The groups will both present and submit a technical report
+- You will complete two group projects, one focused on multiple regression and another focused on classification
+- Groups will both present and submit a technical report
 - The week before the presentations, groups will submit a draft of their slides to get feedback and have time for revision
 - The other students in the class, as well as the group members themselves, will help evaluate each of the presentations
 :::
 
 # Review the syllabus. What questions do you have about the course? {background-color="#006242"}
-
-
-
 
 # Stories
 
@@ -262,38 +278,15 @@ You will complete two group projects, one focused on multiple regression and ano
 Math -> Statistics -> Economics
 Math -> Computer Science -> ML
 
-ANIMATE to States - Econ - ML?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+To States - Econ - ML?
 
 ## {background-color="#006242"}
 
 ### Exercise 01 {.lato-font}
 
-1. Read the syllabus.
-2. Sign up for [Posit Cloud](http://posit.cloud) and join the course [here](https://posit.cloud/spaces/322372/join?access_code=_6edH0PA4_FTpmCCKGH-0p3kDHs3lEcBVlXdO3JD).
-3. Email me with questions or concerns you haven't had answered and/or what topics you're most excited to cover.
-4. Read the case and write how you might meet the expectations (no more than one page).
-5. Submit your response as a Word document on Canvas by the beginning of class Thursday and be prepared to share with the class.
+1. Take the course survey.
+2. Read the case and write how you might go about informing the decision (no more than one page).
+3. Submit your response as a Word document on Canvas.
 
 ## {background-color="#288DC2"}
 
@@ -301,9 +294,9 @@ ANIMATE to States - Econ - ML?
 
 #### Summary
 
-- Introduced the course and ourselves
+- Introduced the course and each other
 - Formed groups and started thinking about project ideas
-- Walked through an overview of the course and answered questions
+- Walked through the course syllabus and answered questions
 - Provided some context for what we'll be studying this semester
 
 #### Next Time
