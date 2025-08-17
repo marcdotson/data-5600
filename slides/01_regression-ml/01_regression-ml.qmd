@@ -275,6 +275,12 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 
 ## 
 
+::: {.v-center}
+![](../../figures/history_humans.png){fig-align="center"}
+:::
+
+## 
+
 ::: {.columns .v-center}
 ![](../../figures/history_math.png){fig-align="center"}
 :::

@@ -3,28 +3,16 @@ title: "DATA 5600 Course Notes"
 format: gfm
 ---
 
-# What I Did
-
-I revised the course consistent with the pedagogical research begun last year to study the effect of a probabilistic and decision theoretic approach to machine learning on student confidence and understanding. This included framing the course with decision theoretic objectives and a probabilistic modeling workflow and referring to this unifying framework throughout the semester. I also responded to student and peer feedback.
-
-- Organized the course better, including using the decision theoretic objectives and probabilistic modeling workflow as a unifying framework.
-- Replaced homework assignments with exercises leading up to two instead of three projects. Exercises provide more consistent practice and include opportunities for reflection and preparation for upcoming class topics.
-- Detailed two business cases, one for each unit, to reduce the cognitive burden of switching between many datasets and allowing for greater depth for each application to better inform student project work.
-- Clarified the expectations for each project by ensuring the rubrics make the purpose, task, skills, and criteria clear and by having a single initial submission deadline so students can get feedback before presenting and so students who present later in the week don’t have an advantage over others.
-- Revised the course content to make it my own, including slides to preview and summarize each lecture.
-- Included more live coding in class instruction (as well as discussing error messages) and by starting class with a student called on at random to share their solution to the exercise due for that class.
 - Provided more opportunities for student participation beyond live coding by including question slides as prompts for activities, including discussing with a neighbor, raising hands, speed dialogue, and whiteboarding concepts.
-
-## Notes
-
-- Use minimal scales for grades (e.g., "Excellent," "Good," "Needs Improvement")
-- Use rubrics as a set of guiding questions rather than a checklist
-- Learn names so you can call on students to share
 
 - Activities and exercises to have an AI produce code and then have students evaluate
 - Activities and exercises to provide an AI prompt to ask students questions to help them evalute their understanding, a practice interview
 - Demonstrate how to use AI in class, how to present to a non-technical audience
 - Demonstrate presenting on a project as part of the communication session
+
+- Use minimal scales for grades (e.g., "Excellent," "Good," "Needs Improvement")
+- Create project/interview rubrics as a set of guiding questions rather than a checklist
+- Learn names so you can call on students to share
 
 - QR code for adding me on LinkedIn
 
