@@ -29,7 +29,7 @@ execute:
 
 ## DATA 5600
 
-This course introduces machine learning for **business analytics**, including linear, logistic, and penalized regression. Students apply the modeling workflow by building **interpretable models**, evaluating assumptions, and communicating results for **real-world problems**. Prerequisites: DATA 3100 and DATA 3300
+This course introduces machine learning for **business analytics**, including linear, logistic, and penalized regression. Emphasis is on building **interpretable models**, evaluating assumptions, and communicating results, with **real-world projects** connecting modeling techniques to business decision-making. Prerequisites: DATA 3100 and DATA 3300
 
 By the end of this course, students will be able to:
 
@@ -271,7 +271,7 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 
 # Review the syllabus. What questions do you have? What about the course makes you excited or nervous?{background-color="#006242"}
 
-# Stories
+# Regression and Other Stories
 
 ## 
 
@@ -281,59 +281,150 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 
 ## 
 
+:::: {.columns .v-center}
+
+::: {.column width="40%"}
+![](../../figures/history_galton.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- Francis Galton fit a linear model to understand the heredity of human height
+- He noticed that children of tall parents tend to be shorter and children of short parents tend to be taller and called this phenomenon, not the technique, **"regression to the mean"**
+- The term "regression" came to mean fitting a model to data
+- We aren't great at naming things
+:::
+:::
+
+::::
+
+## 
+
 ::: {.columns .v-center}
 ![](../../figures/history_math.png){fig-align="center"}
 :::
 
-## 
+## {visibility="uncounted"}
 
 ::: {.columns .v-center}
 ![](../../figures/history_stats.png){fig-align="center"}
 :::
 
-## 
+## {visibility="uncounted"}
 
 ::: {.columns .v-center}
 ![](../../figures/history_econ.png){fig-align="center"}
 :::
 
-## 
+## {visibility="uncounted"}
 
 ::: {.columns .v-center}
 ![](../../figures/history_computer-science.png){fig-align="center"}
 :::
 
-## 
+## {visibility="uncounted"}
 
 ::: {.columns .v-center}
 ![](../../figures/history_ai.png){fig-align="center"}
 :::
 
-## 
+## {visibility="uncounted"}
 
 ::: {.columns .v-center}
 ![](../../figures/history_ml.png){fig-align="center"}
 :::
 
-## 
+## {visibility="uncounted"}
 
 ::: {.columns .v-center}
 ![](../../figures/history_all.png){fig-align="center"}
 :::
 
+## Why regression *and* machine learning?
 
+:::: {.columns}
 
-## Regression and Machine Learning
+::: {.fragment .column width="33.33%"}
+**Supervised learning**
 
+::: {.incremental}
+- Learn a **mapping function** from inputs to outputs $f: X \rightarrow Y$
+- If the outputs are continuous, this learned mapping function is called **regression**
+- If the outputs are discrete, this learned mapping function is called **classification**
+:::
+:::
+
+::: {.fragment .column width="33.33%"}
+**Unsupervised learning**
+
+::: {.incremental}
+- Learn groups and patterns in data without labeled outputs
+- If we're grouping rows in a dataset, this is called **clustering**
+- If we're grouping columns in a dataset, this is called **dimensionality reduction**
+:::
+:::
+
+::: {.fragment .column width="33.33%"}
+**Reinforcement learning**
+
+::: {.incremental}
+- An agent learns how to interact with its environment through trial and error
+- The agent can take actions in its environment
+- It receives rewards or penalties based on its actions
+:::
+:::
+
+::::
+
+## Our focus is on *supervised* learning
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+\Huge{f: X \rightarrow y}
+$$
+:::
+
+::: {.column width="40%"}
+::: {.fragment}
+$X$
+
+- inputs
+- features
+- predictors
+- independent variables
+:::
+
+::: {.fragment}
+$y$
+
+- output
+- outcome
+- response
+- dependent variable
+:::
+:::
+
+::::
+
+## The mapping function is a *model*
+
+We use models **extract information** from the data to inform decisions in the presence of uncertainty
+
+All models predict, some are interpretable, fewer still are causal
+
+Is the model consistent with your objective?
 
 
 ## {background-color="#006242"}
 
 ### Exercise 01 {.lato-font}
 
-1. Take the course survey.
-2. Read the case and write how you might go about informing the decision (no more than one page).
-3. Submit your response as a Word document on Canvas.
+1. Take the course survey **on your own**
+2. Read the case and write how you might go about informing the decision (no more than one page)
+3. Include in your response the members of your group and two project ideas
+4. Submit your response as a Word document on Canvas
 
 ## {background-color="#288DC2"}
 

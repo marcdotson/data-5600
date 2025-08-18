@@ -6,10 +6,10 @@
 - Huntsman Hall 260
 
 This course introduces machine learning for business analytics,
-including linear, logistic, and penalized regression. Students apply the
-modeling workflow by building interpretable models, evaluating
-assumptions, and communicating results for real-world problems.
-Prerequisites: DATA 3100 and DATA 3300
+including linear, logistic, and penalized regression. Emphasis is on
+building interpretable models, evaluating assumptions, and communicating
+results, with real-world projects connecting modeling techniques to
+business decision-making. Prerequisites: DATA 3100 and DATA 3300
 
 By the end of this course, students will be able to:
 

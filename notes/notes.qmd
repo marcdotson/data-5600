@@ -20,24 +20,6 @@ format: gfm
 
 ## Regression and Machine Learning (Aug 25; Jan 5; May 4)
 
-### Stories
-
-- This fractured history is a reason why there are is so much terminology to keep track of
-- "Standing on the shoulders of giants"
-
-- What is regression and ML? What is the relationship and overlap?
-- Where the name "regression" comes from -- extreme values "regressing" to the mean
-- Data analytics vs. data mining vs. data science (PML p. 27-28)
-- Supervised vs. unsupervised vs. reinforcement learning
-- Supervised learning is learning a mapping function from inputs to outputs $f: X \rightarrow Y$
-- Regression and classification, $y \in \\R$ vs. $y \in \{1, \ldots, C\}$
-- Descriptive statistics, inferential statistics, and decision theory?
-- Models *extract information* from the data to inform decisions in the presence of uncertainty
-- All models predict, some are interpretable, fewer still are causal; is the model consistent with your objective?
-- Business applications for analytics
-- Exercise: Read case and describe how you might use regression and ML to inform the decision, complete the class survey
-- Wrap up
-
 ## Modeling Workflow (Aug 27; Jan 7; May 6)
 
 ### Before Data
