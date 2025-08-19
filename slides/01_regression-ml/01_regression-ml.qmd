@@ -408,14 +408,43 @@ $y$
 
 ::::
 
+## 
+
+::: {.columns .v-center}
+![](../../figures/meme_curve-fitting.png){fig-align="center"}
+:::
+
 ## The mapping function is a *model*
 
-We use models **extract information** from the data to inform decisions in the presence of uncertainty
+We use models to **extract information** from the data and inform decisions in the presence of uncertainty
 
-All models predict, some are interpretable, fewer still are causal
+::: {.columns .fragment}
+![](../../figures/models_predictive.png){fig-align="center"}
+:::
 
-Is the model consistent with your objective?
+## The mapping function is a *model* {visibility="uncounted"}
 
+We use models to **extract information** from the data and inform decisions in the presence of uncertainty
+
+::: {.columns}
+![](../../figures/models_interpretable.png){fig-align="center"}
+:::
+
+## The mapping function is a *model* {visibility="uncounted"}
+
+We use models to **extract information** from the data and inform decisions in the presence of uncertainty
+
+::: {.columns}
+![](../../figures/models_causal.png){fig-align="center"}
+:::
+
+## The mapping function is a *model* {visibility="uncounted"}
+
+We use models to **extract information** from the data and inform decisions in the presence of uncertainty
+
+::: {.columns}
+![](../../figures/models_all.png){fig-align="center"}
+:::
 
 ## {background-color="#006242"}
 
