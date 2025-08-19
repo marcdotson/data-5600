@@ -9,6 +9,7 @@ format:
     theme: ../slides.scss # Modified slides theme.
     slide-number: c/t     # Numbered slides current/total.
     self-contained: true  # Render to a single HTML file.
+    preview-links: true   # Always preview links.
 execute:
   eval: true
   echo: false
