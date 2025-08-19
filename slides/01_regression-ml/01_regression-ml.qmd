@@ -29,7 +29,7 @@ execute:
 
 ## DATA 5600
 
-This course introduces machine learning for **business analytics**, including linear, logistic, and penalized regression. Emphasis is on building **interpretable models**, evaluating assumptions, and communicating results, with **real-world projects** connecting modeling techniques to business decision-making. Prerequisites: DATA 3100 and DATA 3300
+This course introduces machine learning for **business analytics**, including linear, logistic, and penalized regression. Emphasis is on building **interpretable models**, evaluating assumptions, and communicating results, with **real-world projects** connecting modeling techniques to **business decision-making**. Prerequisites: DATA 3100 and **DATA 3300**
 
 By the end of this course, students will be able to:
 
@@ -369,8 +369,8 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 
 ::: {.incremental}
 - An agent learns how to interact with its environment through trial and error
-- The agent can take actions in its environment
-- It receives rewards or penalties based on its actions
+- The agent can take **actions** in its environment
+- It receives **rewards or penalties** based on its actions
 :::
 :::
 
@@ -407,12 +407,6 @@ $y$
 :::
 
 ::::
-
-## 
-
-::: {.columns .v-center}
-![](../../figures/meme_curve-fitting.png){fig-align="center"}
-:::
 
 ## The mapping function is a *model*
 
@@ -468,5 +462,5 @@ We use models to **extract information** from the data and inform decisions in t
 
 #### Next Time
 
-- Walk through a high-level overview of the modeling workflow
+- Walk through a high-level overview of a modeling workflow
 
