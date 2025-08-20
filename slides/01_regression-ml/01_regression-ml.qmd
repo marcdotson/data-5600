@@ -448,6 +448,7 @@ We use models to **extract information** from the data and inform decisions in t
 2. Read the case and write how you might go about informing the decision (no more than one page)
 3. Include in your response the members of your group and two project ideas
 4. Submit your response as a Word document on Canvas
+5. Start setting up the data stack
 
 ## {background-color="#288DC2"}
 

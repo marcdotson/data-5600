@@ -223,11 +223,18 @@ Why? Two big reasons:
 ![](../../figures/workflow_explore.png){fig-align="center"}
 :::
 
+## {background-color="#006242"}
+
+### Exercise 02 {.lato-font}
+
+1. Read the syllabus.
+2. Sign up for [Posit Cloud](http://posit.cloud) and join the course [here](https://posit.cloud/spaces/322372/join?access_code=_6edH0PA4_FTpmCCKGH-0p3kDHs3lEcBVlXdO3JD).
+3. Email me with questions or concerns you haven't had answered and/or what topics you're most excited to cover.
+4. Read the case and write how you might meet the expectations (no more than one page).
+5. Submit your response as a Word document on Canvas by the beginning of class Thursday and be prepared to share with the class.
 
 
-
-
-
+5. Finish setting up the data stack
 
 ## {background-color="#288DC2"}
 
