@@ -11,6 +11,7 @@ $presentation-font-size-root: 30px;
 $aggie-blue: #0F2439;
 $fighting-white: #FFFFFF;
 $gray: #A2AAAD;
+$light-gray: #D3D3D3;
 $black: #000000;
 $sky-blue: #288DC2;
 $electric-blue: #01ADD8;
@@ -53,7 +54,8 @@ $selection-bg: rgba(0, 0, 0, 0.99);
 }
 
 .reveal .gray-box {
-  background-color: $gray;
+  background-color: $light-gray;
+  height: 72%;
   padding: 1em;
   border-radius: 0.5em;
 }
