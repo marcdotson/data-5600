@@ -1,7 +1,19 @@
 ---
 title: "DATA 5600 Case 01"
-format: gfm
+format: typst
 ---
+
+Transaction Data: Basket/item-level sales with loyalty identifiers, promotion indicators, etc.
+
+I’d love data to use in my Intro to Regression course. I’d need the rows to be independent (no time-series or people repeated in the data). Some initial thoughts on data are:
+Question: What factors drive basket size or transaction spend?
+Variables: Transaction ID, total spend, number of items, promotion flag, loyalty membership, product categories, store/location.
+Question: What predicts employee turnover?
+Variables: Employee ID, turnover status (yes/no), tenure, age, department, job role, survey scores, performance rating.
+Question: What predicts whether an online order is abandoned vs. completed?
+Variables: Order ID, completion status (yes/no), device type, shipping fee, promotions, delivery speed, customer segment.
+Question: What predicts out-of-stock events or pricing errors?
+Variables: Product ID, out-of-stock indicator (yes/no), count of pricing errors, product category, store ID, time of day, promotion flag.
 
 As a data analyst communicates with domain experts to understand the problem and how to inform the decision, a decision theoretic approach requires specifying an objective function that is consistent with the problem and captures the risk aversion of the decision maker. For this problem, a simple customer-specific profit function suffices:
 
