@@ -52,6 +52,12 @@ $selection-bg: rgba(0, 0, 0, 0.99);
   font-size: 1.75em;
 }
 
+.reveal .gray-box {
+  background-color: $gray;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
 .reveal section h2 {
   color: $secondary;
 }
