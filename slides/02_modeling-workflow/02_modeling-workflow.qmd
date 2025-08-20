@@ -20,14 +20,14 @@ execute:
 
 #### Last Time
 
-- Introduced the course and ourselves
+- Introduced the course and each other
 - Formed groups and started thinking about project ideas
-- Walked through an overview of the course and answered questions
+- Walked through the course syllabus and answered questions
 - Provided some context for what we'll be studying this semester
 
 #### Preview
 
-- Walk through a high-level overview of the modeling workflow
+- Walk through a high-level overview of a modeling workflow
 
 ## {background-color="#D1CBBD"}
 
@@ -35,11 +35,114 @@ execute:
 ![](../../figures/workflow_all.png){fig-align="center"}
 :::
 
+## Why an (interpretable) modeling workflow?
+
+::: {.incremental}
+- This modeling workflow is designed to provide some **structure** as you learn about modeling data to inform business decision-making
+- There are other ways to approach modeling, but I designed this workflow to **highlight essentials decisions** in the modeling process
+- Just because you follow this or other workflows doesn't guarantee you'll get a good answer -- you must be **careful and thoughtful**
+- The main objective of a workflow is to help you be **open and direct** about your choices and assumptions
+:::
+
+# Before Data
+
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
 ![](../../figures/workflow_plan.png){fig-align="center"}
 :::
+
+## Clearly specify the business objective {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+To inform business decision-making, there needs to be a clear objective
+
+::: {.fragment}
+What are some common business objectives?
+:::
+
+::: {.incremental}
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+:::
+
+::: {.fragment}
+It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+:::
+:::
+
+::::
+
+## Clearly specify the business objective {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+To inform business decision-making, there needs to be a clear objective
+
+What are some common business objectives?
+
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+
+It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+:::
+
+::: {.column .gray-box width="42%"}
+In the case study...
+:::
+
+::::
+
+## Consider the ideal data and its story {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+With the business objective specified, you can think about the data you need and **how that data is generated**
+
+::: {.fragment}
+All data come from somewhere and considering the generating process will help you identify the ideal data
+:::
+
+::: {.incremental}
+- Outcome and predictors
+- Their relationship
+:::
+
+::: {.fragment}
+This story about the possible **data generating process** is the beginning of a model
+:::
+:::
+
+::::
+
+## Consider the ideal data and its story {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+With the business objective specified, you can think about the data you need and **how that data is generated**
+
+All data come from somewhere and considering the generating process will help you identify the ideal data
+
+- Outcome and predictors
+- Their relationship
+
+This story about the possible **data generating process** is the beginning of a model
+:::
+
+::: {.column .gray-box width="42%"}
+In the case study...
+:::
+
+::::
 
 ## {background-color="#D1CBBD"}
 
@@ -47,103 +150,84 @@ execute:
 ![](../../figures/workflow_build.png){fig-align="center"}
 :::
 
+## Formalize the objective into a function
+
+A clearly specified objective can often be translated into a **loss function**, a mathematical expression of the thing we can optimize
+
+$$
+\ell(a, s)
+$$
+
+## Translate the data story into a model
+
+If a model starts with a story about the *data generating process*, we need to translate it into a mathematical equation. For example:
+
+$$
+\text{sales} = 10 + 3 \times \text{promotion_spend}
+$$
+
+Think of this equation as a *function*.
+
+- What is the input?
+- What is the output?
+- What is the story?
+
+## 
+
+We observe `sales` and `promotion_spend` in the data, but we don't observe the effect of `promotion_spend` on `sales`. 
+
+The unobserved variables in a model are called **parameters** and are typically expressed using Greek letters:
+
+$$
+\text{sales} = \beta_0 + \beta_1 \times \text{promotion_spend}
+$$
+
+Here $\beta_0$ is the amount of `sales` when there is zero `promotion_spend` and $\beta_1$ is the effect of `promotion_spend` on `sales`.
+
+Are we missing anything to this story?
+
+## 
+
+To make this a *statistical* model we need to express that our model is not going to explain everything about the data:
+
+$$\text{sales} = \beta_0 + \beta_1 \times \text{promotion_spend} + \epsilon$$
+
+Here $\epsilon$ represents **statistical error**. Think of this $\epsilon$ as including every variable beyond `promotion_spend` that effects `sales`.
+
+## 
+
+Every inferential model is a *simplification* of the *true* data generating process (which we don't observe). Even so, models can still help us learn about parameters, assuming the model is a good approximation of the true data generating process.
+
+<center>
+![](../../Figures/models_rockets.png){width=700px}
+</center>
+
+## Simulate | Simulate Data and Recover Parameters
+
+Since the data generating process is the unobserved process that generates the data, before we work with real data where we never know the data generating process, we can assume that our model *is* the data generating process, *choose* values for the parameters, and generate or **simulate** data using the model. 
+
+For example, we can choose values for $\beta_0$ and $\beta_1$, simulate possible `promotion_spend` data and then simulate `sales` data.
+
+Why? Two big reasons:
+
+1. Prepare our data analysis before getting real data.
+2. Prove our code is working by recovering parameter values.
+
+# What is the objective of your business problem? What is the data story? What might the loss and likelihood functions be? {background-color="#006242"}
+
+# Using Data
+
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
 ![](../../figures/workflow_explore.png){fig-align="center"}
 :::
 
-## {background-color="#D1CBBD"}
-
-::: {.columns .v-center}
-![](../../figures/workflow_reconcile.png){fig-align="center"}
-:::
-
-## {background-color="#D1CBBD"}
-
-::: {.columns .v-center}
-![](../../figures/workflow_fit.png){fig-align="center"}
-:::
-
-## {background-color="#D1CBBD"}
-
-::: {.columns .v-center}
-![](../../figures/workflow_evaluate.png){fig-align="center"}
-:::
-
-## {background-color="#D1CBBD"}
-
-::: {.columns .v-center}
-![](../../figures/workflow_predict.png){fig-align="center"}
-:::
-
-## {background-color="#D1CBBD"}
-
-::: {.columns .v-center}
-![](../../figures/workflow_communicate.png){fig-align="center"}
-:::
 
 
 
 
 
-## Identify | Specify the Managerial Decision and Evaluate Data
-
-To inform managerial decision-making there needs to be a decision to begin with. Having a well-defined managerial decision is what separates data analytics from **data mining**.
-
-What data is needed should be evaluated with the managerial decision in mind and not the *other way around*.
-
-## Import | Acquire the Needed Data
-
-While primary data is gathered specifically to serve the research objectives at hand, secondary data was gathered for another purpose. Consult the original and most current source whenever possible and understand its context (i.e., use the **data dictionary**).
-
-- Who collected it?
-- Why was it collected?
-- When was it collected?
-- What was collected?
-- How was it collected?
-
-Acquiring secondary data may require interfacing with databases, using APIs, scraping the Web, etc.
-
-## Tidy and Transform | Wrangle the Data
-
-Secondary data can be **messy**. Data wrangling includes whatever tidying, cleaning, mutating, munging, selecting, transforming, renaming, fusing, or filtering is needed to get the data into the needed form to summarize and model.
-
-This can be *tedious*.
-
-## Visualize | Summarize the Data
-
-Summarizing data is initially about discovery. It includes computing **statistics** (i.e., numerical summaries) and **data visualization** (i.e., graphical summaries).
-
-- Summarizing data is closely tied with data wrangling.
-- Summarizing data is often not an end in itself.
-
-## Model | Inference and Prediction
-
-Models *extract information* from the data to inform our managerial decision.
-
-- In order to inform the marketing mix, the models we use are often inferential.
-- Some managerial decisions only rely on prediction.
-
-## Communicate | Report and Create Data Products
-
-Effectively communicating marketing insights brings us full circle and highlights the necessity of domain expertise.
-
-The analyst needs to **interpret results in a way that clearly informs the managerial decision**. You may hear this referred to as "storytelling."
-
-
-
-
-
-## {background-color="#006242"}
-
-### Exercise 02 {.lato-font}
-
-1. Read the syllabus.
-2. Sign up for [Posit Cloud](http://posit.cloud) and join the course [here](https://posit.cloud/spaces/322372/join?access_code=_6edH0PA4_FTpmCCKGH-0p3kDHs3lEcBVlXdO3JD).
-3. Email me with questions or concerns you haven't had answered and/or what topics you're most excited to cover.
-4. Read the case and write how you might meet the expectations (no more than one page).
-5. Submit your response as a Word document on Canvas by the beginning of class Thursday and be prepared to share with the class.
 
 ## {background-color="#288DC2"}
 
@@ -151,7 +235,7 @@ The analyst needs to **interpret results in a way that clearly informs the manag
 
 #### Summary
 
-- Walked through a high-level overview of the modeling workflow
+- Walked through a high-level overview of a modeling workflow
 
 #### Next Time
 
