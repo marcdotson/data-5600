@@ -1,0 +1,122 @@
+---
+title: "Case 01: New Product Pricing"
+format: gfm
+---
+
+The actions are the prices. The unknown state of the world is demand. The objective function is profit.
+
+- Independent observations
+
+## Case Overview
+
+As a data analyst at Harmons, you are tasked with using product and customer data to inform a variety of business decisions, including promotion and pricing strategy, category management, and product line optimization. Following the soft launch of a new private label peanut butter, you have been asked to use the resulting data to support a go/no-go and pricing decision for an expected full launch of the new product.
+
+The test product supply only permitted a soft launch of one week in a single designated market area (DMA). All Harmons in the DMA had the private label in stock and positioned alongside leading national brands. While promotions varied across locations in the DMA, the stores serve similar customer segments and are otherwise comparable.
+
+The resulting transaction data has a single observation per customer for the peanut butter category and includes the number of units sold, the brand purchased, the product price, the type of promotion, and whether the customer was enrolled in Harmons' loyalty program.
+
+```{python}
+import numpy as np
+import pandas as pd
+
+# Set rng seed
+rng = np.random.default_rng(42)
+
+# Set parameters
+n = 4_793
+beta_0 = 10,
+beta_jif = 5
+beta_skippy = 4
+beta_peterpan = -1.5
+beta_harmons = 3
+beta_loyal = 4
+beta_promo = 1
+beta_price = -0.8
+sigma = 2
+
+# Simulate brands
+brands = np.array(["jif", "skippy", "peterpan", "harmons"])
+brand_shares = np.array([0.35, 0.25, 0.15, 0.25])
+brand = rng.choice(brands, size = n, p = brand_shares)
+brand_X = pd.get_dummies(brand, dtype=int)
+
+# Simulate brand-specific prices
+prices = np.array([3.50, 3.25, 2.50, 2.75])
+price_by_brand = dict(zip(brands, prices))
+price = np.array([rng.normal(price_by_brand[b], 0.55) for b in brand])
+price = np.clip(price, 0.99, None).round(2)
+
+# Binary predictors
+loyalty = rng.binomial(1, 0.40, size=n).astype(int)
+promo = rng.binomial(1, 0.25, size=n).astype(int)
+
+# Simulate sales as a function of predictors
+sales = (
+    beta_0
+    + brand_X["jif"] * beta_jif
+    + brand_X["skippy"] * beta_skippy
+    + brand_X["peterpan"] * beta_peterpan
+    + brand_X["harmons"] * beta_harmons
+    + beta_price * price
+    + beta_loyal * loyalty
+    + beta_promo * promo
+    + beta_loyal_x_promo * (loyalty * promo)
+    + rng.normal(0.0, sigma, size=n)
+)
+sales = np.clip(sales, 0.0, None).round(2)
+
+# --- Assemble Polars DataFrame
+df = pl.DataFrame(
+    {
+        "brand": brand,
+        "price": price,
+        "loyalty": loyalty,
+        "promo": promo,
+        "spend": spend,
+    }
+)
+
+# --- One-hot encoded design matrix
+dummies = pl.get_dummies(df.select("brand"), columns=["brand"])
+# Optionally drop one dummy to avoid collinearity:
+# dummies = dummies.drop("brand_Apex")
+
+X = pl.concat(
+    [
+        pl.DataFrame({"intercept": pl.Series([1.0] * n)}),
+        df.select(["price", "loyalty", "promo"]),
+        (df["loyalty"] * df["promo"]).alias("loyalty_x_promo").to_frame(),
+        dummies,
+    ],
+    how="horizontal",
+)
+
+# --- Preview
+print(df.head())
+print(X.head())
+
+# --- Save if desired
+# df.write_csv("peanut_butter_spend.csv")
+# X.write_csv("peanut_butter_design_matrix.csv")
+```
+
+As a data analyst communicates with domain experts to understand the problem and how to inform the decision, a decision theoretic approach requires specifying an objective function that is consistent with the problem and captures the risk aversion of the decision maker. For this problem, a simple customer-specific profit function suffices:
+
+$$
+\pi(p) = Y(p) \times (p - mc)
+$$
+
+where p is the personalized price for the given customer, Y(p) is the predicted demand for the given customer, and mc is the marginal cost. In decision theory, the objective function is typically a loss function. We can identify an optimal decision, conditioned on the specification of the objective function, by minimizing the loss function or equivalently, as we have here, maximizing a utility or profit function.
+
+SLR-Like
+
+Actions: Go or no-go
+State of the World: Consumer demand (units sold)
+Objective Function: Profit function
+
+MLR-Like
+
+Actions: Go or no-go and pricing decision
+State of the World: Consumer demand (units sold as a function of price)
+Objective Function: Profit function
+
