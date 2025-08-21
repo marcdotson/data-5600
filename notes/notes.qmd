@@ -229,6 +229,28 @@ The analyst needs to **interpret results in a way that clearly informs the manag
 - Complemented by a probabilistic approach to machine learning
 - Analytics is using data to inform decision-making and decision theory shows *how*
 
+
+As a data analyst communicates with domain experts to understand the problem and how to inform the decision, a decision theoretic approach requires specifying an objective function that is consistent with the problem and captures the risk aversion of the decision maker. For this problem, a simple customer-specific profit function suffices:
+
+$$
+\pi(p) = Y(p) \times (p - mc)
+$$
+
+where p is the personalized price for the given customer, Y(p) is the predicted demand for the given customer, and mc is the marginal cost. In decision theory, the objective function is typically a loss function. We can identify an optimal decision, conditioned on the specification of the objective function, by minimizing the loss function or equivalently, as we have here, maximizing a utility or profit function.
+
+SLR-Like
+
+Actions: Go or no-go
+State of the World: Consumer demand (units sold)
+Objective Function: Profit function
+
+MLR-Like
+
+Actions: Go or no-go and pricing decision
+State of the World: Consumer demand (units sold as a function of price)
+Objective Function: Profit function
+
+
 - Need to communicate with domain experts to understand the problem and how to inform the decision
 - Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize utility/minimize loss
 - Maximize profit, maximize market share, minimize churn, etc.
@@ -245,7 +267,7 @@ The analyst needs to **interpret results in a way that clearly informs the manag
 - What are the inputs into the function? Parameters -- the states of the world -- along with what actions to take?
 
 - The fact that we don't know the state of the world is what motivates probability and statistics
-- Activity: 
+- Activity: The actions are the prices. The unknown state of the world is demand. The objective function is profit.
 
 ### Data Generating Process
 

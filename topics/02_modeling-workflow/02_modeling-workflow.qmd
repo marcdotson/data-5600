@@ -95,7 +95,12 @@ It is **your job** as a data analyst to make sure that **the objective is clearl
 :::
 
 ::: {.column .gray-box width="42%"}
-In the case study...
+In the case, the decision you need to inform is a go/no-go (launch or not) and pricing strategy for the planned product launch
+
+The objective is to **maximize profit**, which means we'll need to know (or assume) something about:
+
+- Product costs
+- Expected demand
 :::
 
 ::::
