@@ -1,20 +1,28 @@
----
-title: "01 Regression and Machine Learning"
-format: gfm
----
+# 01 Regression and Machine Learning
+
 
 ## Case Overview
 
-As a data analyst at Harmons, you are tasked with using product and customer data to inform a variety of business decisions, including promotion and pricing strategy, category management, and product line optimization. Following the soft launch of a new private label peanut butter, you have been asked to use the resulting data to support a go/no-go and pricing decision for an expected full launch of the new product.
+As a data analyst at Harmons, you are tasked with using product and
+customer data to inform a variety of business decisions, including
+promotion and pricing strategy, category management, and product line
+optimization. Following the soft launch of a new private label peanut
+butter, you have been asked to use the resulting data to support a
+go/no-go and pricing decision for an expected full launch of the new
+product.
 
-The test product supply only permitted a soft launch of one week in a single designated market area (DMA). All Harmons in the DMA had the private label in stock and positioned alongside leading national brands. While promotions varied across locations in the DMA, the stores serve similar customer segments and are otherwise comparable.
+The test product supply only permitted a soft launch of one week in a
+single designated market area (DMA). All Harmons in the DMA had the
+private label in stock and positioned alongside leading national brands.
+While promotions varied across locations in the DMA, the stores serve
+similar customer segments and are otherwise comparable.
 
-The resulting transaction data has a single observation per customer for the peanut butter category and includes total spend, the number of units sold, the brand purchased, the product price, the type of promotion, and whether the customer was enrolled in Harmons' loyalty program.
+The resulting transaction data has a single observation per customer for
+the peanut butter category and includes total spend, the number of units
+sold, the brand purchased, the product price, the type of promotion, and
+whether the customer was enrolled in Harmons’ loyalty program.
 
-```{python}
-#| eval: false
-#| echo: true
-
+``` python
 import os
 import numpy as np
 import polars as pl
@@ -210,4 +218,3 @@ raw_df = raw_df.with_columns(X_df['units', 'sales', 'promo'])
 raw_df.write_parquet(os.path.join('data', 'raw_df.parquet'))
 X_df.write_parquet(os.path.join('data', 'X_df.parquet'))
 ```
-
