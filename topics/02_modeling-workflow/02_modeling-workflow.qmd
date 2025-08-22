@@ -144,7 +144,16 @@ This story about the possible **data generating process** is the beginning of a 
 :::
 
 ::: {.column .gray-box width="42%"}
-In the case study...
+In the case, the outcome of interest is the number of units of peanut butter sold, but what is it that drives that demand?
+
+::: {.incremental}
+- Price (key predictor)
+- Brand, brand loyalty
+- Promotions
+- Size
+- Customer age, income
+- Number of children
+:::
 :::
 
 ::::
@@ -155,13 +164,61 @@ In the case study...
 ![](../../figures/workflow_build.png){fig-align="center"}
 :::
 
-## Formalize the objective into a function
+## Formalize the objective as a function{auto-animate=true}
 
-A clearly specified objective can often be translated into a **loss function**, a mathematical expression of the thing we can optimize
+:::: {.columns}
+
+::: {.column width="100%"}
+A clearly specified objective can be translated into an objective function, often a **loss function**
 
 $$
-\ell(a, s)
+\LARGE{\ell(a, s)}
 $$
+
+::: {.incremental}
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+:::
+
+::: {.fragment}
+Using a loss function formalizes what we implicitly do when weighing pros and cons, though we are typically uncertain about $s$
+:::
+:::
+
+::::
+
+## Formalize the objective as a function {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+A clearly specified objective can be translated into an objective function, often a **loss function**
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+
+Using a loss function formalizes what we implicitly do when weighing pros and cons, though we are typically uncertain about $s$
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we want to maximize profit
+
+$$
+\pi(p, D) = D(p) \times (p - c)
+$$
+:::
+
+::::
+
+
+
+
+
+
 
 ## Translate the data story into a model
 
@@ -217,6 +274,12 @@ Why? Two big reasons:
 
 1. Prepare our data analysis before getting real data.
 2. Prove our code is working by recovering parameter values.
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_loss-likelihood.png){fig-align="center"}
+:::
 
 # What is the objective of your business problem? What is the data story? What might the loss and likelihood functions be? {background-color="#006242"}
 

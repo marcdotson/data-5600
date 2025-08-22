@@ -26,11 +26,6 @@ format: gfm
 
 ### Before Data
 
-- High-level overview of the (interpretable) modeling workflow (with the case as application?)
-
-- Plan: objective/loss function, data generation process/ideal dataset
-- Stories -- implicitly we weight pros and cons when making a decision -- narrate this objective
-- Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
 - Build: Translate story into mathematical models -- a functional mapping of your objective (loss function) inputs to output (likelihood)
 - Activity: Discuss with your groups what kind of loss function, data generating process makes sense for your problem
 
