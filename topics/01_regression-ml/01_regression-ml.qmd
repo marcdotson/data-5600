@@ -10,8 +10,8 @@ format:
     slide-number: c/t     # Numbered slides current/total.
     self-contained: true  # Render to a single HTML file.
 execute:
-  eval: true
-  echo: false
+  eval: false
+  echo: true
 ---
 
 ## {background-color="#288DC2"}
