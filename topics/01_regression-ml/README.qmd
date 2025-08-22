@@ -205,6 +205,12 @@ raw_df = raw_df.with_columns(X_df['units', 'sales', 'promo'])
 # Add complications
 # - Missing values
 # - Missing data
+# - Create some outliers (someone buying 100 jars of peanut butter)
+# - Introduce differnt ways to spell strings, including mistakes
+# - Replicate the same customer, so a double entry
+# - More correlation/multicollinearity
+# - Save numeric data as strings
+# - Have some customers buy more than one brand
 
 # Write data frames
 raw_df.write_parquet(os.path.join('data', 'raw_df.parquet'))
