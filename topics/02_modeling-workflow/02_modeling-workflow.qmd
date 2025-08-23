@@ -10,8 +10,9 @@ format:
     slide-number: c/t     # Numbered slides current/total.
     self-contained: true  # Render to a single HTML file.
 execute:
-  eval: true
-  echo: false
+  eval: false
+  echo: true
+jupyter: python3
 ---
 
 ## {background-color="#288DC2"}
@@ -164,12 +165,12 @@ In the case, the outcome of interest is the number of units of peanut butter sol
 ![](../../figures/workflow_build.png){fig-align="center"}
 :::
 
-## Formalize the objective as a function{auto-animate=true}
+## Formalize the objective as a function {auto-animate=true}
 
 :::: {.columns}
 
 ::: {.column width="100%"}
-A clearly specified objective can be translated into an objective function, often a **loss function**
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
 
 $$
 \LARGE{\ell(a, s)}
@@ -181,7 +182,7 @@ $$
 :::
 
 ::: {.fragment}
-Using a loss function formalizes what we implicitly do when weighing pros and cons, though we are typically uncertain about $s$
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
 :::
 :::
 
@@ -192,7 +193,7 @@ Using a loss function formalizes what we implicitly do when weighing pros and co
 :::: {.columns}
 
 ::: {.column width="50%"}
-A clearly specified objective can be translated into an objective function, often a **loss function**
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
 
 $$
 \LARGE{\ell(a, s)}
@@ -201,15 +202,281 @@ $$
 - $a$ are **actions** we can take
 - $s$ are **states of the world**
 
-Using a loss function formalizes what we implicitly do when weighing pros and cons, though we are typically uncertain about $s$
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
 :::
 
 ::: {.column .gray-box width="42%"}
-In the case, we want to maximize profit
+In the case, we want to maximize profit (so $-\ell(a, s)$)
 
 $$
-\pi(p, D) = D(p) \times (p - c)
+\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)
 $$
+
+::: {.incremental}
+- $\mathcal{D}(p)$ is demand
+- $p$ is price
+- $c$ is cost
+:::
+
+::: {.fragment}
+For different prices $p$ (actions), we can compute profit $\mathcal{P}$ given demand $\mathcal{D}$ (states of the world)
+:::
+:::
+
+::::
+
+## Formalize the objective as a function
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+We can specify a profit function easily enough
+
+```{python}
+#| code-line-numbers: "|2|3|5"
+#| eval: true
+
+# Specify a profit function
+def profit(price, cost, demand):
+  return demand * (price - cost)
+
+profit(3.50, (3.50 * .20), 4500)
+```
+
+But what do we know about the inputs to this function?
+
+::: {.incremental}
+- Price $p$ is something we can set (action), cost $c$ is known or knowable
+- Demand $\mathcal{D}$ is unknown or known with uncertainty (state of the world)
+:::
+
+::: {.fragment}
+It is typical to have **uncertainty about the state of the world**, which motivates our need to model data and extract information
+:::
+:::
+
+::::
+
+## Translate the data story into a model {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their relationship is consistent with the objective
+
+::: {.fragment}
+$$
+\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
+$$
+:::
+
+::: {.fragment}
+$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
+:::
+
+::: {.fragment}
+We will see that this same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
+:::
+:::
+
+::::
+
+## Translate the data story into a model {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their relationship is consistent with the objective
+
+$$
+\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
+$$
+
+$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
+
+This same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
+:::
+
+::: {.column .gray-box width="42%"}
+If we know little about the data generating process, we should start with a model that makes few assumptions, like a **linear model**
+
+$$
+\beta_0 + \beta_{price} X_{price} + \epsilon
+$$
+
+::: {.fragment}
+where $\epsilon$ represents **error**, showing that our model isn't capturing everything about the data generating process
+:::
+:::
+
+::::
+
+## Translate the data story into a model
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+If we assume $\epsilon$ follows a probability distribution, we can use our model (i.e., likelihood function) to **simulate data**
+
+```{python}
+#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|13"
+#| eval: true
+
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_price):
+    price = rng.normal(2, 1, size=n)
+    error = rng.normal(0, 1, size=n)
+    y = (beta_0 + beta_price * price + error).round(0)
+    return price, y
+
+sim_data(n = 5, beta_0 = 2, beta_price = -0.3)
+```
+
+::: {.fragment}
+We can use simulated data to prepare an analysis and test code
+:::
+:::
+
+::::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_loss-likelihood.png){fig-align="center"}
+:::
+
+# What ideas does your group have for your first project? What is the business objective and the data story? {background-color="#006242"}
+
+# Using Data
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_explore.png){fig-align="center"}
+:::
+
+## Understand the data and its limitations {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+
+::: {.incremental}
+- Visualize data and relationships
+- Compute numeric summaries
+- Check for missing data
+- Ask questions
+:::
+
+::: {.fragment}
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate its strengths and limitations
+:::
+:::
+
+::::
+
+## Understand the data and its limitations {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+
+- Visualize data and relationships
+- Compute numeric summaries
+- Check for missing data
+- Ask questions
+
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate its strengths and limitations
+:::
+
+::: {.column .gray-box width="42%"}
+Why not start here? It's easy to think that since we have data it must contain the information we need, but there is no guarantee
+
+In the case, the transaction data contains the critical variables, units sold and price, but it doesn't contain other variables we might want, like
+
+- Customer age, income
+- Number of children
+:::
+
+::::
+
+## Understand the data and its limitations
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+I recommend visualization libraries that follow the [grammar of graphics](https://link.springer.com/book/10.1007/0-387-28695-0) where each plot is composed of **data**, a **mapping** from data to visual elements, the **specific graphic**
+
+```{python}
+#| code-line-numbers: "|1-3|5-6|8-9|11-15|12|13|14"
+
+import os
+import polars as pl
+import seaborn.objects as so
+
+# Import data
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+
+# Peanut butter purchases
+pb_data = sl_data.filter(pl.col('units') > 0)
+
+# Visualize price and units
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(so.Dot(alpha = 0.2), so.Jitter(x = 0.5, y = 0.5))
+    .add(so.Line(), so.PolyFit(order=1))
+)
+```
+:::
+
+::::
+
+## Understand the data and its limitations
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+![](../../figures/plot_price-units.png){fig-align="center" width="68%"}
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile.png){fig-align="center"}
+:::
+
+## Evaluate model assumptions {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Every model has
+
+::: {.fragment}
+
+:::
+:::
+
+::::
+
+## Test {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Test
+:::
+
+::: {.column .gray-box width="42%"}
+Test
 :::
 
 ::::
@@ -220,76 +487,122 @@ $$
 
 
 
-## Translate the data story into a model
 
-If a model starts with a story about the *data generating process*, we need to translate it into a mathematical equation. For example:
 
-$$
-\text{sales} = 10 + 3 \times \text{promotion_spend}
-$$
 
-Think of this equation as a *function*.
+## Preprocess | Preprocess Data for Modeling
 
-- What is the input?
-- What is the output?
-- What is the story?
+When working with real data, we often need to *preprocess the data* in order to model it or to make it easier for the model to use. Think of this as **data wrangling for models**.
 
-## 
+One common preprocessing problem is dealing with discrete data.
 
-We observe `sales` and `promotion_spend` in the data, but we don't observe the effect of `promotion_spend` on `sales`. 
+```{r echo=FALSE, message=FALSE}
+# Demonstrate dummy coding.
+library(tidyverse)
 
-The unobserved variables in a model are called **parameters** and are typically expressed using Greek letters:
+sub_category <- read_csv(here::here("Data", "soup_data.csv")) |> 
+  transmute(sub_category = Sub_Category)
 
-$$
-\text{sales} = \beta_0 + \beta_1 \times \text{promotion_spend}
-$$
+one_dummy <- sub_category |> 
+  filter(sub_category %in% c("CONDENSED SOUP", "RAMEN"))
 
-Here $\beta_0$ is the amount of `sales` when there is zero `promotion_spend` and $\beta_1$ is the effect of `promotion_spend` on `sales`.
+one_dummy |> unique()
+```
 
-Are we missing anything to this story?
+---
 
-## 
+For the computer to understand the different *levels* of a discrete variable used in a model, we need to recode into *binary variables*.
 
-To make this a *statistical* model we need to express that our model is not going to explain everything about the data:
+```{r echo=FALSE, message=FALSE}
+# One dummy.
+one_dummy |> 
+  mutate(fastDummies::dummy_cols(sub_category)) |> 
+  rename(
+    condensed_soup = '.data_CONDENSED SOUP',
+    ramen = '.data_RAMEN'
+  ) |> 
+  select(sub_category, condensed_soup, ramen)
+```
 
-$$\text{sales} = \beta_0 + \beta_1 \times \text{promotion_spend} + \epsilon$$
+---
 
-Here $\epsilon$ represents **statistical error**. Think of this $\epsilon$ as including every variable beyond `promotion_spend` that effects `sales`.
+The more levels in a discrete variable, the more binary variables we need.
 
-## 
+```{r echo=FALSE, message=FALSE}
+# Many dummies.
+sub_category |> 
+  mutate(fastDummies::dummy_cols(sub_category)) |> 
+  rename(
+    condensed_soup = '.data_CONDENSED SOUP',
+    ramen = '.data_RAMEN',
+    dry_soup = '.data_DRY SOUP'
+  ) |> 
+  select(sub_category, condensed_soup, ramen, dry_soup)
+```
 
-Every inferential model is a *simplification* of the *true* data generating process (which we don't observe). Even so, models can still help us learn about parameters, assuming the model is a good approximation of the true data generating process.
+---
 
-<center>
-![](../../Figures/models_rockets.png){width=700px}
-</center>
+One more thing: For statistical reasons, the model can't use *all* of the binary variables created from a single discrete variable. One of them needs to be dropped as a **reference level** or **baseline level**. If you had more than one discrete variable, *each* discrete variable would have its own baseline level.
 
-## Simulate | Simulate Data and Recover Parameters
+All of this discrete variable preprocessing is called **dummy coding** (a.k.a., indicator coding).
 
-Since the data generating process is the unobserved process that generates the data, before we work with real data where we never know the data generating process, we can assume that our model *is* the data generating process, *choose* values for the parameters, and generate or **simulate** data using the model. 
-
-For example, we can choose values for $\beta_0$ and $\beta_1$, simulate possible `promotion_spend` data and then simulate `sales` data.
-
-Why? Two big reasons:
-
-1. Prepare our data analysis before getting real data.
-2. Prove our code is working by recovering parameter values.
-
-## 
-
-::: {.v-center}
-![](../../figures/meme_loss-likelihood.png){fig-align="center"}
-:::
-
-# What is the objective of your business problem? What is the data story? What might the loss and likelihood functions be? {background-color="#006242"}
-
-# Using Data
+```{r echo=FALSE, message=FALSE}
+# Baseline level.
+sub_category |> 
+  mutate(fastDummies::dummy_cols(sub_category)) |> 
+  rename(
+    condensed_soup = '.data_CONDENSED SOUP',
+    ramen = '.data_RAMEN',
+    dry_soup = '.data_DRY SOUP'
+  ) |> 
+  select(sub_category, ramen, dry_soup)
+```
 
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
-![](../../figures/workflow_explore.png){fig-align="center"}
+![](../../figures/workflow_fit.png){fig-align="center"}
 :::
+
+## Fit | Fit the Model
+
+When we **fit** the model (a.k.a., training, calibrating, or estimating the model) we are getting parameter estimates.
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_evaluate.png){fig-align="center"}
+:::
+
+## Evaluate | Parameter Estimates, Significance, and Predictive Fit
+
+Our goal is to use the model to *estimate* the parameters from the data. In other words, parameter estimates are the information we are extracting from the data to inform our managerial decision.
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_predict.png){fig-align="center"}
+:::
+
+## Predict | Counterfactual Predictions
+
+Once we have a best-fitting model, we want to predict what will happen if we intervene in the process in a certain way. This is called a **counterfactual**.
+
+For example, once we have parameter estimates for $\beta_0$ and $\beta_1$ from fitting the model, we can play the counterfactual "what if" game.
+
+Specifically, what would happen if we allocated certain amounts of `promotion_spend`? By combining the parameter estimates with possible budget allotments, we can predict `sales`.
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_communicate.png){fig-align="center"}
+:::
+
+## Communicate | Report and Create Data Products
+
+Effectively communicating marketing insights brings us full circle and highlights the necessity of domain expertise.
+
+The analyst needs to **interpret results in a way that clearly informs the managerial decision**. You may hear this referred to as "storytelling."
 
 ## {background-color="#006242"}
 
@@ -315,4 +628,32 @@ Why? Two big reasons:
 #### Next Time
 
 - 
+
+## Test {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Test
+
+::: {.fragment}
+
+:::
+:::
+
+::::
+
+## Test {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Test
+:::
+
+::: {.column .gray-box width="42%"}
+Test
+:::
+
+::::
 

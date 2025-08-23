@@ -213,7 +213,6 @@ raw_df = raw_df.with_columns(X_df['units', 'sales', 'promo'])
 # - Have some customers buy more than one brand
 
 # Write data frames
-raw_df.write_parquet(os.path.join('data', 'raw_df.parquet'))
+raw_df.write_parquet(os.path.join('data', 'soft_launch.parquet'))
 X_df.write_parquet(os.path.join('data', 'X_df.parquet'))
 ```
-
