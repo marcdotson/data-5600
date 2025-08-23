@@ -72,7 +72,9 @@ By the end of this course, students will be able to:
 ::: {.column width="60%"}
 Success in this course is demonstrating conceptual understanding and skill mastery by applying the modeling workflow in your chosen business context and as part of a group
 
-You are each an essential member of a community of learners and should consider me as both a teacher and a mentor
+::: {.fragment}
+You are each an essential member of our community of learners; please consider me a teacher and a mentor
+:::
 :::
 
 ::: {.column width="40%"}
@@ -444,11 +446,11 @@ We use models to **extract information** from the data and inform decisions in t
 
 ### Exercise 01 {.lato-font}
 
-1. Take the course survey **on your own**
+1. Take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927) **on your own**
 2. Read the case and write how you might go about informing the decision (no more than one page)
-3. Include in your response the members of your group and two project ideas
+3. Include in your response the members of your group
 4. Submit your response as a PDF on Canvas
-5. Start setting up the data stack
+5. Start setting up your data stack
 
 ## {background-color="#288DC2"}
 
