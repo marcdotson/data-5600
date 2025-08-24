@@ -24,14 +24,6 @@ format: gfm
 
 ## Modeling Workflow (Aug 27; Jan 7; May 6)
 
-### Communicating Results
-
-- Communicate: Report and present the results in a way that is understood by a mixed audience
-- Everything you've worked on is to inform the managerial decision, so if you don't it's like giving up at the end of the race
-- Discuss good and bad examples of communicating modeling results
-- Exercise: Summarize the case's objective and the ideal data
-- Wrap up
-
 # Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
 ## Decisions and Data / Loss and Likelihood Functions / Payoffs, Losses, and Likelihoods (Sept 3; Jan 12; May 11)

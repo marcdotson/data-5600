@@ -729,38 +729,35 @@ However, all of the predictions are positive, which supports the decision to lau
 ![](../../figures/workflow_communicate.png){fig-align="center"}
 :::
 
-## Test
+## Make insights accessible for decision-makers
 
 :::: {.columns}
 
 ::: {.column width="100%"}
-Test
+Having the technical capability to carefully prepare for and work with data is necessary but **not sufficient**
 
 ::: {.fragment}
+Your job as a data analyst is to **serve as a bridge** between the data and technical challenges and those who make decisions, many of whom are non-technical
+:::
 
+::: {.incremental}
+- Never assume those you're communicating with know about the project
+- Whenever possible, rely on clear and professional visualizations (not EDA)
+- Presentations for a non-technical or mixed audience should only have complicated details in an appendix
+- Good communication is synonymous with good storytelling
 :::
 :::
 
 ::::
 
-## Communicate | Report and Create Data Products
-
-Effectively communicating marketing insights brings us full circle and highlights the necessity of domain expertise.
-
-The analyst needs to **interpret results in a way that clearly informs the managerial decision**. You may hear this referred to as "storytelling."
-
 ## {background-color="#006242"}
 
 ### Exercise 02 {.lato-font}
 
-1. Read the syllabus.
-2. Sign up for [Posit Cloud](http://posit.cloud) and join the course [here](https://posit.cloud/spaces/322372/join?access_code=_6edH0PA4_FTpmCCKGH-0p3kDHs3lEcBVlXdO3JD).
-3. Email me with questions or concerns you haven't had answered and/or what topics you're most excited to cover.
-4. Read the case and write how you might meet the expectations (no more than one page).
-5. Submit your response as a Word document on Canvas by the beginning of class Thursday and be prepared to share with the class.
-
-
-5. Finish setting up the data stack
+1. Last chance to take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
+2. Finish setting up your data stack
+3. Submit two detailed project ideas (no more than one page each)
+4. Submit your response as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -772,5 +769,6 @@ The analyst needs to **interpret results in a way that clearly informs the manag
 
 #### Next Time
 
-- 
+- Discuss decision-making under uncertainty
+- Start modeling data generating processes
 

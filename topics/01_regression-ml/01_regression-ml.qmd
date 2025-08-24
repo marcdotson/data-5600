@@ -443,7 +443,7 @@ We use models to **extract information** from data and inform decisions in the p
 
 ### Exercise 01 {.lato-font}
 
-1. Take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927) **on your own**
+1. Take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
 2. Start setting up your data stack
 3. Read the case and write how you might go about informing the decision (no more than one page)
 4. Include in your response the members of your group
