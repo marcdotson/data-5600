@@ -217,3 +217,42 @@ raw_df = raw_df.with_columns(X_df['units', 'sales', 'promo'])
 raw_df.write_parquet(os.path.join('data', 'soft_launch.parquet'))
 X_df.write_parquet(os.path.join('data', 'X_df.parquet'))
 ```
+
+```{python}
+#| eval: false
+#| echo: false
+
+import os
+import polars as pl
+import seaborn.objects as so
+import statsmodels.formula.api as smf
+import bambi as bmb
+
+# Import data
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+
+# Peanut butter purchases
+pb_data = sl_data.filter(pl.col('units') > 0)
+
+# Visualize price and units
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(so.Dot(alpha = 0.2), so.Jitter(x = 0.5, y = 0.5))
+    .add(so.Line(), so.PolyFit(order=1))
+)
+
+# Preprocess data
+lm_data = pb_data.to_dummies(
+    # Dummy code brand
+    columns = ['brand'], drop_first = True
+).with_columns(
+    # Log units and price
+    (pl.col('units') + 1).log().alias('log_units'),
+    (pl.col('price') + 1).log().alias('log_price')
+).to_pandas()
+
+# Fit a frequentist linear regression
+fr_fit = smf.ols('log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', data = lm_data).fit()
+
+# Fit a Bayesian linear regression
+ba_model = bmb.Model('log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', data = lm_data).fit()
+```

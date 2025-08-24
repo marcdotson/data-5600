@@ -422,7 +422,7 @@ import polars as pl
 import seaborn.objects as so
 
 # Import data
-sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
 
 # Peanut butter purchases
 pb_data = sl_data.filter(pl.col('units') > 0)
@@ -508,7 +508,7 @@ Feature engineering (a.k.a., preprocessing data) is data cleaning or wrangling f
 - Dummy coding (a.k.a., indicator coding or one hot encoding) turns a discrete predictor into multiple binary predictors
 
 ```{python}
-#| code-line-numbers: "|2-4|5-8"
+#| code-line-numbers: "|2-4|5-8|9"
 
 # Preprocess data
 lm_data = pb_data.to_dummies(
@@ -518,7 +518,7 @@ lm_data = pb_data.to_dummies(
     # Log units and price
     (pl.col('units') + 1).log().alias('log_units'),
     (pl.col('price') + 1).log().alias('log_price')
-)
+).to_pandas()
 ```
 :::
 
@@ -528,6 +528,101 @@ lm_data = pb_data.to_dummies(
 
 ::: {.columns .v-center}
 ![](../../figures/workflow_fit.png){fig-align="center"}
+:::
+
+## Estimate the model parameters {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Fitting a model to data is trivial, but how did we get here?
+
+::: {.incremental}
+- We want to inform a decision
+- We are uncertain about information critical to making that decision
+- We built a probabilistic model, which includes unknown parameters that represent the information we are uncertain about
+:::
+
+::: {.fragment}
+Fitting the model will give us **estimates** (i.e., guesses) of those parameters
+:::
+:::
+
+::::
+
+## Estimate the model parameters {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Fitting a model to data is trivial, but how did we get here?
+
+- We want to inform a decision
+- We are uncertain about information critical to making that decision
+- We built a probabilistic model, which includes unknown parameters that represent the information we are uncertain about
+
+Fitting the model will give us **estimates** (i.e., guesses) of those parameters
+:::
+
+::: {.column .gray-box width="42%"}
+
+In the case:
+
+::: {.incremental}
+- Go/no-go and pricing decision to maximize profit
+- Uncertain about demand
+- Linear regression with a parameter for the relationship between price and demand
+:::
+
+::: {.fragment}
+Even with data, our estimates are still guesses, so how do we **quantify uncertainty**?
+:::
+
+:::
+
+::::
+
+## Estimate the model parameters 
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+**Frequentist statistics** assumes that parameters are fixed variables and quantifies uncertainty with interval estimates
+
+**Bayesian statistics** assumes that parameters are random variables and quantifies uncertainty with probability distributions
+
+```{python}
+#| code-line-numbers: "|1,4-8|2,10-14"
+
+import statsmodels.formula.api as smf
+import bambi as bmb
+
+# Fit a frequentist linear regression
+fr_fit = smf.ols(
+  'log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', 
+  data = lm_data
+).fit()
+
+# Fit a Bayesian linear regression
+ba_model = bmb.Model(
+  'log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', 
+  data = lm_data
+).fit()
+```
+:::
+
+::::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_all-the-way-down.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_evaluate.png){fig-align="center"}
 :::
 
 ## Test {auto-animate=true}
@@ -560,17 +655,6 @@ Test
 
 
 
-
-
-## Fit | Fit the Model
-
-When we **fit** the model (a.k.a., training, calibrating, or estimating the model) we are getting parameter estimates.
-
-## {background-color="#D1CBBD"}
-
-::: {.columns .v-center}
-![](../../figures/workflow_evaluate.png){fig-align="center"}
-:::
 
 ## Evaluate | Parameter Estimates, Significance, and Predictive Fit
 

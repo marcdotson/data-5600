@@ -26,7 +26,6 @@ format: gfm
 
 ### Using Data
 
-- Fit: Fit/train/calibrate the model on training data (lots of different models, libraries we can use -- needs to be consistent with our objective)
 - Evaluate: Parameter estimates (including uncertainty), considering significance, and overall (predictive) model fit on testing data
 - Predict: Use the model to make predictions on new data, including uncertainty in those predictions
 - Activity: Speed dialogue to discuss favorite libraries you use for working with data

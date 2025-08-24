@@ -390,16 +390,13 @@ $$
 :::
 
 ::: {.column width="40%"}
-::: {.fragment}
 $X$
 
 - inputs
 - features
 - predictors
-- independent variables
-:::
+- explanatory variables
 
-::: {.fragment}
 $y$
 
 - output
@@ -407,13 +404,12 @@ $y$
 - response
 - dependent variable
 :::
-:::
 
 ::::
 
 ## The mapping function is a *model*
 
-We use models to **extract information** from the data and inform decisions in the presence of uncertainty
+We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
 ::: {.columns .fragment}
 ![](../../figures/models_predictive.png){fig-align="center"}
@@ -421,7 +417,7 @@ We use models to **extract information** from the data and inform decisions in t
 
 ## The mapping function is a *model* {visibility="uncounted"}
 
-We use models to **extract information** from the data and inform decisions in the presence of uncertainty
+We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
 ::: {.columns}
 ![](../../figures/models_interpretable.png){fig-align="center"}
@@ -429,7 +425,7 @@ We use models to **extract information** from the data and inform decisions in t
 
 ## The mapping function is a *model* {visibility="uncounted"}
 
-We use models to **extract information** from the data and inform decisions in the presence of uncertainty
+We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
 ::: {.columns}
 ![](../../figures/models_causal.png){fig-align="center"}
@@ -437,7 +433,7 @@ We use models to **extract information** from the data and inform decisions in t
 
 ## The mapping function is a *model* {visibility="uncounted"}
 
-We use models to **extract information** from the data and inform decisions in the presence of uncertainty
+We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
 ::: {.columns}
 ![](../../figures/models_all.png){fig-align="center"}
