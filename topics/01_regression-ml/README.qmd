@@ -254,5 +254,35 @@ lm_data = pb_data.to_dummies(
 fr_fit = smf.ols('log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', data = lm_data).fit()
 
 # Fit a Bayesian linear regression
-ba_model = bmb.Model('log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', data = lm_data).fit()
+ba_fit = bmb.Model('log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', data = lm_data).fit()
+
+import arviz as az
+import numpy as np
+import matplotlib.pyplot as plt
+
+# --- 1) Pull the OLS point estimate and 95% CI for log_price
+ols_coef = fr_fit.params['log_price']
+ols_ci_low, ols_ci_high = fr_fit.conf_int().loc['log_price']
+
+# --- 2) Get posterior draws for log_price from the Bambi fit
+# Convert the xarray to a flat 1-D numpy array
+post = ba_fit.posterior['log_price'].stack(sample=('chain','draw')).values.flatten()
+
+# --- 3) Plot: posterior density + OLS CI band and point
+fig, ax = plt.subplots(figsize=(7, 4))
+
+# Posterior density (ArviZ helper)
+az.plot_kde(post, ax=ax)
+
+# OLS 95% CI as a vertical band, and the OLS point estimate
+ax.axvspan(ols_ci_low, ols_ci_high, alpha=0.2, label='OLS 95% CI')
+ax.axvline(ols_coef, linestyle='--', linewidth=2, label='OLS estimate')
+
+# Cosmetics
+ax.set_title('Frequentist Confidence Interval vs. Bayesian Posterior Distribution')
+ax.set_xlabel('Parameter Estimate')
+ax.set_ylabel('Density')
+ax.legend()
+plt.tight_layout()
+plt.show()
 ```

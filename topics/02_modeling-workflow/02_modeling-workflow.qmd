@@ -40,7 +40,7 @@ jupyter: python3
 
 ::: {.incremental}
 - This modeling workflow is designed to provide some **structure** as you learn about modeling data to inform business decision-making
-- There are other ways to approach modeling, but I designed this workflow to **highlight essentials decisions** in the modeling process
+- There are a variety of modeling approaches, but this workflow has been informed by practice to **highlight essentials decisions** in the modeling process
 - Just because you follow this or other workflows doesn't guarantee you'll get a good answer -- you must be **careful and thoughtful**
 - The main objective of a workflow is to help you be **open and direct** about your choices and assumptions
 :::
@@ -243,7 +243,9 @@ def profit(price, cost, demand):
 profit(3.50, (3.50 * .20), 4500)
 ```
 
+::: {.fragment}
 But what do we know about the inputs to this function?
+:::
 
 ::: {.incremental}
 - Price $p$ is something we can set (action), cost $c$ is known or knowable
@@ -316,7 +318,7 @@ where $\epsilon$ represents **error**, showing that our model isn't capturing ev
 :::: {.columns}
 
 ::: {.column .gray-box width="92%"}
-If we assume $\epsilon$ follows a probability distribution, we can use our model (i.e., likelihood function) to **simulate data**
+If we assume a probability distribution for $\epsilon$, we can pretend our model (i.e., likelihood function) *is* the data generation process and **simulate data**
 
 ```{python}
 #| code-line-numbers: "|1|3-4|6-7|8|9|10|11|13"
@@ -331,8 +333,8 @@ rng = np.random.default_rng(42)
 def sim_data(n, beta_0, beta_price):
     price = rng.normal(2, 1, size=n)
     error = rng.normal(0, 1, size=n)
-    y = (beta_0 + beta_price * price + error).round(0)
-    return price, y
+    units = (beta_0 + beta_price * price + error).round(0)
+    return price, units
 
 sim_data(n = 5, beta_0 = 2, beta_price = -0.3)
 ```
@@ -350,7 +352,7 @@ We can use simulated data to prepare an analysis and test code
 ![](../../figures/meme_loss-likelihood.png){fig-align="center"}
 :::
 
-# What ideas does your group have for your first project? What is the business objective and the data story? {background-color="#006242"}
+# Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
 
 # Using Data
 
@@ -604,7 +606,7 @@ fr_fit = smf.ols(
 ).fit()
 
 # Fit a Bayesian linear regression
-ba_model = bmb.Model(
+ba_fit = bmb.Model(
   'log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', 
   data = lm_data
 ).fit()
@@ -625,46 +627,68 @@ ba_model = bmb.Model(
 ![](../../figures/workflow_evaluate.png){fig-align="center"}
 :::
 
-## Test {auto-animate=true}
+## Interpret results and revise as needed {auto-animate=true}
 
 :::: {.columns}
 
 ::: {.column width="100%"}
-Test
+Interpretable models produce a plethora of results that need to be considered
+
+::: {.incremental}
+- Parameter estimates
+- Statistical significance
+- Overall model fit
+- Comparing predictions and real data
+:::
 
 ::: {.fragment}
-
+Just like with the reconcile step, what we discover may prompt additional exploration and revision
 :::
 :::
 
 ::::
 
-## Test {auto-animate=true visibility="uncounted"}
+## Interpret results and revise as needed {auto-animate=true visibility="uncounted"}
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-Test
+Interpretable models produce a plethora of results that need to be considered
+
+- Parameter estimates
+- Statistical significance
+- Overall model fit
+- Comparing predictions and real data
+
+Just like with the reconcile step, what we discover may prompt additional exploration and revision
 :::
 
 ::: {.column .gray-box width="42%"}
-Test
+In the case, we find that the estimated relationship between `log_price` and `log_units` is negative and statistically significant
+
+But we also want to evaluate how sensitive our results are to omitted variables and a regularizing model specification, leading to additional models to evaluate and compare
 :::
 
 ::::
 
+## Interpret results and revise as needed
 
+:::: {.columns}
 
+::: {.column .gray-box width="92%"}
+![](../../figures/plot_log-price-estimate.png){fig-align="center" width="85%"}
+:::
 
-## Evaluate | Parameter Estimates, Significance, and Predictive Fit
-
-Our goal is to use the model to *estimate* the parameters from the data. In other words, parameter estimates are the information we are extracting from the data to inform our managerial decision.
+::::
 
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
 ![](../../figures/workflow_predict.png){fig-align="center"}
 :::
+
+
+
 
 ## Predict | Counterfactual Predictions
 
