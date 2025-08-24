@@ -687,24 +687,61 @@ But we also want to evaluate how sensitive our results are to omitted variables 
 ![](../../figures/workflow_predict.png){fig-align="center"}
 :::
 
+## Use prediction to make model implications clear {auto-animate=true}
 
+:::: {.columns}
 
+::: {.column width="100%"}
+Eventually we'll select our best-fitting model(s) and make predictions directly relevant to the business objective
 
-## Predict | Counterfactual Predictions
+::: {.incremental}
+- In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
+- Without being honest about uncertainty, we will mislead rather than inform decision-making
+:::
+:::
 
-Once we have a best-fitting model, we want to predict what will happen if we intervene in the process in a certain way. This is called a **counterfactual**.
+::::
 
-For example, once we have parameter estimates for $\beta_0$ and $\beta_1$ from fitting the model, we can play the counterfactual "what if" game.
+## Use prediction to make model implications clear {auto-animate=true visibility="uncounted"}
 
-Specifically, what would happen if we allocated certain amounts of `promotion_spend`? By combining the parameter estimates with possible budget allotments, we can predict `sales`.
+:::: {.columns}
 
-# What's your preferred task when working with data? Is it data wrangling, visualizing data, or implementing a specific method? {background-color="#006242"}
+::: {.column width="50%"}
+Eventually we'll select our best-fitting model(s) and make predictions directly relevant to the business objective
+
+- In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
+- Without being honest about uncertainty, we will mislead rather than inform decision-making
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we discover that accounting for uncertainty in the price elasticity estimate (i.e., the parameter measuring the relationship between `price` and `units`) leads to a wide range of profit outcomes
+
+However, all of the predictions are positive, which supports the decision to launch the new private label
+:::
+
+::::
+
+# What is your preferred task when working with data? Data wrangling, visualizing data, or implementing methods? {background-color="#006242"}
 
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
 ![](../../figures/workflow_communicate.png){fig-align="center"}
 :::
+
+## Test
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Test
+
+::: {.fragment}
+
+:::
+:::
+
+::::
 
 ## Communicate | Report and Create Data Products
 
@@ -736,32 +773,4 @@ The analyst needs to **interpret results in a way that clearly informs the manag
 #### Next Time
 
 - 
-
-## Test {auto-animate=true}
-
-:::: {.columns}
-
-::: {.column width="100%"}
-Test
-
-::: {.fragment}
-
-:::
-:::
-
-::::
-
-## Test {auto-animate=true visibility="uncounted"}
-
-:::: {.columns}
-
-::: {.column width="50%"}
-Test
-:::
-
-::: {.column .gray-box width="42%"}
-Test
-:::
-
-::::
 

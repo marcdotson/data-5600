@@ -24,12 +24,6 @@ format: gfm
 
 ## Modeling Workflow (Aug 27; Jan 7; May 6)
 
-### Using Data
-
-- Evaluate: Parameter estimates (including uncertainty), considering significance, and overall (predictive) model fit on testing data
-- Predict: Use the model to make predictions on new data, including uncertainty in those predictions
-- Activity: Speed dialogue to discuss favorite libraries you use for working with data
-
 ### Communicating Results
 
 - Communicate: Report and present the results in a way that is understood by a mixed audience
