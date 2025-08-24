@@ -453,12 +453,89 @@ pb_data = sl_data.filter(pl.col('units') > 0)
 ![](../../figures/workflow_reconcile.png){fig-align="center"}
 :::
 
-## Evaluate model assumptions {auto-animate=true}
+## Reconcile the model and the data {auto-animate=true}
 
 :::: {.columns}
 
 ::: {.column width="100%"}
-Every model has
+With a model prepared and data explored, its time to resolve the differences between the model and the data
+
+::: {.incremental}
+- Comparing simulated and real data
+- Evaluating model assumptions
+- Revising the model
+- Feature engineering
+:::
+
+::: {.fragment}
+But be careful, we are trying to extract information about the data generating process and not **overfit** to the data
+:::
+:::
+
+::::
+
+## Reconcile the model and the data {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+With a model prepared and data explored, its time to resolve the differences between the model and the data
+
+- Comparing simulated and real data
+- Evaluating model assumptions
+- Revising the model
+- Feature engineering
+
+But be careful, we are trying to extract information about the data generating process and not **overfit** to the data
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we discover that to satisfy a linear regression's assumption of **linearity in the parameters**, we need to transform the `units` outcome and `price` predictor variables
+
+Also, acknowledging that there are a number of **omitted predictors**, we find that including `brand` is critical and needs to be dummy coded to be included in the model
+:::
+
+::::
+
+## Reconcile the model and the data 
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+Feature engineering (a.k.a., preprocessing data) is data cleaning or wrangling for the benefit of the model, for example:
+
+- Log transformations need an offset
+- Dummy coding (a.k.a., indicator coding or one hot encoding) turns a discrete predictor into multiple binary predictors
+
+```{python}
+#| code-line-numbers: "|2-4|5-8"
+
+# Preprocess data
+lm_data = pb_data.to_dummies(
+    # Dummy code brand
+    columns = ['brand'], drop_first = True
+).with_columns(
+    # Log units and price
+    (pl.col('units') + 1).log().alias('log_units'),
+    (pl.col('price') + 1).log().alias('log_price')
+)
+```
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_fit.png){fig-align="center"}
+:::
+
+## Test {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Test
 
 ::: {.fragment}
 
@@ -484,85 +561,6 @@ Test
 
 
 
-
-
-
-
-
-
-## Preprocess | Preprocess Data for Modeling
-
-When working with real data, we often need to *preprocess the data* in order to model it or to make it easier for the model to use. Think of this as **data wrangling for models**.
-
-One common preprocessing problem is dealing with discrete data.
-
-```{r echo=FALSE, message=FALSE}
-# Demonstrate dummy coding.
-library(tidyverse)
-
-sub_category <- read_csv(here::here("Data", "soup_data.csv")) |> 
-  transmute(sub_category = Sub_Category)
-
-one_dummy <- sub_category |> 
-  filter(sub_category %in% c("CONDENSED SOUP", "RAMEN"))
-
-one_dummy |> unique()
-```
-
----
-
-For the computer to understand the different *levels* of a discrete variable used in a model, we need to recode into *binary variables*.
-
-```{r echo=FALSE, message=FALSE}
-# One dummy.
-one_dummy |> 
-  mutate(fastDummies::dummy_cols(sub_category)) |> 
-  rename(
-    condensed_soup = '.data_CONDENSED SOUP',
-    ramen = '.data_RAMEN'
-  ) |> 
-  select(sub_category, condensed_soup, ramen)
-```
-
----
-
-The more levels in a discrete variable, the more binary variables we need.
-
-```{r echo=FALSE, message=FALSE}
-# Many dummies.
-sub_category |> 
-  mutate(fastDummies::dummy_cols(sub_category)) |> 
-  rename(
-    condensed_soup = '.data_CONDENSED SOUP',
-    ramen = '.data_RAMEN',
-    dry_soup = '.data_DRY SOUP'
-  ) |> 
-  select(sub_category, condensed_soup, ramen, dry_soup)
-```
-
----
-
-One more thing: For statistical reasons, the model can't use *all* of the binary variables created from a single discrete variable. One of them needs to be dropped as a **reference level** or **baseline level**. If you had more than one discrete variable, *each* discrete variable would have its own baseline level.
-
-All of this discrete variable preprocessing is called **dummy coding** (a.k.a., indicator coding).
-
-```{r echo=FALSE, message=FALSE}
-# Baseline level.
-sub_category |> 
-  mutate(fastDummies::dummy_cols(sub_category)) |> 
-  rename(
-    condensed_soup = '.data_CONDENSED SOUP',
-    ramen = '.data_RAMEN',
-    dry_soup = '.data_DRY SOUP'
-  ) |> 
-  select(sub_category, ramen, dry_soup)
-```
-
-## {background-color="#D1CBBD"}
-
-::: {.columns .v-center}
-![](../../figures/workflow_fit.png){fig-align="center"}
-:::
 
 ## Fit | Fit the Model
 
@@ -591,6 +589,8 @@ Once we have a best-fitting model, we want to predict what will happen if we int
 For example, once we have parameter estimates for $\beta_0$ and $\beta_1$ from fitting the model, we can play the counterfactual "what if" game.
 
 Specifically, what would happen if we allocated certain amounts of `promotion_spend`? By combining the parameter estimates with possible budget allotments, we can predict `sales`.
+
+# What's your preferred task when working with data? Is it data wrangling, visualizing data, or implementing a specific method? {background-color="#006242"}
 
 ## {background-color="#D1CBBD"}
 

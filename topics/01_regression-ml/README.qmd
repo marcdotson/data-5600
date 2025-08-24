@@ -203,6 +203,7 @@ X_df = X_df.with_columns(
 raw_df = raw_df.with_columns(X_df['units', 'sales', 'promo'])
 
 # Add complications
+# - Add price variation based on promotion or coupon -- multicollinear as well!
 # - Missing values
 # - Missing data
 # - Create some outliers (someone buying 100 jars of peanut butter)
