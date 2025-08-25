@@ -17,3 +17,5 @@ private/*
 # Files
 *.pdf
 *.html
+!assignments/random-draw.py
+
