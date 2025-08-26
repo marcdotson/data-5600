@@ -26,13 +26,11 @@ format: gfm
 
 # Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
-## Decisions and Data / Loss and Likelihood Functions / Payoffs, Losses, and Likelihoods (Sept 3; Jan 12; May 11)
+## Decisions and Data (Sept 3; Jan 12; May 11)
 
 ### Decisions
 
-- Get started (solution, schedule w/o dates?, and workflow)
-- Use the case to start illustrating in more detail the modeling workflow
-- Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
+Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
 
 - Decision theory provides a principled, *unifying* framework for data analytics
 - All decisions can be characterized by minimizing a loss function $\ell (\theta, a)$
@@ -146,7 +144,7 @@ Why? Two big reasons:
 
 # Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
-## Probability and Statistics / Probabilistic Machine Learning (Sept 8; Jan 14; May 13)
+## Probability and Statistics  (Sept 8; Jan 14; May 13)
 
 A probabilistic approach to machine learning enhances the principled, unifying framework provided by decision theory. This includes Bayesian statistics, where we treat all unknowns as random variables and can directly use probability distributions to quantify uncertainty in our estimates, and frequentist statistics, where we treat data as random and indirectly use probability distributions to quantify uncertainty in our estimates. The direct, Bayesian approach is arguably more intuitive, especially for applied students, while the indirect, frequentist approach is less computationally intensive. The hope is that introducing them in contrast and as complements will enhance student understanding of modeling generally and combat the problem of student overfitting to a set list of procedures.
 
@@ -245,6 +243,9 @@ Using graphical diagnostics of assumptions
 
 - Exploration and preparation
 - Feature engineering, transformations
+
+- Flexible ML is about automating feature engineering
+
 - Be sure to include +1 for log transforms
 
 ## Discrete Predictors

@@ -1,0 +1,361 @@
+---
+title: "Decisions and Data"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss # Modified slides theme.
+    slide-number: c/t     # Numbered slides current/total.
+    self-contained: true  # Render to a single HTML file.
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Walked through a high-level overview of a modeling workflow
+
+#### Preview
+
+- Discuss decision-making under uncertainty
+- Start modeling data generating processes
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_plan-build.png){fig-align="center"}
+:::
+
+# Decision-Making Under Uncertainty
+
+## Clearly specify the business objective {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+To inform business decision-making, there needs to be a clear objective
+
+::: {.fragment}
+What are some common business objectives?
+:::
+
+::: {.incremental}
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+:::
+
+::: {.fragment}
+It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+:::
+:::
+
+::::
+
+## Clearly specify the business objective {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+To inform business decision-making, there needs to be a clear objective
+
+What are some common business objectives?
+
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+
+It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, the decision you need to inform is a go/no-go (launch or not) and pricing strategy for the planned product launch
+
+The objective is to **maximize profit**, which means we'll need to know (or assume) something about:
+
+- Product costs
+- Expected demand
+:::
+
+::::
+
+## Consider the ideal data and its story {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+With the business objective specified, you can think about the data you need and **how that data is generated**
+
+::: {.fragment}
+All data come from somewhere and considering the generating process will help you identify the ideal data
+:::
+
+::: {.incremental}
+- Outcome and predictors
+- Their relationship
+:::
+
+::: {.fragment}
+This story about the possible **data generating process** is the beginning of a model
+:::
+:::
+
+::::
+
+## Formalize the objective as a function {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+::: {.incremental}
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+:::
+
+::: {.fragment}
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
+:::
+:::
+
+::::
+
+## Formalize the objective as a function {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we want to maximize profit (so $-\ell(a, s)$)
+
+$$
+\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)
+$$
+
+::: {.incremental}
+- $\mathcal{D}(p)$ is demand
+- $p$ is price
+- $c$ is cost
+:::
+
+::: {.fragment}
+For different prices $p$ (actions), we can compute profit $\mathcal{P}$ given demand $\mathcal{D}$ (states of the world)
+:::
+:::
+
+::::
+
+## Formalize the objective as a function
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+We can specify a profit function easily enough
+
+```{python}
+#| code-line-numbers: "|2|3|5"
+#| eval: true
+
+# Specify a profit function
+def profit(price, cost, demand):
+  return demand * (price - cost)
+
+profit(3.50, (3.50 * .20), 4500)
+```
+
+::: {.fragment}
+But what do we know about the inputs to this function?
+:::
+
+::: {.incremental}
+- Price $p$ is something we can set (action), cost $c$ is known or knowable
+- Demand $\mathcal{D}$ is unknown or known with uncertainty (state of the world)
+:::
+
+::: {.fragment}
+It is typical to have **uncertainty about the state of the world**, which motivates our need to model data and extract information
+:::
+:::
+
+::::
+
+# Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
+
+# Modeling Data Generating Processes
+
+## Consider the ideal data and its story {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+With the business objective specified, you can think about the data you need and **how that data is generated**
+
+All data come from somewhere and considering the generating process will help you identify the ideal data
+
+- Outcome and predictors
+- Their relationship
+
+This story about the possible **data generating process** is the beginning of a model
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, the outcome of interest is the number of units of peanut butter sold, but what is it that drives that demand?
+
+::: {.incremental}
+- Price (key predictor)
+- Brand, brand loyalty
+- Promotions
+- Size
+- Customer age, income
+- Number of children
+:::
+:::
+
+::::
+
+## Translate the data story into a model {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their relationship is consistent with the objective
+
+::: {.fragment}
+$$
+\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
+$$
+:::
+
+::: {.fragment}
+$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
+:::
+
+::: {.fragment}
+We will see that this same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
+:::
+:::
+
+::::
+
+## Translate the data story into a model {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their relationship is consistent with the objective
+
+$$
+\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
+$$
+
+$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
+
+This same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
+:::
+
+::: {.column .gray-box width="42%"}
+If we know little about the data generating process, we should start with a model that makes few assumptions, like a **linear model**
+
+$$
+\beta_0 + \beta_{price} X_{price} + \epsilon
+$$
+
+::: {.fragment}
+where $\epsilon$ represents **error**, showing that our model isn't capturing everything about the data generating process
+:::
+:::
+
+::::
+
+## Translate the data story into a model
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+If we assume a probability distribution for $\epsilon$, we can pretend our model (i.e., likelihood function) *is* the data generation process and **simulate data**
+
+```{python}
+#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|13"
+#| eval: true
+
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_price):
+    price = rng.normal(2, 1, size=n)
+    error = rng.normal(0, 1, size=n)
+    units = (beta_0 + beta_price * price + error).round(0)
+    return price, units
+
+sim_data(n = 5, beta_0 = 2, beta_price = -0.3)
+```
+
+::: {.fragment}
+We can use simulated data to prepare an analysis and test code
+:::
+:::
+
+::::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_loss-likelihood.png){fig-align="center"}
+:::
+
+# Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
+
+# Probabilistic Machine Learning
+
+
+
+## {background-color="#006242"}
+
+### Exercise 03 {.lato-font}
+
+4. Submit your response as a PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Discussed decision-making under uncertainty
+- Started modeling data generating processes
+
+#### Next Time
+
+- Probability and statistics
+- Simulating data and recovering parameters? MLE and Bayes (Build and Fit)
+
