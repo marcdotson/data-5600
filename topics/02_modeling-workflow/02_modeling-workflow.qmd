@@ -39,10 +39,10 @@ jupyter: python3
 ## Why an (interpretable) modeling workflow?
 
 ::: {.incremental}
-- This modeling workflow is designed to provide some **structure** as you learn about modeling data to inform business decision-making
-- There are a variety of modeling approaches, but this workflow has been informed by practice to **highlight essentials decisions** in the modeling process
-- Just because you follow this or other workflows doesn't guarantee you'll get a good answer -- you must be **careful and thoughtful**
-- The main objective of a workflow is to help you be **open and direct** about your choices and assumptions
+- Modeling workflows are designed to provide some **structure** as you apply regression and machine learning to inform business decision-making
+- There are lots of variations, but the details of this workflow have been informed by practice to **highlight essential decisions** in the modeling process
+- Just because you follow a workflow doesn't guarantee you'll get a good answer, you must be **careful and thoughtful**
+- The main objective of this modeling workflow is to help you be **open and direct** about your choices and assumptions
 :::
 
 # Before Data
@@ -377,7 +377,7 @@ You should always do an **exploratory data analysis** (EDA), including working t
 :::
 
 ::: {.fragment}
-It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate its strengths and limitations
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
 :::
 :::
 
@@ -395,16 +395,13 @@ You should always do an **exploratory data analysis** (EDA), including working t
 - Check for missing data
 - Ask questions
 
-It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate its strengths and limitations
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
 :::
 
 ::: {.column .gray-box width="42%"}
 Why not start here? It's easy to think that since we have data it must contain the information we need, but there is no guarantee
 
-In the case, the transaction data contains the critical variables, units sold and price, but it doesn't contain other variables we might want, like
-
-- Customer age, income
-- Number of children
+In the case, the transaction data contains the critical variables, units sold and price, but it doesn't contain other variables we might want, like customer age or income, so we may need to find **proxies**
 :::
 
 ::::
@@ -721,7 +718,7 @@ However, all of the predictions are positive, which supports the decision to lau
 
 ::::
 
-# What is your preferred task when working with data? Data wrangling, visualizing data, or implementing methods? {background-color="#006242"}
+# What is your preferred task when working with data: Data wrangling, visualizing data, or implementing methods? {background-color="#006242"}
 
 ## {background-color="#D1CBBD"}
 
