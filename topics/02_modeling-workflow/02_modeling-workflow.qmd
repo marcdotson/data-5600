@@ -720,6 +720,8 @@ However, all of the predictions are positive, which supports the decision to lau
 
 # What is your preferred task when working with data: Data wrangling, visualizing data, or implementing methods? {background-color="#006242"}
 
+# After Data
+
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
@@ -753,7 +755,7 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 
 1. Last chance to take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
 2. Finish setting up your data stack
-3. Submit two detailed project ideas (no more than one page each)
+3. Submit two detailed project ideas, including possible data (no more than one page)
 4. Submit your response as a PDF on Canvas
 
 ## {background-color="#288DC2"}
