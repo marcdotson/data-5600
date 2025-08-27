@@ -89,29 +89,6 @@ The objective is to **maximize profit**, which means we'll need to know (or assu
 
 ::::
 
-## Consider the ideal data and its story {auto-animate=true}
-
-:::: {.columns}
-
-::: {.column width="100%"}
-With the business objective specified, you can think about the data you need and **how that data is generated**
-
-::: {.fragment}
-All data come from somewhere and considering the generating process will help you identify the ideal data
-:::
-
-::: {.incremental}
-- Outcome and predictors
-- Their relationship
-:::
-
-::: {.fragment}
-This story about the possible **data generating process** is the beginning of a model
-:::
-:::
-
-::::
-
 ## Formalize the objective as a function {auto-animate=true}
 
 :::: {.columns}
@@ -209,6 +186,29 @@ It is typical to have **uncertainty about the state of the world**, which motiva
 # Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
 
 # Modeling Data Generating Processes
+
+## Consider the ideal data and its story {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+With the business objective specified, you can think about the data you need and **how that data is generated**
+
+::: {.fragment}
+All data come from somewhere and considering the generating process will help you identify the ideal data
+:::
+
+::: {.incremental}
+- Outcome and predictors
+- Their relationship
+:::
+
+::: {.fragment}
+This story about the possible **data generating process** is the beginning of a model
+:::
+:::
+
+::::
 
 ## Consider the ideal data and its story {auto-animate=true visibility="uncounted"}
 
@@ -327,17 +327,11 @@ We can use simulated data to prepare an analysis and test code
 
 ::::
 
-## 
-
-::: {.v-center}
-![](../../figures/meme_loss-likelihood.png){fig-align="center"}
-:::
-
-# Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
+# Whiteboarding {background-color="#006242"}
 
 # Probabilistic Machine Learning
 
-
+Complemented by probability
 
 ## {background-color="#006242"}
 
@@ -357,5 +351,5 @@ We can use simulated data to prepare an analysis and test code
 #### Next Time
 
 - Probability and statistics
-- Simulating data and recovering parameters? MLE and Bayes (Build and Fit)
+- Simulating data and recovering parameters? MLE and Bayes and Bootstrap? (Build, Fit, Evaluate?)
 

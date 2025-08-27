@@ -30,22 +30,31 @@ format: gfm
 
 ### Decisions
 
+#### Specifying the business objective
+
+- Need to communicate with domain experts to understand the problem and how to inform the decision
+- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize utility/minimize loss
+- Maximize profit, maximize market share, minimize churn, etc.
+- Equivalence of utility and loss functions: u(a, s) = - l(a, s) (or l(a, s) = - u(a, s))
+
+#### Formalize the objective as a function
+
 Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
 
 - Decision theory provides a principled, *unifying* framework for data analytics
 - All decisions can be characterized by minimizing a loss function $\ell (\theta, a)$
 - Business decisions, statistical estimators, model selection, etc.
-- Complemented by a probabilistic approach to machine learning
 - Analytics is using data to inform decision-making and decision theory shows *how*
 
+- Actions, states of the world, objective function (payoff/loss) (starting on BID p. 239)
+- Illustrate first with decision making under *certainty*
+- Consider clearing up the difference between uncertainty and risk (BID p. 199)?
+- Profit and revenue as a function of demand
+- Understand or assume costs (consumer goods 20% markup)
 
-As a data analyst communicates with domain experts to understand the problem and how to inform the decision, a decision theoretic approach requires specifying an objective function that is consistent with the problem and captures the risk aversion of the decision maker. For this problem, a simple customer-specific profit function suffices:
-
-$$
-\pi(p) = Y(p) \times (p - mc)
-$$
-
-where p is the personalized price for the given customer, Y(p) is the predicted demand for the given customer, and mc is the marginal cost. In decision theory, the objective function is typically a loss function. We can identify an optimal decision, conditioned on the specification of the objective function, by minimizing the loss function or equivalently, as we have here, maximizing a utility or profit function.
+- Example loss functions -- or just focus on a linear profit function?
+- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
+- What are the inputs into the function? Parameters -- the states of the world -- along with what actions to take?
 
 SLR-Like
 
@@ -59,29 +68,29 @@ Actions: Go or no-go and pricing decision
 State of the World: Consumer demand (units sold as a function of price)
 Objective Function: Profit function
 
+As a data analyst communicates with domain experts to understand the problem and how to inform the decision, a decision theoretic approach requires specifying an objective function that is consistent with the problem and captures the risk aversion of the decision maker. For this problem, a simple customer-specific profit function suffices:
 
-- Need to communicate with domain experts to understand the problem and how to inform the decision
-- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize utility/minimize loss
-- Maximize profit, maximize market share, minimize churn, etc.
-- Equivalence of utility and loss functions: u(a, s) = - l(a, s) (or l(a, s) = - u(a, s))
+$$
+\pi(p) = Y(p) \times (p - mc)
+$$
 
-- Actions, states of the world, objective function (payoff/loss) (starting on BID p. 239)
-- Illustrate first with decision making under *certainty*
-- Consider clearing up the difference between uncertainty and risk (BID p. 199)?
-- Profit and revenue as a function of demand
-- Understand or assume costs (consumer goods 20% markup)
-
-- Example loss functions -- or just focus on a linear profit function?
-- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
-- What are the inputs into the function? Parameters -- the states of the world -- along with what actions to take?
+where p is the personalized price for the given customer, Y(p) is the predicted demand for the given customer, and mc is the marginal cost. In decision theory, the objective function is typically a loss function. We can identify an optimal decision, conditioned on the specification of the objective function, by minimizing the loss function or equivalently, as we have here, maximizing a utility or profit function.
 
 - The fact that we don't know the state of the world is what motivates probability and statistics
-- Activity: The actions are the prices. The unknown state of the world is demand. The objective function is profit.
+- Activity: What are the actions? What is the state of the world?
 
-### Data Generating Process
+### Data
+
+#### Consider the ideal data and its story
+
+#### Translate the data story into a model
 
 - Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
 - One way to consider this is what data would you need to inform your decision? Or what is the ideal dataset for your objective?
+- Any model is a simplification of reality, but the goal is to capture the essence of the data generation process
+- Models are abstractions of reality -- so how do you know if a model is a good model?
+- Assume a functional mapping exists. Predictive. Interpretable. Causal.
+
 - Reference DAGs in DATA 5620
 
 It's helpful to draw the possible data generating process as a **graph**. This is a special kind of graph known as a **directed acyclic graph** or **DAG**.
@@ -138,6 +147,13 @@ Why? Two big reasons:
 
 
 - Activity: 
+
+### Probability
+
+- Complemented by a probabilistic approach to machine learning (expected loss)
+- Probability as the unifying mathematical language of uncertainty
+- Probability as frequency assumes symmetry and repeatability
+- Interpretable models are typically parametric models -- so not as flexible
 
 - Exercise: 
 - Wrap up
@@ -299,6 +315,7 @@ Confidence intervals are about uncertainty in parameter estimates (i.e., paramet
 
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
 - Overfitting and underfitting
+- Use theory-model-evidence.png
 
 ## Communicating Results
 
