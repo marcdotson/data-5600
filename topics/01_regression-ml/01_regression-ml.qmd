@@ -238,7 +238,7 @@ Each lecture ends with an exercise designed to help you practice what was covere
 - You are encouraged to work together, but you are required to submit your own work
 - Each class begins with one of you being called on at random to share your exercise solution
 - For each exercise, you will be randomly assigned to review one other student’s exercise solution
-- You won’t get credit for an exercise if you don’t submit your exercise on time, aren’t prepared to share your exercise solution when called on at random, or don’t complete your randomly assigned exercise review on time
+- You won’t get credit for an exercise if you don’t submit your exercise on time, aren’t prepared to share your exercise solution when called on at random, or don’t complete your randomly assigned exercise review
 :::
 
 <!-- ## Quizzes (30%)

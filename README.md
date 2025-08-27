@@ -157,22 +157,22 @@ solution.
 
 Students won’t get credit for an exercise if they don’t submit their
 exercise on time, aren’t prepared to share their exercise when called on
-at random, or don’t complete their randomly assigned exercise review on
-time.
+at random, or don’t complete their randomly assigned exercise review.
 
-### Quizzes (30%)
+<!-- ### Quizzes (30%)
+&#10;Quizzes are designed to help students evaluate how well they understand the course material. Each quiz will be available during the associated lectures. Students can retake the quiz as many times as needed before the due date.
+&#10;While students are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates. -->
 
-Quizzes are designed to help students evaluate how well they understand
-the course material. Each quiz will be available during the associated
-lectures. Students can retake the quiz as many times as needed before
-the due date.
+### Interviews (30%)
 
-While students are encouraged to study in groups, each of the quizzes is
-to be completed individually, without assistance from other classmates.
+Interviews are an opportunity for students to practice discussing
+regression and machine learning. Students will individually demonstrate
+their conceptual understanding of the course material, including their
+efforts in exercise and project work, and evaluate their performance in
+the course.
 
-<!-- ### Interviews (30%)
-&#10;Interviews are an opportunity for students to practice discussing regression and machine learning. Students will individually demonstrate their conceptual understanding of the course material, including their efforts in exercise and project work, and evaluate their performance in the course.
-&#10;Interviews will be scheduled with the instructor at the beginning, middle, and end of the semester during office hours or by appointment.-->
+Interviews will be scheduled with the instructor at the beginning,
+middle, and end of the semester during office hours or by appointment.
 
 ### Projects (50%)
 
