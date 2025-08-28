@@ -539,7 +539,7 @@ Fitting a model to data is trivial, but how did we get here?
 ::: {.incremental}
 - We want to inform a decision
 - We are uncertain about information critical to making that decision
-- We built a probabilistic model, which includes unknown parameters that represent the information we are uncertain about
+- We built a probability model, which includes unknown parameters that represent the information we are uncertain about
 :::
 
 ::: {.fragment}
@@ -558,7 +558,7 @@ Fitting a model to data is trivial, but how did we get here?
 
 - We want to inform a decision
 - We are uncertain about information critical to making that decision
-- We built a probabilistic model, which includes unknown parameters that represent the information we are uncertain about
+- We built a probability model, which includes unknown parameters that represent the information we are uncertain about
 
 Fitting the model will give us **estimates** (i.e., guesses) of those parameters
 :::
@@ -755,7 +755,7 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 
 1. Last chance to take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
 2. Finish setting up your data stack
-3. Submit two detailed project ideas, including possible data (no more than one page)
+3. Write about two detailed project ideas, including potential datasets
 4. Submit your response as a PDF on Canvas
 
 ## {background-color="#288DC2"}
