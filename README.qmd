@@ -15,11 +15,6 @@ By the end of this course, students will be able to:
 2. Diagnose and address violations of model assumptions to ensure appropriate model use.
 3. Communicate model results clearly in a business context.
 
-<!-- ## Office Hours
-
-- Tuesday and Thursday 3-5 pm or [by appointment](mailto:marc.dotson@usu.edu)
-- Eccles Business Building 705 or [over Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1) -->
-
 ## Study and Success
 
 Successful students in this course will demonstrate conceptual understanding and skill mastery by applying the modeling workflow within their chosen business context and as part of a group. Each student is an essential member of a community of learners and should consider the instructor as both a teacher and a mentor.
@@ -82,12 +77,6 @@ Letter grades will follow the standard rubric and will be determined as follows.
 Each lecture ends with an exercise designed to help students practice what was covered in class and prepare to apply it to their projects. Each exercise is due before the following class. While students are encouraged to work together, each student is required to submit their own work. Each class begins with a student being called on at random to share their exercise solution. Additionally, for each exercise, every student will be randomly assigned to review one other student’s exercise solution.
 
 Students won’t get credit for an exercise if they don’t submit their exercise on time, aren’t prepared to share their exercise when called on at random, or don’t complete their randomly assigned exercise review.
-
-<!-- ### Quizzes (30%)
-
-Quizzes are designed to help students evaluate how well they understand the course material. Each quiz will be available during the associated lectures. Students can retake the quiz as many times as needed before the due date.
-
-While students are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates. -->
 
 ### Interviews (30%)
 

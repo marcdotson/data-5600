@@ -19,10 +19,6 @@ By the end of this course, students will be able to:
     appropriate model use.
 3.  Communicate model results clearly in a business context.
 
-<!-- ## Office Hours
-&#10;- Tuesday and Thursday 3-5 pm or [by appointment](mailto:marc.dotson@usu.edu)
-- Eccles Business Building 705 or [over Zoom](https://usu-edu.zoom.us/j/9087876841?pwd=4Nl9sQnSAk3lXfwblJQduriCrzDYok.1) -->
-
 ## Study and Success
 
 Successful students in this course will demonstrate conceptual
@@ -158,10 +154,6 @@ solution.
 Students won’t get credit for an exercise if they don’t submit their
 exercise on time, aren’t prepared to share their exercise when called on
 at random, or don’t complete their randomly assigned exercise review.
-
-<!-- ### Quizzes (30%)
-&#10;Quizzes are designed to help students evaluate how well they understand the course material. Each quiz will be available during the associated lectures. Students can retake the quiz as many times as needed before the due date.
-&#10;While students are encouraged to study in groups, each of the quizzes is to be completed individually, without assistance from other classmates. -->
 
 ### Interviews (30%)
 
