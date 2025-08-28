@@ -36,83 +36,82 @@ jupyter: python3
 
 # Decision-Making Under Uncertainty
 
-## Clearly specify the business objective {auto-animate=true}
+## 
 
-:::: {.columns}
+:::: {.columns .v-center}
 
-::: {.column width="100%"}
-To inform business decision-making, there needs to be a clear objective
-
-::: {.fragment}
-What are some common business objectives?
+::: {.column width="40%"}
+![](../../figures/image_cellphone.png){fig-align="center"}
 :::
 
+::: {.column width="60%"}
 ::: {.incremental}
-- Maximize revenue/profit
-- Increase market share
-- Reduce customer churn
-- Improve user satisfaction
-:::
-
-::: {.fragment}
-It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+- An international cell phone carrier
+- Wanted to optimize their cell phone plans
+- Refused to narrow their focus on what mattered most
+- The more **specific the objective** the more **specific the answer**
 :::
 :::
 
 ::::
 
-## Clearly specify the business objective {auto-animate=true visibility="uncounted"}
+## Specify the business objective and problem scope
+
+Informing business decision-making requires a **clear objective** and **limited scope**
+
+::: {.incremental}
+- Communicate with domain experts and stakeholders
+- Research the industry and relevant literature
+- Learn the business model and the industry jargon
+:::
+
+::: {.fragment}
+What business objective are you considering for your project? Is it specific?
+:::
+
+## Most decision-making is informal
+
+How did you decide what degree and major to study?
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-To inform business decision-making, there needs to be a clear objective
-
-What are some common business objectives?
-
-- Maximize revenue/profit
-- Increase market share
-- Reduce customer churn
-- Improve user satisfaction
-
-It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+::: {.fragment fragment-index=1}
+### Pros
 :::
-
-::: {.column .gray-box width="42%"}
-In the case, the decision you need to inform is a go/no-go (launch or not) and pricing strategy for the planned product launch
-
-The objective is to **maximize profit**, which means we'll need to know (or assume) something about:
-
-- Product costs
-- Expected demand
-:::
-
-::::
-
-## Formalize the objective as a function {auto-animate=true}
-
-:::: {.columns}
-
-::: {.column width="100%"}
-A clearly specified objective can be translated into an objective function, which is often a **loss function**
-
-$$
-\LARGE{\ell(a, s)}
-$$
 
 ::: {.incremental}
-- $a$ are **actions** we can take
-- $s$ are **states of the world**
+- Bridge between ML and business
+- Practical, hands-on work
+- Marketable, hard skillset
+- Application for ML
+- Interdisciplinary
+- Good job prospects
+:::
 :::
 
-::: {.fragment}
-Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
+::: {.column width="50%"}
+::: {.fragment fragment-index=2}
+### Cons
+:::
+
+::: {.incremental}
+- Rapidly changing field
+- Tradeoff on theoretical depth
+- Interdisciplinary
 :::
 :::
 
 ::::
 
-## Formalize the objective as a function {auto-animate=true visibility="uncounted"}
+::: {.fragment .fade-up .h-center}
+### We can do better!
+:::
+
+
+
+
+## Formalize the objective as a function
 
 :::: {.columns}
 
@@ -184,6 +183,14 @@ It is typical to have **uncertainty about the state of the world**, which motiva
 ::::
 
 # Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
+
+
+
+
+
+
+
+
 
 # Modeling Data Generating Processes
 
@@ -327,9 +334,14 @@ We can use simulated data to prepare an analysis and test code
 
 ::::
 
-# Whiteboarding {background-color="#006242"}
+# Let's whiteboard {background-color="#006242"}
 
-# Probabilistic Machine Learning
+
+
+
+
+
+# Probabilistic Machine Learning / Probability?
 
 Complemented by probability
 

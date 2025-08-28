@@ -8,7 +8,7 @@ format: gfm
 - Provided more opportunities for student participation beyond live coding by including question slides as prompts for activities, including discussing with a neighbor, raising hands, speed dialogue, and whiteboarding concepts.
 
 - Activities and exercises to have an AI produce code and then have students evaluate
-- Activities and exercises to provide an AI prompt to ask students questions to help them evalute their understanding, a practice interview
+- Activities and exercises to provide an AI prompt to ask students questions to help them evalute their understanding, mock/practice/prep interviews
 - Demonstrate how to use AI in class, how to present to a non-technical audience
 - Demonstrate presenting on a project as part of the communication session
 
@@ -30,18 +30,16 @@ format: gfm
 
 ### Decisions
 
-#### Specifying the business objective
-
-- Need to communicate with domain experts to understand the problem and how to inform the decision
-- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize utility/minimize loss
-- Maximize profit, maximize market share, minimize churn, etc.
-- Equivalence of utility and loss functions: u(a, s) = - l(a, s) (or l(a, s) = - u(a, s))
+SLOW DOWN, VISUALIZE/ILLUSTRATE, QUESTIONS, ACTIVITIES
 
 #### Formalize the objective as a function
+
+- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize utility/minimize loss
 
 Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
 
 - Decision theory provides a principled, *unifying* framework for data analytics
+- Not everyone does use decision theory, but you can -- not a trade school, improve practice
 - All decisions can be characterized by minimizing a loss function $\ell (\theta, a)$
 - Business decisions, statistical estimators, model selection, etc.
 - Analytics is using data to inform decision-making and decision theory shows *how*
@@ -51,6 +49,7 @@ Decision theory is a principled, unifying framework for informing decision makin
 - Consider clearing up the difference between uncertainty and risk (BID p. 199)?
 - Profit and revenue as a function of demand
 - Understand or assume costs (consumer goods 20% markup)
+- Equivalence of utility and loss functions: u(a, s) = - l(a, s) (or l(a, s) = - u(a, s))
 
 - Example loss functions -- or just focus on a linear profit function?
 - Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
@@ -85,11 +84,19 @@ where p is the personalized price for the given customer, Y(p) is the predicted 
 
 #### Translate the data story into a model
 
+- Clarity about interpretable models vs. black box models
+
 - Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
+- Mapping as real world maps -- story --> functional form
+- Intercept-only model -- no story
+- Make a simple story simple but no simpler
 - One way to consider this is what data would you need to inform your decision? Or what is the ideal dataset for your objective?
-- Any model is a simplification of reality, but the goal is to capture the essence of the data generation process
+- Any model is a simplification of reality (small world vs. larger world, model rocket vs. actual), but the goal is to capture the essence of the data generation process
 - Models are abstractions of reality -- so how do you know if a model is a good model?
 - Assume a functional mapping exists. Predictive. Interpretable. Causal.
+- A statistical model is descriptive, about assocations, not (necessarily) causation
+
+- Deterministic vs. probabilistic models
 
 - Reference DAGs in DATA 5620
 
@@ -153,6 +160,7 @@ Why? Two big reasons:
 - Complemented by a probabilistic approach to machine learning (expected loss)
 - Probability as the unifying mathematical language of uncertainty
 - Probability as frequency assumes symmetry and repeatability
+- Frequentist (objective) vs. Bayesian (subjective) interpretations of probability
 - Interpretable models are typically parametric models -- so not as flexible
 
 - Exercise: 
@@ -174,6 +182,12 @@ A probabilistic approach to machine learning enhances the principled, unifying f
 - Get started (solution, schedule, and workflow)
 - Probability as a unifying framework for machine learning (PML p. 1)
 - Bayes vs. frequentist probability?
+
+- Frequentist uncertainty is based on imaginary/theoretical resampling of data (sampling distributions)
+- So only measurements -- estimators can have probability distributions (sampling)
+- Bayesian uncertatinytreats randomness as a property of information, not the world
+- Use randomness to describe our uncertainty in the face of incomplete knowledge
+
 - Uncertainty from not knowing the true data generating process vs. naturally occuring uncertainty in the data (PML p. 7, 33-34)
 - Axioms and basic definitions, set theory
 
@@ -187,6 +201,10 @@ A probabilistic approach to machine learning enhances the principled, unifying f
 - Expectations, conditional expectation; Means, variance, standard deviation, mode, limitations of summaries (PML p. 43)
 - Bayes rule
 - Why Normal? (PML p. 60)
+
+
+
+- Activity: Speed dating to explain critical concept(s)
 
 ### 
 
@@ -259,10 +277,12 @@ Using graphical diagnostics of assumptions
 
 - Exploration and preparation
 - Feature engineering, transformations
+- Training/testing split
 
 - Flexible ML is about automating feature engineering
 
 - Be sure to include +1 for log transforms
+- Rescaling/normalizing/standardizing predictors
 
 ## Discrete Predictors
 
@@ -314,7 +334,7 @@ Confidence intervals are about uncertainty in parameter estimates (i.e., paramet
 ## Model Evaluation and Prediction
 
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
-- Overfitting and underfitting
+- Overfitting and underfitting, variance vs. bias tradeoff
 - Use theory-model-evidence.png
 
 ## Communicating Results
