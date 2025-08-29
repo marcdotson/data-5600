@@ -768,6 +768,6 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 
 #### Next Time
 
-- Discuss decision-making under uncertainty
+- Discuss decision-making in the presence of uncertainty
 - Start modeling data generating processes
 

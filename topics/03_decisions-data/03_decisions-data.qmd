@@ -34,7 +34,7 @@ jupyter: python3
 ![](../../figures/workflow_plan-build.png){fig-align="center"}
 :::
 
-# Decision-Making Under Uncertainty
+# Decision-Making in the Presence of Uncertainty
 
 ## 
 
@@ -71,7 +71,7 @@ What business objective are you considering for your project? Is it specific?
 
 ## Most decision-making is informal
 
-How did you decide what degree and major to study?
+How did you decide on your major?
 
 :::: {.columns}
 
@@ -85,8 +85,8 @@ How did you decide what degree and major to study?
 - Practical, hands-on work
 - Marketable, hard skillset
 - Application for ML
-- Interdisciplinary
 - Good job prospects
+- Interdisciplinary
 :::
 :::
 
