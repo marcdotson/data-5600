@@ -28,7 +28,7 @@ jupyter: python3
 
 #### Preview
 
-- Walk through a high-level overview of a modeling workflow
+- Walk through a high-level overview of our modeling workflow
 
 ## {background-color="#D1CBBD"}
 
@@ -40,9 +40,9 @@ jupyter: python3
 
 ::: {.incremental}
 - Modeling workflows are designed to provide some **structure** as you apply regression and machine learning to inform business decision-making
-- There are lots of variations, but the details of this workflow have been informed by practice to **highlight essential decisions** in the modeling process
+- There are lots of variations, but the details of our workflow have been informed by practice to **highlight essential decisions** in the modeling process
 - Just because you follow a workflow doesn't guarantee you'll get a good answer, you must be **careful and thoughtful**
-- The main objective of this modeling workflow is to help you be **open and direct** about your choices and assumptions
+- The main objective of our modeling workflow is to help you be **open and direct** about your choices and assumptions
 :::
 
 # Before Data
@@ -764,7 +764,7 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 
 #### Summary
 
-- Walked through a high-level overview of a modeling workflow
+- Walked through a high-level overview of our modeling workflow
 
 #### Next Time
 

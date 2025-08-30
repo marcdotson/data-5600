@@ -57,27 +57,32 @@ Objective Function: Profit function
 
 #### Consider the ideal data and its story
 
+- Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
+- One way to consider this is what data would you need to inform your decision? Or what is the ideal dataset for your objective?
+
 #### Translate the data story into a model
 
+- Mapping as real world maps -- story --> functional form
+- Assume a functional mapping exists. Predictive. Interpretable. Causal.
 - Clarity about interpretable models vs. black box models
 
-- Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
-- Mapping as real world maps -- story --> functional form
-- Intercept-only model -- no story
 - Make a simple story simple but no simpler
-- One way to consider this is what data would you need to inform your decision? Or what is the ideal dataset for your objective?
 - Any model is a simplification of reality (small world vs. larger world, model rocket vs. actual), but the goal is to capture the essence of the data generation process
+- Models are simplifications of reality, but the goal is to capture the essence of the data generation process
 - Models are abstractions of reality -- so how do you know if a model is a good model?
-- Assume a functional mapping exists. Predictive. Interpretable. Causal.
+- Every inferential model is a *simplification* of the *true* data generating process (which we don't observe). Even so, models can still help us learn about parameters, assuming the model is a good approximation of the true data generating process.
+
+<!-- <center>
+![](../../Figures/models_rockets.png){width=700px}
+</center> -->
+
+- Intercept-only model -- no story
 - A statistical model is descriptive, about assocations, not (necessarily) causation
-
-- Deterministic vs. probabilistic models
-
 - Reference DAGs in DATA 5620
 
 It's helpful to draw the possible data generating process as a **graph**. This is a special kind of graph known as a **directed acyclic graph** or **DAG**.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```
 # Create a DAG.
 library(dagitty)
 library(ggdag)
@@ -92,45 +97,21 @@ ggdag(dag, layout = "circle") +
   theme_dag()
 ```
 
-- Using linear models to formalize this story and probability distributions to quantify uncertainty
-- Models are simplifications of reality, but the goal is to capture the essence of the data generation process
-- No free lunch theorem: which model is best depends on the application
-- Example likelihoods (as models of the data generating process)
-
-##
-
-To make this a *statistical* model we need to express that our model is not going to explain everything about the data:
+- To make this a *statistical* model we need to express that our model is not going to explain everything about the data:
 
 $$\text{sales} = \beta_0 + \beta_1 \times \text{promotion_spend} + \epsilon$$
 
 Here $\epsilon$ represents **statistical error**. Think of this $\epsilon$ as including every variable beyond `promotion_spend` that effects `sales`.
 
-## 
+- Deterministic vs. probabilistic models
+- Using linear models to formalize this story and probability distributions to quantify uncertainty
 
-Every inferential model is a *simplification* of the *true* data generating process (which we don't observe). Even so, models can still help us learn about parameters, assuming the model is a good approximation of the true data generating process.
+- No free lunch theorem: which model is best depends on the application
+- Example likelihoods (as models of the data generating process)
 
-<!-- <center>
-![](../../Figures/models_rockets.png){width=700px}
-</center> -->
+- Activity: White board a simple data generating process for your project
 
-- Generative models, use to generate or simulate data to evaluate assumptions, prepare for an analysis, test code (recover parameters)
-- Signal simulating data
-
-## 
-
-Since the data generating process is the unobserved process that generates the data, before we work with real data where we never know the data generating process, we can assume that our model *is* the data generating process, *choose* values for the parameters, and generate or **simulate** data using the model. 
-
-For example, we can choose values for $\beta_0$ and $\beta_1$, simulate possible `promotion_spend` data and then simulate `sales` data.
-
-Why? Two big reasons:
-
-1. Prepare our data analysis before getting real data.
-2. Prove our code is working by recovering parameter values.
-
-
-- Activity: 
-
-### Probability
+### Decision-Maing in the Presence of Uncertainty as a Motivation for Probability
 
 - Complemented by a probabilistic approach to machine learning (expected loss)
 - Probability as the unifying mathematical language of uncertainty
@@ -138,8 +119,7 @@ Why? Two big reasons:
 - Frequentist (objective) vs. Bayesian (subjective) interpretations of probability
 - Interpretable models are typically parametric models -- so not as flexible
 
-- Exercise: 
-- Wrap up
+- Exercise: Consider what else should be in our model (not what data we have, what data would be ideal). Assume error is normally distributed and try and simulate a more sophisticated dataset for the case then what we did previously.
 
 # Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
@@ -177,16 +157,24 @@ A probabilistic approach to machine learning enhances the principled, unifying f
 - Bayes rule
 - Why Normal? (PML p. 60)
 
-
-
 - Activity: Speed dating to explain critical concept(s)
 
-### 
+### Simulating Data?
 
 - CLT? Monte Carlo? (PML p. 71-72)
 - Covariance and correlation?
 - Correlation does not imply causation, and the lack of correlation does not imply lack of causation
 - Data and parameters $f(X; \theta)$
+
+Since the data generating process is the unobserved process that generates the data, before we work with real data where we never know the data generating process, we can assume that our model *is* the data generating process, *choose* values for the parameters, and generate or **simulate** data using the model. 
+
+For example, we can choose values for $\beta_0$ and $\beta_1$, simulate possible `promotion_spend` data and then simulate `sales` data.
+
+Why? Two big reasons:
+
+1. Prepare our data analysis before getting real data.
+2. Prove our code is working by recovering parameter values.
+
 - Wrap up
 
 ### Statistics

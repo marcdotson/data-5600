@@ -21,7 +21,7 @@ jupyter: python3
 
 #### Last Time
 
-- Walked through a high-level overview of a modeling workflow
+- Walked through a high-level overview of our modeling workflow
 
 #### Preview
 

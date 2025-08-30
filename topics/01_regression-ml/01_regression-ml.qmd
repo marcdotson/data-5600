@@ -462,5 +462,5 @@ We use models to **extract information** from data and inform decisions in the p
 
 #### Next Time
 
-- Walk through a high-level overview of a modeling workflow
+- Walk through a high-level overview of our modeling workflow
 
