@@ -25,7 +25,7 @@ jupyter: python3
 
 #### Preview
 
-- Discuss decision-making under uncertainty
+- Discuss decision-making in the presence of uncertainty
 - Start modeling data generating processes
 
 ## {background-color="#D1CBBD"}
@@ -49,7 +49,7 @@ jupyter: python3
 - An international cell phone carrier
 - Wanted to optimize their cell phone plans
 - Refused to narrow their focus on what mattered most
-- The more **specific the objective** the more **specific the answer**
+- The more **specific the questions** the more **specific the answers**
 :::
 :::
 
@@ -107,6 +107,10 @@ How did you decide on your major?
 ::: {.fragment .fade-up .h-center}
 ### We can do better!
 :::
+
+## 
+
+
 
 
 

@@ -3,79 +3,54 @@ title: "DATA 5600 Course Notes"
 format: gfm
 ---
 
-- Include slide/code animations, code highlighting, slide/fragment transitions, use icons, use memes
-
-- Provided more opportunities for student participation beyond live coding by including question slides as prompts for activities, including discussing with a neighbor, raising hands, speed dialogue, and whiteboarding concepts.
-
-- Activities and exercises to have an AI produce code and then have students evaluate
-- Activities and exercises to provide an AI prompt to ask students questions to help them evalute their understanding, mock/practice/prep interviews
-- Demonstrate how to use AI in class, how to present to a non-technical audience
-- Demonstrate presenting on a project as part of the communication session
+Provided more opportunities for student participation beyond live coding by including question slides as prompts for activities, including discussing with a neighbor, raising hands, speed dialogue, and whiteboarding concepts.
 
 - Use minimal scales for grades (e.g., "Excellent," "Good," "Needs Improvement")
-- Create project/interview rubrics as a set of guiding questions rather than a checklist
+- Create rubrics as a set of guiding questions rather than a checklist
 - Learn names so you can call on students to share
-
-- QR code for adding me on LinkedIn
+- Create QR code for adding me on LinkedIn
 
 # Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
-## Regression and Machine Learning (Aug 25; Jan 5; May 4)
-
-## Modeling Workflow (Aug 27; Jan 7; May 6)
+- Regression and Machine Learning (Aug 25; Jan 5; May 4)
+- Modeling Workflow (Aug 27; Jan 7; May 6)
 
 # Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
 ## Decisions and Data (Sept 3; Jan 12; May 11)
 
-### Decisions
-
 SLOW DOWN, VISUALIZE/ILLUSTRATE, QUESTIONS, ACTIVITIES
 
-#### Formalize the objective as a function
+### Decision-Making in the Presence of Uncertainty
 
-- Illustrate decision theory with a pros and cons list? then a payoff/loss matrix? maximize utility/minimize loss
+#### Introduce decision theory/science
 
 Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
 
-- Decision theory provides a principled, *unifying* framework for data analytics
-- Not everyone does use decision theory, but you can -- not a trade school, improve practice
+- Not everyone does use decision theory, but you can -- let's improve practice
 - All decisions can be characterized by minimizing a loss function $\ell (\theta, a)$
-- Business decisions, statistical estimators, model selection, etc.
 - Analytics is using data to inform decision-making and decision theory shows *how*
 
-- Actions, states of the world, objective function (payoff/loss) (starting on BID p. 239)
-- Illustrate first with decision making under *certainty*
-- Consider clearing up the difference between uncertainty and risk (BID p. 199)?
-- Profit and revenue as a function of demand
-- Understand or assume costs (consumer goods 20% markup)
-- Equivalence of utility and loss functions: u(a, s) = - l(a, s) (or l(a, s) = - u(a, s))
+#### Illustrate first with decision-making under *certainty* with a payoff/loss matrix
 
-- Example loss functions -- or just focus on a linear profit function?
-- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
-- What are the inputs into the function? Parameters -- the states of the world -- along with what actions to take?
-
-SLR-Like
+Actions, states of the world, objective function (payoff/loss) (starting on BID p. 239)
 
 Actions: Go or no-go
 State of the World: Consumer demand (units sold)
 Objective Function: Profit function
 
-MLR-Like
-
 Actions: Go or no-go and pricing decision
 State of the World: Consumer demand (units sold as a function of price)
 Objective Function: Profit function
 
-As a data analyst communicates with domain experts to understand the problem and how to inform the decision, a decision theoretic approach requires specifying an objective function that is consistent with the problem and captures the risk aversion of the decision maker. For this problem, a simple customer-specific profit function suffices:
+#### Move to decision-making in the presence of *uncertainty*
 
-$$
-\pi(p) = Y(p) \times (p - mc)
-$$
-
-where p is the personalized price for the given customer, Y(p) is the predicted demand for the given customer, and mc is the marginal cost. In decision theory, the objective function is typically a loss function. We can identify an optimal decision, conditioned on the specification of the objective function, by minimizing the loss function or equivalently, as we have here, maximizing a utility or profit function.
-
-- The fact that we don't know the state of the world is what motivates probability and statistics
+- Example loss functions -- compare symmetric/linear and non-linear loss
+- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
+- Consider clearing up the difference between uncertainty and risk (BID p. 199)?
+- Equivalence of utility and loss functions: $l(a, s) = - u(a, s)$
+- Build up to decision-making under uncertainty using the case
+- Uncertainty abou the state of the world is what motivates probability and statistics
 - Activity: What are the actions? What is the state of the world?
 
 ### Data
@@ -338,6 +313,8 @@ Confidence intervals are about uncertainty in parameter estimates (i.e., paramet
 - Use theory-model-evidence.png
 
 ## Communicating Results
+
+- Demonstrate presenting on a project as part of the communication session
 
 ### Module 3 (Slides 29-36)
 
