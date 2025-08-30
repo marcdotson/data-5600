@@ -108,31 +108,32 @@ How did you decide on your major?
 ### We can do better!
 :::
 
-## 
+## Decision theory provides a formal framework
 
+Decision theory (a.k.a., decision science) is a principled, unifying framework for informing decision-making in the presence of uncertainty
 
-
-
-
-
-## Formalize the objective as a function
-
-:::: {.columns}
-
-::: {.column width="50%"}
-A clearly specified objective can be translated into an objective function, which is often a **loss function**
-
+::: {.fragment}
 $$
 \LARGE{\ell(a, s)}
 $$
-
-- $a$ are **actions** we can take
-- $s$ are **states of the world**
-
-Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
 :::
 
-::: {.column .gray-box width="42%"}
+::: {.incremental}
+- $\ell()$ is a **loss function**
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+:::
+
+::: {.fragment}
+Most decisions are still made informally or using predictive rather than decision theoretic objectives, but they don't have to be
+:::
+
+
+
+
+
+## 
+
 In the case, we want to maximize profit (so $-\ell(a, s)$)
 
 $$
@@ -148,9 +149,6 @@ $$
 ::: {.fragment}
 For different prices $p$ (actions), we can compute profit $\mathcal{P}$ given demand $\mathcal{D}$ (states of the world)
 :::
-:::
-
-::::
 
 ## Formalize the objective as a function
 
@@ -186,7 +184,7 @@ It is typical to have **uncertainty about the state of the world**, which motiva
 
 ::::
 
-# Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
+# What actions and states of the world might be associated with your project? {background-color="#006242"}
 
 
 

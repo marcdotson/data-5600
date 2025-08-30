@@ -23,14 +23,6 @@ SLOW DOWN, VISUALIZE/ILLUSTRATE, QUESTIONS, ACTIVITIES
 
 ### Decision-Making in the Presence of Uncertainty
 
-#### Introduce decision theory/science
-
-Decision theory is a principled, unifying framework for informing decision making in the presence of uncertainty
-
-- Not everyone does use decision theory, but you can -- let's improve practice
-- All decisions can be characterized by minimizing a loss function $\ell (\theta, a)$
-- Analytics is using data to inform decision-making and decision theory shows *how*
-
 #### Illustrate first with decision-making under *certainty* with a payoff/loss matrix
 
 Actions, states of the world, objective function (payoff/loss) (starting on BID p. 239)
@@ -46,12 +38,12 @@ Objective Function: Profit function
 #### Move to decision-making in the presence of *uncertainty*
 
 - Example loss functions -- compare symmetric/linear and non-linear loss
+- Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
 - Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
 - Consider clearing up the difference between uncertainty and risk (BID p. 199)?
 - Equivalence of utility and loss functions: $l(a, s) = - u(a, s)$
 - Build up to decision-making under uncertainty using the case
 - Uncertainty abou the state of the world is what motivates probability and statistics
-- Activity: What are the actions? What is the state of the world?
 
 ### Data
 
