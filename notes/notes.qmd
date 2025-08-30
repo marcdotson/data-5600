@@ -103,13 +103,15 @@ Here $\epsilon$ represents **statistical error**. Think of this $\epsilon$ as in
 
 - Activity: White board a simple data generating process for your project
 
-### Decision-Maing in the Presence of Uncertainty as a Motivation for Probability
+### Decision-Making in the Presence of Uncertainty as a Motivation for Probability
 
 - Complemented by a probabilistic approach to machine learning (expected loss)
 - Probability as the unifying mathematical language of uncertainty
 - Probability as frequency assumes symmetry and repeatability
 - Frequentist (objective) vs. Bayesian (subjective) interpretations of probability
 - Interpretable models are typically parametric models -- so not as flexible
+
+- What kind of uncertainty? Data/Model Uncertainty meme.
 
 - Exercise: Consider what else should be in our model (not what data we have, what data would be ideal). Assume error is normally distributed and try and simulate a more sophisticated dataset for the case then what we did previously.
 
