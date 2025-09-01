@@ -5,6 +5,7 @@ format: gfm
 
 Provided more opportunities for student participation beyond live coding by including question slides as prompts for activities, including discussing with a neighbor, raising hands, speed dialogue, and whiteboarding concepts.
 
+- Slow down, visualize/illustrate -- especially with code, ask questions, activities
 - Use minimal scales for grades (e.g., "Excellent," "Good," "Needs Improvement")
 - Create rubrics as a set of guiding questions rather than a checklist
 - Learn names so you can call on students to share
@@ -18,8 +19,6 @@ Provided more opportunities for student participation beyond live coding by incl
 # Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
 ## Decisions and Data (Sept 3; Jan 12; May 11)
-
-SLOW DOWN, VISUALIZE/ILLUSTRATE, QUESTIONS, ACTIVITIES
 
 ### Decision-Making in the Presence of Uncertainty
 

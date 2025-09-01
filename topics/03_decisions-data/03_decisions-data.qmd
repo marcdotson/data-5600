@@ -110,7 +110,7 @@ How did you decide on your major?
 
 ## Decision theory provides a formal framework
 
-Decision theory (a.k.a., decision science) is a principled, unifying framework for informing decision-making in the presence of uncertainty
+Decision theory (a.k.a., decision science) provides a principled, unifying framework for informing decision-making in the presence of uncertainty
 
 ::: {.fragment}
 $$
@@ -125,7 +125,7 @@ $$
 :::
 
 ::: {.fragment}
-Most decisions are still made informally or using predictive rather than decision theoretic objectives, but they don't have to be
+Most decisions are still made informally or using predictive rather than decision theoretic criteria, but they don't have to be
 :::
 
 
