@@ -20,34 +20,9 @@ Provided more opportunities for student participation beyond live coding by incl
 
 ## Decisions and Data (Sept 3; Jan 12; May 11)
 
-### Decision-Making in the Presence of Uncertainty
-
-#### Illustrate first with decision-making under *certainty* with a payoff/loss matrix
-
-Actions, states of the world, objective function (payoff/loss) (starting on BID p. 239)
-
-Actions: Go or no-go
-State of the World: Consumer demand (units sold)
-Objective Function: Profit function
-
-Actions: Go or no-go and pricing decision
-State of the World: Consumer demand (units sold as a function of price)
-Objective Function: Profit function
-
-#### Move to decision-making in the presence of *uncertainty*
-
-- Example loss functions -- compare symmetric/linear and non-linear loss
-- Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
-- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
-- Consider clearing up the difference between uncertainty and risk (BID p. 199)?
-- Equivalence of utility and loss functions: $l(a, s) = - u(a, s)$
-- Build up to decision-making under uncertainty using the case
-- Uncertainty abou the state of the world is what motivates probability and statistics
-
-### Data
-
 #### Consider the ideal data and its story
 
+- Uncertainty about the state of the world is what motivates probability and statistics
 - Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
 - One way to consider this is what data would you need to inform your decision? Or what is the ideal dataset for your objective?
 

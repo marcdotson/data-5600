@@ -46,16 +46,15 @@ jupyter: python3
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- An international cell phone carrier
-- Wanted to optimize their cell phone plans
-- Refused to narrow their focus on what mattered most
+- International cell phone carrier optimizing their product line
+- Refused to narrow their focus and limit the scope of the problem
 - The more **specific the questions** the more **specific the answers**
 :::
 :::
 
 ::::
 
-## Specify the business objective and problem scope
+## Specify the business objective and scope
 
 Informing business decision-making requires a **clear objective** and **limited scope**
 
@@ -77,7 +76,7 @@ How did you decide on your major?
 
 ::: {.column width="50%"}
 ::: {.fragment fragment-index=1}
-### Pros
+**Pros**
 :::
 
 ::: {.incremental}
@@ -92,7 +91,7 @@ How did you decide on your major?
 
 ::: {.column width="50%"}
 ::: {.fragment fragment-index=2}
-### Cons
+**Cons**
 :::
 
 ::: {.incremental}
@@ -108,83 +107,182 @@ How did you decide on your major?
 ### We can do better!
 :::
 
-## Decision theory provides a formal framework
+## Start by identifying actions and states
 
-Decision theory (a.k.a., decision science) provides a principled, unifying framework for informing decision-making in the presence of uncertainty
-
-::: {.fragment}
-$$
-\LARGE{\ell(a, s)}
-$$
-:::
-
-::: {.incremental}
-- $\ell()$ is a **loss function**
-- $a$ are **actions** we can take
-- $s$ are **states of the world**
-:::
+When making a decision, we need to consider what **actions** we can take and the possible relevant **states of the world**
 
 ::: {.fragment}
-Most decisions are still made informally or using predictive rather than decision theoretic criteria, but they don't have to be
+We can organize this information into a decision matrix (i.e., a **loss** or **payoff/utility** matrix), assuming we know the outcomes
 :::
-
-
-
-
-
-## 
-
-In the case, we want to maximize profit (so $-\ell(a, s)$)
-
-$$
-\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)
-$$
-
-::: {.incremental}
-- $\mathcal{D}(p)$ is demand
-- $p$ is price
-- $c$ is cost
-:::
-
-::: {.fragment}
-For different prices $p$ (actions), we can compute profit $\mathcal{P}$ given demand $\mathcal{D}$ (states of the world)
-:::
-
-## Formalize the objective as a function
 
 :::: {.columns}
 
-::: {.column .gray-box width="92%"}
-We can specify a profit function easily enough
-
-```{python}
-#| code-line-numbers: "|2|3|5"
-#| eval: true
-
-# Specify a profit function
-def profit(price, cost, demand):
-  return demand * (price - cost)
-
-profit(3.50, (3.50 * .20), 4500)
-```
-
+::: {.column width="60%"}
 ::: {.fragment}
-But what do we know about the inputs to this function?
+|             | **States** |             |
+|-------------|------------|-------------|
+| **Actions** | Low Demand | High Demand |
+| Go          | -\$20,000  | \$70,000    |
+| No-Go       | \$0.00     | \$0.00      |
+:::
 :::
 
+::: {.column width="40%"}
 ::: {.incremental}
-- Price $p$ is something we can set (action), cost $c$ is known or knowable
-- Demand $\mathcal{D}$ is unknown or known with uncertainty (state of the world)
-:::
-
-::: {.fragment}
-It is typical to have **uncertainty about the state of the world**, which motivates our need to model data and extract information
+- If demand is low, what action should we take?
+- If demand is high, what action should we take?
 :::
 :::
 
 ::::
 
-# What actions and states of the world might be associated with your project? {background-color="#006242"}
+## How do we include uncertainty?
+
+We don't know what the state of the world, but let's assume the probability of demand is 10% Low, 60% Medium, and 30% High
+
+|                 | **States** |            |            |
+|-----------------|------------|------------|------------|
+| **Actions**     | Low        | Medium     | High       |
+| Price at \$4.00 | -\$20,000  | \$30,000   | \$70,000   |
+| Price at \$3.50 | -\$15,000  | \$25,000   | \$75,000   |
+| Price at \$3.00 | -\$10,000  | \$20,000   | \$80,000   |
+| No-Go           | \$0.00     | \$0.00     | \$0.00     |
+
+## How do we include uncertainty? {visibility="uncounted"}
+
+We don't know what the state of the world, but let's assume the probability of demand is 10% Low, 60% Medium, and 30% High
+
+|                 | **States** |            |            |            |
+|-----------------|------------|------------|------------|------------|
+| **Actions**     | Low        | Medium     | High       |            |
+| Price at \$4.00 | -\$20,000  | \$30,000   | \$70,000   | *\$44,000* |
+| Price at \$3.50 | -\$15,000  | \$25,000   | \$75,000   | *\$43,500* |
+| Price at \$3.00 | -\$10,000  | \$20,000   | \$80,000   | *\$43,000* |
+| No-Go           | \$0.00     | \$0.00     | \$0.00     | *\$0.00*   |
+
+::: {.fragment}
+$$
+\LARGE{\sum \ell(a, s) p(s)}
+$$
+:::
+
+## Decision theory provides a formal framework
+
+**Decision theory** (a.k.a., **decision science**) provides a principled, unifying framework for informing decision-making in the presence of uncertainty
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.fragment}
+$$
+\LARGE{\ell(a, s)}
+$$
+:::
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- $\ell()$ is a **loss function**
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+:::
+:::
+
+::::
+
+## Decision theory provides a formal framework {visibility="uncounted"}
+
+**Decision theory** (a.k.a., **decision science**) provides a principled, unifying framework for informing decision-making in the presence of uncertainty
+
+:::: {.columns}
+
+::: {.column width="50%"}
+$$
+\LARGE{\color{grey}{\ell(a, }\theta\color{grey}{)}}
+$$
+:::
+
+::: {.column width="50%"}
+- $\ell()$ is a **loss function**
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+- $\theta$ represents **unknowns**
+:::
+
+::::
+
+::: {.fragment}
+Many decisions are made informally or using predictive rather than decision theoretic criteria
+:::
+
+::: {.fragment .fade-up .h-center}
+### When should we use informal vs. formal decision-making?
+:::
+
+## Quadratic loss
+
+**Quadratic loss** or **squared error loss** is a commonly used loss function, especially for budgeting, forecasting, and production planning
+
+$$
+\LARGE{\ell(a, \theta) = (a - \theta)^2}
+$$
+
+::: {.incremental}
+- Quadratic loss is **symmetric**: Gains and losses are treated the same
+- Large deviations produce more loss than small deviations
+:::
+
+## Linear utility
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)}
+\end{aligned}
+$$
+
+## Linear utility {visibility="uncounted"}
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
+& \hspace{3mm} \LARGE{= r + c \theta}
+\end{aligned}
+$$
+
+## Linear utility {visibility="uncounted"}
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
+& \hspace{3mm} \LARGE{= r + c \theta} \\
+& \hspace{3mm} \LARGE{= \theta (r - c)} \\
+\end{aligned}
+$$
+
+## Linear utility {visibility="uncounted"}
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{\color{grey}{= -\ell(a, \theta)}} \\
+& \hspace{3mm} \LARGE{\color{grey}{= r + c \theta}} \\
+& \hspace{3mm} \LARGE{= \theta (r - c)}
+\end{aligned}
+$$
+
+::: {.incremental}
+- Our **profit function** $\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)$ is a linear utility function
+- Linear utility is also **symmetric** and assumes the decision-maker is **risk neutral**
+:::
+
+# What actions, states of the world, and loss/utility function might be relevant for your project? {background-color="#006242"}
 
 
 
