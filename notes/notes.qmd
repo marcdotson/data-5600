@@ -22,7 +22,6 @@ Provided more opportunities for student participation beyond live coding by incl
 
 #### Consider the ideal data and its story
 
-- Uncertainty about the state of the world is what motivates probability and statistics
 - Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
 - One way to consider this is what data would you need to inform your decision? Or what is the ideal dataset for your objective?
 
@@ -75,9 +74,15 @@ Here $\epsilon$ represents **statistical error**. Think of this $\epsilon$ as in
 - No free lunch theorem: which model is best depends on the application
 - Example likelihoods (as models of the data generating process)
 
-- Activity: White board a simple data generating process for your project
+CODE
+
+- Activity: Draw a simple data generating process for your project
+
+## Keep loss and likelihood functions as simple as possible!
 
 ### Decision-Making in the Presence of Uncertainty as a Motivation for Probability
+
+- Types of uncertainty: aleatoric vs. epistemic (meme)
 
 - Complemented by a probabilistic approach to machine learning (expected loss)
 - Probability as the unifying mathematical language of uncertainty

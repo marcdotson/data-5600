@@ -34,8 +34,6 @@ jupyter: python3
 ![](../../figures/workflow_plan-build.png){fig-align="center"}
 :::
 
-# Decision-Making in the Presence of Uncertainty
-
 ## 
 
 :::: {.columns .v-center}
@@ -53,6 +51,8 @@ jupyter: python3
 :::
 
 ::::
+
+# Decision-Making in the Presence of Uncertainty
 
 ## Specify the business objective and scope
 
@@ -284,15 +284,29 @@ $$
 
 # What actions, states of the world, and loss/utility function might be relevant for your project? {background-color="#006242"}
 
+# Data Generating Processes
+
+## Narrate the data story
+
+In order to inform decision-making, we need to **extract information from data** about the unknown state of the world $\theta$
+
+## Start by identifying the ideal data
+
+DAGs
+
+## Linear models
+
+Mapping function
+
+## Simulate data
+
+Types of uncertainty
+Recover parameters when there is only one kind of uncertainty
 
 
 
 
 
-
-
-
-# Modeling Data Generating Processes
 
 ## Consider the ideal data and its story {auto-animate=true}
 
