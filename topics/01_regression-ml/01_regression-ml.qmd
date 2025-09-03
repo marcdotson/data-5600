@@ -436,7 +436,7 @@ We use models to **extract information** from data and inform decisions in the p
 We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
 ::: {.columns}
-![](../../figures/models_all.png){fig-align="center"}
+![](../../figures/models_all-01.png){fig-align="center"}
 :::
 
 ## {background-color="#006242"}
