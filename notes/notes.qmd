@@ -18,81 +18,7 @@ Provided more opportunities for student participation beyond live coding by incl
 
 # Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
-## Decisions and Data (Sept 3; Jan 12; May 11)
-
-#### Consider the ideal data and its story
-
-- Stories -- modeling as storytelling, starts as a narrative and then gets mathematized
-- One way to consider this is what data would you need to inform your decision? Or what is the ideal dataset for your objective?
-
-#### Translate the data story into a model
-
-- Mapping as real world maps -- story --> functional form
-- Assume a functional mapping exists. Predictive. Interpretable. Causal.
-- Clarity about interpretable models vs. black box models
-
-- Make a simple story simple but no simpler
-- Any model is a simplification of reality (small world vs. larger world, model rocket vs. actual), but the goal is to capture the essence of the data generation process
-- Models are simplifications of reality, but the goal is to capture the essence of the data generation process
-- Models are abstractions of reality -- so how do you know if a model is a good model?
-- Every inferential model is a *simplification* of the *true* data generating process (which we don't observe). Even so, models can still help us learn about parameters, assuming the model is a good approximation of the true data generating process.
-
-<!-- <center>
-![](../../Figures/models_rockets.png){width=700px}
-</center> -->
-
-- Intercept-only model -- no story
-- A statistical model is descriptive, about assocations, not (necessarily) causation
-- Reference DAGs in DATA 5620
-
-It's helpful to draw the possible data generating process as a **graph**. This is a special kind of graph known as a **directed acyclic graph** or **DAG**.
-
-```
-# Create a DAG.
-library(dagitty)
-library(ggdag)
-
-dag <- dagitty("dag {
-  F -> P
-  F -> S
-  P -> S
-}")
-
-ggdag(dag, layout = "circle") +
-  theme_dag()
-```
-
-- To make this a *statistical* model we need to express that our model is not going to explain everything about the data:
-
-$$\text{sales} = \beta_0 + \beta_1 \times \text{promotion_spend} + \epsilon$$
-
-Here $\epsilon$ represents **statistical error**. Think of this $\epsilon$ as including every variable beyond `promotion_spend` that effects `sales`.
-
-- Deterministic vs. probabilistic models
-- Using linear models to formalize this story and probability distributions to quantify uncertainty
-
-- No free lunch theorem: which model is best depends on the application
-- Example likelihoods (as models of the data generating process)
-
-CODE
-
-- Activity: Draw a simple data generating process for your project
-
-## Keep loss and likelihood functions as simple as possible!
-
-### Decision-Making in the Presence of Uncertainty as a Motivation for Probability
-
-- Types of uncertainty: aleatoric vs. epistemic (meme)
-
-- Complemented by a probabilistic approach to machine learning (expected loss)
-- Probability as the unifying mathematical language of uncertainty
-- Probability as frequency assumes symmetry and repeatability
-- Frequentist (objective) vs. Bayesian (subjective) interpretations of probability
-- Interpretable models are typically parametric models -- so not as flexible
-
-- What kind of uncertainty? Data/Model Uncertainty meme.
-
-- Exercise: Consider what else should be in our model (not what data we have, what data would be ideal). Assume error is normally distributed and try and simulate a more sophisticated dataset for the case then what we did previously.
+- Decisions and Data (Sept 3; Jan 12; May 11)
 
 # Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
@@ -105,9 +31,21 @@ A probabilistic approach to machine learning enhances the principled, unifying f
 
 - Why teach both? If all you have is a hammer, everything looks like a nail. And it's often easier to understand a thing in contrast.
 
+- Deterministic vs. probabilistic models
+- Interpretable models are typically parametric models -- so not as flexible
+- Probability as frequency assumes symmetry and repeatability
+- Frequentist (objective) vs. Bayesian (subjective) interpretations of probability
+
+- Intercept-only model -- no story -- intercept or bias
+- Using linear models to formalize this story and probability distributions to quantify uncertainty
+- No free lunch theorem: which model is best depends on the application
+- Example likelihoods (as models of the data generating process)
+
 ### Uncertainty
 
-- Get started (solution, schedule, and workflow)
+Recover parameters when there is only one kind of uncertainty
+recovering parameters? MLE and Bayes and Bootstrap? (Build, Fit, Evaluate?)
+
 - Probability as a unifying framework for machine learning (PML p. 1)
 - Bayes vs. frequentist probability?
 

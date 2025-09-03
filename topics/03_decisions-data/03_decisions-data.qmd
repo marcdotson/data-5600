@@ -138,7 +138,7 @@ We can organize this information into a decision matrix (i.e., a **loss** or **p
 
 ## How do we include uncertainty?
 
-We don't know what the state of the world, but let's assume the probability of demand is 10% Low, 60% Medium, and 30% High
+We don't know the state of the world, but let's assume the probability of demand is 10% Low, 60% Medium, and 30% High
 
 |                 | **States** |            |            |
 |-----------------|------------|------------|------------|
@@ -150,7 +150,7 @@ We don't know what the state of the world, but let's assume the probability of d
 
 ## How do we include uncertainty? {visibility="uncounted"}
 
-We don't know what the state of the world, but let's assume the probability of demand is 10% Low, 60% Medium, and 30% High
+We don't know the state of the world, but let's assume the probability of demand is 10% Low, 60% Medium, and 30% High
 
 |                 | **States** |            |            |            |
 |-----------------|------------|------------|------------|------------|
@@ -212,11 +212,7 @@ $$
 ::::
 
 ::: {.fragment}
-Many decisions are made informally or using predictive rather than decision theoretic criteria
-:::
-
-::: {.fragment .fade-up .h-center}
-### When should we use informal vs. formal decision-making?
+Many decisions are made informally or using predictive rather than decision theoretic criteria, but when should we use informal vs. formal decision-making?
 :::
 
 ## Quadratic loss
@@ -282,148 +278,127 @@ $$
 - Linear utility is also **symmetric** and assumes the decision-maker is **risk neutral**
 :::
 
-# What actions, states of the world, and loss/utility function might be relevant for your project? {background-color="#006242"}
+# What actions, states of the world, and loss/utility function might be relevant for your project? Make it specific. {background-color="#006242"}
 
 # Data Generating Processes
 
+## Decision-making motivates modeling data
+
+In order to inform our decision-making, we need a model to **extract information** from data about the unknown state of the world $\theta$
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.fragment}
+![](../../figures/models_all-02.png){fig-align="center"}
+:::
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- Why should we use an **interpretable model** for this problem?
+- When would a flexible, **black-box model** be appropriate?
+- Why would we need a **causal model**?
+:::
+:::
+
+::::
+
 ## Narrate the data story
 
-In order to inform decision-making, we need to **extract information from data** about the unknown state of the world $\theta$
+All data come from somewhere and narrating the **data generating process** will help you identify the ideal data
 
-## Start by identifying the ideal data
+::: {.incremental}
+- Communicate with domain experts and stakeholders
+- Research the industry and relevant literature
+- Learn the business model and the industry jargon
+:::
 
-DAGs
+::: {.fragment}
+Every model is a **simplification of reality**, but the goal is to capture the essence of the data generating process
+:::
 
-## Linear models
+::: {.fragment}
+What data story are you considering for your project? Is it simple *enough*?
+:::
 
-Mapping function
+## 
+
+::: {.v-center}
+![](../../figures/models_rockets.png){fig-align="center"}
+:::
+
+## Identify $y$ and $X$
+
+For **supervised learning** we want to learn a **mapping function** from inputs to output $f: X \rightarrow y$, so start translating the data story into a model by identifying the outcome and predictor variables
+
+:::: {.columns}
+
+::: {.column width="50%"}
+$y$
+
+- output
+- outcome
+- response
+- dependent variable
+- continuous for **regression**
+- discrete for **classification**
+:::
+
+::: {.column width="50%"}
+$X$
+
+- inputs
+- features
+- predictors
+- independent variables
+- explanatory variables
+- continuous and discrete
+:::
+
+::::
+
+## Draw the relationships between $y$ and $X$
+
+It's helpful to draw the possible data generating process as a **graph** where
+
+- Each node is a variable
+- Each edge is an association
+
+![](../../figures/dag.png){fig-align="center"}
+
+::: {.fragment}
+In DATA 5620, we use this **directed acyclic graph** (DAG) to identify causal effects
+:::
+
+## Assume a functional form
+
+Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
+
+$$
+\Large{f(X, \theta) = \theta_0 + \theta_1 x_1 + \cdots + \theta_p x_p + \epsilon}
+$$
+
+## Assume a functional form {visibility="uncounted"}
+
+Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
+
+$$
+\Large{f(X, \beta) = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon}
+$$
+
+::: {.incremental}
+- $\beta$ is the **weights** or **parameters** of the mapping function, with $\beta_0$ the **intercept** or **bias** and $\beta_1$ through $\beta_p$ the **slopes**
+- $\epsilon$ represents **error**, showing that our model isn't capturing everything about the data generating process
+- typically $\epsilon \sim \text{Normal}(0, \sigma^2)$
+:::
 
 ## Simulate data
 
-Types of uncertainty
-Recover parameters when there is only one kind of uncertainty
-
-
-
-
-
-
-## Consider the ideal data and its story {auto-animate=true}
-
-:::: {.columns}
-
-::: {.column width="100%"}
-With the business objective specified, you can think about the data you need and **how that data is generated**
-
-::: {.fragment}
-All data come from somewhere and considering the generating process will help you identify the ideal data
-:::
-
-::: {.incremental}
-- Outcome and predictors
-- Their relationship
-:::
-
-::: {.fragment}
-This story about the possible **data generating process** is the beginning of a model
-:::
-:::
-
-::::
-
-## Consider the ideal data and its story {auto-animate=true visibility="uncounted"}
-
-:::: {.columns}
-
-::: {.column width="50%"}
-With the business objective specified, you can think about the data you need and **how that data is generated**
-
-All data come from somewhere and considering the generating process will help you identify the ideal data
-
-- Outcome and predictors
-- Their relationship
-
-This story about the possible **data generating process** is the beginning of a model
-:::
-
-::: {.column .gray-box width="42%"}
-In the case, the outcome of interest is the number of units of peanut butter sold, but what is it that drives that demand?
-
-::: {.incremental}
-- Price (key predictor)
-- Brand, brand loyalty
-- Promotions
-- Size
-- Customer age, income
-- Number of children
-:::
-:::
-
-::::
-
-## Translate the data story into a model {auto-animate=true}
-
-:::: {.columns}
-
-::: {.column width="100%"}
-A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their relationship is consistent with the objective
-
-::: {.fragment}
-$$
-\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
-$$
-:::
-
-::: {.fragment}
-$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
-:::
-
-::: {.fragment}
-We will see that this same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
-:::
-:::
-
-::::
-
-## Translate the data story into a model {auto-animate=true visibility="uncounted"}
-
-:::: {.columns}
-
-::: {.column width="50%"}
-A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their relationship is consistent with the objective
-
-$$
-\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
-$$
-
-$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
-
-This same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
-:::
-
-::: {.column .gray-box width="42%"}
-If we know little about the data generating process, we should start with a model that makes few assumptions, like a **linear model**
-
-$$
-\beta_0 + \beta_{price} X_{price} + \epsilon
-$$
-
-::: {.fragment}
-where $\epsilon$ represents **error**, showing that our model isn't capturing everything about the data generating process
-:::
-:::
-
-::::
-
-## Translate the data story into a model
-
-:::: {.columns}
-
-::: {.column .gray-box width="92%"}
-If we assume a probability distribution for $\epsilon$, we can pretend our model (i.e., likelihood function) *is* the data generation process and **simulate data**
+We can pretend our model *is* the data generation process and **simulate data** (i.e., generate data) to prepare our analysis and test code
 
 ```{python}
-#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|13"
+#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|12|14"
 #| eval: true
 
 import numpy as np
@@ -432,38 +407,53 @@ import numpy as np
 rng = np.random.default_rng(42)
 
 # Specify a function to simulate data
-def sim_data(n, beta_0, beta_price):
-    price = rng.normal(2, 1, size=n)
-    error = rng.normal(0, 1, size=n)
-    units = (beta_0 + beta_price * price + error).round(0)
-    return price, units
+def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
+    x1 = rng.normal(10, 3, size=n)
+    x2 = rng.binomial(1, 0.5, size=n)
+    error = rng.normal(0, sigma, size=n)
+    y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
+    return y, x1, x2
 
-sim_data(n = 5, beta_0 = 2, beta_price = -0.3)
+sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
 ```
 
+# What might $y$, $X$, and their relationships be for your project? Try drawing a graph. Keep it simple.{background-color="#006242"}
+
+# Uncertainty
+
+## Uncertainty motivates using probability
+
+If decision-making motivates modeling data, **quantifying uncertainty** motivates using **probability**, the mathematical language of uncertainty
+
 ::: {.fragment}
-We can use simulated data to prepare an analysis and test code
+What kind of uncertainty?
 :::
+
+::: {.incremental}
+- **Data uncertainty** or **aleatoric uncertainty** (from the Latin word for dice) is about the information or **signal** we want to extract being obscured by randomness or noise in the data
+- **Model uncertainty** or **epistemic uncertainty** (from the study of knowledge) is about our **limited knowledge** of the data generating process
 :::
 
-::::
+::: {.fragment}
+For interpretable models, we **assume a mapping function exists** and try and to carefully build one so we can focus on quantifying uncertainty by estimating parameters
+:::
 
-# Let's whiteboard {background-color="#006242"}
+## 
 
-
-
-
-
-
-# Probabilistic Machine Learning / Probability?
-
-Complemented by probability
+::: {.v-center}
+![](../../figures/meme_uncertainty.png){fig-align="center"}
+:::
 
 ## {background-color="#006242"}
 
 ### Exercise 03 {.lato-font}
 
-4. Submit your response as a PDF on Canvas
+1. Simulate sales data (not units sold) as a function of four or more predictors
+2. Instead of `y`, `x1`, etc. use meaningful variable names
+3. Assume the error is distributed normal
+4. Use different parameter values than we did in class
+5. Comment your code clearly
+6. Submit your code and printed output as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -476,6 +466,6 @@ Complemented by probability
 
 #### Next Time
 
-- Probability and statistics
-- Simulating data and recovering parameters? MLE and Bayes and Bootstrap? (Build, Fit, Evaluate?)
+- Finish building models using probability
+- Demonstrate fitting models to recover parameters
 
