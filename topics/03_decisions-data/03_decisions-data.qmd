@@ -453,7 +453,8 @@ For interpretable models, we **assume a mapping function exists** and try and to
 3. Assume the error is distributed normal
 4. Use different parameter values than we did in class
 5. Comment your code clearly
-6. Submit your code and printed output as a PDF on Canvas
+6. Visualize the simulated data using at least two different plots
+7. Submit your code and printed output as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 
