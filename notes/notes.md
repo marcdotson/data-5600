@@ -1,229 +1,31 @@
 # DATA 5600 Course Notes
 
 
-# What I Did
+Provided more opportunities for student participation beyond live coding
+by including question slides as prompts for activities, including
+discussing with a neighbor, raising hands, speed dialogue, and
+whiteboarding concepts.
 
-I revised the course consistent with the pedagogical research begun last
-year to study the effect of a probabilistic and decision theoretic
-approach to machine learning on student confidence and understanding.
-This included framing the course with decision theoretic objectives and
-a probabilistic modeling workflow and referring to this unifying
-framework throughout the semester. I also responded to student and peer
-feedback.
-
-- Organized the course better, including using the decision theoretic
-  objectives and probabilistic modeling workflow as a unifying
-  framework.
-- Replaced homework assignments with exercises leading up to two instead
-  of three projects. Exercises provide more consistent practice and
-  include opportunities for reflection and preparation for upcoming
-  class topics.
-- Detailed two business cases, one for each unit, to reduce the
-  cognitive burden of switching between many datasets and allowing for
-  greater depth for each application to better inform student project
-  work.
-- Clarified the expectations for each project by ensuring the rubrics
-  make the purpose, task, skills, and criteria clear and by having a
-  single initial submission deadline so students can get feedback before
-  presenting and so students who present later in the week don’t have an
-  advantage over others.
-- Revised the course content to make it my own, including slides to
-  preview and summarize each lecture.
-- Included more live coding in class instruction (as well as discussing
-  error messages) and by starting class with a student called on at
-  random to share their solution to the exercise due for that class.
-- Provided more opportunities for student participation beyond live
-  coding by including question slides as prompts for activities,
-  including discussing with a neighbor, raising hands, speed dialogue,
-  and whiteboarding concepts.
+- Slow down, visualize/illustrate – especially with code, ask questions,
+  activities
+- Use minimal scales for grades (e.g., “Excellent,” “Good,” “Needs
+  Improvement”)
+- Create rubrics as a set of guiding questions rather than a checklist
+- Learn names so you can call on students to share
+- Create QR code for adding me on LinkedIn
 
 # Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
-## Regression and Machine Learning (for Analytics) (Aug 25; Jan 5; May 4)
-
-### Introductions
-
-- Get started (schedule w/o dates?)
-- What is your major? What business problems interest you?
-- Personal introduction
-- Activity: Form groups (of size X), move to sit together, discuss
-  interests
-
-### Course/Syllabus Overview
-
-- Analytics is using data to inform decisions in the presence of
-  uncertainty
-- Summarize the course objectives, skills
-- CV entry
-- What makes this course different from DATA 3100 and 3300?
-- What makes this course different from DATA 3500?
-- Discuss DATA 5610, 5620, and 5630
-- How to learn and the place of assessments
-- Breakdown of grades: At this level, your assessmenmts should be
-  aligned with what you will be expected to do in practice
-- Reference data-stack as recommended tools for the course
-- Discuss the Goldilocks zone for AI use, reference Copilot
-- Getting help
-- Activity: Look at syllabus, discuss what you’re excited/nervous about,
-  questions
-
-### Stories
-
-- Mathematics, Statistics, Economics; Computer Science, AI, Machine
-  Learning; and Data Analytics
-- This fractured history is a reason why there are is so much
-  terminology to keep track of
-- “Standing on the shoulders of giants”
-- What is regression and ML? What is the relationship and overlap?
-- Where the name “regression” comes from – extreme values “regressing”
-  to the mean
-- Data analytics vs. data mining vs. data science (PML p. 27-28)
-- Supervised vs. unsupervised vs. reinforcement learning
-- Supervised learning is learning a mapping function from inputs to
-  outputs $f: X \rightarrow Y$
-- Regression and classification, $y \in \\R$
-  vs. $y \in \{1, \ldots, C\}$
-- Descriptive statistics, inferential statistics, and decision theory?
-- Models *extract information* from the data to inform decisions in the
-  presence of uncertainty
-- All models predict, some are interpretable, fewer still are causal; is
-  the model consistent with your objective?
-- Business applications for analytics
-- Exercise: Read case and describe how you might use regression and ML
-  to inform the decision, complete the class survey
-- Wrap up
-
-## Modeling Workflow (Aug 27; Jan 7; May 6)
-
-### Before Data
-
-- Get started (solution, schedule w/o dates?, and workflow)
-- High-level overview of the (interpretable) modeling workflow (with the
-  case as application?)
-- Focus on being open/transparent and direct with objectives and
-  assumptions
-- Plan: objective/loss function, data generation process/ideal dataset
-- Stories – implicitly we weight pros and cons when making a decision –
-  narrate this objective
-- Stories – modeling as storytelling, starts as a narrative and then
-  gets mathematized
-- Build: Translate story into mathematical models – a functional mapping
-  of your objective (loss function) inputs to output (likelihood)
-- Activity: Discuss with your groups what kind of loss function, data
-  generating process makes sense for your problem
-
-### Using Data
-
-- Explore: Summarize and visualize the data, data dictionary; X as
-  design matrix, N and P
-- Reconcile: Data and Model. Preprocess the data (what
-  transformations?), compare the data to what you’ve simulated to see if
-  you’re missing something from your model. Check assumptions, specific
-  to linear models or other kinds of models (or is that just part of
-  prepare?). Careful with overfitting. Sensitivity analysis.
-- Fit: Fit/train/calibrate the model on training data (lots of different
-  models, libraries we can use – needs to be consistent with our
-  objective)
-- Evaluate: Parameter estimates (including uncertainty), considering
-  significance, and overall (predictive) model fit on testing data
-- Predict: Use the model to make predictions on new data, including
-  uncertainty in those predictions
-- Activity: Speed dialogue to discuss favorite libraries you use for
-  working with data
-
-### Communicating Results
-
-- Communicate: Report and present the results in a way that is
-  understood by a mixed audience
-- Everything you’ve worked on is to inform the managerial decision, so
-  if you don’t it’s like giving up at the end of the race
-- Discuss good and bad examples of communicating modeling results
-- Exercise: Summarize the case’s objective and the ideal data
-- Wrap up
+- Regression and Machine Learning (Aug 25; Jan 5; May 4)
+- Modeling Workflow (Aug 27; Jan 7; May 6)
 
 # Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
-## Decisions and Data / Loss and Likelihood Functions / Payoffs, Losses, and Likelihoods (Sept 3; Jan 12; May 11)
-
-### Decisions
-
-- Get started (solution, schedule w/o dates?, and workflow)
-
-- Use the case to start illustrating in more detail the modeling
-  workflow
-
-- Decision theory is a principled, unifying framework for informing
-  decision making in the presence of uncertainty
-
-- Need to communicate with domain experts to understand the problem and
-  how to inform the decision
-
-- Illustrate decision theory with a pros and cons list? then a
-  payoff/loss matrix? maximize utility/minimize loss
-
-- Maximize profit, maximize market share, minimize churn, etc.
-
-- Equivalence of utility and loss functions: u(a, s) = - l(a, s) (or
-  l(a, s) = - u(a, s))
-
-- Actions, states of the world, objective function (payoff/loss)
-  (starting on BID p. 239)
-
-- Illustrate first with decision making under *certainty*
-
-- Consider clearing up the difference between uncertainty and risk (BID
-  p. 199)?
-
-- Profit and revenue as a function of demand
-
-- Understand or assume costs (consumer goods 20% markup)
-
-- Example loss functions – or just focus on a linear profit function?
-
-- Risk neutral, risk averse, risk seeking loss functions (BID p. 227)
-
-- What are the inputs into the function? Parameters – the states of the
-  world – along with what actions to take?
-
-- The fact that we don’t know the state of the world is what motivates
-  probability and statistics
-
-- Activity:
-
-### Data Generating Process
-
-- Stories – modeling as storytelling, starts as a narrative and then
-  gets mathematized
-
-- One way to consider this is what data would you need to inform your
-  decision? Or what is the ideal dataset for your objective?
-
-- Reference DAGs in DATA 5620
-
-- Using linear models to formalize this story and probability
-  distributions to quantify uncertainty
-
-- Models are simplifications of reality, but the goal is to capture the
-  essence of the data generation process
-
-- No free lunch theorem: which model is best depends on the application
-
-- Example likelihoods (as models of the data generating process)
-
-- Generative models, use to generate or simulate data to evaluate
-  assumptions, prepare for an analysis, test code (recover parameters)
-
-- Signal simulating data
-
-- Activity:
-
-- Exercise:
-
-- Wrap up
+- Decisions and Data (Sept 3; Jan 12; May 11)
 
 # Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
-## Probability and Statistics / Probabilistic Machine Learning (Sept 8; Jan 14; May 13)
+## Probability and Statistics (Sept 8; Jan 14; May 13)
 
 A probabilistic approach to machine learning enhances the principled,
 unifying framework provided by decision theory. This includes Bayesian
@@ -246,13 +48,49 @@ set list of procedures.
 - Why teach both? If all you have is a hammer, everything looks like a
   nail. And it’s often easier to understand a thing in contrast.
 
+- Deterministic vs. probabilistic models
+
+- Interpretable models are typically parametric models – so not as
+  flexible
+
+- Probability as frequency assumes symmetry and repeatability
+
+- Frequentist (objective) vs. Bayesian (subjective) interpretations of
+  probability
+
+- Intercept-only model – no story – intercept or bias
+
+- Using linear models to formalize this story and probability
+  distributions to quantify uncertainty
+
+- No free lunch theorem: which model is best depends on the application
+
+- Example likelihoods (as models of the data generating process)
+
 ### Uncertainty
 
-- Get started (solution, schedule, and workflow)
+Recover parameters when there is only one kind of uncertainty recovering
+parameters? MLE and Bayes and Bootstrap? (Build, Fit, Evaluate?)
+
 - Probability as a unifying framework for machine learning (PML p. 1)
+
 - Bayes vs. frequentist probability?
+
+- Frequentist uncertainty is based on imaginary/theoretical resampling
+  of data (sampling distributions)
+
+- So only measurements – estimators can have probability distributions
+  (sampling)
+
+- Bayesian uncertatinytreats randomness as a property of information,
+  not the world
+
+- Use randomness to describe our uncertainty in the face of incomplete
+  knowledge
+
 - Uncertainty from not knowing the true data generating process
   vs. naturally occuring uncertainty in the data (PML p. 7, 33-34)
+
 - Axioms and basic definitions, set theory
 
 ### Random Variables and Distributions
@@ -260,22 +98,46 @@ set list of procedures.
 - Use an experiment to illustrate the difference between random and
   fixed variables: Need something fixed to learn about the random
   variable
+
 - RVs, discrete and continous, PMF and PDF
+
 - Distributions, supports
+
 - Normal vs. uniform distributions, etc.
+
 - Joint and marginal distributions
+
 - Expectations, conditional expectation; Means, variance, standard
   deviation, mode, limitations of summaries (PML p. 43)
+
 - Bayes rule
+
 - Why Normal? (PML p. 60)
 
-### 
+- Activity: Speed dating to explain critical concept(s)
+
+### Recovering Parameters
 
 - CLT? Monte Carlo? (PML p. 71-72)
 - Covariance and correlation?
 - Correlation does not imply causation, and the lack of correlation does
   not imply lack of causation
 - Data and parameters $f(X; \theta)$
+
+Since the data generating process is the unobserved process that
+generates the data, before we work with real data where we never know
+the data generating process, we can assume that our model *is* the data
+generating process, *choose* values for the parameters, and generate or
+**simulate** data using the model.
+
+For example, we can choose values for $\beta_0$ and $\beta_1$, simulate
+possible `promotion_spend` data and then simulate `sales` data.
+
+Why? Two big reasons:
+
+1.  Prepare our data analysis before getting real data.
+2.  Prove our code is working by recovering parameter values.
+
 - Wrap up
 
 ### Statistics
@@ -308,6 +170,12 @@ set list of procedures.
 See https://allendowney.github.io/ElementsOfDataScience/ See
 https://allendowney.github.io/ThinkStats/ See
 https://sta210-s22.github.io/website/
+
+- Exercise: Produce a meme summarizing a key statistics concept
+
+### Exploratory Data Analysis?
+
+- Continuous and Discrete Variables?
 
 ## Linear Regression (Sept 10; Jan 21; May 18)
 
@@ -344,8 +212,16 @@ observations? Using graphical diagnostics of assumptions
 ## Continuous Predictors
 
 - Exploration and preparation
+
 - Feature engineering, transformations
+
+- Training/testing split
+
+- Flexible ML is about automating feature engineering
+
 - Be sure to include +1 for log transforms
+
+- Rescaling/normalizing/standardizing predictors
 
 ## Discrete Predictors
 
@@ -406,9 +282,13 @@ are fixed)
 ## Model Evaluation and Prediction
 
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
-- Overfitting and underfitting
+- Overfitting and underfitting, variance vs. bias tradeoff
+- Use theory-model-evidence.png
 
 ## Communicating Results
+
+- Demonstrate presenting on a project as part of the communication
+  session
 
 ### Module 3 (Slides 29-36)
 
