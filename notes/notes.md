@@ -6,39 +6,98 @@ by including question slides as prompts for activities, including
 discussing with a neighbor, raising hands, speed dialogue, and
 whiteboarding concepts.
 
-- Slow down, visualize/illustrate – especially with code, ask questions,
+- Slow down and illustrate – especially with case, code, questions, and
   activities
+
 - Use minimal scales for grades (e.g., “Excellent,” “Good,” “Needs
   Improvement”)
+
 - Create rubrics as a set of guiding questions rather than a checklist
+
 - Learn names so you can call on students to share
+
 - Create QR code for adding me on LinkedIn
 
-# Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
+- Speed dating to explain concepts
+
+- Produce a meme to summarize a concept
+
+## Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
 - Regression and Machine Learning (Aug 25; Jan 5; May 4)
 - Modeling Workflow (Aug 27; Jan 7; May 6)
 
-# Week 02 (Sept 3; Jan 12, 14; May 11, 13)
+## Week 02 (Sept 3; Jan 12, 14; May 11, 13)
 
 - Decisions and Data (Sept 3; Jan 12; May 11)
 
-# Week 03 (Sept 8, 10; Jan 21; May 18, 20)
+## Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
 ## Probability and Statistics (Sept 8; Jan 14; May 13)
 
-A probabilistic approach to machine learning enhances the principled,
-unifying framework provided by decision theory. This includes Bayesian
-statistics, where we treat all unknowns as random variables and can
-directly use probability distributions to quantify uncertainty in our
-estimates, and frequentist statistics, where we treat data as random and
-indirectly use probability distributions to quantify uncertainty in our
-estimates. The direct, Bayesian approach is arguably more intuitive,
-especially for applied students, while the indirect, frequentist
-approach is less computationally intensive. The hope is that introducing
-them in contrast and as complements will enhance student understanding
-of modeling generally and combat the problem of student overfitting to a
-set list of procedures.
+- Decision -\> Data -\> Probability -\> Statistics
+- Finish translating the data story into a formal probability model
+
+## Probability
+
+- Probability as a unifying framework for machine learning (PML p. 1)
+
+- Branch of mathematics, statisticans as applied probabilists
+
+- Simplified set theory
+
+- Axioms (with reference to states of the world as events)
+
+- Marginal, joint, and conditional probabilities
+
+- CLT, LLN, Bayes rule, etc.
+
+- Frequentist (objective) vs. Bayesian (subjective) interpretations of
+  probability
+
+- Frequentist probabilities are connected to the frequencies of events
+  in large samples (uncertainty is premised on imaginary resampling of
+  data, probability as frequency assumes symmetry and repeatability)
+
+- Bayesiam probabilities are a property of information, not the world,
+  and we use randomness to descrebe our uncertainty in the face of
+  incomplete knowledge
+
+- Probability distributions, including supports and densities/masses
+
+- Random variables
+
+- Use an experiment to illustrate the difference between random and
+  fixed variables: Need something fixed to learn about the random
+  variable
+
+- Discrete and continuous uniform distributions – use Monte Carlo to
+  illustrate? (PML p. 71-72)
+
+- Normal/Gaussian distribution; Any process that addds together random
+  values from the same distribution converges to a normal distribution;
+  Why Normal? (PML p. 60)
+
+- Binomial distribution
+
+## Statistics
+
+- Use the three column summary for ML
+
+- Descriptive statistics (EDA)
+
+- Expectations, conditional expectation; Means, variance, standard
+  deviation, mode, limitations of summaries (PML p. 43)
+
+- Inferential statistics (interpretable/parametric modeling)
+
+- Points, intervals, and distributions
+
+- Learning parameters from data, estimating parameters, model fitting,
+  training, calibration
+
+- Statistical decision theory (use extracted information to choose an
+  action)
 
 - Probability as uncertainty: directly and indirectly, Bayesian and
   frequentist (PML p. 33)
@@ -48,105 +107,51 @@ set list of procedures.
 - Why teach both? If all you have is a hammer, everything looks like a
   nail. And it’s often easier to understand a thing in contrast.
 
+- Bayesian statistics, where we treat all unknowns as random variables
+  and can directly use probability distributions to quantify uncertainty
+  in our estimates. The direct, Bayesian approach is arguably more
+  intuitive. Bayesian uncertatinytreats randomness as a property of
+  information, not the world; Use randomness to describe our uncertainty
+  in the face of incomplete knowledge
+
+- Frequentist statistics, where we treat data as random and indirectly
+  use probability distributions to quantify uncertainty in our
+  estimates. The indirect, frequentist approach is less computationally
+  intensive. Frequentist uncertainty is based on imaginary/theoretical
+  resampling of data (sampling distributions).
+
+- Sampling distributions vs. posterior distributions
+
+- Create a chart showing the differences between Bayesian and
+  frequentist statistics?
+
+- Parameters, likelihood, priors, and posteriors
+
+- Likelihodos work in both directions: Given parameters, we can produce
+  a distribution of plausible observations; given realized observations,
+  we can infer plausible parameter values.
+
+- Likelihood as our data generating process, the evidence for the data
+  we see?
+
 - Deterministic vs. probabilistic models
 
 - Interpretable models are typically parametric models – so not as
   flexible
-
-- Probability as frequency assumes symmetry and repeatability
-
-- Frequentist (objective) vs. Bayesian (subjective) interpretations of
-  probability
 
 - Intercept-only model – no story – intercept or bias
 
 - Using linear models to formalize this story and probability
   distributions to quantify uncertainty
 
-- No free lunch theorem: which model is best depends on the application
+- Connect populations to data generating processes – two ways to think
+  about data samples
 
 - Example likelihoods (as models of the data generating process)
 
-### Uncertainty
+- No free lunch theorem: which model is best depends on the application?
 
-Recover parameters when there is only one kind of uncertainty recovering
-parameters? MLE and Bayes and Bootstrap? (Build, Fit, Evaluate?)
-
-- Probability as a unifying framework for machine learning (PML p. 1)
-
-- Bayes vs. frequentist probability?
-
-- Frequentist uncertainty is based on imaginary/theoretical resampling
-  of data (sampling distributions)
-
-- So only measurements – estimators can have probability distributions
-  (sampling)
-
-- Bayesian uncertatinytreats randomness as a property of information,
-  not the world
-
-- Use randomness to describe our uncertainty in the face of incomplete
-  knowledge
-
-- Uncertainty from not knowing the true data generating process
-  vs. naturally occuring uncertainty in the data (PML p. 7, 33-34)
-
-- Axioms and basic definitions, set theory
-
-### Random Variables and Distributions
-
-- Use an experiment to illustrate the difference between random and
-  fixed variables: Need something fixed to learn about the random
-  variable
-
-- RVs, discrete and continous, PMF and PDF
-
-- Distributions, supports
-
-- Normal vs. uniform distributions, etc.
-
-- Joint and marginal distributions
-
-- Expectations, conditional expectation; Means, variance, standard
-  deviation, mode, limitations of summaries (PML p. 43)
-
-- Bayes rule
-
-- Why Normal? (PML p. 60)
-
-- Activity: Speed dating to explain critical concept(s)
-
-### Recovering Parameters
-
-- CLT? Monte Carlo? (PML p. 71-72)
-- Covariance and correlation?
-- Correlation does not imply causation, and the lack of correlation does
-  not imply lack of causation
-- Data and parameters $f(X; \theta)$
-
-Since the data generating process is the unobserved process that
-generates the data, before we work with real data where we never know
-the data generating process, we can assume that our model *is* the data
-generating process, *choose* values for the parameters, and generate or
-**simulate** data using the model.
-
-For example, we can choose values for $\beta_0$ and $\beta_1$, simulate
-possible `promotion_spend` data and then simulate `sales` data.
-
-Why? Two big reasons:
-
-1.  Prepare our data analysis before getting real data.
-2.  Prove our code is working by recovering parameter values.
-
-- Wrap up
-
-### Statistics
-
-- Learning parameters from data, estimating parameters, model fitting,
-  training, calibration
-
-- Likelihood as our data generating process, the evidence for the data
-  we see?
+- Simple MLE vs. MCMC (and Bootstrap)?
 
 - MLE: Pick the parameters that assign the highest probability to the
   training data (PML p. 105)
@@ -154,30 +159,21 @@ Why? Two big reasons:
 - MLE as a point approximation of the posterior distribution with a
   uniform prior (PML p. 106)
 
-- MLE to OLS
-
-- Points, intervals, and distributions
-
-- Bayes: Grid Approximation to ABC?
-
 - Sampling distributions vs. posterior distributions, bootstrap as poor
   man’s posterior
-
-- Interpreting parameter estimates
-
-- Confidence intervals and bootstrapping
 
 See https://allendowney.github.io/ElementsOfDataScience/ See
 https://allendowney.github.io/ThinkStats/ See
 https://sta210-s22.github.io/website/
 
-- Exercise: Produce a meme summarizing a key statistics concept
+## Recovering Parameters
 
-### Exploratory Data Analysis?
-
-- Continuous and Discrete Variables?
+- Recover parameters when there is only one kind of uncertainty (no
+  model uncertainty)
 
 ## Linear Regression (Sept 10; Jan 21; May 18)
+
+- EDA review? Broken down by continuous and discrete variables?
 
 - Regression is also referred to as linear regression or, more
   generally, a linear model
@@ -187,6 +183,11 @@ https://sta210-s22.github.io/website/
 
 - Line isn’t great, but we can do non-linear transofmrations on the
   predictors while still keeping a linear model
+
+- Covariance and correlation?
+
+- Correlation does not imply causation, and the lack of correlation does
+  not imply lack of causation
 
 - SLR, MLR
 
@@ -281,6 +282,7 @@ are fixed)
 
 ## Model Evaluation and Prediction
 
+- Statistical models capture association, not causation
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
 - Overfitting and underfitting, variance vs. bias tradeoff
 - Use theory-model-evidence.png

@@ -1,0 +1,86 @@
+---
+title: "Probability and Statistics"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss # Modified slides theme.
+    slide-number: c/t     # Numbered slides current/total.
+    self-contained: true  # Render to a single HTML file.
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Discussed decision-making under uncertainty
+- Started modeling data generating processes
+
+
+#### Preview
+
+- Finish building models using probability
+- Demonstrate fitting models to recover parameters
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_build.png){fig-align="center"}
+:::
+
+# Probability
+
+
+
+
+# What actions, states of the world, and loss/utility function might be relevant for your project? Make it specific. {background-color="#006242"}
+
+# Statistics
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_me-and-bayes.png){fig-align="center"}
+:::
+
+
+
+# What actions, states of the world, and loss/utility function might be relevant for your project? Make it specific. {background-color="#006242"}
+
+# Recovering Parameters
+
+
+
+
+## {background-color="#006242"}
+
+### Exercise 03 {.lato-font}
+
+1. Simulate sales data (not units sold) as a function of four or more predictors
+2. Instead of `y`, `x1`, etc. use meaningful variable names
+3. Assume the error is distributed normal
+4. Use different parameter values than we did in class
+5. Comment your code clearly
+6. Submit your code and printed output as a PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Finished building models using probability
+- Demonstrated fitting models to recover parameters
+
+#### Next Time
+
+- 
+
