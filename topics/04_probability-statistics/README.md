@@ -1,12 +1,7 @@
----
-title: "04 Probability and Statistics"
-format: gfm
----
+# 04 Probability and Statistics
 
-```{python}
-#| eval: false
-#| echo: true
 
+``` python
 import numpy as np
 import polars as pl
 import seaborn.objects as so
@@ -80,10 +75,7 @@ binom_p = (draws
 )
 ```
 
-```{python}
-#| eval: false
-#| echo: true
-
+``` python
 import numpy as np
 import polars as pl
 import seaborn.objects as so
@@ -105,10 +97,7 @@ draws = (pl.DataFrame()
 )
 ```
 
-```{python}
-#| eval: false
-#| echo: true
-
+``` python
 import numpy as np
 import polars as pl
 import statsmodels.formula.api as smf

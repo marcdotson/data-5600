@@ -27,16 +27,11 @@ Provided more opportunities for student participation beyond live coding by incl
 
 - Probability and Statistics (Sept 8; Jan 14; May 13)
 
-## Statistics
-
-## Recovering Parameters
-
-- Recover parameters when there is only one kind of uncertainty (no model uncertainty)
-
 ## Linear Regression (Sept 10; Jan 21; May 18)
 
-- EDA review? Broken down by continuous and discrete variables?
+START USING EXISTING MATERIALS
 
+- EDA review? Broken down by continuous and discrete variables?
 - Hypothesis tests meme
 
 - Deterministic vs. probabilistic models
