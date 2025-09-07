@@ -1,0 +1,81 @@
+---
+title: "04 Probability and Statistics"
+format: gfm
+---
+
+```{python}
+#| eval: false
+#| echo: true
+
+import numpy as np
+import polars as pl
+import seaborn.objects as so
+
+# Set randomization seed and n
+rng = np.random.default_rng(42)
+n = 10_000_000
+
+# Discrete uniform distribution
+disc_unif = np.random.randint(1, 7, size=n)
+draws = pl.DataFrame(disc_unif, schema=['disc_unif'])
+
+disc_unif_p = (draws
+    .group_by(pl.col('disc_unif'))
+    .agg(n = pl.len())
+    .with_columns(
+        p = pl.col('n') / pl.col('n').sum()
+    )
+    .sort('disc_unif')
+)
+
+(so.Plot(disc_unif_p, x = 'disc_unif', y = 'p')
+    .add(so.Bar())
+    .label(x='support', y='p')
+)
+
+# Continuous uniform distribution
+draws = (draws
+    .with_columns(
+        pl.Series('cont_unif', rng.uniform(1, 6, size=n)),
+    )
+)
+
+(so.Plot(draws, x='cont_unif')
+    .add(so.Area(alpha=0.5), so.Hist(stat='density'))
+    .label(x='support', y='density')
+)
+
+# Normal distribution
+draws = (draws
+    .with_columns(
+        pl.Series('norm', rng.normal(10, 5, size=n))
+    )
+)
+
+(so.Plot(draws, x='norm')
+    .add(so.Area(alpha=0.5), so.Hist(stat='density'))
+    .label(x='support', y='density')
+)
+
+# Binomial distribution
+draws = (draws
+    .with_columns(
+        pl.Series('binom', rng.binomial(1, 0.20, size=n))
+    )
+)
+
+binom_p = (draws
+    .group_by(pl.col('binom'))
+    .agg(n = pl.len())
+    .with_columns(
+        p = pl.col('n') / pl.col('n').sum()
+    )
+    .with_columns(pl.col('binom').cast(pl.Utf8))
+    .sort('binom')
+)
+
+(so.Plot(binom_p, x = 'binom', y = 'p')
+    .add(so.Bar())
+    .label(x='support', y='p')
+)
+```

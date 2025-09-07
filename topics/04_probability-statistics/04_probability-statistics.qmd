@@ -24,7 +24,6 @@ jupyter: python3
 - Discussed decision-making under uncertainty
 - Started modeling data generating processes
 
-
 #### Preview
 
 - Finish building models using probability
@@ -38,10 +37,253 @@ jupyter: python3
 
 # Probability
 
+## What is probability?
 
+Probability is the mathematical language of uncertainty and a unifying framework for machine learning
 
+$$
+\LARGE{p(s)}
+$$
 
-# What actions, states of the world, and loss/utility function might be relevant for your project? Make it specific. {background-color="#006242"}
+::: {.fragment}
+Consider an **event** $s$ that's part of a **sample space** $S$ of all possible events
+:::
+
+::: {.incremental}
+1. The probability of an event is $0 \le p(s) \le 1$
+2. If $S$ is the set of all possible events then $p(S) = 1$
+3. If $s_1$ and $s_2$ are mutually exclusive events then the probability that at least one of them will occur is $p(s_1) + p(s_2)$
+:::
+
+## Three types of probability
+
+:::: {.columns}
+
+::: {.fragment .column width="33%"}
+**Marginal Probability**
+
+$\Large{p(a)}$
+
+The probability of an event occurring
+:::
+
+::: {.fragment .column width="33%"}
+**Joint Probability**
+
+$\Large{p(a, b)}$
+
+The probability of two or more events occurring together 
+:::
+
+::: {.fragment .column width="33%"}
+**Conditional Probability**
+
+$\Large{p(a | b)}$
+
+The probability of an event occurring given that another event has occurred
+:::
+
+::::
+
+## Two interpretations of probability
+
+What is the probability of getting heads when flipping a coin?
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Frequentist**
+
+::: {.incremental}
+- Long-run frequency
+- Describes a repeatable event under identical conditions
+- Exists in the world
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Bayesian**
+
+::: {.incremental}
+- Information
+- Describes uncertainty when working with incomplete knowledge
+- Exists in the mind
+:::
+:::
+
+::::
+
+::: {.fragment}
+The rules of probability operate the same regardless of interpretation
+:::
+
+## Probability distributions
+
+Probability distributions are functions that produce the probabilities of all possible events in a sample space for a given **random variable**
+
+::: {.incremental}
+- The **support** is the sample space, the events or values that have non-zero probability
+- The **probability** of some subset of the support is the associated area
+- A distribution's **parameters** are the values that define the specific distribution
+:::
+
+::: {.fragment}
+Probability distributions can be discrete (**probability mass functions** or **PMFs**) or continuous (**probability density functions** or **PDFs**)
+:::
+
+::: {.fragment}
+We can compute a probability distribution **analytically** (i.e., using the actual formula) or using a **Monte Carlo simulation** (i.e., drawing random samples from the distribution)
+:::
+
+## Discrete uniform distribution {auto-animate=true}
+
+![](../../figures/plot_discrete-uniform.png){fig-align="center"}
+
+## Discrete uniform distribution {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_discrete-uniform.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+```{python}
+#| code-line-numbers: "|1-3|5-7|9-11|13-18|20-23"
+
+import numpy as np
+import polars as pl
+import seaborn.objects as so
+
+# Set randomization seed and n
+rng = np.random.default_rng(42)
+n = 10_000_000
+
+# Discrete uniform distribution
+disc_unif = np.random.randint(1, 7, size=n)
+draws = pl.DataFrame(disc_unif, schema=['disc_unif'])
+
+disc_unif_p = (draws
+    .group_by(pl.col('disc_unif'))
+    .agg(n = pl.len())
+    .with_columns(p = pl.col('n') / pl.col('n').sum())
+    .sort('disc_unif')
+)
+
+(so.Plot(disc_unif_p, x = 'disc_unif', y = 'p')
+    .add(so.Bar())
+    .label(x='support', y='p')
+)
+```
+:::
+
+::::
+
+## Continuous uniform distribution {auto-animate=true}
+
+![](../../figures/plot_continuous-uniform.png){fig-align="center"}
+
+## Continuous uniform distribution {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_continuous-uniform.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+```{python}
+#| code-line-numbers: "|1-6|8-11"
+
+# Continuous uniform distribution
+draws = (draws
+    .with_columns(
+        pl.Series('cont_unif', rng.uniform(1, 6, size=n))
+    )
+)
+
+(so.Plot(draws, x='cont_unif')
+    .add(so.Area(alpha=0.5), so.Hist(stat='density'))
+    .label(x='support', y='density')
+)
+```
+:::
+
+::::
+
+## Normal distribution {auto-animate=true}
+
+![](../../figures/plot_normal.png){fig-align="center"}
+
+## Normal distribution {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_normal.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+```{python}
+#| code-line-numbers: "|1-6|8-11"
+
+# Normal distribution
+draws = (draws
+    .with_columns(
+        pl.Series('norm', rng.normal(10, 5, size=n))
+    )
+)
+
+(so.Plot(draws, x='norm')
+    .add(so.Area(alpha=0.5), so.Hist(stat='density'))
+    .label(x='support', y='density')
+)
+```
+:::
+
+::::
+
+## Binomial distribution {auto-animate=true}
+
+![](../../figures/plot_binomial.png){fig-align="center"}
+
+## Binomial distribution {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_binomial.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+```{python}
+#| code-line-numbers: "|1-6|8-14|16-19"
+
+# Binomial distribution
+draws = (draws
+    .with_columns(
+        pl.Series('binom', rng.binomial(1, 0.20, size=n))
+    )
+)
+
+binom_p = (draws
+    .group_by(pl.col('binom'))
+    .agg(n = pl.len())
+    .with_columns(p = pl.col('n') / pl.col('n').sum())
+    .with_columns(pl.col('binom').cast(pl.Utf8))
+    .sort('binom')
+)
+
+(so.Plot(binom_p, x = 'binom', y = 'p')
+    .add(so.Bar())
+    .label(x='support', y='p')
+)
+```
+:::
+
+::::
+
+# Copy the Monte Carlo code for a distribution and try different parameter values. How does the distribution change? {background-color="#006242"}
 
 # Statistics
 
@@ -51,12 +293,21 @@ jupyter: python3
 ![](../../figures/meme_me-and-bayes.png){fig-align="center"}
 :::
 
+##
 
+::: {.v-center}
+![](../../figures/meme_estimand-estimator-estimate.png){fig-align="center"}
+:::
 
 # What actions, states of the world, and loss/utility function might be relevant for your project? Make it specific. {background-color="#006242"}
 
 # Recovering Parameters
 
+##
+
+::: {.v-center}
+![](../../figures/meme_code-testing.png){fig-align="center"}
+:::
 
 
 
