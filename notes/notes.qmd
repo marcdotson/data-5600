@@ -29,45 +29,6 @@ Provided more opportunities for student participation beyond live coding by incl
 
 ## Statistics
 
-- Use the three column summary for ML
-- Descriptive statistics (EDA)
-- Expectations, conditional expectation; Means, variance, standard deviation, mode, limitations of summaries (PML p. 43)
-- Inferential statistics (interpretable/parametric modeling)
-- Points, intervals, and distributions
-- Learning parameters from data, estimating parameters, model fitting, training, calibration
-- Statistical decision theory (use extracted information to choose an action)
-
-- Probability as uncertainty: directly and indirectly, Bayesian and frequentist (PML p. 33)
-- Try using the introduction from my teaching demo?
-- Use an experiment to illustrate the difference between random and fixed variables: Need something fixed to learn about the random variable
-- Why teach both? If all you have is a hammer, everything looks like a nail. And it's often easier to understand a thing in contrast.
-- Bayesian statistics, where we treat all unknowns as random variables and can directly use probability distributions to quantify uncertainty in our estimates. The direct, Bayesian approach is arguably more intuitive. Bayesian uncertatinytreats randomness as a property of information, not the world; Use randomness to describe our uncertainty in the face of incomplete knowledge
-- Frequentist statistics, where we treat data as random and indirectly use probability distributions to quantify uncertainty in our estimates. The indirect, frequentist approach is less computationally intensive. Frequentist uncertainty is based on imaginary/theoretical resampling of data (sampling distributions).
-- Sampling distributions vs. posterior distributions
-- Create a chart showing the differences between Bayesian and frequentist statistics?
-
-- Parameters, likelihood, priors, and posteriors
-- Likelihodos work in both directions: Given parameters, we can produce a distribution of plausible observations; given realized observations, we can infer plausible parameter values.
-- Likelihood as our data generating process, the evidence for the data we see?
-
-- Deterministic vs. probabilistic models
-- Interpretable models are typically parametric models -- so not as flexible
-
-- Intercept-only model -- no story -- intercept or bias
-- Using linear models to formalize this story and probability distributions to quantify uncertainty
-- Connect populations to data generating processes -- two ways to think about data samples
-- Example likelihoods (as models of the data generating process)
-- No free lunch theorem: which model is best depends on the application?
-
-- Simple MLE vs. MCMC (and Bootstrap)?
-- MLE: Pick the parameters that assign the highest probability to the training data (PML p. 105)
-- MLE as a point approximation of the posterior distribution with a uniform prior (PML p. 106)
-- Sampling distributions vs. posterior distributions, bootstrap as poor man's posterior
-
-See https://allendowney.github.io/ElementsOfDataScience/ 
-See https://allendowney.github.io/ThinkStats/
-See https://sta210-s22.github.io/website/
-
 ## Recovering Parameters
 
 - Recover parameters when there is only one kind of uncertainty (no model uncertainty)
@@ -75,6 +36,11 @@ See https://sta210-s22.github.io/website/
 ## Linear Regression (Sept 10; Jan 21; May 18)
 
 - EDA review? Broken down by continuous and discrete variables?
+
+- Hypothesis tests meme
+
+- Deterministic vs. probabilistic models
+- Intercept-only model -- no story -- intercept or bias
 
 - Regression is also referred to as linear regression or, more generally, a linear model
 - Key property is the expected value (mu) of the output is assumed to be a linear function of the inputs (X)
@@ -147,6 +113,8 @@ Code: All graphical and numerical diagnostics
 
 ## Assumptions and Diagnostics
 
+- No free lunch theorem: which model is best depends on the application?
+
 - Validity: Data is relevant to the objective, no missing variables.
 - Representativeness: Data is representative of the population or process.
 - Additivity: The relationship between the outcome and predictors is additive.
@@ -161,7 +129,11 @@ Code: All graphical and numerical diagnostics
 ## Fitting and Interpreting Models
 
 - Parameter estimates
+- Sampling distributions vs. posterior distributions
+- Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme)
+- Sampling distributions vs. posterior distributions, bootstrap as poor man's posterior
 - Significance, confidence intervals, and p-values
+- Create a chart showing the differences between Bayesian and frequentist statistics?
 
 ### Module 3 (Slides 1-6, 7-28)
 

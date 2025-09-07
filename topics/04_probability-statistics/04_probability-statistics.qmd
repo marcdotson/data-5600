@@ -287,29 +287,231 @@ binom_p = (draws
 
 # Statistics
 
+## Three branches of statistics
+
+:::: {.columns}
+
+::: {.fragment .column width="33%"}
+**Descriptive Statistics**
+
+::: {.incremental}
+- Visualizing data and relationships
+- Computing numeric summaries (i.e., statistics)
+- Exploratory data analysis (EDA)
+:::
+:::
+
+::: {.fragment .column width="33%"}
+**Inferential Statistics**
+
+::: {.incremental}
+- Synonymous with interpretable supervised learning (i.e., learning a mapping function $f: X \rightarrow y$)
+- Mapping functions (i.e., models) often use known probability distributions
+- Estimate parameters describing a data generating process or population
+:::
+:::
+
+::: {.fragment .column width="33%"}
+**Decision Theory**
+
+::: {.incremental}
+- Using data to choose from a set of possible actions
+:::
+:::
+
+::::
+
+## Using probability distributions to model data
+
+If our mapping function uses probability distributions to model the data generating process or population, its called a **parametric model**
+
+$$
+\large{y = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon} \\
+\large{\text{where } \epsilon \sim \text{Normal}(0, \sigma^2)}
+$$
+
+and
+
+$$
+\large{\mu = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p} \\
+\large{y \sim \text{Normal}(\mu, \sigma^2)}
+$$
+
+are the same **linear regression** model -- how? What does this model mean?
+
+## Using statistics to estimate parameters
+
+Our parametric model of the data $f(X | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X)$
+
+$$
+\LARGE{f(X | \theta) = \mathcal{L}(\theta | X)}
+$$
+
+::: {.incremental}
+- If you give a likelihood function parameters $\theta$, it can produce plausible observations $X$
+- If you give a likelihood function observations $X$, it can determine plausible parameters $\theta$
+:::
+
+::: {.fragment}
+How we use the likelihood function to estimate parameters depends on what we assume is a random variable (i.e., how we interpret probability)
+:::
+
+## 
+
+::: {.v-center}
+$$
+\Huge{X, \theta}
+$$
+:::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="50%"}
+::: {.fragment .h-center}
+### Frequentist
+:::
+
+$$
+X \sim \text{some distribution} \\
+\theta = \text{some unknown value}
+$$
+:::
+
+::: {.column width="50%"}
+::: {.fragment .h-center}
+### Bayesian
+:::
+
+$$
+X = \text{some known value} \\
+\theta \sim \text{some distribution}
+$$
+:::
+
+::::
+
+## Using the likelihood to estimate parameters {auto-animate=true}
+
+![](../../figures/plot_likelihood.png){fig-align="center"}
+
+## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_likelihood.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.fragment}
+**Frequentist**
+:::
+
+::: {.incremental}
+- Find the single value of $\theta$ that maximizes the likelihood function
+- This **maximum likelihood estimate** is a point estimate of the fixed but unknown value $\theta$
+:::
+
+::: {.fragment}
+**Bayesian**
+:::
+
+::: {.incremental}
+- Use Bayes' theorem to combine the likelihood function with a **prior distribution** $p(\theta)$
+- This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
+:::
+:::
+
+::::
+
+## 
+
+::: {.v-center}
+$$
+\LARGE{\mathcal{L}(\theta | X)}
+$$
+:::
+
+## {visibility="uncounted"}
+
+::: {.v-center}
+$$
+\LARGE{p(X | \theta)}
+$$
+:::
+
+## {visibility="uncounted"}
+
+::: {.v-center}
+$$
+\LARGE{p(\theta | X) \propto p(X | \theta) \ p(\theta)}
+$$
+:::
+
+## {visibility="uncounted"}
+
+::: {.v-center}
+$$
+\LARGE{\text{Posterior} \propto \text{Likelihood} \times \text{Prior}}
+$$
+:::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="100%"}
+![](../../figures/frequentist-panel.png){fig-align="center"}
+:::
+
+::::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="100%"}
+![](../../figures/bayesian-triptych.png){fig-align="center"}
+:::
+
+::::
+
 ## 
 
 ::: {.v-center}
 ![](../../figures/meme_me-and-bayes.png){fig-align="center"}
 :::
 
-##
-
-::: {.v-center}
-![](../../figures/meme_estimand-estimator-estimate.png){fig-align="center"}
-:::
-
-# What actions, states of the world, and loss/utility function might be relevant for your project? Make it specific. {background-color="#006242"}
+# Both frequentist and Bayesian statistics use probability to quantify uncertainty, so how are they different? {background-color="#006242"}
 
 # Recovering Parameters
+
+## Simulate data
+
+```{python}
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
+    x1 = rng.normal(10, 3, size=n)
+    x2 = rng.binomial(1, 0.5, size=n)
+    error = rng.normal(0, sigma, size=n)
+    y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
+    return y, x1, x2
+
+sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
+```
 
 ##
 
 ::: {.v-center}
 ![](../../figures/meme_code-testing.png){fig-align="center"}
 :::
-
-
 
 ## {background-color="#006242"}
 

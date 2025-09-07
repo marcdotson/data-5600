@@ -268,7 +268,7 @@ A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their r
 
 ::: {.fragment}
 $$
-\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
+\LARGE{f(X | \theta) = \mathcal{L}(\theta | X)}
 $$
 :::
 
