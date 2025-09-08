@@ -323,21 +323,29 @@ binom_p = (draws
 
 ## Using probability distributions to model data
 
-If our mapping function uses probability distributions to model the data generating process or population, its called a **parametric model**
+If our mapping function uses known probability distributions to model the data generating process or population, its called a **parametric model**
 
+::: {.fragment}
 $$
 \large{y = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon} \\
 \large{\text{where } \epsilon \sim \text{Normal}(0, \sigma^2)}
 $$
+:::
 
+::: {.fragment}
 and
+:::
 
+::: {.fragment}
 $$
 \large{\mu = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p} \\
 \large{y \sim \text{Normal}(\mu, \sigma^2)}
 $$
+:::
 
+::: {.fragment}
 are the same **linear regression** model -- how? What does this model mean?
+:::
 
 ## Using statistics to estimate parameters
 
