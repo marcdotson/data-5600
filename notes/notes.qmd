@@ -26,8 +26,7 @@ Provided more opportunities for student participation beyond live coding by incl
 ## Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
 - Probability and Statistics (Sept 8; Jan 14; May 13)
-
-## Linear Regression (Sept 10; Jan 21; May 18)
+- Linear Regression (Sept 10; Jan 21; May 18)
 
 START USING EXISTING MATERIALS
 
@@ -46,6 +45,8 @@ START USING EXISTING MATERIALS
 
 - SLR, MLR
 - Simulating data and recovering parameters
+
+- Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior.
 
 ### Module 1 (Slides 1-17, Slides 18-38)
 

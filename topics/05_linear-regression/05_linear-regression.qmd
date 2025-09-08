@@ -1,0 +1,73 @@
+---
+title: "Linear Regression"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss # Modified slides theme.
+    slide-number: c/t     # Numbered slides current/total.
+    self-contained: true  # Render to a single HTML file.
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Finished building models using probability
+- Demonstrated fitting models to recover parameters
+
+#### Preview
+
+- Formally introduce linear regression
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_build.png){fig-align="center"}
+:::
+
+# Simple Linear Regression
+
+
+
+# Copy the Monte Carlo code for a distribution and try different parameter values. How does the distribution change? {background-color="#006242"}
+
+# Multiple Linear Regression
+
+
+
+# Both frequentist and Bayesian statistics use probability to quantify uncertainty, so how are they different? {background-color="#006242"}
+
+# Assumptions
+
+
+
+## {background-color="#006242"}
+
+### Exercise 05 {.lato-font}
+
+1. Return to your simulated sales data from the previous exercise (or start with the exercise solution)
+2. Demonstrate that you can recover the parameters you used to simulate the data using both frequentist and Bayesian models
+3. Reflect on how the estimates of the two approaches compare and how you might interpret them differently
+4. Submit your code, output, and reflection as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Formally introduced linear regression
+
+#### Next Time
+
+- 
+
