@@ -6,9 +6,10 @@ title-slide-attributes:
   data-background-color: "#0F2439"
 format: 
   revealjs:
-    theme: ../slides.scss # Modified slides theme.
-    slide-number: c/t     # Numbered slides current/total.
-    self-contained: true  # Render to a single HTML file.
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
 execute:
   eval: false
   echo: true
