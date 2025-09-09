@@ -10,9 +10,8 @@ Provided more opportunities for student participation beyond live coding by incl
 - Create rubrics as a set of guiding questions rather than a checklist
 - Learn names so you can call on students to share
 - Create QR code for adding me on LinkedIn
-
-- Speed dating to explain concepts
 - Produce a meme to summarize a concept
+- Speed dating to explain concepts
 
 ## Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
@@ -26,90 +25,93 @@ Provided more opportunities for student participation beyond live coding by incl
 ## Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
 - Probability and Statistics (Sept 8; Jan 14; May 13)
-- Linear Regression (Sept 10; Jan 21; May 18)
+- Linear Models (Sept 10; Jan 21; May 18)
 
-START USING EXISTING MATERIALS
+- Simulate data to work with (we know the truth, we're satisfying assumptions)
+- Model uncertainty
+- No free lunch theorem: which model is best depends on the application?
 
-- EDA review? Broken down by continuous and discrete variables?
-- Hypothesis tests meme
+## Lines and Means
 
-- Deterministic vs. probabilistic models
+- Modeling means
+- The normal distribution shows up a lot in nature and, like the linear model, is a good assumption when we don't know a lot about the data generating process. It says the effects of all the variables we don't include in the model add up to something that looks like normal error.
+- Reference that mu can also be any real number (infer GLMs)
+- This model has two parameters. The modeling components and this language generalize no matter the number of parameters.
+- Since we have two parameters, the likelihood is the evaluation of the combination of all possible values of the parameters, thus the posterior will be two-dimensional.
+
+- Why lines? Equation of a line.
+- A linear model is simple but a good assumption when we don't know a lot about the data generating process. It says the outcome variable is the result of summing up the effects of the explanatory variable(s).
+
 - Intercept-only model -- no story -- intercept or bias
+- Correlation coefficient (interactive coding)
 
+This kind of intercept-only model isn't especially interesting. We want to add covariates/independent variables/predictors -- other data that might help explain the observed heights.
+
+> "The strategy is to make the parameter for the mean of a Gaussian distribution, mu, into a linear function of the predictor variable and other, new parameters that we invent. This strategy is often simply called the linear model."
+
+- The `i` subscript now applies to `mu` as well.
+- `mu` is no longer a parameter. `mu_i` is equal to (not distributed) the linear combination of our parameters and predictors.
+
+## Regression
+
+A linear model with normal error and a continuous outcome $y$ is known as a **regression**.
 - Regression is also referred to as linear regression or, more generally, a linear model
 - Key property is the expected value (mu) of the output is assumed to be a linear function of the inputs (X)
-- Line isn't great, but we can do non-linear transofmrations on the predictors while still keeping a linear model
 
-- Covariance and correlation?
-- Correlation does not imply causation, and the lack of correlation does not imply lack of causation
+SLR
 
-- SLR, MLR
-- Simulating data and recovering parameters
+$$
+y = \beta_0 + \beta_1 x + \epsilon
+$$
 
-- Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior.
+Because $y = \beta_0 + \beta_1 x$ is a linear equation, adding $\epsilon$ makes this a **linear model**.
 
-### Module 1 (Slides 1-17, Slides 18-38)
+- $y$ is the **outcome** variable (a.k.a., response or dependent variable).
+- $x$ is an **explanatory** variable (a.k.a., a predictor or independent variable, feature, or covariate).
+- $\beta_0$ is the **intercept** parameter.
+- $\beta_1$ is a **slope** parameter.
+- $\epsilon$ is the *error* term.
 
-Correlation coefficient
-Outcome vs. explanatory variables
-Definition of SLR
-Deterministic vs. probabilistic
-Parameter definitions
-Error is a function of unknown parameters.
-A residual is an "estimate" of this error.
-Interpreting the slope parameter
-Residuals
-OLS intuition
-Danger with extrapolating
-MSE as an estimate of variance
-Code: Scatterplots, correlation, OLS, and MSE by hand
+MLR
+- Matrix multiplication -- notation works in both statsmodels and Bambi?
 
-### Module 2 (Slides 1-8)
+As you start adding many explanatory variables, it may be easier to use matrix multiplication instead of listing each variable and parameter separately in the linear model.
 
-Diagnostics for assumptions before inference
-How is the iid assumption formally described?
-Does iid persist in the case of grouped observations?
-Using graphical diagnostics of assumptions
+Including more than one explanatory variable is almost always a better approximation of the *data generating process*.
 
+$$
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_p x_p + \epsilon, \text{ where } \epsilon \sim Normal(0, 1)
+$$
 
+- $y$ is the *outcome* variable.
+- $x_1$ is the 1st *explanatory* variable.
+- $x_p$ is the $p$th *explanatory* variable.
+- $\beta_0$ is the *intercept* parameter.
+- $\beta_1$ is the 1st *slope* parameter.
+- $\beta_p$ is the $p$th *slope* parameter.
+- $\epsilon$ is the *error* term.
 
+- Hypothesis tests meme
 
+### OLS intuition?
 
+Our goal is to use the model to **estimate** the unobserved parameters from the data (i.e., make our best guess).
 
+To revise our original definition of a model, we use an inferential model to extract **parameter estimates** from the data to inform our managerial decision.
 
-# Week 04 (Sept 15, 17; Jan 26, 28; May 27) POSIT CONF
+Estimating $\beta_0$ and $\beta_1$ (using lines from)
 
-## Continuous Predictors
+The best line should be the one that makes **the sum** of the vertical bars as **small as possible**.
 
-- Exploration and preparation
-- Feature engineering, transformations
-- Training/testing split
+The vertical bars are called **residuals**, and represent the distance between the data $y$ and a particular line.
 
-- Flexible ML is about automating feature engineering
+Residuals can be positive and negative, so we make the sum of the **squared residuals** as small as possible.
 
-- Be sure to include +1 for log transforms
-- Rescaling/normalizing/standardizing predictors
+- Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior. (Show with the two equation forms.)
 
-## Discrete Predictors
-
-- Exploration and preparation
-- Dummy/one-hot and index coding
-
-### Module 2 (Slides 9-34, 35-54)
+## Assumptions
 
 Are all these assumptions really required to use regression?
-Why does the Q-Q plot say "standardized residuals"?
-Where did DFBETA and DFFITS come from?
-Using numerical diagnostics of assumptions
-How to remediate invalidated assumptions
-Interpreting estimates with transformations
-Code: All graphical and numerical diagnostics
-
-# Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
-
-## Assumptions and Diagnostics
-
-- No free lunch theorem: which model is best depends on the application?
 
 - Validity: Data is relevant to the objective, no missing variables.
 - Representativeness: Data is representative of the population or process.
@@ -122,7 +124,48 @@ Code: All graphical and numerical diagnostics
 - Omitted and included variable bias
 - Multicollinearity
 
+
+
+
+
+
+# Week 04 (Sept 15, 17; Jan 26, 28; May 27) POSIT CONF
+
+- EDA review? Broken down by continuous and discrete variables? By assumptions?
+- Assumptions diagnostics and remediation
+
+## Continuous Predictors
+
+- Exploration and preparation
+- Feature engineering, transformations
+- Training/testing split
+
+- Flexible ML is about automating feature engineering
+
+- Be sure to include +1 for log transforms
+- Rescaling/normalizing/standardizing predictors
+
+Why does the Q-Q plot say "standardized residuals"?
+
+## Discrete Predictors
+
+- Exploration and preparation
+- Dummy/one-hot and index coding
+Dummy variables and the "dummy variable trap"
+
+This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
+
+> "Prior predictive simulation is very useful for assigning sensible priors, because it can be quite hard to anticipate how priors influence the observable variables."
+
+Line isn't great, but we can do non-linear transofmrations on the predictors while still keeping a linear model
+
+Linear models are additive, but not necessarily *lines*. Allowing for curvature might be helpful. The form of the model (especially the likelihood) depends on the data. However, as we add complexity to the model, issues begin to emerge with overfitting and interpretation (glimpse of the black-box nature of predictive models).
+
+# Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
+
 ## Fitting and Interpreting Models
+
+- Correlation does not imply causation, and the lack of correlation does not imply lack of causation
 
 - Parameter estimates
 - Sampling distributions vs. posterior distributions
@@ -131,19 +174,24 @@ Code: All graphical and numerical diagnostics
 - Significance, confidence intervals, and p-values
 - Create a chart showing the differences between Bayesian and frequentist statistics?
 
-### Module 3 (Slides 1-6, 7-28)
-
-Using the CLT, assuming null is true, to test hypotheses
-Computing and using the standard error for hypothesis testing
-Manually computing a test statistic and looking up a p-value
 Probability of observing something as or more extreme, assuming the null is true
 Manually computing a confidence interval using the t-distribution and margin of error
-Equivalence of p-values and confidence intervals
+Equivalence of p-values and confidence intervals (meme)
 Confidence intervals are about uncertainty in parameter estimates (i.e., parameters are fixed)
 
 # Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
 ## Model Evaluation and Prediction
+
+Why do we compute a confidence band for the average of y?
+How do we get the confidence band out of a fixed confidence interval?
+Prediction intervals are about uncertainty in new data (i.e., new data is random)
+Why even produce a confidence interval around the mean if it isn't for a confidence band?
+What's the extra term in the standard error for the prediction interval? SD used twice.
+Are prediction intervals different in Bayesian statistics since data is fixed?
+
+Properties of MSE, RMSE, MAE, R-squared, adjusted R-squared, and F statistic
+Code: Confidence intervals, test statistics, p-value, prediction intervals, confidence and prediction bands, and model fit statistics
 
 - Statistical models capture association, not causation
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
@@ -154,22 +202,6 @@ Confidence intervals are about uncertainty in parameter estimates (i.e., paramet
 
 - Demonstrate presenting on a project as part of the communication session
 
-### Module 3 (Slides 29-36)
-
-Why do we compute a confidence band for the average of y?
-How do we get the confidence band out of a fixed confidence interval?
-Prediction intervals are about uncertainty in new data (i.e., new data is random)
-Why even produce a confidence interval around the mean if it isn't for a confidence band?
-What's the extra term in the standard error for the prediction interval? SD used twice.
-Are prediction intervals different in Bayesian statistics since data is fixed?
-Properties of MSE, RMSE, MAE, R-squared, adjusted R-squared, and F statistic
-Code: Confidence intervals, test statistics, p-value, prediction intervals, confidence and prediction bands, and model fit statistics
-
-### Module 4 (Slides 1-16)
-
-Interpreting multiple slopes
-Adding multicollinearity to the list of assumptions
-
 # Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
 
 Presentations
@@ -178,13 +210,17 @@ Presentations
 
 
 
+
 ----- CASE TWO -----
 
+- Update the syllabus to reflect the changed schedule topics
 - Student evaluations
 - Student panel invitation
 - Post-quiz for research project
 
 # Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
+
+- Week 09 notes from pre-PhD seminar
 
 ### Module 4 (Slides 17-39, 40-55)
 
@@ -211,6 +247,7 @@ Working from a full model and using backward or forward-selection
 No discussion on overfitting needing predictive fit?
 Is stepwise regression used in ML practice?
 Cross-validation without one static test dataset? What about leakage?
+Cross-validation is needed for hyperparameter tuning, and model selection is a form of "hyperparameter tuning"
 Are variable selection and shrinkage methods primarily used for multicollinearity?
 AIC and BIC
 
@@ -226,11 +263,6 @@ Ridge regression, LASSO, elastic net, best subsets, sequential replacement
 Bias-variance tradeoff and shrinkage methods
 Accuracy and precision is just bias and variance
 Code: Clunky, implementing stepwise regression and shrinkage methods with manual hyperparameter tuning
-
-## Module 6 (Slides 1-14)
-
-Dummy variables and the "dummy variable trap"
-Interpretation, synonyms, etc.
 
 # Week 11 (Nov 3, 5; Mar 23, 25; Jul 20, 22)
 
@@ -274,9 +306,6 @@ Code: Splitting the data into train and test, maximum likelihood, ROC/AUC
 ## Module 8 (Slides 1-15, 16-36)
 
 Dimension reduction as opposed to variable selection and regularization
-Should this all be in a "feature engineering" module?
-Shouldn't we have decision trees and random forests as well/instead?
-Are there students who *only* take the introduction to ML?
 PCA on its own and then PCA as part of PCR
 Code: Using PCA and PCR for continuous and discrete outcomes
 
