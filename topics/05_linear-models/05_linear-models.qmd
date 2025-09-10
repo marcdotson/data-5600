@@ -35,30 +35,384 @@ jupyter: python3
 ![](../../figures/workflow_build.png){fig-align="center"}
 :::
 
-# Simple Linear Regression
+## Simulate data
 
+If we don't have real data or want to test our code, we can simulate data
 
+```{python}
+#| eval: true
 
-# Copy the Monte Carlo code for a distribution and try different parameter values. How does the distribution change? {background-color="#006242"}
+import numpy as np
+import polars as pl
+import seaborn.objects as so
 
-# Multiple Linear Regression
+# Set randomization seed
+rng = np.random.default_rng(42)
 
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_price, beta_discount, beta_online, beta_promo, sigma):
+    price = rng.normal(4, 2, size=n)
+    discount = rng.normal(2, 1, size=n)
+    online = rng.binomial(1, 0.7, size=n)
+    promo = rng.binomial(1, 0.2, size=n)
+    error = rng.normal(0, sigma, size=n)
+    sales = beta_0 + beta_price * price + beta_discount * discount + beta_online * online + beta_promo * promo + error
 
+    # Return the output
+    return sales, price, discount, online, promo
 
-# Both frequentist and Bayesian statistics use probability to quantify uncertainty, so how are they different? {background-color="#006242"}
+# Call the function and convert to a dataframe
+data_arr = sim_data(n = 100, beta_0 = 10, beta_price = -2, beta_discount = 3, beta_online = 5, beta_promo = 3, sigma = 5)
+data_df = pl.DataFrame(data_arr, schema = ['sales', 'price', 'discount', 'online', 'promo'])
+```
+
+## Observations and variables {.scrollable}
+
+```{python}
+#| eval: true
+
+data_df
+```
+
+# Lines and Means
+
+## 
+
+::: {.v-center}
+$$
+\Huge{y \sim \text{Normal}(\mu, \sigma^2)}
+$$
+:::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="50%"}
+$$
+\large{y \sim \text{Normal}(\mu, \sigma^2)}
+$$
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- What is the support?
+- What are the parameters?
+- What range of values can the parameters be?
+- How could this be a useful model?
+:::
+:::
+
+::::
+
+## Galton Board
+
+![](../../figures/history_galton-board.png){fig-align="center"}
+
+## 
+
+::: {.v-center}
+$$
+\Huge{\mu = \beta_0 + \beta_1 x} \\
+\Huge{y \sim \text{Normal}(\mu, \sigma^2)}
+$$
+:::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="50%"}
+$$
+\large{\mu = \beta_0 + \beta_1 x} \\
+\large{y \sim \text{Normal}(\mu, \sigma^2)}
+$$
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- What are the parameters?
+- Why a line?
+- Why model $\mu$?
+- How could this be a useful model?
+:::
+:::
+
+::::
+
+## Scatterplot of price and sales {auto-animate=true}
+
+Does it look like a line might be a good approximation of this relationship?
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(data_df, x = 'price', y = 'sales')
+    .add(so.Dot())
+)
+```
+
+## Scatterplot of price and sales {auto-animate=true}
+
+Is this line a good approximation of the relationship? What is this line?
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(data_df, x = 'price', y = 'sales')
+    .add(so.Dot())
+    .add(so.Line(), so.PolyFit(order=0))
+)
+```
+
+## Scatterplot of price and sales {auto-animate=true}
+
+Is this line a good approximation of the relationship? What is this line?
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(data_df, x = 'price', y = 'sales')
+    .add(so.Dot())
+    .add(so.Line(), so.PolyFit(order=1))
+)
+```
+
+# If we use a line to model the mean of the data generating process, what is a "good" line? {background-color="#006242"}
+
+# Linear Regression
+
+## Make as few assumptions as possible
+
+Modeling the mean $\mu$ of a Normal distribution using a linear function of predictors $X$ and other parameters $\beta$ is called **linear regression** or, more generally, a **linear model**
+
+::: {.incremental}
+- A Normal distribution is the **simplest** distribution (i.e., the **maximum entropy** distribution) to use to model a continous $y$
+- A linear function is the **simplest** way to map predictors $X$ to a continuous $y$
+:::
+
+::: {.fragment}
+It is always a good idea to **start simple** and add complexity as you need it
+:::
+
+## Simple linear regression
+
+A linear model with a single predictor is called **simple linear regression**
+
+$$
+\large{y_i = \beta_0 + \beta_1 x_i + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+::: {.incremental}
+- $\beta_0$ is the **intercept** or **bias** parameter
+- $\beta_1$ is the **slope** parameter
+- $\epsilon_i$ is the **error term** (not a parameter)
+- $\sigma^2$ is the **variance** parameter
+- $i$ indexes the observations
+:::
+
+::: {.fragment}
+The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+:::
+
+## Simple linear regression {visibility="uncounted"}
+
+A linear model with a single predictor is called **simple linear regression**
+
+$$
+\large{\mu_i = \beta_0 + \beta_1 x_i} \\
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+$$
+
+- $\beta_0$ is the **intercept** or **bias** parameter
+- $\beta_1$ is the **slope** parameter
+- ~~the **error term** (not a parameter)~~
+- $\sigma^2$ is the **variance** parameter
+- $i$ indexes the observations
+
+The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+
+## Simple linear regression parameters
+
+$$
+\large{y_i = \beta_0 + \beta_1 x_i + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+::: {.incremental}
+- $\beta_0$ is the average of $y$ when $x = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x$
+- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+:::
+
+## Simple linear regression parameters {visibility="uncounted"}
+
+$$
+\large{\mu_i = \beta_0 + \beta_1 x_i} \\
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+$$
+
+- $\beta_0$ is the average of $y$ when $x = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x$
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+
+## Simple linear regression parameters {visibility="uncounted"}
+
+$$
+\large{\text{sales}_i = 34 - 3.50 \times \text{price}_i + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+- $\beta_0$ is the average of $y$ when $x = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x$
+- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+
+::: {.fragment}
+What about $\sigma^2$?
+:::
+
+## Simple linear regression and correlation
+
+For simple linear regression, the slope $\beta_1$ is related to the correlation (a.k.a., the correlation coefficient) $r$ between $x$ and $y$
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(data_df, x = 'price', y = 'sales')
+    .add(so.Dot())
+    .add(so.Line(), so.PolyFit(order=1))
+)
+```
+
+## Simple linear regression and correlation {visibility="uncounted"}
+
+For simple linear regression, the slope $\beta_1$ is related to the correlation $r$ between $x$ and $y$
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(data_df, x = 'discount', y = 'sales')
+    .add(so.Dot())
+    .add(so.Line(), so.PolyFit(order=1))
+)
+```
+
+## Multiple linear regression
+
+A linear model with *multiple* predictors is called **multiple linear regression**
+
+$$
+\large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+::: {.incremental}
+- $\beta_0$ is the **intercept** or **bias** parameter
+- $\beta_1$ through $\beta_p$ are the **slope** parameters
+- $\epsilon_i$ is the **error term** (not a parameter)
+- $\sigma^2$ is the **variance** parameter
+- $i$ indexes the observations
+:::
+
+::: {.fragment}
+The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+:::
+
+## Multiple linear regression {visibility="uncounted"}
+
+A linear model with *multiple* predictors is called **multiple linear regression**
+
+$$
+\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}} \\
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+$$
+
+- $\beta_0$ is the **intercept** or **bias** parameter
+- $\beta_1$ through $\beta_p$ are the **slope** parameters
+- ~~the **error term** (not a parameter)~~
+- $\sigma^2$ is the **variance** parameter
+- $i$ indexes the observations
+
+The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+
+## Multiple linear regression parameters
+
+$$
+\large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+::: {.incremental}
+- $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
+- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+:::
+
+## Multiple linear regression parameters {visibility="uncounted"}
+
+$$
+\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}} \\
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+$$
+
+- $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+
+## Multiple linear regression parameters {visibility="uncounted"}
+
+$$
+\large{\text{sales}_i = 24 - 2.20 \times \text{price}_i + \cdots + 5.32 \times \text{promo}_i + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+- $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
+- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+
+::: {.fragment}
+What about $\sigma^2$?
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_hypothesis-tests-regression.png){fig-align="center"}
+:::
+
+# We want to keep our model as simple as possible, so why would we use multiple linear regression? {background-color="#006242"}
 
 # Assumptions
 
+## Ensuring valid inference
 
+Before interpreting results from linear regression, we need to confirm the model assumptions are met
+
+::: {.incremental}
+- **Validity**: Data is relevant to the objective and no predictors are missing
+- **Representativeness**: Data is representative of the data generating process or population
+- **Additivity and Linearity**: The relationship between the outcome and predictors is additive and a linear function of the parameters
+- **Independence**: Observations are independent of each other
+- **Constant Variance**: Homoscedasticity or constant variance of errors
+- **Normality**: Variation or error is Normally distributed
+- **No Multicollinearity**: Predictors aren't too highly correlated with each other
+:::
 
 ## {background-color="#006242"}
 
 ### Exercise 05 {.lato-font}
 
-1. Return to your simulated sales data from the previous exercise (or start with the exercise solution)
-2. Demonstrate that you can recover the parameters you used to simulate the data using both frequentist and Bayesian models
-3. Reflect on how the estimates of the two approaches compare and how you might interpret them differently
-4. Submit your code, output, and reflection as a single PDF on Canvas
+1. Review the materials from the course thus far
+2. Identify lingering questions you have about the concepts covered
+3. Use an AI tool to ask your questions and reflect on the responses you receive
+4. Identify at least two questions you feel have been answered and share your prompts, the responses you received, and your reflections on the responses
+5. Submit your prompts, responses, and reflections as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -70,5 +424,7 @@ jupyter: python3
 
 #### Next Time
 
-- 
+- Start working with real data
+- Conduct exploratory data analysis
+- Begin reconciling the data and the model
 

@@ -292,7 +292,7 @@ We will see that this same model is used to determine *likely* values of $\theta
 A model is the mapping function $f: X \rightarrow y$ where $y$, $X$, and their relationship is consistent with the objective
 
 $$
-\LARGE{f(X, \theta) = \mathcal{L}(\theta | X)}
+\LARGE{f(X | \theta) = \mathcal{L}(\theta | X)}
 $$
 
 $\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
@@ -304,7 +304,7 @@ This same model is used to determine *likely* values of $\theta$ given $X$ and i
 If we know little about the data generating process, we should start with a model that makes few assumptions, like a **linear model**
 
 $$
-\beta_0 + \beta_{price} X_{price} + \epsilon
+y = \beta_0 + \beta_{price} X_{price} + \epsilon
 $$
 
 ::: {.fragment}

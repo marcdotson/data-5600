@@ -27,109 +27,7 @@ Provided more opportunities for student participation beyond live coding by incl
 - Probability and Statistics (Sept 8; Jan 14; May 13)
 - Linear Models (Sept 10; Jan 21; May 18)
 
-- Simulate data to work with (we know the truth, we're satisfying assumptions)
-- Model uncertainty
-- No free lunch theorem: which model is best depends on the application?
-
-## Lines and Means
-
-- Modeling means
-- The normal distribution shows up a lot in nature and, like the linear model, is a good assumption when we don't know a lot about the data generating process. It says the effects of all the variables we don't include in the model add up to something that looks like normal error.
-- Reference that mu can also be any real number (infer GLMs)
-- This model has two parameters. The modeling components and this language generalize no matter the number of parameters.
-- Since we have two parameters, the likelihood is the evaluation of the combination of all possible values of the parameters, thus the posterior will be two-dimensional.
-
-- Why lines? Equation of a line.
-- A linear model is simple but a good assumption when we don't know a lot about the data generating process. It says the outcome variable is the result of summing up the effects of the explanatory variable(s).
-
-- Intercept-only model -- no story -- intercept or bias
-- Correlation coefficient (interactive coding)
-
-This kind of intercept-only model isn't especially interesting. We want to add covariates/independent variables/predictors -- other data that might help explain the observed heights.
-
-> "The strategy is to make the parameter for the mean of a Gaussian distribution, mu, into a linear function of the predictor variable and other, new parameters that we invent. This strategy is often simply called the linear model."
-
-- The `i` subscript now applies to `mu` as well.
-- `mu` is no longer a parameter. `mu_i` is equal to (not distributed) the linear combination of our parameters and predictors.
-
-## Regression
-
-A linear model with normal error and a continuous outcome $y$ is known as a **regression**.
-- Regression is also referred to as linear regression or, more generally, a linear model
-- Key property is the expected value (mu) of the output is assumed to be a linear function of the inputs (X)
-
-SLR
-
-$$
-y = \beta_0 + \beta_1 x + \epsilon
-$$
-
-Because $y = \beta_0 + \beta_1 x$ is a linear equation, adding $\epsilon$ makes this a **linear model**.
-
-- $y$ is the **outcome** variable (a.k.a., response or dependent variable).
-- $x$ is an **explanatory** variable (a.k.a., a predictor or independent variable, feature, or covariate).
-- $\beta_0$ is the **intercept** parameter.
-- $\beta_1$ is a **slope** parameter.
-- $\epsilon$ is the *error* term.
-
-MLR
-- Matrix multiplication -- notation works in both statsmodels and Bambi?
-
-As you start adding many explanatory variables, it may be easier to use matrix multiplication instead of listing each variable and parameter separately in the linear model.
-
-Including more than one explanatory variable is almost always a better approximation of the *data generating process*.
-
-$$
-y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_p x_p + \epsilon, \text{ where } \epsilon \sim Normal(0, 1)
-$$
-
-- $y$ is the *outcome* variable.
-- $x_1$ is the 1st *explanatory* variable.
-- $x_p$ is the $p$th *explanatory* variable.
-- $\beta_0$ is the *intercept* parameter.
-- $\beta_1$ is the 1st *slope* parameter.
-- $\beta_p$ is the $p$th *slope* parameter.
-- $\epsilon$ is the *error* term.
-
-- Hypothesis tests meme
-
-### OLS intuition?
-
-Our goal is to use the model to **estimate** the unobserved parameters from the data (i.e., make our best guess).
-
-To revise our original definition of a model, we use an inferential model to extract **parameter estimates** from the data to inform our managerial decision.
-
-Estimating $\beta_0$ and $\beta_1$ (using lines from)
-
-The best line should be the one that makes **the sum** of the vertical bars as **small as possible**.
-
-The vertical bars are called **residuals**, and represent the distance between the data $y$ and a particular line.
-
-Residuals can be positive and negative, so we make the sum of the **squared residuals** as small as possible.
-
-- Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior. (Show with the two equation forms.)
-
-## Assumptions
-
-Are all these assumptions really required to use regression?
-
-- Validity: Data is relevant to the objective, no missing variables.
-- Representativeness: Data is representative of the population or process.
-- Additivity: The relationship between the outcome and predictors is additive.
-- Linearity: The mean is a linear function of the predictors.
-- Independence: Observations are independent of each other.
-- Constant Variance: Homoscedasticity or constant variance of errors across all levels of predictors.
-- Normality of Errors: Errors are normally distributed?
-
-- Omitted and included variable bias
-- Multicollinearity
-
-
-
-
-
-
-# Week 04 (Sept 15, 17; Jan 26, 28; May 27) POSIT CONF
+# Week 04 (Sept 15, 17; Jan 26, 28; May 27)
 
 - EDA review? Broken down by continuous and discrete variables? By assumptions?
 - Assumptions diagnostics and remediation
@@ -166,6 +64,23 @@ Linear models are additive, but not necessarily *lines*. Allowing for curvature 
 ## Fitting and Interpreting Models
 
 - Correlation does not imply causation, and the lack of correlation does not imply lack of causation
+- Matrix multiplication -- notation works in both statsmodels and Bambi?
+
+### OLS intuition?
+
+Our goal is to use the model to **estimate** the unobserved parameters from the data (i.e., make our best guess).
+
+To revise our original definition of a model, we use an inferential model to extract **parameter estimates** from the data to inform our managerial decision.
+
+Estimating $\beta_0$ and $\beta_1$ (using lines from)
+
+The best line should be the one that makes **the sum** of the vertical bars as **small as possible**.
+
+The vertical bars are called **residuals**, and represent the distance between the data $y$ and a particular line.
+
+Residuals can be positive and negative, so we make the sum of the **squared residuals** as small as possible.
+
+- Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior. (Show with the two equation forms.)
 
 - Parameter estimates
 - Sampling distributions vs. posterior distributions
@@ -182,6 +97,8 @@ Confidence intervals are about uncertainty in parameter estimates (i.e., paramet
 # Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
 ## Model Evaluation and Prediction
+
+- No free lunch theorem: which model is best depends on the application?
 
 Why do we compute a confidence band for the average of y?
 How do we get the confidence band out of a fixed confidence interval?

@@ -377,7 +377,7 @@ In DATA 5620, we use this **directed acyclic graph** (DAG) to identify causal ef
 Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
 
 $$
-\Large{f(X, \theta) = \theta_0 + \theta_1 x_1 + \cdots + \theta_p x_p + \epsilon}
+\Large{f(X | \theta) = \theta_0 + \theta_1 x_1 + \cdots + \theta_p x_p + \epsilon}
 $$
 
 ## Assume a functional form {visibility="uncounted"}
@@ -385,7 +385,7 @@ $$
 Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
 
 $$
-\Large{f(X, \beta) = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon}
+\Large{f(X | \beta) = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon}
 $$
 
 ::: {.incremental}
