@@ -35,6 +35,12 @@ jupyter: python3
 ![](../../figures/workflow_build.png){fig-align="center"}
 :::
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_environments-cloud.png){fig-align="center"}
+:::
+
 ## Simulate data
 
 If we don't have real data or want to test our code, we can simulate data
@@ -44,6 +50,7 @@ If we don't have real data or want to test our code, we can simulate data
 
 import numpy as np
 import polars as pl
+import seaborn as sns
 import seaborn.objects as so
 
 # Set randomization seed
@@ -185,12 +192,12 @@ Is this line a good approximation of the relationship? What is this line?
 
 # Linear Regression
 
-## Make as few assumptions as possible
+## Keeping it as simple as possible
 
-Modeling the mean $\mu$ of a Normal distribution using a linear function of predictors $X$ and other parameters $\beta$ is called **linear regression** or, more generally, a **linear model**
+Modeling the mean $\mu$ of a normal distribution using a linear function of predictors $X$ and other parameters $\beta$ is called **linear regression** or, more generally, a **linear model**
 
 ::: {.incremental}
-- A Normal distribution is the **simplest** distribution (i.e., the **maximum entropy** distribution) to use to model a continous $y$
+- A normal distribution is the **simplest** distribution (i.e., the **maximum entropy** distribution) to use to model a continuous $y$
 - A linear function is the **simplest** way to map predictors $X$ to a continuous $y$
 :::
 
@@ -200,7 +207,7 @@ It is always a good idea to **start simple** and add complexity as you need it
 
 ## Simple linear regression
 
-A linear model with a single predictor is called **simple linear regression**
+A linear model with a *single* predictor is called **simple linear regression**
 
 $$
 \large{y_i = \beta_0 + \beta_1 x_i + \epsilon_i} \\
@@ -210,18 +217,18 @@ $$
 ::: {.incremental}
 - $\beta_0$ is the **intercept** or **bias** parameter
 - $\beta_1$ is the **slope** parameter
-- $\epsilon_i$ is the **error term** (not a parameter)
+- the **error term** (not a parameter)
 - $\sigma^2$ is the **variance** parameter
 - $i$ indexes the observations
 :::
 
 ::: {.fragment}
-The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+The linear model is the **deterministic component** and the normal error is the **probabilistic component**
 :::
 
 ## Simple linear regression {visibility="uncounted"}
 
-A linear model with a single predictor is called **simple linear regression**
+A linear model with a *single* predictor is called **simple linear regression**
 
 $$
 \large{\mu_i = \beta_0 + \beta_1 x_i} \\
@@ -234,7 +241,7 @@ $$
 - $\sigma^2$ is the **variance** parameter
 - $i$ indexes the observations
 
-The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+The linear model is the **deterministic component** and the normal error is the **probabilistic component**
 
 ## Simple linear regression parameters
 
@@ -246,7 +253,7 @@ $$
 ::: {.incremental}
 - $\beta_0$ is the average of $y$ when $x = 0$
 - $\beta_1$ is the average change in $y$ for every one unit increase in $x$
-- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
 :::
 
 ## Simple linear regression parameters {visibility="uncounted"}
@@ -263,13 +270,13 @@ $$
 ## Simple linear regression parameters {visibility="uncounted"}
 
 $$
-\large{\text{sales}_i = 34 - 3.50 \times \text{price}_i + \epsilon_i} \\
+\large{\text{sales}_i = 19.39 - 1.83 \times \text{price}_i + \epsilon_i} \\
 \large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
 $$
 
 - $\beta_0$ is the average of $y$ when $x = 0$
 - $\beta_1$ is the average change in $y$ for every one unit increase in $x$
-- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
 
 ::: {.fragment}
 What about $\sigma^2$?
@@ -291,7 +298,7 @@ For simple linear regression, the slope $\beta_1$ is related to the correlation 
 
 ## Simple linear regression and correlation {visibility="uncounted"}
 
-For simple linear regression, the slope $\beta_1$ is related to the correlation $r$ between $x$ and $y$
+For simple linear regression, the slope $\beta_1$ is related to the correlation (a.k.a., the correlation coefficient) $r$ between $x$ and $y$
 
 ```{python}
 #| eval: true
@@ -315,13 +322,13 @@ $$
 ::: {.incremental}
 - $\beta_0$ is the **intercept** or **bias** parameter
 - $\beta_1$ through $\beta_p$ are the **slope** parameters
-- $\epsilon_i$ is the **error term** (not a parameter)
+- the **error term** (not a parameter)
 - $\sigma^2$ is the **variance** parameter
 - $i$ indexes the observations
 :::
 
 ::: {.fragment}
-The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+The linear model is the **deterministic component** and the normal error is the **probabilistic component**
 :::
 
 ## Multiple linear regression {visibility="uncounted"}
@@ -339,7 +346,7 @@ $$
 - $\sigma^2$ is the **variance** parameter
 - $i$ indexes the observations
 
-The linear model is the **deterministic component** and the assumed distribution is the **probabilistic component**
+The linear model is the **deterministic component** and the normal error is the **probabilistic component**
 
 ## Multiple linear regression parameters
 
@@ -351,7 +358,7 @@ $$
 ::: {.incremental}
 - $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
 - $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
-- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
 :::
 
 ## Multiple linear regression parameters {visibility="uncounted"}
@@ -368,17 +375,33 @@ $$
 ## Multiple linear regression parameters {visibility="uncounted"}
 
 $$
-\large{\text{sales}_i = 24 - 2.20 \times \text{price}_i + \cdots + 5.32 \times \text{promo}_i + \epsilon_i} \\
+\large{\text{sales}_i = 5.39 - 2.65 \times \text{price}_i + \cdots - 0.22 \times \text{promo}_i + \epsilon_i} \\
 \large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
 $$
 
 - $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
 - $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
-- $\epsilon_i$ are the **residuals**, the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
 
 ::: {.fragment}
 What about $\sigma^2$?
 :::
+
+## Multiple linear regression and correlation
+
+For multiple linear regression, each slope $\beta_1 \cdots \beta_p$ is no longer connected directly to the correlation between the given $x$ and $y$
+
+```{python}
+#| eval: true
+#| output-location: column
+
+cont_df = (data_df
+    .select(['sales', 'price', 'discount'])
+    .to_pandas()
+)
+
+sns.pairplot(cont_df)
+```
 
 ## 
 
@@ -395,14 +418,42 @@ What about $\sigma^2$?
 Before interpreting results from linear regression, we need to confirm the model assumptions are met
 
 ::: {.incremental}
-- **Validity**: Data is relevant to the objective and no predictors are missing
-- **Representativeness**: Data is representative of the data generating process or population
-- **Additivity and Linearity**: The relationship between the outcome and predictors is additive and a linear function of the parameters
-- **Independence**: Observations are independent of each other
-- **Constant Variance**: Homoscedasticity or constant variance of errors
-- **Normality**: Variation or error is Normally distributed
-- **No Multicollinearity**: Predictors aren't too highly correlated with each other
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+4. **Independence**: Observations are independent of each other
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+6. **Normality**: Variation or error is normally distributed
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 :::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
+:::
+
+::: {.column width="40%"}
+1. Validity
+2. Representativeness
+3. Additivity and Linearity
+4. Independence
+5. Constant Variance
+6. Normality
+7. Identifiability
+:::
+
+::::
 
 ## {background-color="#006242"}
 
