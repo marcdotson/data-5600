@@ -532,7 +532,7 @@ data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2']).to_pandas()
 fr_fit = smf.ols('y ~ x1 + x2', data = data_df).fit()
 
 # Fit a Bayesian linear regression
-ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit()
+ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit() # Use progressbar=False
 ```
 
 ## Did we recover the parameters?
@@ -562,8 +562,8 @@ az.summary(ba_fit) # Posterior estimates
 ### Exercise 04 {.lato-font}
 
 1. Return to your simulated sales data from the previous exercise (or start with the exercise solution)
-2. Demonstrate that you can recover the parameters you used to simulate the data using both frequentist and Bayesian models
-3. Reflect on how the estimates of the two approaches compare and how you might interpret them differently
+2. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
+3. Reflect on how the interval estimates of the two approaches differ and how you might interpret each of them
 4. Submit your code, output, and reflection as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
