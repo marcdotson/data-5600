@@ -2,7 +2,7 @@ import os
 import numpy as np
 import polars as pl
 
-rng = np.random.default_rng(42)
+rng = np.random.default_rng()
 
 setup = 0   # Setup flag
 decay = 0.5 # Weight decay rate
