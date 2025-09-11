@@ -35,12 +35,6 @@ jupyter: python3
 ![](../../figures/workflow_build.png){fig-align="center"}
 :::
 
-## 
-
-::: {.v-center}
-![](../../figures/meme_environments-cloud.png){fig-align="center"}
-:::
-
 ## Simulate data
 
 If we don't have real data or want to test our code, we can simulate data
