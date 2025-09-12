@@ -32,18 +32,45 @@ Provided more opportunities for student participation beyond live coding by incl
 - Finish simulating data for the case study
 - Present as one big lecture, split into two days
 
+## Assumptions
+
+- Start with model assumptions in mind as we explore the data -- everything from plan and build -- use conditional analogy: Data | Model -> Model | Data?
+- What diagnostics and transformations fit under each of these assumptions?
+
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+
+- Comparison to simulated data
+- Prior predictive check
+
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+
+4. **Independence**: Observations are independent of each other
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+6. **Normality**: Variation or error is normally distributed
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
+
+
+
 - EDA (Broken down by continuous and discrete variables?)
+- Reference grammar of graphics
 - Use data explorer in Positron (Assistant? Databot?)
+- Reference earlier slides from Marketing Analytics, PyData blog post
+- Handling missing data (p. 27 of PML)
 
 This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
 
 > "Prior predictive simulation is very useful for assigning sensible priors, because it can be quite hard to anticipate how priors influence the observable variables."
 
+Does Bambi have an easy way to do prior predictive checks?
 Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
 
-- Assumptions diagnostics and remediation
 - Training/testing split
-- Feature engineering, transformations (NN are about automating feature engineering)
+- Discussion of the objective of learning about the data generation process so we can generalize to new data
+- Reference overfitting/underfitting, bias/variance tradeoff?
+
+- Assumptions diagnostics and remediation
+- Preprocessing, feature engineering, transformations (NN are about automating feature engineering)
 
 Line isn't great, but we can do non-linear transofmrations on the predictors while still keeping a linear model
 
@@ -69,6 +96,7 @@ Code: Create a scatterplot matrix, correlation matrix (plus a heat map), fitting
 
 ## Fitting and Interpreting Models
 
+- Reference MLE and OLS (p. 8-9 of PML, p. 105 of PML)
 - Correlation does not imply causation, and the lack of correlation does not imply lack of causation
 - Matrix multiplication -- notation works in both statsmodels and Bambi?
 
@@ -88,11 +116,13 @@ Residuals can be positive and negative, so we make the sum of the **squared resi
 
 - Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior. (Show with the two equation forms.)
 
-- Show that OLS and MLE (and Bayes?) are all decision problems with loss functions to minimize and select the best estimator
+- Show that OLS and MLE (and Bayes?) are all decision problems with loss functions to minimize and select the best estimator (p. 143 of PML?)
 - Parameter estimates
 - Sampling distributions vs. posterior distributions
 - Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme)
 - Sampling distributions vs. posterior distributions, bootstrap as poor man's posterior
+- Illustrate how a posterior is an updated version of the prior taking into the account the likelihood
+- That this is an illustration of shrinkage that happens automatically (p. 89 of PML)
 - Significance, confidence intervals, and p-values
 - Create a chart showing the differences between Bayesian and frequentist statistics?
 
@@ -169,6 +199,7 @@ No discussion on overfitting needing predictive fit?
 Is stepwise regression used in ML practice?
 Cross-validation without one static test dataset? What about leakage?
 Cross-validation is needed for hyperparameter tuning, and model selection is a form of "hyperparameter tuning"
+Cross-validation for model selection as well in order to keep a larger training dataset (p. 123 of PML)
 Are variable selection and shrinkage methods primarily used for multicollinearity?
 AIC and BIC
 

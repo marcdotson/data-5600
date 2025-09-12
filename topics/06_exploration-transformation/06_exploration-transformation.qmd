@@ -36,30 +36,28 @@ jupyter: python3
 ![](../../figures/workflow_explore-reconcile.png){fig-align="center"}
 :::
 
+# Assumptions
 
+## All the way down
 
-## Understand the data and its limitations {auto-animate=true}
+Use the predictive/inferential/causal model as a reference to nested assumptions
+Assumptions all the way down?
 
-:::: {.columns}
+## Ensuring valid inference
 
-::: {.column width="100%"}
-You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+Before interpreting results from linear regression, we need to confirm the model assumptions are met
 
 ::: {.incremental}
-- Visualize data and relationships
-- Compute numeric summaries
-- Check for missing data
-- Ask questions
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+4. **Independence**: Observations are independent of each other
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+6. **Normality**: Variation or error is normally distributed
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 :::
 
-::: {.fragment}
-It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
-:::
-:::
-
-::::
-
-## Understand the data and its limitations {auto-animate=true visibility="uncounted"}
+## Understand the data and its limitations
 
 :::: {.columns}
 
@@ -112,38 +110,9 @@ pb_data = sl_data.filter(pl.col('units') > 0)
 
 ::::
 
-## Understand the data and its limitations
-
-:::: {.columns}
-
-::: {.column .gray-box width="92%"}
-![](../../figures/plot_price-units.png){fig-align="center" width="68%"}
-:::
-
-::::
 
 
 
-## Reconcile the model and the data {auto-animate=true}
-
-:::: {.columns}
-
-::: {.column width="100%"}
-With a model prepared and data explored, its time to resolve the differences between the model and the data
-
-::: {.incremental}
-- Comparing simulated and real data
-- Evaluating model assumptions
-- Revising the model
-- Feature engineering
-:::
-
-::: {.fragment}
-But be careful, we are trying to extract information about the data generating process and not **overfit** to the data
-:::
-:::
-
-::::
 
 ## Reconcile the model and the data {auto-animate=true visibility="uncounted"}
 
@@ -199,6 +168,9 @@ lm_data = pb_data.to_dummies(
 
 
 
+
+
+
 # EDA
 
 
@@ -220,21 +192,7 @@ lm_data = pb_data.to_dummies(
 
 # We want to keep our model as simple as possible, so why would we use multiple linear regression? {background-color="#006242"}
 
-# Assumptions
 
-## Ensuring valid inference
-
-Before interpreting results from linear regression, we need to confirm the model assumptions are met
-
-::: {.incremental}
-1. **Validity**: Data is relevant to the objective and no predictors are missing
-2. **Representativeness**: Data is representative of the data generating process or population
-3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
-4. **Independence**: Observations are independent of each other
-5. **Constant Variance**: Homoscedasticity or constant variance of errors
-6. **Normality**: Variation or error is normally distributed
-7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
-:::
 
 
 
