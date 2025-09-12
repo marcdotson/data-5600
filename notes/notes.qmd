@@ -29,35 +29,41 @@ Provided more opportunities for student participation beyond live coding by incl
 
 # Week 04 (Sept 15, 17; Jan 26, 28; May 27)
 
-- EDA review? Broken down by continuous and discrete variables? By assumptions?
-- Assumptions diagnostics and remediation
+- Finish simulating data for the case study
+- Present as one big lecture, split into two days
 
-## Continuous Predictors
-
-- Exploration and preparation
-- Feature engineering, transformations
-- Training/testing split
-
-- Flexible ML is about automating feature engineering
-
-- Be sure to include +1 for log transforms
-- Rescaling/normalizing/standardizing predictors
-
-Why does the Q-Q plot say "standardized residuals"?
-
-## Discrete Predictors
-
-- Exploration and preparation
-- Dummy/one-hot and index coding
-Dummy variables and the "dummy variable trap"
+- EDA (Broken down by continuous and discrete variables?)
+- Use data explorer in Positron (Assistant? Databot?)
 
 This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
 
 > "Prior predictive simulation is very useful for assigning sensible priors, because it can be quite hard to anticipate how priors influence the observable variables."
 
+Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
+
+- Assumptions diagnostics and remediation
+- Training/testing split
+- Feature engineering, transformations (NN are about automating feature engineering)
+
 Line isn't great, but we can do non-linear transofmrations on the predictors while still keeping a linear model
 
 Linear models are additive, but not necessarily *lines*. Allowing for curvature might be helpful. The form of the model (especially the likelihood) depends on the data. However, as we add complexity to the model, issues begin to emerge with overfitting and interpretation (glimpse of the black-box nature of predictive models).
+
+- Be sure to include +1 for log transforms
+- Rescaling/normalizing/standardizing predictors
+- Why does the Q-Q plot say "standardized residuals"?
+
+- Dummy/one-hot and index coding
+- Dummy variables and the "dummy variable trap"
+
+- the variability around the line, also called the error variance or 𝜎^2. 
+- Note: 𝜎^2 represents the variability of the residual values (𝜖_𝑖).
+- 𝑦 ̂ is the average/predicted/fitted/expected value of 𝑌 computed from the linear regression model. (𝑦 ̂_𝑖=𝛽 ̂_0+𝛽 ̂_1 𝑥_𝑖 )
+
+- Activities, exercise to code with the dataset (explore and reconcile)
+
+Using partial regression to have multiple regression diagnostics
+Code: Create a scatterplot matrix, correlation matrix (plus a heat map), fitting multiple linear regression, diagnostics (including partial regression plots)
 
 # Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
@@ -82,6 +88,7 @@ Residuals can be positive and negative, so we make the sum of the **squared resi
 
 - Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior. (Show with the two equation forms.)
 
+- Show that OLS and MLE (and Bayes?) are all decision problems with loss functions to minimize and select the best estimator
 - Parameter estimates
 - Sampling distributions vs. posterior distributions
 - Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme)
@@ -142,10 +149,7 @@ Presentations
 ### Module 4 (Slides 17-39, 40-55)
 
 Interpreting the F-test and model vs. coefficient p-values
-What is multiplicity or the multiple comparisons problem?
-Using partial regression to have multiple regression diagnostics
-Underfitting and overfitting
-Code: Create a scatterplot matrix, correlation matrix (plus a heat map), fitting multiple linear regression, diagnostics (including partial regression plots)
+Underfitting and overfitting, the complexity vs. error plot (bias variance tradeoff?) to navigate between the two
 
 # Week 09 (Oct 20, 22; Mar 2, 4; Jul 6, 8)
 

@@ -1,0 +1,264 @@
+---
+title: "Exploration and Transformation"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Formally introduced linear regression
+
+#### Preview
+
+- Start working with real data
+- Conduct exploratory data analysis
+- Begin reconciling the data and the model
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_explore-reconcile.png){fig-align="center"}
+:::
+
+
+
+## Understand the data and its limitations {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+
+::: {.incremental}
+- Visualize data and relationships
+- Compute numeric summaries
+- Check for missing data
+- Ask questions
+:::
+
+::: {.fragment}
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
+:::
+:::
+
+::::
+
+## Understand the data and its limitations {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+
+- Visualize data and relationships
+- Compute numeric summaries
+- Check for missing data
+- Ask questions
+
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
+:::
+
+::: {.column .gray-box width="42%"}
+Why not start here? It's easy to think that since we have data it must contain the information we need, but there is no guarantee
+
+In the case, the transaction data contains the critical variables, units sold and price, but it doesn't contain other variables we might want, like customer age or income, so we may need to find **proxies**
+:::
+
+::::
+
+## Understand the data and its limitations
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+I recommend visualization libraries that follow the [grammar of graphics](https://link.springer.com/book/10.1007/0-387-28695-0) where each plot is composed of **data**, a **mapping** from data to visual elements, the **specific graphic**
+
+```{python}
+#| code-line-numbers: "|1-3|5-6|8-9|11-15|12|13|14"
+
+import os
+import polars as pl
+import seaborn.objects as so
+
+# Import data
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+
+# Peanut butter purchases
+pb_data = sl_data.filter(pl.col('units') > 0)
+
+# Visualize price and units
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(so.Dot(alpha = 0.2), so.Jitter(x = 0.5, y = 0.5))
+    .add(so.Line(), so.PolyFit(order=1))
+)
+```
+:::
+
+::::
+
+## Understand the data and its limitations
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+![](../../figures/plot_price-units.png){fig-align="center" width="68%"}
+:::
+
+::::
+
+
+
+## Reconcile the model and the data {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+With a model prepared and data explored, its time to resolve the differences between the model and the data
+
+::: {.incremental}
+- Comparing simulated and real data
+- Evaluating model assumptions
+- Revising the model
+- Feature engineering
+:::
+
+::: {.fragment}
+But be careful, we are trying to extract information about the data generating process and not **overfit** to the data
+:::
+:::
+
+::::
+
+## Reconcile the model and the data {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+With a model prepared and data explored, its time to resolve the differences between the model and the data
+
+- Comparing simulated and real data
+- Evaluating model assumptions
+- Revising the model
+- Feature engineering
+
+But be careful, we are trying to extract information about the data generating process and not **overfit** to the data
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we discover that to satisfy a linear regression's assumption of **linearity in the parameters**, we need to transform the `units` outcome and `price` predictor variables
+
+Also, acknowledging that there are a number of **omitted predictors**, we find that including `brand` is critical and needs to be dummy coded to be included in the model
+:::
+
+::::
+
+## Reconcile the model and the data 
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+Feature engineering (a.k.a., preprocessing data) is data cleaning or wrangling for the benefit of the model, for example:
+
+- Log transformations need an offset
+- Dummy coding (a.k.a., indicator coding or one hot encoding) turns a discrete predictor into multiple binary predictors
+
+```{python}
+#| code-line-numbers: "|2-4|5-8|9"
+
+# Preprocess data
+lm_data = pb_data.to_dummies(
+    # Dummy code brand
+    columns = ['brand'], drop_first = True
+).with_columns(
+    # Log units and price
+    (pl.col('units') + 1).log().alias('log_units'),
+    (pl.col('price') + 1).log().alias('log_price')
+).to_pandas()
+```
+:::
+
+::::
+
+
+
+
+
+# EDA
+
+
+
+
+
+
+
+
+
+
+
+
+# If we use a line to model the mean of the data generating process, what is a "good" line? {background-color="#006242"}
+
+# Linear Regression
+
+
+
+# We want to keep our model as simple as possible, so why would we use multiple linear regression? {background-color="#006242"}
+
+# Assumptions
+
+## Ensuring valid inference
+
+Before interpreting results from linear regression, we need to confirm the model assumptions are met
+
+::: {.incremental}
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+4. **Independence**: Observations are independent of each other
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+6. **Normality**: Variation or error is normally distributed
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
+:::
+
+
+
+## {background-color="#006242"}
+
+### Exercise 06 {.lato-font}
+
+1. Review the materials from the course thus far
+2. Identify lingering questions you have about the concepts covered
+3. Use an AI tool to ask your questions and reflect on the responses you receive
+4. Identify at least two questions you feel have been answered and share your prompts, the responses you received, and your reflections on the responses
+5. Submit your prompts, responses, and reflections as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Started working with real data
+- Conducted exploratory data analysis
+- Began reconciling the data and the model
+
+#### Next Time
+
+- 
+
