@@ -36,16 +36,9 @@ jupyter: python3
 ![](../../figures/workflow_explore-reconcile.png){fig-align="center"}
 :::
 
-# Assumptions
+## Linear regression assumptions
 
-## All the way down
-
-Use the predictive/inferential/causal model as a reference to nested assumptions
-Assumptions all the way down?
-
-## Ensuring valid inference
-
-Before interpreting results from linear regression, we need to confirm the model assumptions are met
+Before interpreting results from a linear regression, we need to confirm the model assumptions are met
 
 ::: {.incremental}
 1. **Validity**: Data is relevant to the objective and no predictors are missing
@@ -57,64 +50,216 @@ Before interpreting results from linear regression, we need to confirm the model
 7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 :::
 
-## Understand the data and its limitations
+## 
 
-:::: {.columns}
+:::: {.columns .v-center}
 
-::: {.column width="50%"}
-You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
 
-- Visualize data and relationships
-- Compute numeric summaries
-- Check for missing data
-- Ask questions
-
-It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
 :::
 
-::: {.column .gray-box width="42%"}
-Why not start here? It's easy to think that since we have data it must contain the information we need, but there is no guarantee
-
-In the case, the transaction data contains the critical variables, units sold and price, but it doesn't contain other variables we might want, like customer age or income, so we may need to find **proxies**
+::: {.column width="40%"}
+1. Validity
+2. Representativeness
+3. Additivity and Linearity
+4. Independence
+5. Constant Variance
+6. Normality
+7. Identifiability
 :::
 
 ::::
 
+# Exploratory Data Analysis
+
 ## Understand the data and its limitations
 
-:::: {.columns}
+Remember that it is **your job** to understand the data so you can communicate and address its limitations
 
-::: {.column .gray-box width="92%"}
-I recommend visualization libraries that follow the [grammar of graphics](https://link.springer.com/book/10.1007/0-387-28695-0) where each plot is composed of **data**, a **mapping** from data to visual elements, the **specific graphic**
+::: {.incremental}
+- Visualize data and relationships
+- Compute numeric summaries
+- Check for missing data
+- Consider **proxy** variables
+- Ask questions
+:::
+
+## Parquet, *pour quoi*?
+
+Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval
 
 ```{python}
-#| code-line-numbers: "|1-3|5-6|8-9|11-15|12|13|14"
+#| eval: true
+#| echo: false
 
 import os
 import polars as pl
 import seaborn.objects as so
+import statsmodels.formula.api as smf
+
+# Import data
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+```
+
+```{python}
+import os
+import polars as pl
+import seaborn.objects as so
+import statsmodels.formula.api as smf
 
 # Import data
 sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
-
-# Peanut butter purchases
-pb_data = sl_data.filter(pl.col('units') > 0)
-
-# Visualize price and units
-(so.Plot(pb_data, x = 'price', y = 'units')
-    .add(so.Dot(alpha = 0.2), so.Jitter(x = 0.5, y = 0.5))
-    .add(so.Line(), so.PolyFit(order=1))
-)
 ```
+
+## {.scrollable}
+
+Let's walk through the **data dictionary** and use Positron's **data explorer**
+
+```{python}
+#| eval: true
+
+sl_data
+```
+
+## Variable types and relationships
+
+:::: {.columns}
+
+::: {.fragment .column width="33%"}
+**Discrete**
+
+"Individually separate and distinct" (i.e., categorical)
+
+::: {.incremental}
+- Counts
+- Column/bar plots
+- Facets
+:::
+:::
+
+::: {.fragment .column width="33%"}
+**Continuous**
+
+"Forming an unbroken whole; without interruption" (i.e., numeric)
+
+::: {.incremental}
+- Means
+- Histograms
+- Scatterplots, jitter
+:::
+:::
+
+::: {.fragment .column width="33%"}
+**Discrete and Continuous**
+
+Comparing continuous values by discrete levels
+
+::: {.incremental}
+- Grouped summaries
+- Boxplots
+- Density plots
+- Facets
+:::
 :::
 
 ::::
 
+## Counts and column plots
 
+I recommend visualization libraries that follow the [grammar of graphics](https://link.springer.com/book/10.1007/0-387-28695-0) where each plot is composed of **data**, a **mapping** from data to visual elements, the **specific graphic** (e.g., Marks and Stats)
 
+```{python}
+#| eval: true
+#| output-location: column
 
+pb_data = sl_data.filter(pl.col('units') > 0)
 
-## Reconcile the model and the data {auto-animate=true visibility="uncounted"}
+texture_count = (pb_data
+  .group_by(pl.col('texture'))
+  .agg(n = pl.len())
+)
+
+(so.Plot(texture_count, x = 'texture', y = 'n')
+  .add(so.Bar())
+)
+```
+
+## Counts and column plots
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_data, x = 'texture')
+  .add(so.Bar(), so.Hist())
+)
+```
+
+## Counts and column plots
+
+```{python}
+#| eval: true
+#| output-location: column
+
+texture_count = (pb_data
+  .group_by(pl.col(['texture', 'size']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(texture_count, x = 'texture', y = 'n', color = 'size')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+)
+```
+
+## Facets
+
+```{python}
+texture_count = (sl_data
+  .group_by(pl.col(['texture', 'size', 'brand']))
+  .agg(n = pl.len())
+  .with_columns(
+    (pl.col('n') / pl.col('n').sum().over()).alias('prop')
+)
+
+(so.Plot(texture_count, x = 'texture', y = 'prop', color = 'brand')
+  .facet('size')
+  .add(so.Bar(), so.Agg(), so.Dodge())
+)
+```
+
+## Means and histograms
+
+```{python}
+(so.Plot(customer_data, x = 'income', color = 'region')
+  .add(so.Bars(), so.Hist())
+)
+```
+
+## Scatterplots
+
+```{python}
+(so.Plot(customer_data, x = 'income', y = 'credit')
+  .add(so.Dot())
+)
+
+(so.Plot(customer_data, x = 'star_rating', y = 'income')
+  .add(so.Dot(pointsize = 10, alpha = 0.5), so.Jitter(0.75))
+)
+```
+
+# If we use a line to model the mean of the data generating process, what is a "good" line? {background-color="#006242"}
+
+# Assumptions
+
+## Reconcile the model and the data
 
 :::: {.columns}
 
@@ -137,7 +282,31 @@ Also, acknowledging that there are a number of **omitted predictors**, we find t
 
 ::::
 
-## Reconcile the model and the data 
+## All the way down
+
+Use the predictive/inferential/causal model as a reference to nested assumptions
+Assumptions all the way down?
+
+## Ensuring valid inference
+
+Before interpreting results from linear regression, we need to confirm the model assumptions are met
+
+::: {.incremental}
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+4. **Independence**: Observations are independent of each other
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+6. **Normality**: Variation or error is normally distributed
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
+:::
+
+
+
+
+
+
+## 
 
 :::: {.columns}
 
@@ -171,20 +340,11 @@ lm_data = pb_data.to_dummies(
 
 
 
-# EDA
 
 
 
 
 
-
-
-
-
-
-
-
-# If we use a line to model the mean of the data generating process, what is a "good" line? {background-color="#006242"}
 
 # Linear Regression
 
