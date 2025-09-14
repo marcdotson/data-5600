@@ -31,27 +31,27 @@ import seaborn.objects as so
 # Randomization seed
 rng = np.random.default_rng(42)
 
-# # Parameter values
+# Parameter values
 n = 4_793
-beta_0 = 90 / 100
-beta_jif = 30 / 100
-beta_skippy = 25 / 100
-beta_peterpan = -15 / 100
-beta_harmons = 20 / 100
-beta_coupon = 25 / 100
-beta_ad = 18 / 100
-beta_loyal = 22 / 100
-beta_log_price = -90 / 100
-beta_texture_smooth = 10 / 100
-beta_texture_chunky = -10 / 100
-beta_log_size = 10 / 100
-beta_lp_x_coupon = 15 / 100
-beta_loyal_x_coupon = 5 / 100
-beta_harmons_x_ad = 6 / 100
-beta_jif_x_smooth = 5 / 100
-beta_age = -15 / 100
-beta_avg_spend = 12 / 100
-sigma = 15 / 100
+beta_0 = 0.05
+beta_jif = 0.30
+beta_skippy = 0.25  
+beta_peterpan = -0.15
+beta_harmons = 0.20
+beta_coupon = 0.25
+beta_ad = 0.18
+beta_loyal = 0.22
+beta_log_price = -0.90
+beta_texture_smooth = 0.10
+beta_texture_chunky = -0.10
+beta_log_size = 0.10
+beta_lp_x_coupon = 0.15
+beta_loyal_x_coupon = 0.05
+beta_harmons_x_ad = 0.06
+beta_jif_x_smooth = 0.05
+beta_age = -0.01
+beta_log_avg_spend = 0.50
+sigma = 0.15
 
 # Customer IDs
 cust_ids = np.array([f'C{str(i).zfill(5)}' for i in range(1, n+1)])
@@ -184,7 +184,7 @@ X_df = X_df.with_columns(
         + beta_harmons_x_ad * pl.col('harmons_x_ad')
         + beta_jif_x_smooth * pl.col('jif_x_smooth')
         + beta_age * pl.col('age').fill_null(0)
-        + beta_avg_spend * pl.col('log_avg_spend').fill_null(0)
+        + beta_log_avg_spend * pl.col('log_avg_spend').fill_null(0)
         + rng.normal(0.0, sigma, size=n)
     ).alias('raw_log_units')
 ).with_columns(
@@ -228,17 +228,8 @@ for i in range(len(brand_messy)):
     if brand_messy[i] in brand_variations and rng.random() < 0.03:
         brand_messy[i] = rng.choice(brand_variations[brand_messy[i]])
 
-# Duplicate buyer entries
-buyers_mask = raw_df.filter(pl.col('brand') != 'None')
-n_duplicates = int(len(buyers_mask) * 0.01)
-
-# Randomly select rows to duplicate and add to the dataset
-duplicate_indices = rng.choice(len(buyers_mask), size=n_duplicates, replace=False)
-rows_to_duplicate = buyers_mask.slice(duplicate_indices[0], len(duplicate_indices))
-raw_df = pl.concat([raw_df, rows_to_duplicate])
-
-# Numeric data stored as strings (common data quality issue)
-price_str = np.where(rng.random(n) < 0.10, price.astype(str), price)
+# Add numeric data stored as strings
+price_str = price.astype(str)
 
 # Recreate the data frame
 raw_df = pl.DataFrame({
@@ -259,6 +250,15 @@ raw_df = pl.DataFrame({
     'points': customer_points,
     'email': customer_email,
 })
+
+# Duplicate observations
+buyers_mask = raw_df.filter(pl.col('brand') != 'None')
+n_duplicates = int(len(buyers_mask) * 0.001)
+
+# Randomly select observations to duplicate and add to the dataset
+duplicate_indices = rng.choice(len(buyers_mask), size=n_duplicates, replace=False)
+rows_to_duplicate = buyers_mask.slice(duplicate_indices[0], len(duplicate_indices))
+raw_df = pl.concat([raw_df, rows_to_duplicate])
 
 # Split into transaction and loyalty data
 transaction_df = raw_df.select([

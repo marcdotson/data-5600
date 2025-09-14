@@ -87,7 +87,7 @@ Remember that it is **your job** to understand the data so you can communicate a
 ::: {.incremental}
 - Visualize data and relationships
 - Compute numeric summaries
-- Check for missing data
+- Check for missing data, outliers, and errors
 - Consider **proxy** variables
 - Ask questions
 :::
@@ -103,20 +103,25 @@ Apache Parquet is an open source, column-oriented data file format designed for 
 import os
 import polars as pl
 import seaborn.objects as so
+import statsmodels.api as sm
 import statsmodels.formula.api as smf
+from statsmodels.stats.outliers_influence import variance_inflation_factor as vif
 
 # Import data
-sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+# sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
 ```
 
 ```{python}
 import os
 import polars as pl
 import seaborn.objects as so
+import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 # Import data
-sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+# sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('data', 'original_df.parquet'))
 ```
 
 ## {.scrollable}
@@ -136,7 +141,7 @@ sl_data
 ::: {.fragment .column width="33%"}
 **Discrete**
 
-"Individually separate and distinct" (i.e., categorical)
+"Individually separate and distinct" (i.e., categorical or qualitative)
 
 ::: {.incremental}
 - Counts
@@ -148,12 +153,13 @@ sl_data
 ::: {.fragment .column width="33%"}
 **Continuous**
 
-"Forming an unbroken whole; without interruption" (i.e., numeric)
+"Forming an unbroken whole; without interruption" (i.e., numeric or quantitative)
 
 ::: {.incremental}
 - Means
 - Histograms
-- Scatterplots, jitter
+- Scatterplots
+- Correlations
 :::
 :::
 
@@ -219,26 +225,39 @@ texture_count = (pb_data
 )
 ```
 
-## Facets
+## Counts, column plots, and facets
 
 ```{python}
-texture_count = (sl_data
+#| eval: true
+#| output-location: column
+
+texture_count = (pb_data
   .group_by(pl.col(['texture', 'size', 'brand']))
   .agg(n = pl.len())
   .with_columns(
-    (pl.col('n') / pl.col('n').sum().over()).alias('prop')
-)
+    (pl.col('n') / pl.col('n').sum().over(['texture', 'size'])).alias('prop')
+))
 
 (so.Plot(texture_count, x = 'texture', y = 'prop', color = 'brand')
   .facet('size')
-  .add(so.Bar(), so.Agg(), so.Dodge())
+  .add(so.Bar(), so.Agg(), so.Stack())
 )
 ```
 
 ## Means and histograms
 
 ```{python}
-(so.Plot(customer_data, x = 'income', color = 'region')
+#| eval: true
+#| output-location: column
+
+pb_data['units'].drop_nans().mean()
+```
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_data, x = 'units')
   .add(so.Bars(), so.Hist())
 )
 ```
@@ -246,16 +265,38 @@ texture_count = (sl_data
 ## Scatterplots
 
 ```{python}
-(so.Plot(customer_data, x = 'income', y = 'credit')
-  .add(so.Dot())
-)
+#| eval: true
+#| output-location: column
 
-(so.Plot(customer_data, x = 'star_rating', y = 'income')
-  .add(so.Dot(pointsize = 10, alpha = 0.5), so.Jitter(0.75))
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(so.Dot())
+    .add(so.Line(), so.PolyFit(order=1))
 )
 ```
 
-# If we use a line to model the mean of the data generating process, what is a "good" line? {background-color="#006242"}
+## Scatterplots and facets
+
+```{python}
+# Check price elasticity within each brand
+(so.Plot(pb_data, x='price', y='units')
+    .facet('brand')
+    .add(so.Dot())
+    .add(so.Line(), so.PolyFit(order=1))
+)
+```
+
+## Scatterplots and facets
+
+```{python}
+cont_df = (pb_data
+    .select(['sales', 'price', 'discount'])
+    .to_pandas()
+)
+
+sns.pairplot(cont_df)
+```
+
+# EDA {background-color="#006242"}
 
 # Assumptions
 
@@ -287,19 +328,6 @@ Also, acknowledging that there are a number of **omitted predictors**, we find t
 Use the predictive/inferential/causal model as a reference to nested assumptions
 Assumptions all the way down?
 
-## Ensuring valid inference
-
-Before interpreting results from linear regression, we need to confirm the model assumptions are met
-
-::: {.incremental}
-1. **Validity**: Data is relevant to the objective and no predictors are missing
-2. **Representativeness**: Data is representative of the data generating process or population
-3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
-4. **Independence**: Observations are independent of each other
-5. **Constant Variance**: Homoscedasticity or constant variance of errors
-6. **Normality**: Variation or error is normally distributed
-7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
-:::
 
 
 
@@ -359,6 +387,9 @@ lm_data = pb_data.to_dummies(
 ## {background-color="#006242"}
 
 ### Exercise 06 {.lato-font}
+
+Clean up the soft launch data
+Create two interesting visualizations that help you understand the data and its limitations
 
 1. Review the materials from the course thus far
 2. Identify lingering questions you have about the concepts covered

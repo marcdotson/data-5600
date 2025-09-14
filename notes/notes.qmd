@@ -31,9 +31,23 @@ Provided more opportunities for student participation beyond live coding by incl
 
 ## Assumptions
 
-TO DO: assumption diagnostics and remediation CODE from Brinley's material
-
+- Diagnostics and remediations/transformation
 - Preprocessing, feature engineering, transformations (NN are about automating feature engineering)
+
+```{python}
+# Prepare data
+y = cars['MPG']
+X = sm.add_constant(cars['Weight'])
+
+# Fit simple linear regression model using ordinary least squares
+mod = sm.OLS(y, X)
+res = mod.fit()
+print(res.summary())
+
+# Save the residuals and fitted values to the cars dataframe
+cars['residuals'] = res.resid
+cars['fittedvalues'] = res.fittedvalues
+```
 
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 
@@ -52,11 +66,160 @@ Facet in seaborn.objects to compare the distribution of the outcome vs. the prio
 
 2. **Representativeness**: Data is representative of the data generating process or population
 
+```{python}
+# DFFITS
+cars['dffits'] = res.get_influence().dffits[0]
+
+fig = plt.figure(figsize = (4, 4))
+plt.ylabel("DFFITS (Absolute Values)")
+plt.xlabel("Observation Number")
+plt.scatter(cars.index, 
+            np.abs(cars['dffits']), 
+            s = 3)
+plt.axhline(y = 2 * np.sqrt(len(res.params) / len(cars)), 
+            color = 'r', 
+            linestyle = 'dashed')
+plt.show()
+
+# OPTIONAL: code to grab info about potential influential points
+outliers_dffits = cars[np.abs(cars['dffits']) > 2 * np.sqrt(len(res.params) / len(cars))]
+outliers_dffits_sorted = outliers_dffits.sort_values(by = 'dffits', 
+                                                     ascending = False)
+outliers_dffits_sorted.head()
+
+# DFBETAS
+cars['dfbetas'] = res.get_influence().dfbetas[:, 1]
+
+fig = plt.figure(figsize = (4, 4))
+plt.ylabel("DFBETAS (Absolute Value)")
+plt.xlabel("Observation Number")
+plt.scatter(cars.index, 
+            np.abs(cars['dfbetas']), 
+            s = 3)
+plt.axhline(y = 2 / np.sqrt(len(cars)), 
+            color = 'r', 
+            linestyle = 'dashed')
+plt.show()
+
+# OPTIONAL: code to grab info about potential influential points
+outliers_dfbetas = cars[np.abs(cars['dfbetas']) > 2 / np.sqrt(len(cars))]
+outliers_dfbetas_sorted = outliers_dfbetas.sort_values(by = 'dfbetas', 
+                                                       ascending = False)
+outliers_dfbetas_sorted.head()
+
+# MLR DFBETAS
+def plot_dfbetas(column, ax, label_level = 2 / np.sqrt(len(super))):
+    idx = super.columns.get_loc(column)
+    super['dfbetas_' + column] = res.get_influence().dfbetas[:, idx]
+
+    ax.set_ylabel(column + " DFBETAS (abs)")
+    ax.set_xlabel("Observation Number")
+    ax.scatter(super.index, np.abs(super['dfbetas_' + column]), s = 3)
+    ax.axhline(y = label_level, color = 'r', linestyle = 'dashed')
+
+    # optional: label outliers
+    outliers = super[np.abs(super['dfbetas_' + column]) > label_level]
+    for i in list(outliers.index):
+        ax.annotate(str(i), (i, np.abs(super['dfbetas_' + column][i])))
+    
+fig, axes = plt.subplots(2, 3, figsize = (12, 8))
+plt.suptitle("DFBETAS")
+plot_dfbetas("Complaints", axes[0, 0])
+plot_dfbetas("Privileges", axes[0, 1])
+plot_dfbetas("Learn", axes[0, 2])
+plot_dfbetas("Raises", axes[1, 0])
+plot_dfbetas("Critical", axes[1, 1])
+plot_dfbetas("Advance", axes[1, 2])
+fig.tight_layout()
+plt.show()
+```
+
 - y is representative of the population or process we care about, conditioned on the predictors included
 - Handling missing data (p. 27 of PML)
 - No influential points
 
 3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+
+```{python}
+# Scatterplot
+fig = plt.figure(figsize = (4, 4))
+plt.scatter(x = cars['Weight'], 
+            y = cars['MPG'], 
+            s = 2)
+plt.ylabel("MPG")
+plt.xlabel("Weight (lbs)")
+plt.show()
+
+# Residuals vs. Fitted Values Plot
+fig = plt.figure(figsize = (4, 4))
+sns.residplot(x = cars['fittedvalues'], 
+              y = cars['residuals'],
+              lowess = True,
+              scatter_kws = {'s': 3},
+              line_kws = {'color': 'red', 'lw': 1})
+plt.title("Residuals vs. Fitted")
+plt.ylabel("Residuals")
+plt.xlabel("Fitted Values")
+plt.show()
+
+# Residuals vs. Predictor Plot
+fig = plt.figure(figsize = (4, 4))
+sns.residplot(x = cars['Weight'], 
+              y = cars['residuals'],
+              lowess = True,
+              scatter_kws = {'s': 3},
+              line_kws = {'color': 'red', 'lw': 1})
+plt.title("Residuals vs. Predictor")
+plt.xlabel("Predictor (Weight)")
+plt.ylabel("Residuals")
+plt.show()
+
+# Scattterplot matrix
+sns.pairplot(super)
+
+# Correlation matrix
+super.corr()
+
+# Heatmap
+sns.heatmap(super.corr(), 
+            cmap = 'coolwarm',  # color pallete
+            annot = True,  # adds the correlation values in the boxes
+            vmin = -1,  # start color legend at -1
+            vmax = 1,  # stop color legend at 1
+            mask = np.triu(super.corr()))  # remove the upper half of the plot
+plt.show()
+
+# Residuals vs. predictors
+def res_vs_pred(variable, ax):
+    sns.residplot(x = super[variable], 
+                  y = super['residuals'],
+                  lowess = True,
+                  scatter_kws = {'s': 3},
+                  line_kws = {'color': 'red', 'lw': 1},
+                  ax = ax)
+    ax.set_xlabel(variable)
+    ax.set_ylabel("Residuals")
+
+fig, axes = plt.subplots(2, 3)
+plt.suptitle("Residuals vs. Predictors")
+res_vs_pred("Complaints", axes[0, 0])
+res_vs_pred("Privileges", axes[0, 1])
+res_vs_pred("Learn", axes[0, 2])
+res_vs_pred("Raises", axes[1, 0])
+res_vs_pred("Critical", axes[1, 1])
+res_vs_pred("Advance", axes[1, 2])
+fig.tight_layout()
+plt.show()
+
+# Partial regression plots
+fig = plt.figure(figsize = (10,10))
+sm.graphics.plot_partregress_grid(res, 
+                                  exog_idx = list(super.columns[1:7]), 
+                                  grid = (3, 3), 
+                                  fig = fig)
+fig.tight_layout()
+plt.show()
+```
 
 - Determinsitic component is additive and lienar in the parameters
 - Scatterplot of X vs. Y -- need to log transform
@@ -76,7 +239,29 @@ Linear models are additive, but not necessarily *lines*. Allowing for curvature 
 - Dependence in the data that we need a more complex model to accounts for (repeated measures, clustered/spatial data, temporal data)
 - random or represenative sample
 
+```{python}
+# Sequence Plot (NOT APPROPRIATE HERE!)
+x_values = range(1, len(cars) + 1)
+plt.plot(x_values, cars['residuals'], linestyle='-')
+plt.xlabel("Order in Data Set")
+plt.show()
+```
+
 5. **Constant Variance**: Homoscedasticity or constant variance of errors
+
+```{python}
+# Residuals vs. Fitted Values Plot
+fig = plt.figure(figsize = (4, 4))
+sns.residplot(x = cars['fittedvalues'], 
+              y = cars['residuals'],
+              lowess = True,
+              scatter_kws = {'s': 3},
+              line_kws = {'color': 'red', 'lw': 1})
+plt.title("Residuals vs. Fitted")
+plt.ylabel("Residuals")
+plt.xlabel("Fitted Values")
+plt.show()
+```
 
 - Check for heteroscedasticity, residuals vs. fitted values
 - the variability around the line, also called the error variance or 𝜎^2. 
@@ -84,11 +269,66 @@ Linear models are additive, but not necessarily *lines*. Allowing for curvature 
 
 6. **Normality**: Variation or error is normally distributed
 
+```{python}
+# Boxplot
+fig = plt.figure(figsize = (4, 4))
+plt.boxplot(cars['residuals'])
+plt.ylabel("Residuals")
+plt.show()
+
+# Histogram
+fig = plt.figure(figsize = (4, 4))
+
+# plot histogram (density = True so that it's on the same scale as the normal distribution)
+plt.hist(cars['residuals'], 
+         density = True, 
+         bins = 11)
+plt.xlabel("Residuals")
+plt.ylabel("Density")
+
+# calculate mean and standard deviation
+mean = np.mean(cars['residuals'])
+sd = np.std(cars['residuals'])
+
+# generate x values to plot
+xmin, xmax = plt.xlim()
+x = np.linspace(xmin, xmax, 100)
+
+# plot normal distribution curve
+plt.plot(x,
+         stats.norm.pdf(x, mean, sd), 
+         color = 'r',
+         lw = 3)
+plt.show()
+
+# Q-Q Plot (Normal Probability Plot)
+sm.qqplot(cars['residuals'], 
+          line = '45', 
+          fit = True)
+plt.title("Normal Q-Q")
+plt.show()
+
+# Shapiro-Wilk Test
+stats.shapiro(cars['residuals'])
+```
+
+- Consideration of residuals, non-normal continuous variables
 - Q-Q plots
 - Why does the Q-Q plot say "standardized residuals"?
 - Boxplot/histogram of residuals
 
 7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
+
+```{python}
+# Variance Inflation Factors (VIF)
+super_vifs = pd.DataFrame()
+super_vifs['Feature'] = X.columns[1:]
+super_vifs['VIF'] = [vif(X, i) for i in range(1, len(X.columns))]
+
+print("Max = ", max(super_vifs['VIF']))
+print("Mean = ", np.mean(super_vifs['VIF']))
+super_vifs
+```
 
 - Scatterplot matrix, correlation matrix, VIF
 

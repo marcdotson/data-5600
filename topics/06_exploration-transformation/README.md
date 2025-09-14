@@ -1,11 +1,12 @@
----
-title: "Exploration and Transformation"
-format: gfm
----
+# Exploration and Transformation
+
 
 ## Data Dictionary
 
-Transaction data from a one-week peanut butter soft launch test in a single designated market area (DMA). Each of the 4,793 rows represents one customer's peanut butter category purchase behavior during the test period.
+Transaction data from a one-week peanut butter soft launch test in a
+single designated market area (DMA). Each of the 4,793 rows represents
+one customer’s peanut butter category purchase behavior during the test
+period.
 
 - **customer_id**: Unique customer identifier
 - **units**: Number of peanut butter jars purchased
@@ -14,8 +15,7 @@ Transaction data from a one-week peanut butter soft launch test in a single desi
 - **promo**: Any promotion (coupon or advertisement)
 - **coupon**: Coupon present
 - **ad**: Advertisement present
-- **loyal**: Enrolled in Harmon's loyalty program
+- **loyal**: Enrolled in Harmon’s loyalty program
 - **texture**: Product texture
 - **size**: Jar size purchased in ounces
 - **price**: Price paid per jar
-
