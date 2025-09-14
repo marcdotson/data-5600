@@ -29,72 +29,82 @@ Provided more opportunities for student participation beyond live coding by incl
 
 # Week 04 (Sept 15, 17; Jan 26, 28; May 27)
 
-- Finish simulating data for the case study
-- Present as one big lecture, split into two days
-
 ## Assumptions
 
-- Start with model assumptions in mind as we explore the data -- everything from plan and build -- use conditional analogy: Data | Model -> Model | Data?
-- What diagnostics and transformations fit under each of these assumptions?
+TO DO: assumption diagnostics and remediation CODE from Brinley's material
+
+- Preprocessing, feature engineering, transformations (NN are about automating feature engineering)
 
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 
+- Relevant to the objective -- outcome of units sold should include zero or no?
+- Omitted/included variable bias
 - Comparison to simulated data
 - Prior predictive check
 
-2. **Representativeness**: Data is representative of the data generating process or population
-3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
-
-4. **Independence**: Observations are independent of each other
-5. **Constant Variance**: Homoscedasticity or constant variance of errors
-6. **Normality**: Variation or error is normally distributed
-7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
-
-
-
-- EDA (Broken down by continuous and discrete variables?)
-- Reference grammar of graphics
-- Use data explorer in Positron (Assistant? Databot?)
-- Reference earlier slides from Marketing Analytics, PyData blog post
-- Handling missing data (p. 27 of PML)
-
+Why Bayes? Carefully and directly model uncertainty
 This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
 
 > "Prior predictive simulation is very useful for assigning sensible priors, because it can be quite hard to anticipate how priors influence the observable variables."
 
-Does Bambi have an easy way to do prior predictive checks?
+Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
 Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
 
-- Training/testing split
-- Discussion of the objective of learning about the data generation process so we can generalize to new data
-- Reference overfitting/underfitting, bias/variance tradeoff?
+2. **Representativeness**: Data is representative of the data generating process or population
 
-- Assumptions diagnostics and remediation
-- Preprocessing, feature engineering, transformations (NN are about automating feature engineering)
+- y is representative of the population or process we care about, conditioned on the predictors included
+- Handling missing data (p. 27 of PML)
+- No influential points
 
-Line isn't great, but we can do non-linear transofmrations on the predictors while still keeping a linear model
+3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+
+- Determinsitic component is additive and lienar in the parameters
+- Scatterplot of X vs. Y -- need to log transform
+- Residuals vs. X (cloud-like)
+- 𝑦 ̂ is the average/predicted/fitted/expected value of 𝑌 computed from the linear regression model. (𝑦 ̂_𝑖=𝛽 ̂_0+𝛽 ̂_1 𝑥_𝑖 )
+- Residuals vs. fitted values (Y-hat) cloud-like
+- Partial regression plots, Using partial regression to have multiple regression diagnostics
 
 Linear models are additive, but not necessarily *lines*. Allowing for curvature might be helpful. The form of the model (especially the likelihood) depends on the data. However, as we add complexity to the model, issues begin to emerge with overfitting and interpretation (glimpse of the black-box nature of predictive models).
 
 - Be sure to include +1 for log transforms
-- Rescaling/normalizing/standardizing predictors
-- Why does the Q-Q plot say "standardized residuals"?
-
 - Dummy/one-hot and index coding
 - Dummy variables and the "dummy variable trap"
 
+4. **Independence**: Observations are independent of each other
+
+- Dependence in the data that we need a more complex model to accounts for (repeated measures, clustered/spatial data, temporal data)
+- random or represenative sample
+
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+
+- Check for heteroscedasticity, residuals vs. fitted values
 - the variability around the line, also called the error variance or 𝜎^2. 
 - Note: 𝜎^2 represents the variability of the residual values (𝜖_𝑖).
-- 𝑦 ̂ is the average/predicted/fitted/expected value of 𝑌 computed from the linear regression model. (𝑦 ̂_𝑖=𝛽 ̂_0+𝛽 ̂_1 𝑥_𝑖 )
 
-- Activities, exercise to code with the dataset (explore and reconcile)
+6. **Normality**: Variation or error is normally distributed
 
-Using partial regression to have multiple regression diagnostics
-Code: Create a scatterplot matrix, correlation matrix (plus a heat map), fitting multiple linear regression, diagnostics (including partial regression plots)
+- Q-Q plots
+- Why does the Q-Q plot say "standardized residuals"?
+- Boxplot/histogram of residuals
+
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
+
+- Scatterplot matrix, correlation matrix, VIF
+
+Code: Create a scatterplot matrix, correlation matrix (plus a heat map)
+
+
+
+
 
 # Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
 ## Fitting and Interpreting Models
+
+- Training/testing split
+- Discussion of the objective of learning about the data generation process so we can generalize to new data
+- Reference overfitting/underfitting, bias/variance tradeoff?
 
 - Reference MLE and OLS (p. 8-9 of PML, p. 105 of PML)
 - Correlation does not imply causation, and the lack of correlation does not imply lack of causation
@@ -119,7 +129,7 @@ Residuals can be positive and negative, so we make the sum of the **squared resi
 - Show that OLS and MLE (and Bayes?) are all decision problems with loss functions to minimize and select the best estimator (p. 143 of PML?)
 - Parameter estimates
 - Sampling distributions vs. posterior distributions
-- Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme)
+- Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme) -- danger of summarizing/summary statistics
 - Sampling distributions vs. posterior distributions, bootstrap as poor man's posterior
 - Illustrate how a posterior is an updated version of the prior taking into the account the likelihood
 - That this is an illustration of shrinkage that happens automatically (p. 89 of PML)

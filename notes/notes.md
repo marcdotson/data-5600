@@ -8,19 +8,13 @@ whiteboarding concepts.
 
 - Slow down and illustrate – especially with case, code, questions, and
   activities
-
 - Use minimal scales for grades (e.g., “Excellent,” “Good,” “Needs
   Improvement”)
-
 - Create rubrics as a set of guiding questions rather than a checklist
-
 - Learn names so you can call on students to share
-
 - Create QR code for adding me on LinkedIn
-
-- Speed dating to explain concepts
-
 - Produce a meme to summarize a concept
+- Speed dating to explain concepts
 
 ## Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
@@ -33,254 +27,191 @@ whiteboarding concepts.
 
 ## Week 03 (Sept 8, 10; Jan 21; May 18, 20)
 
-## Probability and Statistics (Sept 8; Jan 14; May 13)
+- Probability and Statistics (Sept 8; Jan 14; May 13)
+- Linear Models (Sept 10; Jan 21; May 18)
 
-- Decision -\> Data -\> Probability -\> Statistics
-- Finish translating the data story into a formal probability model
+# Week 04 (Sept 15, 17; Jan 26, 28; May 27)
 
-## Probability
+## Assumptions
 
-- Probability as a unifying framework for machine learning (PML p. 1)
+TO DO: assumption diagnostics and remediation CODE from Brinley’s
+material
 
-- Branch of mathematics, statisticans as applied probabilists
+- Preprocessing, feature engineering, transformations (NN are about
+  automating feature engineering)
 
-- Simplified set theory
+1.  **Validity**: Data is relevant to the objective and no predictors
+    are missing
 
-- Axioms (with reference to states of the world as events)
+- Relevant to the objective – outcome of units sold should include zero
+  or no?
+- Omitted/included variable bias
+- Comparison to simulated data
+- Prior predictive check
 
-- Marginal, joint, and conditional probabilities
+Why Bayes? Carefully and directly model uncertainty This prior
+predictive distribution is the expected distribution of our data, given
+how we’ve specified our likelihood and priors. Does this look
+reasonable? No one has a negative height, for a start. At this point we
+can iterate on how we’ve specified our likelihood and priors, produce
+another prior predictive distribution and evaluate again, etc.
 
-- CLT, LLN, Bayes rule, etc.
+> “Prior predictive simulation is very useful for assigning sensible
+> priors, because it can be quite hard to anticipate how priors
+> influence the observable variables.”
 
-- Frequentist (objective) vs. Bayesian (subjective) interpretations of
-  probability
+Does Bambi have an easy way to do prior predictive checks? Or just
+expand our Monte Carlo simulation? Facet in seaborn.objects to compare
+the distribution of the outcome vs. the prior predictive check
 
-- Frequentist probabilities are connected to the frequencies of events
-  in large samples (uncertainty is premised on imaginary resampling of
-  data, probability as frequency assumes symmetry and repeatability)
+2.  **Representativeness**: Data is representative of the data
+    generating process or population
 
-- Bayesiam probabilities are a property of information, not the world,
-  and we use randomness to descrebe our uncertainty in the face of
-  incomplete knowledge
+- y is representative of the population or process we care about,
+  conditioned on the predictors included
+- Handling missing data (p. 27 of PML)
+- No influential points
 
-- Probability distributions, including supports and densities/masses
+3.  **Additivity and Linearity**: The mapping function from the
+    predictors to the outcome is additive and a linear function of the
+    parameters
 
-- Random variables
+- Determinsitic component is additive and lienar in the parameters
+- Scatterplot of X vs. Y – need to log transform
+- Residuals vs. X (cloud-like)
+- 𝑦 ̂ is the average/predicted/fitted/expected value of 𝑌 computed from
+  the linear regression model. (𝑦 ̂\_𝑖=𝛽 ̂\_0+𝛽 ̂\_1 𝑥_𝑖 )
+- Residuals vs. fitted values (Y-hat) cloud-like
+- Partial regression plots, Using partial regression to have multiple
+  regression diagnostics
 
-- Use an experiment to illustrate the difference between random and
-  fixed variables: Need something fixed to learn about the random
-  variable
+Linear models are additive, but not necessarily *lines*. Allowing for
+curvature might be helpful. The form of the model (especially the
+likelihood) depends on the data. However, as we add complexity to the
+model, issues begin to emerge with overfitting and interpretation
+(glimpse of the black-box nature of predictive models).
 
-- Discrete and continuous uniform distributions – use Monte Carlo to
-  illustrate? (PML p. 71-72)
+- Be sure to include +1 for log transforms
+- Dummy/one-hot and index coding
+- Dummy variables and the “dummy variable trap”
 
-- Normal/Gaussian distribution; Any process that addds together random
-  values from the same distribution converges to a normal distribution;
-  Why Normal? (PML p. 60)
+4.  **Independence**: Observations are independent of each other
 
-- Binomial distribution
+- Dependence in the data that we need a more complex model to accounts
+  for (repeated measures, clustered/spatial data, temporal data)
+- random or represenative sample
 
-## Statistics
+5.  **Constant Variance**: Homoscedasticity or constant variance of
+    errors
 
-- Use the three column summary for ML
+- Check for heteroscedasticity, residuals vs. fitted values
+- the variability around the line, also called the error variance or
+  𝜎^2.
+- Note: 𝜎^2 represents the variability of the residual values (𝜖_𝑖).
 
-- Descriptive statistics (EDA)
+6.  **Normality**: Variation or error is normally distributed
 
-- Expectations, conditional expectation; Means, variance, standard
-  deviation, mode, limitations of summaries (PML p. 43)
+- Q-Q plots
+- Why does the Q-Q plot say “standardized residuals”?
+- Boxplot/histogram of residuals
 
-- Inferential statistics (interpretable/parametric modeling)
+7.  **Identifiability**: Data allows for parameters to be estimated,
+    including no strong multicollinearity
 
-- Points, intervals, and distributions
+- Scatterplot matrix, correlation matrix, VIF
 
-- Learning parameters from data, estimating parameters, model fitting,
-  training, calibration
+Code: Create a scatterplot matrix, correlation matrix (plus a heat map)
 
-- Statistical decision theory (use extracted information to choose an
-  action)
+# Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
-- Probability as uncertainty: directly and indirectly, Bayesian and
-  frequentist (PML p. 33)
+## Fitting and Interpreting Models
 
-- Try using the introduction from my teaching demo?
+- Training/testing split
 
-- Why teach both? If all you have is a hammer, everything looks like a
-  nail. And it’s often easier to understand a thing in contrast.
+- Discussion of the objective of learning about the data generation
+  process so we can generalize to new data
 
-- Bayesian statistics, where we treat all unknowns as random variables
-  and can directly use probability distributions to quantify uncertainty
-  in our estimates. The direct, Bayesian approach is arguably more
-  intuitive. Bayesian uncertatinytreats randomness as a property of
-  information, not the world; Use randomness to describe our uncertainty
-  in the face of incomplete knowledge
+- Reference overfitting/underfitting, bias/variance tradeoff?
 
-- Frequentist statistics, where we treat data as random and indirectly
-  use probability distributions to quantify uncertainty in our
-  estimates. The indirect, frequentist approach is less computationally
-  intensive. Frequentist uncertainty is based on imaginary/theoretical
-  resampling of data (sampling distributions).
-
-- Sampling distributions vs. posterior distributions
-
-- Create a chart showing the differences between Bayesian and
-  frequentist statistics?
-
-- Parameters, likelihood, priors, and posteriors
-
-- Likelihodos work in both directions: Given parameters, we can produce
-  a distribution of plausible observations; given realized observations,
-  we can infer plausible parameter values.
-
-- Likelihood as our data generating process, the evidence for the data
-  we see?
-
-- Deterministic vs. probabilistic models
-
-- Interpretable models are typically parametric models – so not as
-  flexible
-
-- Intercept-only model – no story – intercept or bias
-
-- Using linear models to formalize this story and probability
-  distributions to quantify uncertainty
-
-- Connect populations to data generating processes – two ways to think
-  about data samples
-
-- Example likelihoods (as models of the data generating process)
-
-- No free lunch theorem: which model is best depends on the application?
-
-- Simple MLE vs. MCMC (and Bootstrap)?
-
-- MLE: Pick the parameters that assign the highest probability to the
-  training data (PML p. 105)
-
-- MLE as a point approximation of the posterior distribution with a
-  uniform prior (PML p. 106)
-
-- Sampling distributions vs. posterior distributions, bootstrap as poor
-  man’s posterior
-
-See https://allendowney.github.io/ElementsOfDataScience/ See
-https://allendowney.github.io/ThinkStats/ See
-https://sta210-s22.github.io/website/
-
-## Recovering Parameters
-
-- Recover parameters when there is only one kind of uncertainty (no
-  model uncertainty)
-
-## Linear Regression (Sept 10; Jan 21; May 18)
-
-- EDA review? Broken down by continuous and discrete variables?
-
-- Regression is also referred to as linear regression or, more
-  generally, a linear model
-
-- Key property is the expected value (mu) of the output is assumed to be
-  a linear function of the inputs (X)
-
-- Line isn’t great, but we can do non-linear transofmrations on the
-  predictors while still keeping a linear model
-
-- Covariance and correlation?
+- Reference MLE and OLS (p. 8-9 of PML, p. 105 of PML)
 
 - Correlation does not imply causation, and the lack of correlation does
   not imply lack of causation
 
-- SLR, MLR
+- Matrix multiplication – notation works in both statsmodels and Bambi?
 
-- Simulating data and recovering parameters
+### OLS intuition?
 
-### Module 1 (Slides 1-17, Slides 18-38)
+Our goal is to use the model to **estimate** the unobserved parameters
+from the data (i.e., make our best guess).
 
-Correlation coefficient Outcome vs. explanatory variables Definition of
-SLR Deterministic vs. probabilistic Parameter definitions Error is a
-function of unknown parameters. A residual is an “estimate” of this
-error. Interpreting the slope parameter Residuals OLS intuition Danger
-with extrapolating MSE as an estimate of variance Code: Scatterplots,
-correlation, OLS, and MSE by hand
+To revise our original definition of a model, we use an inferential
+model to extract **parameter estimates** from the data to inform our
+managerial decision.
 
-### Module 2 (Slides 1-8)
+Estimating $\beta_0$ and $\beta_1$ (using lines from)
 
-Diagnostics for assumptions before inference How is the iid assumption
-formally described? Does iid persist in the case of grouped
-observations? Using graphical diagnostics of assumptions
+The best line should be the one that makes **the sum** of the vertical
+bars as **small as possible**.
 
-# Week 04 (Sept 15, 17; Jan 26, 28; May 27) POSIT CONF
+The vertical bars are called **residuals**, and represent the distance
+between the data $y$ and a particular line.
 
-## Continuous Predictors
+Residuals can be positive and negative, so we make the sum of the
+**squared residuals** as small as possible.
 
-- Exploration and preparation
+- Using OLS to estimate the parameters in a linear regression is
+  equivalent to using Bayesian inference with a \_\_\_\_\_\_ prior.
+  (Show with the two equation forms.)
 
-- Feature engineering, transformations
-
-- Training/testing split
-
-- Flexible ML is about automating feature engineering
-
-- Be sure to include +1 for log transforms
-
-- Rescaling/normalizing/standardizing predictors
-
-## Discrete Predictors
-
-- Exploration and preparation
-- Dummy/one-hot and index coding
-
-### Module 2 (Slides 9-34, 35-54)
-
-Are all these assumptions really required to use regression? Why does
-the Q-Q plot say “standardized residuals”? Where did DFBETA and DFFITS
-come from? Using numerical diagnostics of assumptions How to remediate
-invalidated assumptions Interpreting estimates with transformations
-Code: All graphical and numerical diagnostics
-
-# Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
-
-## Assumptions and Diagnostics
-
-- Validity: Data is relevant to the objective, no missing variables.
-
-- Representativeness: Data is representative of the population or
-  process.
-
-- Additivity: The relationship between the outcome and predictors is
-  additive.
-
-- Linearity: The mean is a linear function of the predictors.
-
-- Independence: Observations are independent of each other.
-
-- Constant Variance: Homoscedasticity or constant variance of errors
-  across all levels of predictors.
-
-- Normality of Errors: Errors are normally distributed?
-
-- Omitted and included variable bias
-
-- Multicollinearity
-
-## Fitting and Interpreting Models
+- Show that OLS and MLE (and Bayes?) are all decision problems with loss
+  functions to minimize and select the best estimator (p. 143 of PML?)
 
 - Parameter estimates
+
+- Sampling distributions vs. posterior distributions
+
+- Points, intervals, bootstrap, and distributions (estimate, estimator,
+  estimand meme) – danger of summarizing/summary statistics
+
+- Sampling distributions vs. posterior distributions, bootstrap as poor
+  man’s posterior
+
+- Illustrate how a posterior is an updated version of the prior taking
+  into the account the likelihood
+
+- That this is an illustration of shrinkage that happens automatically
+  (p. 89 of PML)
+
 - Significance, confidence intervals, and p-values
 
-### Module 3 (Slides 1-6, 7-28)
+- Create a chart showing the differences between Bayesian and
+  frequentist statistics?
 
-Using the CLT, assuming null is true, to test hypotheses Computing and
-using the standard error for hypothesis testing Manually computing a
-test statistic and looking up a p-value Probability of observing
-something as or more extreme, assuming the null is true Manually
-computing a confidence interval using the t-distribution and margin of
-error Equivalence of p-values and confidence intervals Confidence
-intervals are about uncertainty in parameter estimates (i.e., parameters
-are fixed)
+Probability of observing something as or more extreme, assuming the null
+is true Manually computing a confidence interval using the
+t-distribution and margin of error Equivalence of p-values and
+confidence intervals (meme) Confidence intervals are about uncertainty
+in parameter estimates (i.e., parameters are fixed)
 
 # Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
 ## Model Evaluation and Prediction
+
+- No free lunch theorem: which model is best depends on the application?
+
+Why do we compute a confidence band for the average of y? How do we get
+the confidence band out of a fixed confidence interval? Prediction
+intervals are about uncertainty in new data (i.e., new data is random)
+Why even produce a confidence interval around the mean if it isn’t for a
+confidence band? What’s the extra term in the standard error for the
+prediction interval? SD used twice. Are prediction intervals different
+in Bayesian statistics since data is fixed?
+
+Properties of MSE, RMSE, MAE, R-squared, adjusted R-squared, and F
+statistic Code: Confidence intervals, test statistics, p-value,
+prediction intervals, confidence and prediction bands, and model fit
+statistics
 
 - Statistical models capture association, not causation
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
@@ -292,44 +223,26 @@ are fixed)
 - Demonstrate presenting on a project as part of the communication
   session
 
-### Module 3 (Slides 29-36)
-
-Why do we compute a confidence band for the average of y? How do we get
-the confidence band out of a fixed confidence interval? Prediction
-intervals are about uncertainty in new data (i.e., new data is random)
-Why even produce a confidence interval around the mean if it isn’t for a
-confidence band? What’s the extra term in the standard error for the
-prediction interval? SD used twice. Are prediction intervals different
-in Bayesian statistics since data is fixed? Properties of MSE, RMSE,
-MAE, R-squared, adjusted R-squared, and F statistic Code: Confidence
-intervals, test statistics, p-value, prediction intervals, confidence
-and prediction bands, and model fit statistics
-
-### Module 4 (Slides 1-16)
-
-Interpreting multiple slopes Adding multicollinearity to the list of
-assumptions
-
 # Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
 
 Presentations
 
 —– CASE TWO —–
 
+- Update the syllabus to reflect the changed schedule topics
 - Student evaluations
 - Student panel invitation
 - Post-quiz for research project
 
 # Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
 
+- Week 09 notes from pre-PhD seminar
+
 ### Module 4 (Slides 17-39, 40-55)
 
-Interpreting the F-test and model vs. coefficient p-values What is
-multiplicity or the multiple comparisons problem? Using partial
-regression to have multiple regression diagnostics Underfitting and
-overfitting Code: Create a scatterplot matrix, correlation matrix (plus
-a heat map), fitting multiple linear regression, diagnostics (including
-partial regression plots)
+Interpreting the F-test and model vs. coefficient p-values Underfitting
+and overfitting, the complexity vs. error plot (bias variance tradeoff?)
+to navigate between the two
 
 # Week 09 (Oct 20, 22; Mar 2, 4; Jul 6, 8)
 
@@ -348,8 +261,11 @@ Discussed the possibility of p \> n Working from a full model and using
 backward or forward-selection No discussion on overfitting needing
 predictive fit? Is stepwise regression used in ML practice?
 Cross-validation without one static test dataset? What about leakage?
-Are variable selection and shrinkage methods primarily used for
-multicollinearity? AIC and BIC
+Cross-validation is needed for hyperparameter tuning, and model
+selection is a form of “hyperparameter tuning” Cross-validation for
+model selection as well in order to keep a larger training dataset
+(p. 123 of PML) Are variable selection and shrinkage methods primarily
+used for multicollinearity? AIC and BIC
 
 # Week 10 (Oct 27, 29; Mar 16, 18; Jul 13, 15)
 
@@ -363,11 +279,6 @@ Ridge regression, LASSO, elastic net, best subsets, sequential
 replacement Bias-variance tradeoff and shrinkage methods Accuracy and
 precision is just bias and variance Code: Clunky, implementing stepwise
 regression and shrinkage methods with manual hyperparameter tuning
-
-## Module 6 (Slides 1-14)
-
-Dummy variables and the “dummy variable trap” Interpretation, synonyms,
-etc.
 
 # Week 11 (Nov 3, 5; Mar 23, 25; Jul 20, 22)
 
@@ -412,10 +323,8 @@ likelihood, ROC/AUC
 ## Module 8 (Slides 1-15, 16-36)
 
 Dimension reduction as opposed to variable selection and regularization
-Should this all be in a “feature engineering” module? Shouldn’t we have
-decision trees and random forests as well/instead? Are there students
-who *only* take the introduction to ML? PCA on its own and then PCA as
-part of PCR Code: Using PCA and PCR for continuous and discrete outcomes
+PCA on its own and then PCA as part of PCR Code: Using PCA and PCR for
+continuous and discrete outcomes
 
 # Week 15 (Dec 1, 3; Apr 20)
 
