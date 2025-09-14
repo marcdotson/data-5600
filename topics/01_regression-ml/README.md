@@ -1,4 +1,4 @@
-# 01 Regression and Machine Learning
+# Regression and Machine Learning
 
 
 ## Case Overview
@@ -49,6 +49,8 @@ beta_lp_x_coupon = 15 / 100
 beta_loyal_x_coupon = 5 / 100
 beta_harmons_x_ad = 6 / 100
 beta_jif_x_smooth = 5 / 100
+beta_age = -15 / 100
+beta_avg_spend = 12 / 100
 sigma = 15 / 100
 
 # Customer IDs
@@ -59,11 +61,6 @@ rng.shuffle(cust_ids)
 brands = np.array(['None', 'Jif', 'Skippy', 'PeterPan', 'Harmons'])
 brand_probs = np.array([0.40, 0.25, 0.10, 0.05, 0.20])
 brand = rng.choice(brands, size=n, p=brand_probs)
-
-(pl.DataFrame(brand, schema=['brand'])
-    .group_by(pl.col(['brand']))
-    .agg(n = pl.len())
-)
 
 # Promotions and loyalty
 coupon = rng.binomial(1, 0.30, size=n)
@@ -84,47 +81,70 @@ price = np.array([
     (price_per_oz[b] * s) for b, s in zip(brand, size)
 ]).round(2)
 
+# Define different coupon discount rates
+discount_rates = np.array([0.10, 0.15, 0.20, 0.25])
+discount_probs = np.array([0.40, 0.35, 0.20, 0.05])
+
+# Randomly assign discount rates to each observation
+coupon_discount_rate = rng.choice(discount_rates, size=n, p=discount_probs)
+
+# Only apply discount if coupon present and product purchased
+price_with_coupon = np.where(
+    (coupon == 1) & (brand != 'None'),
+    price * (1 - coupon_discount_rate),
+    price
+).round(2)
+
+# Update the price variable
+price = price_with_coupon
+
+# Generate customer ages only for loyal customers
+loyal_customer_ages = rng.normal(loc=42, scale=12, size=n)
+loyal_customer_ages = np.clip(loyal_customer_ages, 18, 80).round(0).astype(int)
+
+# Average monthly grocery spend (household size proxy)
+loyal_avg_spend = rng.lognormal(mean=np.log(180), sigma=0.4, size=n)
+loyal_avg_spend = np.clip(loyal_avg_spend, 50, 800).round(0).astype(int)
+
+# Gender - categorical
+loyal_gender = rng.choice(['M', 'F', 'Other'], size=n, p=[0.45, 0.52, 0.03])
+
+# Loyalty points earned
+loyal_points = rng.exponential(scale=2500, size=n).round(0).astype(int)
+loyal_points = np.clip(loyal_points, 0, 15000) # Cap at 15,000 points
+
+# Email preferences
+loyal_email_pref = rng.choice(['Yes', 'No'], size=n, p=[0.75, 0.25])
+
 # Clean data for non-buyers
 mask_none = (brand == 'None')
 texture[mask_none] = 'None'
 size[mask_none] = 0
 price[mask_none] = 0.0
 
+# Clean data for loyal customers
+customer_age = np.where(loyal == 1, loyal_customer_ages, np.nan)
+customer_avg_spend = np.where(loyal == 1, loyal_avg_spend, np.nan)
+customer_gender = np.where(loyal == 1, loyal_gender, "None")
+customer_points = np.where(loyal == 1, loyal_points, np.nan)
+customer_email = np.where(loyal == 1, loyal_email_pref, "None")
+
 # Create data frame
-raw_df = pl.DataFrame(
-    {
-        'customer_id': cust_ids,
-        'brand': brand,
-        'coupon': coupon,
-        'ad': ad,
-        'loyal': loyal,
-        'texture': texture,
-        'size': size,
-        'price': price,
-    }
-)
-
-# (raw_df
-#     .group_by(pl.col(['brand', 'texture']))
-#     .agg(n = pl.len())
-# )
-
-# (raw_df
-#     .group_by(pl.col(['brand', 'size']))
-#     .agg(n = pl.len())
-# )
-
-# (raw_df
-#     .group_by(pl.col(['size', 'texture']))
-#     .agg(n = pl.len())
-# )
-
-# (raw_df
-#     .group_by(pl.col(['brand', 'size']))
-#     .agg(
-#         avg_price = pl.col('price').mean()
-#     )
-# )
+raw_df = pl.DataFrame({
+    'customer_id': cust_ids,
+    'brand': brand,
+    'coupon': coupon,
+    'ad': ad,
+    'loyal': loyal,
+    'texture': texture,
+    'size': size,
+    'price': price,
+    'age': customer_age,
+    'avg_spend': customer_avg_spend,
+    'gender': customer_gender,
+    'points': customer_points,
+    'email': customer_email,
+})
 
 # Dummy code data frame
 X_df = raw_df.to_dummies(
@@ -132,9 +152,10 @@ X_df = raw_df.to_dummies(
 ).with_columns(
     # Composite promo flag
     ((pl.col('coupon') + pl.col('ad')) > 0).alias('promo'),
-    # Log price and size
+    # Log price, size, and avg_spend
     pl.when(pl.col('price') > 0).then(pl.col('price').log()).otherwise(0.0).alias('log_price'),
     pl.when(pl.col('size') > 0).then(pl.col('size').log()).otherwise(0.0).alias('log_size'),
+    pl.when(pl.col('avg_spend') > 0).then(pl.col('avg_spend').log()).otherwise(0.0).alias('log_avg_spend'),
 ).with_columns(
     # Interactions
     (pl.col('log_price') * pl.col('coupon')).alias('logprice_x_coupon'),
@@ -162,6 +183,8 @@ X_df = X_df.with_columns(
         + beta_loyal_x_coupon * pl.col('loyal_x_coupon')
         + beta_harmons_x_ad * pl.col('harmons_x_ad')
         + beta_jif_x_smooth * pl.col('jif_x_smooth')
+        + beta_age * pl.col('age').fill_null(0)
+        + beta_avg_spend * pl.col('log_avg_spend').fill_null(0)
         + rng.normal(0.0, sigma, size=n)
     ).alias('raw_log_units')
 ).with_columns(
@@ -181,46 +204,89 @@ X_df = X_df.with_columns(
     (pl.col('units') * pl.col('price')).alias('sales'),
 )
 
-# (so.Plot(X_df, x = 'units')
-#     .add(so.Bar(), so.Hist())
-# )
-
-# (so.Plot(X_df, x = 'log_units')
-#     .add(so.Bar(), so.Hist())
-# )
-
-# (so.Plot(X_df, x = 'sales')
-#     .add(so.Bars(), so.Hist())
-# )
-
-# (so.Plot(X_df, x = 'price', y = 'units')
-#     .add(so.Dot(alpha = 0.5), so.Jitter(x = 0.5, y = 0.5))
-#     .add(so.Line(), so.PolyFit(order=1))
-#     .add(so.Band(), so.PolyFit(order=1))
-# )
-
-# test_df = X_df.filter(pl.col('units') > 0)
-
-# (so.Plot(test_df, x = 'price', y = 'units')
-#     .add(so.Dot(alpha = 0.5), so.Jitter())
-#     .add(so.Line(), so.PolyFit(order=1))
-#     .add(so.Band(), so.PolyFit(order=1))
-# )
-
-# Update data frame
+# Update raw data frame, write
 raw_df = raw_df.with_columns(X_df['units', 'sales', 'promo'])
 
-# Add complications
-# - Missing values
-# - Missing data
-# - Create some outliers (someone buying 100 jars of peanut butter)
-# - Introduce differnt ways to spell strings, including mistakes
-# - Replicate the same customer, so a double entry
-# - More correlation/multicollinearity
-# - Save numeric data as strings
-# - Have some customers buy more than one brand
+# Write data frames
+raw_df.write_parquet(os.path.join('data', 'original_df.parquet'))
+X_df.write_parquet(os.path.join('data', 'X_df.parquet'))
+
+# Add missing values at random
+missing_loyal_mask = rng.choice([True, False], size=n, p=[0.05, 0.95])
+missing_size_mask = rng.choice([True, False], size=n, p=[0.02, 0.98])
+
+# Add common brand name typos
+brand_variations = {
+    'Jif': ['JIF', 'Jiff'],
+    'Skippy': ['SKIPPY', 'Skipy', 'Skipp'],
+    'PeterPan': ['Peter Pan'],
+    'Harmons': ['Harmon\'s']
+}
+
+brand_messy = brand.copy()
+for i in range(len(brand_messy)):
+    if brand_messy[i] in brand_variations and rng.random() < 0.03:
+        brand_messy[i] = rng.choice(brand_variations[brand_messy[i]])
+
+# Duplicate buyer entries
+buyers_mask = raw_df.filter(pl.col('brand') != 'None')
+n_duplicates = int(len(buyers_mask) * 0.01)
+
+# Randomly select rows to duplicate and add to the dataset
+duplicate_indices = rng.choice(len(buyers_mask), size=n_duplicates, replace=False)
+rows_to_duplicate = buyers_mask.slice(duplicate_indices[0], len(duplicate_indices))
+raw_df = pl.concat([raw_df, rows_to_duplicate])
+
+# Numeric data stored as strings (common data quality issue)
+price_str = np.where(rng.random(n) < 0.10, price.astype(str), price)
+
+# Recreate the data frame
+raw_df = pl.DataFrame({
+    'customer_id': cust_ids,
+    'units': X_df['units'],
+    'sales': X_df['sales'],
+    'brand': brand_messy,
+    'promo': X_df['promo'],
+    'coupon': coupon,
+    'ad': ad,
+    'loyal': np.where(missing_loyal_mask, 'None', loyal),
+    'texture': texture,
+    'size': np.where(missing_size_mask, 'None', size),
+    'price': price_str,
+    'age': customer_age,
+    'avg_spend': customer_avg_spend,
+    'gender': customer_gender,
+    'points': customer_points,
+    'email': customer_email,
+})
+
+# Split into transaction and loyalty data
+transaction_df = raw_df.select([
+    'customer_id',
+    'units',
+    'sales', 
+    'brand',
+    'promo',
+    'coupon',
+    'ad',
+    'loyal',
+    'texture',
+    'size',
+    'price'
+])
+
+loyalty_df = (raw_df.select([
+    'customer_id', 
+    'units',
+    'loyal', 
+    'age', 
+    'avg_spend', 
+    'gender', 
+    'points', 
+    'email'
+]).filter(pl.col('loyal') == '1'))
 
 # Write data frames
-raw_df.write_parquet(os.path.join('data', 'raw_df.parquet'))
-X_df.write_parquet(os.path.join('data', 'X_df.parquet'))
+transaction_df.write_parquet(os.path.join('data', 'soft_launch.parquet'))
+loyalty_df.write_parquet(os.path.join('data', 'loyalty.parquet'))
 ```
