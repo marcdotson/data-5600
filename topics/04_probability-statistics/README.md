@@ -1,4 +1,4 @@
-# 04 Probability and Statistics
+# Probability and Statistics
 
 
 ``` python
