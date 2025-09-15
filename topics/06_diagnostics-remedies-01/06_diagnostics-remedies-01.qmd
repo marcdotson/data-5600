@@ -96,8 +96,9 @@ Apache Parquet is an open source, **column-oriented data file format** designed 
 
 import os
 import polars as pl
-import seaborn as sns
 import seaborn.objects as so
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Import data
 # sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
@@ -110,12 +111,20 @@ sl_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet
 ```{python}
 import os
 import polars as pl
-import seaborn as sns
 import seaborn.objects as so
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Import data
 sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
 ```
+
+::: {.fragment}
+The working directory may be different depending on how you run the code
+
+- The **root** when running code line-by-line
+- The **current folder** when rendering the document to PDF
+:::
 
 ## {.scrollable}
 
@@ -217,8 +226,12 @@ texture_count = (pb_data
   .agg(n = pl.len())
 )
 
-(so.Plot(texture_count, x = 'texture', y = 'n', color = 'size')
-  .add(so.Bar(), so.Dodge())
+(so.Plot(
+    texture_count, 
+    x = 'texture', 
+    y = 'n', 
+    color = 'size'
+  ).add(so.Bar(), so.Dodge())
 )
 ```
 
@@ -232,12 +245,18 @@ texture_count = (pb_data
   .group_by(pl.col(['texture', 'size', 'brand']))
   .agg(n = pl.len())
   .with_columns(
-    (pl.col('n') / pl.col('n').sum().over(['texture', 'size'])).alias('prop')
+    (pl.col('n') / pl.col('n')
+      .sum().over(['texture', 'size'])
+    ).alias('prop')
   ).sort('brand')
 )
 
-(so.Plot(texture_count, x = 'texture', y = 'prop', color = 'brand')
-  .facet('size')
+(so.Plot(
+    texture_count, 
+    x = 'texture', 
+    y = 'prop', 
+    color = 'brand'
+  ).facet('size')
   .add(so.Bar(), so.Stack())
 )
 ```
@@ -296,7 +315,6 @@ Why is **right-skewed continuous data** common? Why might this be a problem with
 
 ```{python}
 #| eval: true
-#| output-location: column
 
 (pb_data
   .select(['price', 'units', 'sales'])
@@ -321,7 +339,6 @@ sns.pairplot(
 
 ```{python}
 #| eval: true
-#| output-location: column
 
 (pb_data
   .group_by(pl.col(['texture', 'size']))
@@ -341,7 +358,10 @@ sns.pairplot(
 #| output-location: column
 
 sns.catplot(
-  pb_data, x = 'units', y = 'brand', kind = 'box'
+  pb_data, 
+  x = 'units', 
+  y = 'brand', 
+  kind = 'box'
 )
 ```
 
@@ -368,7 +388,7 @@ sns.catplot(
 )
 ```
 
-# Copy some visualization code and apply it to a different variable or set of variables. What do you discover? {background-color="#006242"}
+# Visualize a different variable or set of variables, using some of this example code or your own. What do you discover? {background-color="#006242"}
 
 # Validity and Representativeness
 
@@ -420,7 +440,7 @@ Why should we care about the data being representative? What's the difference be
 ::: {.incremental}
 - How was the data collected?
 - Is it representiave of the process or population we care about?
-- Is data missing at random?
+- Is data **missing at random**?
 - Check for **influential points**
 :::
 :::
@@ -430,7 +450,7 @@ Why should we care about the data being representative? What's the difference be
 
 ::: {.incremental}
 - Get different data
-- Impute missing data
+- **Drop or impute** missing data
 - Investigate influential points and **consider** removing
 :::
 :::
@@ -483,7 +503,6 @@ pb_train = (pb_data
 #| eval: true
 
 import numpy as np
-import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
@@ -538,7 +557,7 @@ outliers_dffits_sorted = outliers_dffits.sort_values(by = 'dffits', ascending = 
 outliers_dffits_sorted.head()
 ```
 
-# Why are validity and representativeness the most important of the linear regression assumptions? {background-color="#006242"}
+# Why are both validity and representativeness the most essential of the linear regression assumptions? {background-color="#006242"}
 
 # Additivity and Linearity
 
@@ -559,7 +578,7 @@ $$
 :::
 
 ::: {.column width="40%"}
-The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+The mapping function from the predictors to the outcome is additive and a linear function **of the parameters**
 :::
 
 ::::
@@ -610,11 +629,8 @@ pb_train['residuals'] = fit_01.resid
 pb_train['fittedvalues'] = fit_01.fittedvalues
 
 (so.Plot(pb_data, x = 'price', y = 'units')
-    .add(
-      so.Dot(alpha = 0.25), 
-      so.Jitter(x = 0.25, y = 0.25)
-    )
-    .add(so.Line(), so.PolyFit(order = 1))
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
 )
 ```
 
@@ -627,11 +643,8 @@ The relationship between the outcome and predictor(s) should be roughly linear o
 #| output-location: column
 
 (so.Plot(pb_train, x = 'log_price', y = 'log_units')
-    .add(
-      so.Dot(alpha = 0.25), 
-      so.Jitter(x = 0.25, y = 0.25)
-    )
-    .add(so.Line(), so.PolyFit(order = 1))
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
 )
 ```
 
@@ -645,7 +658,7 @@ The relationship between the residuals and predictor(s) should also be roughly l
 
 (so.Plot(pb_train, x = 'residuals', y = 'log_units')
     .add(so.Dot(alpha = 0.25))
-    .add(so.Line(), so.PolyFit(order = 1))
+    .add(so.Line(), so.PolyFit())
 )
 ```
 
@@ -659,7 +672,7 @@ There shouldn't be a relationship between the residuals and fitted values, where
 
 (so.Plot(pb_train, x = 'residuals', y = 'fittedvalues')
     .add(so.Dot(alpha = 0.25))
-    .add(so.Line(), so.PolyFit(order = 1))
+    .add(so.Line(), so.PolyFit())
 )
 ```
 
