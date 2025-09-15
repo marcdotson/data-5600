@@ -467,14 +467,15 @@ To diagnose influential points, we can use visualizations or we can fit a model 
 #| eval: true
 #| echo: false
 
-pb_data = (pb_data
+pb_train = (pb_data
   .drop_nans()
   .to_dummies(
       columns = ['brand', 'promo', 'texture', 'size'], drop_first = True
   ).with_columns(
       (pl.col('units') + 1).log().alias('log_units'),
       (pl.col('price') + 1).log().alias('log_price')
-  ).to_pandas()
+  ).drop(['units', 'sales', 'price', 'loyal'])
+  .to_pandas()
 )
 ```
 
@@ -483,18 +484,17 @@ pb_data = (pb_data
 
 import numpy as np
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 # Fit a model
 fit_01 = smf.ols(
   'log_units ~ log_price + brand_Jif + brand_Skippy + brand_PeterPan + promo_true + texture_Smooth + size_12', 
-  data = pb_data
+  data = pb_train
 ).fit()
 
 # Save the dffits values
-pb_data['dffits'] = fit_01.get_influence().dffits[0]
-# pb_data['residuals'] = fit_01.resid
-# pb_data['fittedvalues'] = fit_01.fittedvalues
+pb_train['dffits'] = fit_01.get_influence().dffits[0]
 ```
 
 ## DFFITS
@@ -514,12 +514,12 @@ fig = plt.figure(figsize = (4, 4))
 plt.ylabel("DFFITS (Absolute Values)")
 plt.xlabel("Observation Number")
 plt.scatter(
-  pb_data.index, 
-  np.abs(pb_data['dffits']), 
+  pb_train.index, 
+  np.abs(pb_train['dffits']), 
   s = 3
 )
 plt.axhline(
-  y = 2 * np.sqrt(len(fit_01.params) / len(pb_data)), 
+  y = 2 * np.sqrt(len(fit_01.params) / len(pb_train)), 
   color = 'r', 
   linestyle = 'dashed'
 )
@@ -533,7 +533,7 @@ Just because a point may be influential **doesn't mean it should be removed**, i
 ```{python}
 #| eval: true
 
-outliers_dffits = pb_data[np.abs(pb_data['dffits']) > 2 * np.sqrt(len(fit_01.params) / len(pb_data))]
+outliers_dffits = pb_train[np.abs(pb_train['dffits']) > 2 * np.sqrt(len(fit_01.params) / len(pb_train))]
 outliers_dffits_sorted = outliers_dffits.sort_values(by = 'dffits', ascending = False)
 outliers_dffits_sorted.head()
 ```
@@ -542,16 +542,7 @@ outliers_dffits_sorted.head()
 
 # Additivity and Linearity
 
-## Additivity and Linearity
-
-
-```{python}
-#| eval: true
-
-# Save the residulas and fitted values
-pb_data['residuals'] = fit_01.resid
-pb_data['fittedvalues'] = fit_01.fittedvalues
-```
+## 
 
 :::: {.columns .v-center}
 
@@ -562,8 +553,8 @@ y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
 $$
 
 $$
-\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
-y_i \sim \text{Normal}(\mu_i, \sigma^2)
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
 $$
 :::
 
@@ -573,18 +564,151 @@ The mapping function from the predictors to the outcome is additive and a linear
 
 ::::
 
+## Functional form of the determinstic component
+
+The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+
+::: {.fragment}
+If the process or population isn't approximated by an additive and linear function, what happens to our inferences?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Scatterplot of outcome and predictor(s)
+- Scatterplot of residuals and predictor(s)
+- Scatterplot of residuals and fitted values
+- Partial regression plots
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Transform $X$
+- Transform $y$
+- Use a nonlinear model
+:::
+:::
+
+::::
+
+## Scatterplot of outcome and predictor(s)
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+
+# Save the residuals and fitted values
+pb_train['residuals'] = fit_01.resid
+pb_train['fittedvalues'] = fit_01.fittedvalues
+
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(
+      so.Dot(alpha = 0.25), 
+      so.Jitter(x = 0.25, y = 0.25)
+    )
+    .add(so.Line(), so.PolyFit(order = 1))
+)
+```
+
+## Scatterplot of outcome and predictor(s)
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_train, x = 'log_price', y = 'log_units')
+    .add(
+      so.Dot(alpha = 0.25), 
+      so.Jitter(x = 0.25, y = 0.25)
+    )
+    .add(so.Line(), so.PolyFit(order = 1))
+)
+```
+
+## Scatterplot of residuals and predictor(s)
+
+The relationship between the residuals and predictor(s) should also be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_train, x = 'residuals', y = 'log_units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit(order = 1))
+)
+```
+
+## Scatterplot of residuals and fitted values
+
+There shouldn't be a relationship between the residuals and fitted values, where a fitted line would be roughly horizontal
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_train, x = 'residuals', y = 'fittedvalues')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit(order = 1))
+)
+```
+
+## Partial regression plots
+
+A partial regression plot for a specific predictor has a slope that is the same as the multiple regression coefficient for that predictor
+
+::: {.fragment}
+How is that different from a scatterplot of the outcome and the same predictor?
+:::
+
+::: {.incremental}
+- Partial regression plots attempt to show the effect of adding an additional variable to the model (given that one or more predictors are already in the model)
+- For a specific predictor, we take whatever is leftover after the fit of the other variables and look to see if what remains is correlated with the part of the predictor that is not already accounted for by the other variables
+:::
+
+## Partial regression plots
+
+The relationship in the partial regression plots should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+
+predictors = [
+  'log_price', 'brand_Jif', 'brand_Skippy', 
+  'brand_PeterPan', 'promo_true', 'texture_Smooth', 
+  'size_12'
+]
+
+fig = plt.figure(figsize = (7,7))
+sm.graphics.plot_partregress_grid(
+  fit_01, 
+  exog_idx = list(predictors), 
+  grid = (4, 2), 
+  fig = fig
+)
+fig.tight_layout()
+plt.show()
+```
+
 ## {background-color="#006242"}
 
 ### Exercise 06 {.lato-font}
 
-Clean up the soft launch data
-Create two interesting visualizations that help you understand the data and its limitations
-
-1. Review the materials from the course thus far
-2. Identify lingering questions you have about the concepts covered
-3. Use an AI tool to ask your questions and reflect on the responses you receive
-4. Identify at least two questions you feel have been answered and share your prompts, the responses you received, and your reflections on the responses
-5. Submit your prompts, responses, and reflections as a single PDF on Canvas
+1. Clean up the soft launch data
+2. Create two interesting visualizations that help you understand the data and its limitations
+3. Walk through the validity, representativeness, and additivity/linearity assumptions and justify whether or not they are satisfied for your cleaned data
+4. Submit your code, output, and explanations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -598,5 +722,5 @@ Create two interesting visualizations that help you understand the data and its 
 
 #### Next Time
 
-- 
+- Finish assumption diagnostics and remedies
 
