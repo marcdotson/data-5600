@@ -36,11 +36,30 @@ jupyter: python3
 ![](../../figures/workflow_explore-reconcile.png){fig-align="center"}
 :::
 
+## Assumptions all the way down
+
+We need to use **diagnostics** to confirm the model assumptions are met, and **remedy** any issues, so that our interpretation (i.e., statistical inference) is valid
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.fragment}
+![](../../figures/models_all-02.png){fig-align="center"}
+:::
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- Flexible, black-box models aren't interpretable
+- Inferences from interpretable models require assumptions
+- Causal effects require **additional assumptions** to be met
+:::
+:::
+
+::::
+
 ## Linear regression assumptions
 
-Before interpreting results from a linear regression, we need to confirm the model assumptions are met
-
-::: {.incremental}
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 2. **Representativeness**: Data is representative of the data generating process or population
 3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
@@ -48,53 +67,28 @@ Before interpreting results from a linear regression, we need to confirm the mod
 5. **Constant Variance**: Homoscedasticity or constant variance of errors
 6. **Normality**: Variation or error is normally distributed
 7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
-:::
-
-## 
-
-:::: {.columns .v-center}
-
-::: {.column width="60%"}
-$$
-y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
-\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
-$$
-
-$$
-\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
-y_i \sim \text{Normal}(\mu_i, \sigma^2)
-$$
-:::
-
-::: {.column width="40%"}
-1. Validity
-2. Representativeness
-3. Additivity and Linearity
-4. Independence
-5. Constant Variance
-6. Normality
-7. Identifiability
-:::
-
-::::
 
 # Exploratory Data Analysis
 
 ## Understand the data and its limitations
 
-Remember that it is **your job** to understand the data so you can communicate and address its limitations
+Remember that it is your job as a data analyst to understand the data so you can communicate about the data and address its limitations
 
 ::: {.incremental}
 - Visualize data and relationships
 - Compute numeric summaries
 - Check for missing data, outliers, and errors
-- Consider **proxy** variables
+- Consider proxy variables
 - Ask questions
+:::
+
+::: {.fragment}
+Conducting EDA **with the model assumptions in mind** will help you identify potential issues and needed remedies early
 :::
 
 ## Parquet, *pour quoi*?
 
-Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval
+Apache Parquet is an open source, **column-oriented data file format** designed for efficient data storage and retrieval
 
 ```{python}
 #| eval: true
@@ -102,31 +96,34 @@ Apache Parquet is an open source, column-oriented data file format designed for 
 
 import os
 import polars as pl
+import seaborn as sns
 import seaborn.objects as so
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-from statsmodels.stats.outliers_influence import variance_inflation_factor as vif
 
 # Import data
 # sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
-sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
+sl_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
+  .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
+  .cast({'size': pl.String})
+)
 ```
 
 ```{python}
 import os
 import polars as pl
+import seaborn as sns
 import seaborn.objects as so
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
 
 # Import data
 # sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
-sl_data = pl.read_parquet(os.path.join('data', 'original_df.parquet'))
+sl_data = (pl.read_parquet(os.path.join('data', 'original_df.parquet'))
+  .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
+  .cast({'size': pl.String})
+)
 ```
 
 ## {.scrollable}
 
-Let's walk through the **data dictionary** and use Positron's **data explorer**
+Let's look at some already cleaned data to review the **data dictionary** and use Positron's **data explorer**
 
 ```{python}
 #| eval: true
@@ -141,7 +138,7 @@ sl_data
 ::: {.fragment .column width="33%"}
 **Discrete**
 
-"Individually separate and distinct" (i.e., categorical or qualitative)
+"Individually separate and distinct" (i.e., **categorical** or qualitative)
 
 ::: {.incremental}
 - Counts
@@ -153,13 +150,13 @@ sl_data
 ::: {.fragment .column width="33%"}
 **Continuous**
 
-"Forming an unbroken whole; without interruption" (i.e., numeric or quantitative)
+"Forming an unbroken whole; without interruption" (i.e., **numeric** or quantitative)
 
 ::: {.incremental}
 - Means
 - Histograms
-- Scatterplots
 - Correlations
+- Scatterplots
 :::
 :::
 
@@ -221,7 +218,7 @@ texture_count = (pb_data
 )
 
 (so.Plot(texture_count, x = 'texture', y = 'n', color = 'size')
-  .add(so.Bar(), so.Agg(), so.Dodge())
+  .add(so.Bar(), so.Dodge())
 )
 ```
 
@@ -236,11 +233,12 @@ texture_count = (pb_data
   .agg(n = pl.len())
   .with_columns(
     (pl.col('n') / pl.col('n').sum().over(['texture', 'size'])).alias('prop')
-))
+  ).sort('brand')
+)
 
 (so.Plot(texture_count, x = 'texture', y = 'prop', color = 'brand')
   .facet('size')
-  .add(so.Bar(), so.Agg(), so.Stack())
+  .add(so.Bar(), so.Stack())
 )
 ```
 
@@ -258,7 +256,20 @@ pb_data['units'].drop_nans().mean()
 #| output-location: column
 
 (so.Plot(pb_data, x = 'units')
-  .add(so.Bars(), so.Hist())
+  .add(so.Bars(), so.Hist(bins = 10))
+)
+```
+
+## Correlations
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(pb_data
+  .select(['price', 'units'])
+  .drop_nans()
+  .corr()
 )
 ```
 
@@ -269,36 +280,261 @@ pb_data['units'].drop_nans().mean()
 #| output-location: column
 
 (so.Plot(pb_data, x = 'price', y = 'units')
-    .add(so.Dot())
-    .add(so.Line(), so.PolyFit(order=1))
+    .add(
+      so.Dot(alpha = 0.25), 
+      so.Jitter(x = 0.25, y = 0.25)
+    )
+    .add(so.Line(), so.PolyFit(order = 1))
 )
 ```
 
-## Scatterplots and facets
+## Correlation matrices
 
 ```{python}
-# Check price elasticity within each brand
-(so.Plot(pb_data, x='price', y='units')
-    .facet('brand')
-    .add(so.Dot())
-    .add(so.Line(), so.PolyFit(order=1))
+#| eval: true
+#| output-location: column
+
+(pb_data
+  .select(['price', 'units', 'sales'])
+  .drop_nans()
+  .corr()
 )
 ```
 
-## Scatterplots and facets
+## Scatterplots matrices
 
 ```{python}
-cont_df = (pb_data
-    .select(['sales', 'price', 'discount'])
-    .to_pandas()
-)
+#| eval: true
+#| output-location: column
 
-sns.pairplot(cont_df)
+sns.pairplot(
+  pb_data.select(['price', 'units', 'sales'])
+  .to_pandas()
+)
 ```
 
-# EDA {background-color="#006242"}
+## Grouped summaries
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(pb_data
+  .group_by(pl.col(['texture', 'size']))
+  .agg(
+    n = pl.len(), 
+    avg_units = pl.col('units').drop_nans().mean(), 
+    avg_sales = pl.col('sales').drop_nans().mean()
+  )
+  .sort(pl.col('avg_units'), descending=True)
+)
+```
+
+## Boxplots
+
+```{python}
+#| eval: true
+#| output-location: column
+
+sns.catplot(
+  pb_data, x = 'units', y = 'brand', kind = 'box'
+)
+```
+
+## Density plots
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_data, x = 'units', color = 'brand')
+  .add(so.Area(), so.Hist(bins=10))
+)
+```
+
+## Density plots and facets
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_data, x = 'units', color = 'brand')
+  .facet(col = 'size', row = 'texture')
+  .add(so.Area(), so.Hist(bins=10))
+)
+```
+
+# Copy some visualization code and apply it to a different variable or set of variables. What do you discover? {background-color="#006242"}
 
 # Assumptions
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import polars as pl
+import seaborn.objects as so
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from statsmodels.stats.outliers_influence import variance_inflation_factor as vif
+
+# Import data
+# sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
+```
+
+## Validity
+
+Data is relevant to the objective and no predictors are missing
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Long-run frequency
+- Describes a repeatable event under identical conditions
+- Exists in the world
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Information
+- Describes uncertainty when working with incomplete knowledge
+- Exists in the mind
+:::
+:::
+
+::::
+
+::: {.fragment}
+The rules of probability operate the same regardless of the interpretation
+:::
+
+## Representativeness
+
+Data is representative of the data generating process or population
+
+## Additivity and Linearity
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
+:::
+
+::: {.column width="40%"}
+The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+:::
+
+::::
+
+## Independence
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
+:::
+
+::: {.column width="40%"}
+Observations are independent of each other
+:::
+
+::::
+
+## Constant Variance
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
+:::
+
+::: {.column width="40%"}
+Homoscedasticity or constant variance of errors
+:::
+
+::::
+
+## Normality
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
+:::
+
+::: {.column width="40%"}
+Variation or error is normally distributed
+:::
+
+::::
+
+## Identifiability
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
+:::
+
+::: {.column width="40%"}
+Data allows for parameters to be estimated, including no strong multicollinearity
+:::
+
+::::
+
+
+
+
+
+
 
 ## Reconcile the model and the data
 
@@ -323,10 +559,6 @@ Also, acknowledging that there are a number of **omitted predictors**, we find t
 
 ::::
 
-## All the way down
-
-Use the predictive/inferential/causal model as a reference to nested assumptions
-Assumptions all the way down?
 
 
 
