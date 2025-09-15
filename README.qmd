@@ -106,7 +106,7 @@ Please note that the instructor reserves the right to change the following sched
 ### Week 03
 
 - Probability and Statistics
-- Linear Regression
+- Linear Models
 
 ### Week 04
 
