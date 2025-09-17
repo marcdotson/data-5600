@@ -1,0 +1,406 @@
+---
+title: "Diagnostics and Remedies"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Started working with real data
+- Conducted exploratory data analysis
+- Began reconciling the data and the model
+
+#### Preview
+
+- Finish assumption diagnostics and remedies
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile.png){fig-align="center"}
+:::
+
+# Independence and Constant Variance
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+:::
+
+::: {.column width="40%"}
+Observations are **independent** of each other
+:::
+
+::::
+
+## Independence and exchangeability
+
+This assumption is often expressed as observations or, equivalently, errors being **independent and identically distributed** (i.e., iid) or, if not identical, at least **exchangeable** (i.e., there is no order to the observations)
+
+::: {.fragment}
+In what ways could this assumption be violated (and often is)?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Is the data a random sample?
+- Is each observation a different unit or are there **repeat measures**?
+- Are the observations **clustered** (e.g., a hierarchy or spatially corellated)?
+- Is there a **sequence** to the observations (e.g., a time series)?
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Include a predictor to control for the dependence
+- Use a more advanced model (i.e., multilevel, spatial, or time series model)
+:::
+:::
+
+::::
+
+## Check for sequential trends
+
+If there is a sequence to the observations (e.g., a time series or other natural order), the observations can be considered independent if there is no trend in the mean or variance of a **sequential plot**
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import numpy as np
+import polars as pl
+import seaborn.objects as so
+import seaborn as sns
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# Import data
+pb_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
+  .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
+  .cast({'size': pl.String})
+  .filter(pl.col('units') > 0)
+)
+
+pb_train = (pb_data
+  .drop_nans()
+  .to_dummies(
+      columns = ['brand', 'promo', 'texture', 'size'], drop_first = True
+  ).with_columns(
+      (pl.col('units') + 1).log().alias('log_units'),
+      (pl.col('price') + 1).log().alias('log_price')
+  ).drop(['units', 'sales', 'price', 'loyal'])
+  .to_pandas()
+)
+
+predictors = [
+  'log_price', 'brand_Jif', 'brand_Skippy', 
+  'brand_PeterPan', 'promo_true', 'texture_Smooth', 
+  'size_12'
+]
+
+fit_01 = smf.ols(
+  'log_units ~ log_price + brand_Jif + brand_Skippy + brand_PeterPan + promo_true + texture_Smooth + size_12', 
+  data = pb_train
+).fit()
+
+pb_train['dffits'] = fit_01.get_influence().dffits[0]
+pb_train['residuals'] = fit_01.resid
+pb_train['fittedvalues'] = fit_01.fittedvalues
+```
+
+```{python}
+#| eval: true
+#| output-location: column
+
+x_values = range(1, len(pb_train) + 1)
+plt.plot(x_values, pb_train['residuals'], linestyle='-')
+plt.xlabel("Order in Data Set")
+plt.show()
+```
+
+::: {.fragment}
+Do we need to check for sequential trends with this data?
+:::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+:::
+
+::: {.column width="40%"}
+Homoscedasticity or **constant variance** of errors
+:::
+
+::::
+
+## Constant variance
+
+If the variance isn't constant or homoscedastic it's called **heteroscedasticity**
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Scatterplot of residuals and fitted values
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Transform $y$
+- Transform $X$
+- Use a model that accounts for heteroscedastic errors
+:::
+:::
+
+::::
+
+## Scatterplot of residuals and fitted values
+
+Errors are reflected in the residuals, so if there is constant variance in errors we should see constant variance in the residuals (e.g., no funnel shape)
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_train, x = 'residuals', y = 'fittedvalues')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+# Does your project data satisfy the independence and constant variance assumptions? If not, what can you do? {background-color="#006242"}
+
+# Normality and Identifiability
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+:::
+
+::: {.column width="40%"}
+Variation or error is **normally** distributed
+:::
+
+::::
+
+## Functional form of the probabilistic component
+
+This assumption is **not that the outcome is normally distributed**, but that the variation or error is normally distributed
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Plot residuals
+- Q-Q plots
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Transform $y$
+- Transform $X$
+- Use a generalized linear model
+:::
+:::
+
+::::
+
+## Plot residuals
+
+If the variation or error is normally distributed, the residuals should be roughly normally distributed
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_train, x = 'residuals')
+  .add(so.Bars(), so.Hist())
+)
+```
+
+## Q-Q plot
+
+A **Q-Q (quantile-quantile) plot** is a scatterplot of the model's residuals and the values from a normal distribution such that, if the residuals are normally distributed, the points will roughly follow a diagonal line
+
+```{python}
+#| eval: true
+#| output-location: column
+
+sm.qqplot(
+  pb_train['residuals'], 
+  line = '45', 
+  fit = True
+)
+plt.title("Normal Q-Q")
+plt.show()
+```
+
+<!-- # What does it mean that the variation or error is approximately normally distributed? {background-color="#006242"} -->
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+:::
+
+::: {.column width="40%"}
+Data allows for parameters to be estimated, including no **strong multicollinearity**
+:::
+
+::::
+
+## Multicollinearity and identifiability
+
+**Multicollinearity** is when two or more predictors are highly correlated
+
+::: {.fragment}
+Why would this be a problem for identifiability (think about how we interpret the slope parameters)?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Scatterplot matrix
+- Correlation matrix
+- Variance inflation factors (VIF)
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Drop some predictors
+- Use penalized regression (e.g., ridege, lasso, elastic net)
+- Combine the correlated predictors (e.g., PCR)
+:::
+:::
+
+::::
+
+## Compute variation inflation factors {.scrollable}
+
+A rough rule of thumb is that multicollinearity is problematic if at least one of these occur: The largest VIF is "much more" than 10 or the mean VIF is "much more" than 1
+
+```{python}
+#| eval: true
+#| output-location: column
+
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+X_train = (pl.from_pandas(pb_train)
+  .select(predictors)
+  .to_pandas()
+)
+
+vif = np.zeros(len(X_train.columns))
+for i in range(0, len(X_train.columns)):
+  vif[i] = variance_inflation_factor(X_train, i)
+
+pl.DataFrame({
+  'predictors': predictors,
+  'vif': vif
+})
+```
+
+## {background-color="#006242"}
+
+### Exercise 07 {.lato-font}
+
+1. Return to your cleaned soft launch data from the previous exercise (or start with the exercise solution)
+2. Walk through the independence, constant variance, normality, and identifiabiliy assumptions and justify whether or not they are satisfied for your cleaned data
+3. Submit your code, output, and explanations as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Finished assumption diagnostics and remedies
+
+#### Next Time
+
+- Complete feature engineering
+- Detail model estimation
+
