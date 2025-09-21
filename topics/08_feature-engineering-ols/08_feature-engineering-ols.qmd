@@ -82,6 +82,7 @@ Before we do any feature engineering, we need to split the data into **training*
 import os
 import polars as pl
 import seaborn.objects as so
+import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
 
 sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
@@ -126,6 +127,7 @@ pb_data = (sl_data
 import os
 import polars as pl
 import seaborn.objects as so
+import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
 
 sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
@@ -222,6 +224,8 @@ y_train = (y_train
   .with_columns(
     (pl.col('units') + 1).log().alias('log_units')
   )
+  .select('log_units')
+  .to_pandas()
 )
 
 (so.Plot(y_train, x = 'log_units')
@@ -231,13 +235,13 @@ y_train = (y_train
 
 ## Different scales, same model
 
-Transforming $y$ and $X$ shows that linear models aren't necessarily **lines** and we can always **back-transform** or use the **inverse transformation** to get back to the original scale
+Transforming $y$ and $X$ shows that linear models aren't necessarily **lines** and we can always **back-transform** or use the **inverse function** to get back to the original scale
 
 ![](../../figures/transformations.png){fig-align="center"}
 
 ## Interpreting models with transformed $y$ and $X$
 
-Interpreting models with transformed variables is all about **keeping track of the scale**, so how does the log transformation change how we interpret parameters estimates?
+Interpreting models with transformed variables is all about **keeping track of the scales**, so how does the log transformation change how we interpret parameters estimates?
 
 ::: {.incremental}
 - $y$ and $x_1$: A one unit increase in $x_1$ leads to a $\beta_1$ unit change in $y$, holding all other variables fixed
@@ -248,7 +252,7 @@ Interpreting models with transformed variables is all about **keeping track of t
 
 ## Dummy coding {.scrollable}
 
-It isn't a model assumption, but one of the most common feature engineering steps is **dummy coding** (a.k.a., indicator coding or one-hot encoding) where the **levels** of a discrete predictor are turned into multiple binary predictors
+One of the most common feature engineering steps is **dummy coding** (a.k.a., indicator coding or one-hot encoding) where the **levels** of a discrete predictor are turned into multiple binary predictors
 
 ```{python}
 #| eval: true
@@ -256,6 +260,7 @@ It isn't a model assumption, but one of the most common feature engineering step
 X_train = (X_train
     .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
     .select(pl.exclude('brand_Jif', 'texture_Smooth', 'size_16'))
+    .to_pandas()
 )
 ```
 
@@ -271,21 +276,149 @@ Interpreting models with discrete predictors is all about **keeping track of the
 - If $x_1$ is discrete, the associated slope parameter $\beta_1$ represents the expected amount by which $y$ will change, **relative to the baseline/reference level** of $x_1$, holding all other variables fixed
 :::
 
+::: {.fragment}
+Why would you want some control over which level is the baseline/reference level?
+:::
+
 # Why do we need to reconcile the differences between the model and the data? {background-color="#006242"}
 
 # Ordinary Least Squares
 
-## 
+## Estimating model parameters
 
-## Fit and interpret a model
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+
+Fitting (a.k.a., estimating, training, calibrating) a parametric model will give us **estimates** (i.e., guesses) of the model parameters, so what?
+
+## Estimating $\beta_0$ and $\beta_1$
+
+![](../../figures/lm_scatter.png){fig-align="center"}
+
+## Finding the best line
+
+![](../../figures/lm_fit_01.png){fig-align="center"}
+
+## Finding the best line {visibility="uncounted"}
+
+![](../../figures/lm_fit_02.png){fig-align="center"}
+
+## Finding the best line {visibility="uncounted"}
+
+![](../../figures/lm_fit_03.png){fig-align="center"}
+
+## Finding the best line {visibility="uncounted"}
+
+![](../../figures/lm_SSE_01.png){fig-align="center"}
+
+## Minimizing the sum of squared residuals
+
+The best line should be the one that makes **the sum** of the **residuals** (i.e., vertical bars) as **small as possible** such that our model
+
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+
+yields the fitted or expected value $\hat{y}$
+
+$$
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}
+$$
+
+where $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ are the parameter estimates
+
+## Minimizing the sum of squared residuals
+
+![](../../figures/lm_SSE_02.png){fig-align="center"}
+
+## Minimizing the sum of squared residuals {visibility="uncounted"}
+
+![](../../figures/lm_fit_04.png){fig-align="center"}
+
+## Minimizing quadratic loss
+
+Choosing $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
+
+$$
+\LARGE{\ell(a, \theta) = \sum_{i=1}^n (a_i - \theta_i)^2}
+$$
+
+## Minimizing quadratic loss {visibility="uncounted"}
+
+Choosing $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
+
+$$
+\LARGE{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2}
+$$
+
+::: {.fragment}
+Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$
+:::
+
+## Fitting models with ordinary least squares {.scrollable}
+
+Choosing parameter estimates by minimizing the sum of squared residuals is a frequentist method called **ordinary least squares (OLS)** and is a special case of **maximum likelihood estimation (MLE)**
+
+```{python}
+#| eval: true
+#| output-location: slide
+
+# Add constant for intercept
+X_train = sm.add_constant(X_train)
+
+# Fit the model
+fit_04 = sm.OLS(y_train, X_train).fit()
+fit_04.summary()
+```
+
+# What are the pros and cons of fitting a model using ordinary least squares? {background-color="#006242"}
+
+## Using the likelihood to estimate parameters {auto-animate=true}
+
+![](../../figures/plot_likelihood.png){fig-align="center"}
+
+## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_likelihood.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.fragment}
+**Frequentist**
+
+- Find the single value of $\theta$ that maximizes the likelihood function
+- This **maximum likelihood estimate** is a point estimate of the fixed but unknown value $\theta$
+:::
+
+::: {.fragment}
+**Bayesian**
+
+- Use Bayes' theorem to combine the likelihood function with a **prior distribution** $p(\theta)$
+- This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
+- Instead of computing this distribution analytically, we typically draw samples from it using **Markov chain Monte Carlo** (MCMC)
+:::
+:::
+
+::::
 
 ## {background-color="#006242"}
 
 ### Exercise 08 {.lato-font}
 
-1. Return to your cleaned soft launch data from the previous exercise (or start with the exercise solution)
-2. Walk through the independence, constant variance, normality, and identifiabiliy assumptions and justify whether or not they are satisfied for your cleaned data
-3. Submit your code, output, and explanations as a single PDF on Canvas
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
+3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
+4. Submit your code, output, and interpretations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -298,5 +431,5 @@ Interpreting models with discrete predictors is all about **keeping track of the
 
 #### Next Time
 
-- Compare fitting frequentist and Bayesian models
+- Compare frequentist and Bayesian inference
 

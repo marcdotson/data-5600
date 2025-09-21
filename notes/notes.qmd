@@ -34,32 +34,14 @@ Provided more opportunities for student participation beyond live coding by incl
 
 # Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
-- Feature Engineering and OLS
-
-## Fitting
+- Feature Engineering and Ordinary Least Squares
+- Frequentist and Bayesian Inference
 
 - Reference MLE and OLS (p. 8-9 of PML, p. 105 of PML)
 - Correlation does not imply causation, and the lack of correlation does not imply lack of causation
 - Matrix multiplication -- notation works in both statsmodels and Bambi?
-
-### OLS intuition?
-
-Our goal is to use the model to **estimate** the unobserved parameters from the data (i.e., make our best guess).
-
-To revise our original definition of a model, we use an inferential model to extract **parameter estimates** from the data to inform our managerial decision.
-
-Estimating $\beta_0$ and $\beta_1$ (using lines from)
-
-The best line should be the one that makes **the sum** of the vertical bars as **small as possible**.
-
-The vertical bars are called **residuals**, and represent the distance between the data $y$ and a particular line.
-
-Residuals can be positive and negative, so we make the sum of the **squared residuals** as small as possible.
-
 - Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior. (Show with the two equation forms.)
-
 - Show that OLS and MLE (and Bayes?) are all decision problems with loss functions to minimize and select the best estimator (p. 143 of PML?)
-- Parameter estimates
 - Sampling distributions vs. posterior distributions
 - Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme) -- danger of summarizing/summary statistics
 - Sampling distributions vs. posterior distributions, bootstrap as poor man's posterior
