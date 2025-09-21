@@ -198,17 +198,17 @@ notice as it relates to assignment deadlines.
 ### Week 03
 
 - Probability and Statistics
-- Linear Regression
+- Linear Models
 
 ### Week 04
 
-- Continuous Predictors
-- Discrete Predictors
+- Diagnostics and Remedies (Part 01)
+- Diagnostics and Remedies (Part 02)
 
 ### Week 05
 
-- Assumptions and Diagnostics
-- Fitting and Interpreting Linear Regression
+- Feature Engineering and Ordinary Least Squares
+- Frequentist and Bayesian Inference
 
 ### Week 06
 

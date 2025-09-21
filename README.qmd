@@ -110,13 +110,13 @@ Please note that the instructor reserves the right to change the following sched
 
 ### Week 04
 
-- Continuous Predictors
-- Discrete Predictors
+- Diagnostics and Remedies (Part 01)
+- Diagnostics and Remedies (Part 02)
 
 ### Week 05
 
-- Assumptions and Diagnostics
-- Fitting and Interpreting Linear Regression
+- Feature Engineering and Ordinary Least Squares
+- Frequentist and Bayesian Inference
 
 ### Week 06
 

@@ -1,0 +1,196 @@
+---
+title: "Frequentist and Bayesian Inference"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Completed feature engineering
+- Began detailing model estimation
+
+#### Preview
+
+- Compare frequentist and Bayesian inference
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_fit-evaluate.png){fig-align="center"}
+:::
+
+## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_likelihood.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.fragment}
+**Frequentist**
+
+- Find the single value of $\theta$ that maximizes the likelihood function
+- This **maximum likelihood estimate** is a point estimate of the fixed but unknown value $\theta$
+:::
+
+::: {.fragment}
+**Bayesian**
+
+- Use Bayes' theorem to combine the likelihood with a **prior distribution** $p(\theta)$
+- This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
+- Instead of computing this distribution analytically, we draw samples from it using **Markov chain Monte Carlo** (MCMC)
+:::
+:::
+
+::::
+
+
+
+
+
+## Set up code
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import polars as pl
+import seaborn.objects as so
+import statsmodels.api as sm
+from sklearn.model_selection import train_test_split
+
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+
+# Standardize brand names
+brand_names = {
+    # Jif
+    'JIF': 'Jif', 'Jiff': 'Jif',
+    # Skippy
+    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+    # PeterPan
+    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+    # Harmons
+    "Harmon's": 'Harmons',
+}
+
+# Clean the data
+pb_data = (sl_data
+    # Fix brand naming variants
+    .with_columns([
+        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
+    ])
+    # Drop rows with missing values
+    .drop_nans(['units'])
+    .remove(
+        (pl.col('brand') == "None") | 
+        (pl.col('texture') == "None") | 
+        (pl.col('size') == "None")
+    )
+    # Make price numeric
+    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+    # Drop duplicate rows
+    .unique()
+    # Filter for only peanut butter purchases
+    .filter(pl.col('units') > 0)
+    # Select relevant columns
+    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+)
+```
+
+```{python}
+import os
+import polars as pl
+import seaborn.objects as so
+import statsmodels.api as sm
+from sklearn.model_selection import train_test_split
+
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+
+# Standardize brand names
+brand_names = {
+    # Jif
+    'JIF': 'Jif', 'Jiff': 'Jif',
+    # Skippy
+    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+    # PeterPan
+    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+    # Harmons
+    "Harmon's": 'Harmons',
+}
+
+# Clean the data
+pb_data = (sl_data
+    # Fix brand naming variants
+    .with_columns([
+        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
+    ])
+    # Drop rows with missing values
+    .drop_nans(['units'])
+    .remove(
+        (pl.col('brand') == "None") | 
+        (pl.col('texture') == "None") | 
+        (pl.col('size') == "None")
+    )
+    # Make price numeric
+    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+    # Drop duplicate rows
+    .unique()
+    # Filter for only peanut butter purchases
+    .filter(pl.col('units') > 0)
+    # Select relevant columns
+    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+)
+```
+
+
+
+# Why do we need to reconcile the differences between the model and the data? {background-color="#006242"}
+
+
+
+# What are the pros and cons of fitting a model using ordinary least squares? {background-color="#006242"}
+
+
+
+
+## {background-color="#006242"}
+
+### Exercise 08 {.lato-font}
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
+3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
+4. Submit your code, output, and interpretations as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Completed feature engineering
+- Began detailing model estimation
+
+#### Next Time
+
+- Compare frequentist and Bayesian inference
+

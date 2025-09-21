@@ -29,37 +29,52 @@ Provided more opportunities for student participation beyond live coding by incl
 
 # Week 04 (Sept 15, 17; Jan 26, 28; May 27)
 
-- Diagnostics and Remedies (Part 01)
-- Diagnostics and Remedies (Part 02)
+- Diagnostics and Remedies (Part 01) (Sept 15; Jan 26; May 27)
+- Diagnostics and Remedies (Part 02) (Sept 17; Jan 28; Jun 1)
 
 # Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
-- Feature Engineering and Ordinary Least Squares
-- Frequentist and Bayesian Inference
+- Feature Engineering and Ordinary Least Squares (Sept 22; Feb 2; Jun 3)
+- Frequentist and Bayesian Inference (Sept 24; Feb 4; Jun 17)
 
-- Reference MLE and OLS (p. 8-9 of PML, p. 105 of PML)
-- Correlation does not imply causation, and the lack of correlation does not imply lack of causation
-- Matrix multiplication -- notation works in both statsmodels and Bambi?
+## Estimation
+
+- MLE as a decision theoretic extension of OLS (p. 8-9 of PML, p. 105 of PML, p. 143 of PML?)
 - Using OLS to estimate the parameters in a linear regression is equivalent to using Bayesian inference with a ______ prior. (Show with the two equation forms.)
-- Show that OLS and MLE (and Bayes?) are all decision problems with loss functions to minimize and select the best estimator (p. 143 of PML?)
-- Sampling distributions vs. posterior distributions
-- Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme) -- danger of summarizing/summary statistics
-- Sampling distributions vs. posterior distributions, bootstrap as poor man's posterior
 - Illustrate how a posterior is an updated version of the prior taking into the account the likelihood
-- That this is an illustration of shrinkage that happens automatically (p. 89 of PML)
-- Significance, confidence intervals, and p-values
-- Create a chart showing the differences between Bayesian and frequentist statistics?
+- Sampling distributions vs. posterior distributions
 
-Probability of observing something as or more extreme, assuming the null is true
-Manually computing a confidence interval using the t-distribution and margin of error
-Equivalence of p-values and confidence intervals (meme)
-Confidence intervals are about uncertainty in parameter estimates (i.e., parameters are fixed)
+## Parameter Estimates
+
+- Parameter estimates
+- Statistical significance
+
+- Points, intervals, bootstrap, and distributions (estimate, estimator, estimand meme) -- danger of summarizing/summary statistics?
+- That this is an illustration of shrinkage that happens automatically (p. 89 of PML)
+- Bootstrap as poor man's posterior
+- Significance, confidence intervals, and p-values
+- Probability of observing something as or more extreme, assuming the null is true
+- Manually computing a confidence interval using the t-distribution and margin of error
+- Equivalence of p-values and confidence intervals (meme)
+- Confidence intervals are about uncertainty in parameter estimates (i.e., parameters are fixed)
+
+## Interpretations
+
+- Create a chart showing the differences between Bayesian and frequentist statistics?
+- Statistical models capture association, not causation
+- Correlation does not imply causation, and the lack of correlation does not imply lack of causation
+- Do I need matrix multiplication -- does that notation work in both statsmodels and Bambi?
 
 # Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
 ## Model Evaluation and Prediction
 
+- Overall model fit
+- Comparing predictions and real data
 - No free lunch theorem: which model is best depends on the application?
+
+Properties of MSE, RMSE, MAE, R-squared, adjusted R-squared, and F statistic
+Code: Confidence intervals, test statistics, p-value, prediction intervals, confidence and prediction bands, and model fit statistics
 
 Why do we compute a confidence band for the average of y?
 How do we get the confidence band out of a fixed confidence interval?
@@ -68,10 +83,6 @@ Why even produce a confidence interval around the mean if it isn't for a confide
 What's the extra term in the standard error for the prediction interval? SD used twice.
 Are prediction intervals different in Bayesian statistics since data is fixed?
 
-Properties of MSE, RMSE, MAE, R-squared, adjusted R-squared, and F statistic
-Code: Confidence intervals, test statistics, p-value, prediction intervals, confidence and prediction bands, and model fit statistics
-
-- Statistical models capture association, not causation
 - In-sample vs. out-of-sample vs. decision theoretic evaluation
 - Overfitting and underfitting, variance vs. bias tradeoff
 - Use theory-model-evidence.png
@@ -79,6 +90,7 @@ Code: Confidence intervals, test statistics, p-value, prediction intervals, conf
 ## Communicating Results
 
 - Demonstrate presenting on a project as part of the communication session
+- Time to work on the project in class?
 
 # Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
 
