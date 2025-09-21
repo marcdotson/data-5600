@@ -1,0 +1,302 @@
+---
+title: "Feature Engineering and <br>Ordinary Least Squares"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Finished assumption diagnostics and remedies
+
+#### Preview
+
+- Complete feature engineering
+- Begin detailing model estimation
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile-fit.png){fig-align="center"}
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/underfit-overfit.png){fig-align="center"}
+:::
+
+## Extract information about the *regular* features
+
+The information we want to extract is about the data generating process or population while the data we observe is **just one realization** or sample of that process or population
+
+::: {.incremental}
+- If we learn too little from the data, we are **underfitting**
+- If we learn too much from the data, we are **overfitting**
+- We want to find a **balance** between underfitting and overfitting so we can **generalize** what we interpret from the model
+:::
+
+::: {.fragment}
+All models as they increase in complexity will **naturally tend toward overfitting**, so what can we do?
+:::
+
+# Feature Engineering
+
+## Caring for and feeding models
+
+Feature engineering (a.k.a., **preprocessing data**) is data cleaning or wrangling for the benefit of the model and is critical to navigating between underfitting and overfitting
+
+::: {.incremental}
+- Splitting the data into training and testing sets
+- Transformations to address assumption violations
+- Dummy coding discrete predictors
+:::
+
+::: {.fragment}
+Neural networks are a black-box of **feature engineering automation** to improve predictive fit
+:::
+
+## Training and testing split
+
+Before we do any feature engineering, we need to split the data into **training** data to fit the model and **testing** data to evaluate the model's predictive fit
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import polars as pl
+import seaborn.objects as so
+from sklearn.model_selection import train_test_split
+
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+
+# Standardize brand names
+brand_names = {
+    # Jif
+    'JIF': 'Jif', 'Jiff': 'Jif',
+    # Skippy
+    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+    # PeterPan
+    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+    # Harmons
+    "Harmon's": 'Harmons',
+}
+
+# Clean the data
+pb_data = (sl_data
+    # Fix brand naming variants
+    .with_columns([
+        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
+    ])
+    # Drop rows with missing values
+    .drop_nans(['units'])
+    .remove(
+        (pl.col('brand') == "None") | 
+        (pl.col('texture') == "None") | 
+        (pl.col('size') == "None")
+    )
+    # Make price numeric
+    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+    # Drop duplicate rows
+    .unique()
+    # Filter for only peanut butter purchases
+    .filter(pl.col('units') > 0)
+    # Select relevant columns
+    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+)
+```
+
+```{python}
+import os
+import polars as pl
+import seaborn.objects as so
+from sklearn.model_selection import train_test_split
+
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+
+# Standardize brand names
+brand_names = {
+    # Jif
+    'JIF': 'Jif', 'Jiff': 'Jif',
+    # Skippy
+    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+    # PeterPan
+    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+    # Harmons
+    "Harmon's": 'Harmons',
+}
+
+# Clean the data
+pb_data = (sl_data
+    # Fix brand naming variants
+    .with_columns([
+        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
+    ])
+    # Drop rows with missing values
+    .drop_nans(['units'])
+    .remove(
+        (pl.col('brand') == "None") | 
+        (pl.col('texture') == "None") | 
+        (pl.col('size') == "None")
+    )
+    # Make price numeric
+    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+    # Drop duplicate rows
+    .unique()
+    # Filter for only peanut butter purchases
+    .filter(pl.col('units') > 0)
+    # Select relevant columns
+    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+)
+```
+
+## Training and testing split
+
+How might **using testing data to evaluate model fit** help us avoid overfitting?
+
+```{python}
+#| eval: true
+
+# Specify the design matrix and outcome
+X = pb_data.select(pl.exclude('units'))
+y = pb_data.select('units')
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+```
+
+## Transforming continuous $y$ and $X$
+
+Having **approximately normal continuous data** will help satisfy all of the linear regression assumptions: additivity/linearity, constant variance, and normality
+
+:::: {.columns}
+
+::: {.column width="50%" .fragment}
+**Right-Skewed Continuous Data**
+
+::: {.incremental}
+- Log transformation
+- Square root transformation
+:::
+:::
+
+::: {.column width="50%" .fragment}
+**Left-Skewed Continuous Data**
+
+::: {.incremental}
+- Square transformation
+:::
+:::
+
+::::
+
+::: {.fragment}
+Feature engineering for interpretable models isn't just about satisfying assumptions, it's also about making sure the model is **still easy to interpret**
+:::
+
+## Transforming continuous $y$ and $X$
+
+When performing a log transformation, make sure to include an **offset** to avoid taking the log of zero
+
+```{python}
+#| eval: true
+#| output-location: column
+
+y_train = (y_train
+  .with_columns(
+    (pl.col('units') + 1).log().alias('log_units')
+  )
+)
+
+(so.Plot(y_train, x = 'log_units')
+  .add(so.Bars(), so.Hist(bins = 10))
+)
+```
+
+## Different scales, same model
+
+Transforming $y$ and $X$ shows that linear models aren't necessarily **lines** and we can always **back-transform** or use the **inverse transformation** to get back to the original scale
+
+![](../../figures/transformations.png){fig-align="center"}
+
+## Interpreting models with transformed $y$ and $X$
+
+Interpreting models with transformed variables is all about **keeping track of the scale**, so how does the log transformation change how we interpret parameters estimates?
+
+::: {.incremental}
+- $y$ and $x_1$: A one unit increase in $x_1$ leads to a $\beta_1$ unit change in $y$, holding all other variables fixed
+- $log(y)$ and $x_1$: A one unit increase in $x_1$ leads to a $(exp(\beta_1) - 1) \times 100\%$ change in $y$, holding all other variables fixed
+- $y$ and $log(x_1)$: A 1% increase in $x_1$ leads to a $\beta_1/100$ unit change in $y$, holding all other variables fixed
+- $log(y)$ and $log(x_1)$: A 1% increase in $x_1$ leads to a $\beta_1\%$ change in $y$, holding all other variables fixed
+:::
+
+## Dummy coding {.scrollable}
+
+It isn't a model assumption, but one of the most common feature engineering steps is **dummy coding** (a.k.a., indicator coding or one-hot encoding) where the **levels** of a discrete predictor are turned into multiple binary predictors
+
+```{python}
+#| eval: true
+
+X_train = (X_train
+    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+    .select(pl.exclude('brand_Jif', 'texture_Smooth', 'size_16'))
+)
+```
+
+::: {.fragment}
+Why can't we include all of the **levels** of a discrete predictor in a linear regression (i.e., the **dummy variable trap**)?
+:::
+
+## Interpreting models with discrete $X$
+
+Interpreting models with discrete predictors is all about **keeping track of the baseline/reference level**
+
+::: {.incremental}
+- If $x_1$ is discrete, the associated slope parameter $\beta_1$ represents the expected amount by which $y$ will change, **relative to the baseline/reference level** of $x_1$, holding all other variables fixed
+:::
+
+# Why do we need to reconcile the differences between the model and the data? {background-color="#006242"}
+
+# Ordinary Least Squares
+
+## 
+
+## Fit and interpret a model
+
+## {background-color="#006242"}
+
+### Exercise 08 {.lato-font}
+
+1. Return to your cleaned soft launch data from the previous exercise (or start with the exercise solution)
+2. Walk through the independence, constant variance, normality, and identifiabiliy assumptions and justify whether or not they are satisfied for your cleaned data
+3. Submit your code, output, and explanations as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Completed feature engineering
+- Began detailing model estimation
+
+#### Next Time
+
+- Compare fitting frequentist and Bayesian models
+

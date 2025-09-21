@@ -34,38 +34,9 @@ Provided more opportunities for student participation beyond live coding by incl
 
 # Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
-Feature Engineering, including the transformations called to address violations of the linear regression assumptions
+- Feature Engineering and OLS
 
-Linear models are additive, but not necessarily *lines*. Allowing for curvature might be helpful. The form of the model (especially the likelihood) depends on the data. However, as we add complexity to the model, issues begin to emerge with overfitting and interpretation (glimpse of the black-box nature of predictive models).
-
-- Be sure to include +1 for log transforms
-- Dummy/one-hot and index coding
-- Dummy variables and the "dummy variable trap"
-
-## Dummy coding
-
-It isn't a model assumption, but one of the most common **feature engineering** (a.k.a., preprocessing data) steps is **dummy coding** (a.k.a., indicator coding or one hot encoding) where a discrete predictor is turned into multiple binary predictors
-
-```{python}
-#| eval: true
-#| output-location: column
-
-pb_model = pb_data.to_dummies(
-    columns = ['brand', ], drop_first = True
-)
-```
-
-::: {.fragment}
-Why can't we include all of the **levels** of a discrete predictor in a linear regression?
-:::
-
-## Fitting and Interpreting Models
-
-- Preprocessing, feature engineering, transformations (NN are about automating feature engineering)
-
-- Training/testing split
-- Discussion of the objective of learning about the data generation process so we can generalize to new data
-- Reference overfitting/underfitting, bias/variance tradeoff?
+## Fitting
 
 - Reference MLE and OLS (p. 8-9 of PML, p. 105 of PML)
 - Correlation does not imply causation, and the lack of correlation does not imply lack of causation
