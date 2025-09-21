@@ -287,13 +287,13 @@ Why would you want some control over which level is the baseline/reference level
 ## Estimating model parameters
 
 $$
-y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
-\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+\large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
 $$
 
 $$
-y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
-\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
 $$
 
 Fitting (a.k.a., estimating, training, calibrating) a parametric model will give us **estimates** (i.e., guesses) of the model parameters, so what?
@@ -323,13 +323,13 @@ Fitting (a.k.a., estimating, training, calibrating) a parametric model will give
 The best line should be the one that makes **the sum** of the **residuals** (i.e., vertical bars) as **small as possible** such that our model
 
 $$
-y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+\large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
 $$
 
 yields the fitted or expected value $\hat{y}$
 
 $$
-\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}
+\large{\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}}
 $$
 
 where $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ are the parameter estimates
@@ -364,7 +364,7 @@ Fitting models and estimating parameters is a decision theory problem where the 
 
 ## Fitting models with ordinary least squares {.scrollable}
 
-Choosing parameter estimates by minimizing the sum of squared residuals is a frequentist method called **ordinary least squares (OLS)** and is a special case of **maximum likelihood estimation (MLE)**
+Choosing parameter estimates by minimizing the sum of squared residuals is a frequentist method called **ordinary least squares** (OLS) and is a special case of **maximum likelihood estimation** (MLE)
 
 ```{python}
 #| eval: true
@@ -403,9 +403,9 @@ fit_04.summary()
 ::: {.fragment}
 **Bayesian**
 
-- Use Bayes' theorem to combine the likelihood function with a **prior distribution** $p(\theta)$
+- Use Bayes' theorem to combine the likelihood with a **prior distribution** $p(\theta)$
 - This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
-- Instead of computing this distribution analytically, we typically draw samples from it using **Markov chain Monte Carlo** (MCMC)
+- Instead of computing this distribution analytically, we draw samples from it using **Markov chain Monte Carlo** (MCMC)
 :::
 :::
 
