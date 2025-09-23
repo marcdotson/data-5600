@@ -4,8 +4,8 @@ import polars as pl
 
 rng = np.random.default_rng()
 
-setup = 0   # Setup flag
-decay = 0.5 # Weight decay rate
+setup = 0    # Setup flag
+decay = 0.2  # Decay rate (smaller is lower prob)
 
 roster_file = 'Fall 2025 DATA-5600-001 Course Roster.csv'
 roster_save = 'fall-2025_roster.parquet'
