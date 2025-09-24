@@ -15,6 +15,7 @@ whiteboarding concepts.
 - Create QR code for adding me on LinkedIn
 - Produce a meme to summarize a concept
 - Speed dating to explain concepts
+- Use Quarto Projects to specify working directory on execution
 
 ## Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
@@ -40,53 +41,33 @@ whiteboarding concepts.
 - Feature Engineering and Ordinary Least Squares (Sept 22; Feb 2; Jun 3)
 - Frequentist and Bayesian Inference (Sept 24; Feb 4; Jun 17)
 
-## Estimation
-
-- MLE as a decision theoretic extension of OLS (p. 8-9 of PML, p. 105 of
-  PML, p. 143 of PML?)
-- Using OLS to estimate the parameters in a linear regression is
-  equivalent to using Bayesian inference with a \_\_\_\_\_\_ prior.
-  (Show with the two equation forms.)
-- Illustrate how a posterior is an updated version of the prior taking
-  into the account the likelihood
-- Sampling distributions vs. posterior distributions
-
 ## Parameter Estimates
 
-- Parameter estimates
+Even when frequentist and Bayesian models produce similar results, the
+interpretation of the results is different
 
-- Statistical significance
+Frequentist estimates a point and then considers an interval; Bayesian
+estimates a distribution that can then be summarized
 
-- Points, intervals, bootstrap, and distributions (estimate, estimator,
-  estimand meme) – danger of summarizing/summary statistics?
+Where does the variation come from?
 
+- Sampling distributions vs. posterior distributions
 - That this is an illustration of shrinkage that happens automatically
-  (p. 89 of PML)
+  (p. 89 of PML)?
 
-- Bootstrap as poor man’s posterior
-
-- Significance, confidence intervals, and p-values
+Significance, confidence intervals, and p-values
 
 - Probability of observing something as or more extreme, assuming the
   null is true
-
 - Manually computing a confidence interval using the t-distribution and
   margin of error
-
-- Equivalence of p-values and confidence intervals (meme)
-
 - Confidence intervals are about uncertainty in parameter estimates
   (i.e., parameters are fixed)
+- Equivalence of p-values and confidence intervals (meme)
+- Why we end up with language that avoids probability
 
-## Interpretations
-
-- Create a chart showing the differences between Bayesian and
-  frequentist statistics?
-- Statistical models capture association, not causation
-- Correlation does not imply causation, and the lack of correlation does
-  not imply lack of causation
-- Do I need matrix multiplication – does that notation work in both
-  statsmodels and Bambi?
+Create a chart showing the differences between Bayesian and frequentist
+statistics?
 
 # Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
@@ -115,8 +96,14 @@ in Bayesian statistics since data is fixed?
 
 ## Communicating Results
 
+- Statistical models capture association, not causation
+
+- Correlation does not imply causation, and the lack of correlation does
+  not imply lack of causation
+
 - Demonstrate presenting on a project as part of the communication
   session
+
 - Time to work on the project in class?
 
 # Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
@@ -133,6 +120,9 @@ Presentations
 # Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
 
 - Week 09 notes from pre-PhD seminar
+- Illustrate MLE vs. posterior
+- Bootstrap as poor man’s posterior
+- estimate, estimator, estimand meme
 
 ### Module 4 (Slides 17-39, 40-55)
 

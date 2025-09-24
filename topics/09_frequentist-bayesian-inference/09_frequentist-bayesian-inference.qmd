@@ -1,5 +1,5 @@
 ---
-title: "Frequentist and Bayesian Inference"
+title: "Frequentist and <br>Bayesian Inference"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -35,38 +35,11 @@ jupyter: python3
 ![](../../figures/workflow_fit-evaluate.png){fig-align="center"}
 :::
 
-## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
+# Estimating Model Parameters
 
-:::: {.columns}
+## Data cleaning and feature engineering {.scrollable}
 
-::: {.column width="40%"}
-![](../../figures/plot_likelihood.png){fig-align="center"}
-:::
-
-::: {.column width="60%"}
-::: {.fragment}
-**Frequentist**
-
-- Find the single value of $\theta$ that maximizes the likelihood function
-- This **maximum likelihood estimate** is a point estimate of the fixed but unknown value $\theta$
-:::
-
-::: {.fragment}
-**Bayesian**
-
-- Use Bayes' theorem to combine the likelihood with a **prior distribution** $p(\theta)$
-- This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
-- Instead of computing this distribution analytically, we draw samples from it using **Markov chain Monte Carlo** (MCMC)
-:::
-:::
-
-::::
-
-
-
-
-
-## Set up code
+Before we return to fitting models, let's start with data cleaning and feature engineering completed
 
 ```{python}
 #| eval: true
@@ -74,9 +47,10 @@ jupyter: python3
 
 import os
 import polars as pl
-import seaborn.objects as so
-import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
+import statsmodels.formula.api as smf
+import bambi as bmb
+import arviz as az
 
 sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
 
@@ -92,36 +66,65 @@ brand_names = {
     "Harmon's": 'Harmons',
 }
 
-# Clean the data
 pb_data = (sl_data
     # Fix brand naming variants
     .with_columns([
         pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
     ])
     # Drop rows with missing values
-    .drop_nans(['units'])
+    .drop_nans(['units', 'sales'])
+    # Drop rows with "None" values
     .remove(
-        (pl.col('brand') == "None") | 
-        (pl.col('texture') == "None") | 
-        (pl.col('size') == "None")
+        (pl.col('brand') == "None") | (pl.col('loyal') == "None") | 
+        (pl.col('texture') == "None") | (pl.col('size') == "None")
     )
     # Make price numeric
-    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
-    # Drop duplicate rows
+    .with_columns([
+        pl.col('price').cast(pl.Float64).alias('price'),
+        pl.col('loyal').cast(pl.Int64).alias('loyal'),
+        pl.col('promo').cast(pl.Int64).alias('promo')
+    ])
+    # Drop duplicate
     .unique()
     # Filter for only peanut butter purchases
     .filter(pl.col('units') > 0)
     # Select relevant columns
     .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
 )
+
+# Specify the design matrix and outcome
+X = pb_data.select(pl.exclude('units'))
+y = pb_data.select('units')
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+
+# Transform units
+y_train = (y_train
+    .with_columns((pl.col('units') + 1).log().alias('log_units'))
+    .select('log_units')
+)
+
+# Transform price and dummy code discrete predictors
+X_train = (X_train
+    .with_columns((pl.col('price') + 1).log().alias('log_price'))
+    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+    .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
+)
+
+# Add constant for intercept
+pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
+    .to_pandas()
+)
 ```
 
 ```{python}
 import os
 import polars as pl
-import seaborn.objects as so
-import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
+import statsmodels.formula.api as smf
+import bambi as bmb
+import arviz as az
 
 sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
 
@@ -137,44 +140,271 @@ brand_names = {
     "Harmon's": 'Harmons',
 }
 
-# Clean the data
 pb_data = (sl_data
     # Fix brand naming variants
     .with_columns([
         pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
     ])
     # Drop rows with missing values
-    .drop_nans(['units'])
+    .drop_nans(['units', 'sales'])
+    # Drop rows with "None" values
     .remove(
-        (pl.col('brand') == "None") | 
-        (pl.col('texture') == "None") | 
-        (pl.col('size') == "None")
+        (pl.col('brand') == "None") | (pl.col('loyal') == "None") | 
+        (pl.col('texture') == "None") | (pl.col('size') == "None")
     )
     # Make price numeric
-    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
-    # Drop duplicate rows
+    .with_columns([
+        pl.col('price').cast(pl.Float64).alias('price'),
+        pl.col('loyal').cast(pl.Int64).alias('loyal'),
+        pl.col('promo').cast(pl.Int64).alias('promo')
+    ])
+    # Drop duplicate
     .unique()
     # Filter for only peanut butter purchases
     .filter(pl.col('units') > 0)
     # Select relevant columns
     .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
 )
+
+# Specify the design matrix and outcome
+X = pb_data.select(pl.exclude('units'))
+y = pb_data.select('units')
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+
+# Transform units
+y_train = (y_train
+    .with_columns((pl.col('units') + 1).log().alias('log_units'))
+    .select('log_units')
+)
+
+# Transform price and dummy code discrete predictors
+X_train = (X_train
+    .with_columns((pl.col('price') + 1).log().alias('log_price'))
+    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+    .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
+)
+
+# Add constant for intercept
+pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
+    .to_pandas()
+)
 ```
 
+## Ordinary least squares {auto-animate=true}
 
+![](../../figures/lm_fit_04.png){fig-align="center"}
 
-# Why do we need to reconcile the differences between the model and the data? {background-color="#006242"}
+## Ordinary least squares {auto-animate=true visibility="uncounted"}
 
+:::: {.columns}
 
+::: {.column width="40%"}
+![](../../figures/lm_fit_04.png){fig-align="center"}
+:::
 
-# What are the pros and cons of fitting a model using ordinary least squares? {background-color="#006242"}
+::: {.column width="60%"}
+::: {.incremental}
+- We find the fitted line (and estimate parameters) $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ by minimizing the **sum of squared residuals**
+- Ordinary least squares (OLS) is a special case of **maximum likelihood estimation** (MLE)
+- In other words, the parameter estimates that minimize the sum of squared residuals are the same as those that maximize the likelihood function
+- OLS and MLE are frequentist methods
+:::
+:::
 
+::::
 
+## What about $\sigma^2$?
 
+The variance parameter $\sigma^2$ can also be estimated using the residuals, specifically the **average squared variance of the residuals** around the fitted line
+
+$$
+\LARGE{\hat{\sigma^2} = \frac{\sum_{i=1}^n (\hat{y}_i - y_i)^2}{n - p}}
+$$
+
+where $p$ is the number of slope parameters in the model; this estimate is often referred to as $s^2$ or **mean squared error** (MSE)
+
+## Minimizing quadratic loss
+
+Choosing $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p, \text{ and } \hat{\sigma^2}$ to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
+
+$$
+\LARGE{\ell(a, \theta) = \sum_{i=1}^n (a_i - \theta_i)^2}
+$$
+
+Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$
+
+## Minimizing quadratic loss {visibility="uncounted"}
+
+Choosing $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p, \text{ and } \hat{\sigma^2}$ to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
+
+$$
+\LARGE{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2}
+$$
+
+Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$
+
+# Why do we care about model parameters? What is missing from our estimates so far? {background-color="#006242"}
+
+# OLS $\approx$ Uniform Priors
+
+## Bayesian models
+
+Both frequentist and Bayesian models use **likelihood functions**, so how does a Bayesian model differ?
+
+:::: {.columns}
+
+::: {.column width="60%"}
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2)
+$$
+:::
+
+::: {.column width="40%"}
+::: {.incremental}
+- Parameters (and **any unknown** variables) are **random variables**
+- The likelihood is combined with **priors** $p(\theta)$ to produce a **posterior** $p(\theta | X)$
+- We get draws from the posterior using **Markov chain Monte Carlo** (MCMC)
+:::
+:::
+
+::::
+
+## Bayesian models {visibility="uncounted"}
+
+Both frequentist and Bayesian models use **likelihood functions**, so how does a Bayesian model differ?
+
+:::: {.columns}
+
+::: {.column width="60%"}
+$$
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\beta \sim \text{Uniform}(-\infty, \infty) \\
+\sigma^2 \sim \text{Exponential}(1)
+$$
+:::
+
+::: {.column width="40%"}
+- Parameters (and **any unknown** variables) are **random variables**
+- The likelihood is combined with **priors** $p(\theta)$ to produce a **posterior** $p(\theta | X)$
+- We get draws from the posterior using **Markov chain Monte Carlo** (MCMC)
+:::
+
+::::
+
+## Priors are part of the model
+
+If we don't specify priors, most **probabilistic programming languages** (PPLs) will use default priors
+
+```{python}
+#| eval: true
+#| output-location: slide
+
+# Specify predictors
+predictors = [
+    'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
+    'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
+]
+
+# Specify a Bayesian linear regression
+ba_model = bmb.Model(
+    'log_units ~ ' + ' + '.join(predictors), 
+    data = pb_train
+)
+
+ba_model
+```
+
+## Priors include information beyond the data
+
+What information could we have about the parameters outside of what's included in the data? What do uniform priors imply?
+
+```{python}
+#| eval: true
+#| output-location: slide
+
+# Specify priors
+priors_dict = {
+    'Intercept': bmb.Prior("Uniform", lower=-100, upper=100),
+    **{term: bmb.Prior("Uniform", lower=-100, upper=100) for term in predictors},
+    'sigma': bmb.Prior("Exponential", lam=1)
+}
+
+ba_model.set_priors(priors = priors_dict)
+ba_model
+```
+
+## Frequentist models as an approximation
+
+OLS can be seen as a simple **point estimate approximation** to a Bayesian posterior with uniform priors
+
+```{python}
+#| eval: true
+
+# Fit a frequentist linear regression
+fr_fit = smf.ols(
+    'log_units ~ ' + ' + '.join(predictors), 
+    data = pb_train
+).fit()
+
+# Fit a Bayesian linear regression
+ba_fit = ba_model.fit()
+```
+
+## Frequentist models as an approximation {.scrollable}
+
+```{python}
+#| eval: true
+
+fr_fit.summary()
+```
+
+## Frequentist models as an approximation {.scrollable}
+
+```{python}
+#| eval: true
+
+az.summary(ba_fit)
+```
+
+## Bayesian inference is about learning from data
+
+We start with a prior distribution over the possible parameter values and **update that prior distribution using data** to produce a posterior distribution over the possible parameter values
+
+$$
+\LARGE{p(\theta | X) \propto p(X | \theta) \ p(\theta)}
+$$
+
+::: {.fragment}
+The posterior distribution is a weighted combination of the likelihood and prior distribution: the **more informative** the data or prior, the **more influence** it has on the posterior distribution
+:::
+
+# When might prior information be especially important in an analysis? {background-color="#006242"}
+
+# Parameter Estimates
+
+## Points, intervals, and distributions
+
+Three columns
+
+## Sampling vs. posterior distributions
+
+Two columns
+
+## Confidence intervals vs. credible intervals
+
+Two columns
+
+## Significance, confidence intervals, and p-values
+
+See Marketing Analytics slides
 
 ## {background-color="#006242"}
 
-### Exercise 08 {.lato-font}
+### Exercise 09 {.lato-font}
 
 1. Return to your data from the previous exercise (or start with the exercise solution)
 2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
@@ -187,10 +417,9 @@ pb_data = (sl_data
 
 #### Summary
 
-- Completed feature engineering
-- Began detailing model estimation
+- Compared frequentist and Bayesian inference
 
 #### Next Time
 
-- Compare frequentist and Bayesian inference
+- Detail overall model fit and prediction
 
