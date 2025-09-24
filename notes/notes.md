@@ -41,34 +41,6 @@ whiteboarding concepts.
 - Feature Engineering and Ordinary Least Squares (Sept 22; Feb 2; Jun 3)
 - Frequentist and Bayesian Inference (Sept 24; Feb 4; Jun 17)
 
-## Parameter Estimates
-
-Even when frequentist and Bayesian models produce similar results, the
-interpretation of the results is different
-
-Frequentist estimates a point and then considers an interval; Bayesian
-estimates a distribution that can then be summarized
-
-Where does the variation come from?
-
-- Sampling distributions vs. posterior distributions
-- That this is an illustration of shrinkage that happens automatically
-  (p. 89 of PML)?
-
-Significance, confidence intervals, and p-values
-
-- Probability of observing something as or more extreme, assuming the
-  null is true
-- Manually computing a confidence interval using the t-distribution and
-  margin of error
-- Confidence intervals are about uncertainty in parameter estimates
-  (i.e., parameters are fixed)
-- Equivalence of p-values and confidence intervals (meme)
-- Why we end up with language that avoids probability
-
-Create a chart showing the differences between Bayesian and frequentist
-statistics?
-
 # Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
 ## Model Evaluation and Prediction
@@ -95,6 +67,8 @@ in Bayesian statistics since data is fixed?
 - Use theory-model-evidence.png
 
 ## Communicating Results
+
+- Visualizing confidence and credible intervals
 
 - Statistical models capture association, not causation
 
@@ -123,6 +97,9 @@ Presentations
 - Illustrate MLE vs. posterior
 - Bootstrap as poor man’s posterior
 - estimate, estimator, estimand meme
+
+Create a chart showing the differences between Bayesian and frequentist
+statistics?
 
 ### Module 4 (Slides 17-39, 40-55)
 

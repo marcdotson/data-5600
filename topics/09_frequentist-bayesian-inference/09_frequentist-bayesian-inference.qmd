@@ -208,7 +208,7 @@ pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
 ::: {.incremental}
 - We find the fitted line (and estimate parameters) $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ by minimizing the **sum of squared residuals**
 - Ordinary least squares (OLS) is a special case of **maximum likelihood estimation** (MLE)
-- In other words, the parameter estimates that minimize the sum of squared residuals are the same as those that maximize the likelihood function
+- In other words, the parameter estimates that **minimize** the sum of squared residuals are the same as those that **maximize** the likelihood function
 - OLS and MLE are frequentist methods
 :::
 :::
@@ -223,7 +223,7 @@ $$
 \LARGE{\hat{\sigma^2} = \frac{\sum_{i=1}^n (\hat{y}_i - y_i)^2}{n - p}}
 $$
 
-where $p$ is the number of slope parameters in the model; this estimate is often referred to as $s^2$ or **mean squared error** (MSE)
+where $n$ is the number of observations and $p$ is the number of slope parameters in the model; this estimate is often referred to as $s^2$ or **mean squared error**
 
 ## Minimizing quadratic loss
 
@@ -233,7 +233,7 @@ $$
 \LARGE{\ell(a, \theta) = \sum_{i=1}^n (a_i - \theta_i)^2}
 $$
 
-Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$
+Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and $\hat{\sigma^2}$
 
 ## Minimizing quadratic loss {visibility="uncounted"}
 
@@ -243,7 +243,7 @@ $$
 \LARGE{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2}
 $$
 
-Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$
+Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and $\hat{\sigma^2}$
 
 # Why do we care about model parameters? What is missing from our estimates so far? {background-color="#006242"}
 
@@ -255,17 +255,17 @@ Both frequentist and Bayesian models use **likelihood functions**, so how does a
 
 :::: {.columns}
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 $$
 \mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
 y_i \sim \text{Normal}(\mu_i, \sigma^2)
 $$
 :::
 
-::: {.column width="40%"}
+::: {.column width="50%"}
 ::: {.incremental}
 - Parameters (and **any unknown** variables) are **random variables**
-- The likelihood is combined with **priors** $p(\theta)$ to produce a **posterior** $p(\theta | X)$
+- The likelihood is combined with a **prior** $p(\theta)$ to produce a **posterior** $p(\theta | X)$
 - We get draws from the posterior using **Markov chain Monte Carlo** (MCMC)
 :::
 :::
@@ -278,7 +278,7 @@ Both frequentist and Bayesian models use **likelihood functions**, so how does a
 
 :::: {.columns}
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 $$
 \mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
 y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
@@ -287,9 +287,9 @@ y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
 $$
 :::
 
-::: {.column width="40%"}
+::: {.column width="50%"}
 - Parameters (and **any unknown** variables) are **random variables**
-- The likelihood is combined with **priors** $p(\theta)$ to produce a **posterior** $p(\theta | X)$
+- The likelihood is combined with a **prior** $p(\theta)$ to produce a **posterior** $p(\theta | X)$
 - We get draws from the posterior using **Markov chain Monte Carlo** (MCMC)
 :::
 
@@ -302,6 +302,7 @@ If we don't specify priors, most **probabilistic programming languages** (PPLs) 
 ```{python}
 #| eval: true
 #| output-location: slide
+#| code-line-numbers: "|1-5|7-11|9|13"
 
 # Specify predictors
 predictors = [
@@ -320,7 +321,7 @@ ba_model
 
 ## Priors include information beyond the data
 
-What information could we have about the parameters outside of what's included in the data? What do uniform priors imply?
+What information could we have about the parameters outside of what's included in the data?
 
 ```{python}
 #| eval: true
@@ -336,6 +337,10 @@ priors_dict = {
 ba_model.set_priors(priors = priors_dict)
 ba_model
 ```
+
+::: {.fragment}
+What do uniform priors imply?
+:::
 
 ## Frequentist models as an approximation
 
@@ -370,16 +375,28 @@ fr_fit.summary()
 az.summary(ba_fit)
 ```
 
-## Bayesian inference is about learning from data
+## Bayesian updating is *learning*
 
-We start with a prior distribution over the possible parameter values and **update that prior distribution using data** to produce a posterior distribution over the possible parameter values
+Fitting a Bayesian model is often referred to as **Bayesian updating**, why?
 
 $$
 \LARGE{p(\theta | X) \propto p(X | \theta) \ p(\theta)}
 $$
 
+::: {.incremental}
+1. Start with a prior distribution over the possible parameter values
+2. **Update that prior distribution** using data and the likelihod function
+3. Which produces a posterior distribution over the possible parameter values
+:::
+
+## Bayesian updating is *learning*
+
+The posterior distribution is a weighted combination of the likelihood and prior distribution: the **more informative** the likelihood or prior, the **more influence** it has on the posterior distribution
+
+![](../../figures/plot_bayesian-updating.png){fig-align="center"}
+
 ::: {.fragment}
-The posterior distribution is a weighted combination of the likelihood and prior distribution: the **more informative** the data or prior, the **more influence** it has on the posterior distribution
+The influence of the prior on the resulting posterior distribution is called **shrinkage** or **regularization** and is the basis for **penalized regression**
 :::
 
 # When might prior information be especially important in an analysis? {background-color="#006242"}
@@ -388,27 +405,138 @@ The posterior distribution is a weighted combination of the likelihood and prior
 
 ## Points, intervals, and distributions
 
-Three columns
+There are three types of parameters estimates:
 
-## Sampling vs. posterior distributions
+::: {.incremental}
+1. **Point estimates**: A **single number** that represents our best guess of the parameter
+2. **Interval estimates**: A **range of numbers** that represent our best guess of the parameter
+3. **Distributions**: An entire **probability distribution** representing our best guess over the support of all parameter values simultaneously in a **joint distribution** or of a given parameter individually in a **marginal distribution**
+:::
 
-Two columns
+## Points, intervals, and distributions {visibility="uncounted"}
 
-## Confidence intervals vs. credible intervals
+![](../../figures/plot_log-price-estimate.png){fig-align="center"}
 
-Two columns
+## Posterior vs. sampling distributions
+
+Where does the variation come from in our parameter estimates?
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Bayesian**
+
+::: {.fragment}
+$$
+X = \text{data we observe} \\
+\theta \sim \text{a probability distribution}
+$$
+:::
+
+::: {.incremental}
+- Start with what we know about the parameters and use the data we observe to **update what we know** about the parameters
+- **Directly use probability** to describe uncertainty when working with incomplete knowledge
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Frequentist**
+
+::: {.fragment}
+$$
+X \sim \text{a probability distribution} \\
+\theta = \text{a value we don't observe}
+$$
+:::
+
+::: {.incremental}
+- Consider what point estimates we would expect to get if we had many hypothetical datasets so that our interval estimate is based on the **asymptotic properties of the procedure** used to produce our point estimate
+- **Indirectly use probability** to describe uncertainty as a repeatable event under identical conditions
+:::
+:::
+
+::::
+
+## Credible intervals vs. confidence intervals 
+
+Even when frequentist and Bayesian models produce similar results, the **interpretation** of the results is different
+
+::: {.fragment}
+$$
+\LARGE{(10.23, 15.67)}
+$$
+
+This is the 95% interval estimate for Harmon's (with Jif as the reference level) for a multiple regression with sales as the outcome
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Bayesian Credible Intervals**
+
+With **probability of 0.95**, Harmon's peanut butter increases sales between $10.23 and $15.67, compared to Jif, holding all other variables fixed
+:::
+
+::: {.fragment .column width="50%"}
+**Frequentist Confidence Intervals**
+
+Based on OLS/MLE interval estimates, **95% of such intervals** will contain the true value of the parameter such that we are **95% confident** Harmon's peanut butter increases sales between $10.23 and $15.67, compared to Jif, holding all other variables fixed
+:::
+
+::::
+
+## Credible intervals vs. confidence intervals{visibility="uncounted"}
+
+Even when frequentist and Bayesian models produce similar results, the **interpretation** of the results is different
+
+$$
+\LARGE{(10.23, 15.67)}
+$$
+
+This is the 95% interval estimate for Harmon's (with Jif as the reference level) for a multiple regression with sales as the outcome
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Bayesian Credible Intervals**
+
+With **probability of 0.95**, Harmon's peanut butter increases sales between $10.23 and $15.67, compared to Jif, holding all other variables fixed
+:::
+
+::: {.column width="50%"}
+**Frequentist Confidence Intervals**
+
+~~Based on OLS/MLE interval estimates, **95% of such intervals** will contain the true value of the parameter such that~~ we are **95% confident** Harmon's peanut butter increases sales between $10.23 and $15.67, compared to Jif, holding all other variables fixed
+:::
+
+::::
 
 ## Significance, confidence intervals, and p-values
 
-See Marketing Analytics slides
+If the interval estimate **doesn't include zero**, we can say that the parameter estimate is **statistically significant** (a.k.a., significant or significantly different from zero)
+
+::: {.incremental}
+- Just because a parameter estimate isn't statistically significant **doesn't mean it shouldn't be included** in the model
+- If a parameter estimate is statistically significance **doesn't mean that it's practically significant**
+:::
+
+::: {.fragment}
+A $p$-value is the **probability of observing something as or more extreme**, assuming the null hypothesis is true, such that a small $p$-value (usually smaller than $0.05$) indicates evidence against the null hypothesis (i.e., that the parameter is zero or has no effect)
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_pvalues.png){fig-align="center"}
+:::
 
 ## {background-color="#006242"}
 
 ### Exercise 09 {.lato-font}
 
 1. Return to your data from the previous exercise (or start with the exercise solution)
-2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
-3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
+2. Fit the model again using OLS and a Bayesian model with uniform priors (if your computer can)
+3. Interpret the interval estimates, being careful to track transformed scales, reference levels, the presence of multiple predictors in the model, and the differences between credible and confidence intervals
 4. Submit your code, output, and interpretations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
