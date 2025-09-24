@@ -71,7 +71,7 @@ Feature engineering (a.k.a., **preprocessing data**) is data cleaning or wrangli
 Neural networks are a black-box of **feature engineering automation** to improve predictive fit
 :::
 
-## Training and testing split
+## Training and testing split {.scrollable}
 
 Before we do any feature engineering, we need to split the data into **training** data to fit the model and **testing** data to evaluate the model's predictive fit
 
@@ -359,7 +359,7 @@ $$
 $$
 
 ::: {.fragment}
-Fitting models and estimating parameters is a decision theory problem where the actions are the **possible values of the parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$
+Fitting models and estimating parameters is a decision theory problem where the actions are the **possible parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and we are uncertain about the possible values of the parameter estimates
 :::
 
 ## Fitting models with ordinary least squares {.scrollable}
