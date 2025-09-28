@@ -1,0 +1,399 @@
+---
+title: "Model Evaluation <br>and Prediction"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Compared frequentist and Bayesian inference
+
+#### Preview
+
+- Detail overall model fit and prediction
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_evaluate-predict.png){fig-align="center"}
+:::
+
+# It's only confusing because you're paying attention
+
+# Try and explain your project using the modeling workflow in three minutes or less{background-color="#006242"}
+
+# Model Evaluation
+
+## Interpret results and revise as needed
+
+Interpretable models produce a plethora of results that need to be considered
+
+::: {.incremental}
+- Parameter estimates
+- Statistical significance
+- Overall model fit
+:::
+
+::: {.fragment}
+Just like with the reconcile step, what we discover may prompt additional exploration and revision
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/theory-model-evidence.png){fig-align="center"}
+:::
+
+## Comparing and choosing between models
+
+Metrics of **overall model fit** provide a single number that describes how well our model is doing, especially when we are **comparing models**
+
+::: {.incremental}
+1. **In-sample fit**: How well our model fits the data it was trained on
+2. **Predictive fit**: How well our model predicts data it wasn't trained on
+3. **Decision theoretic fit**: How well our model performs using our loss function
+:::
+
+::: {.fragment}
+There is no guarantee that statistical or predictive criteria are consistent with what is optimal for informing our decision
+:::
+
+## In-sample fit: $R^2$
+
+Multiple R-Squared or the **Coefficient of Determination** is the proportion of variation in $y$ that is explained by the model
+
+$$
+\large{R^2 = \frac{\sum_{i=1}^n (\hat{y}_i - \bar{y})^2}{\sum_{i=1}^n (y_i - \bar{y})^2}}
+$$
+
+::: {.incremental}
+- A higher $R^2$ means a better fit, with $R^2 = 1$ being perfect fit and $R^2 = 0$ meaning nothing beyond the mean
+- Easy to interpret and compare across models
+- Adding more predictors will always increase $R^2$
+- Not great, but there is a predictive fit version
+:::
+
+## In-sample fit: $R^2$
+
+![](../../figures/in-sample-fit.png){fig-align="center"}
+
+## In-sample fit: Adjusted $R^2$
+
+Adjusted R-Squared is the proportion of variation in $y$ that is explained by the model, penalized by the number of predictors in the model
+
+$$
+\large{R^2_{adj} = 1 - \left[ \frac{(1 - R^2)(n - 1)}{n - p} \right] }
+$$
+
+::: {.incremental}
+- Just as easy to interpret and compare across models
+- $R^2_{adj}$ will always be less than or equal to $R^2$
+- Adding more predictors may still inflate $R^2_{adj}$
+- Stil not great, but there is a predictive fit version
+:::
+
+## In-sample fit: Adjusted $R^2$
+
+![](../../figures/in-sample-fit.png){fig-align="center"}
+
+## In-sample fit: F-statistic
+
+The F-statistic tests the null hypothesis that **all regression coefficients are equal to zero**, so what does a small $p$-value or Prob(F-statistic) mean?
+
+::: {.incremental}
+- The lower the $p$-value, the stronger the evidence that at least one predictor has a non-zero coefficient (i.e., is useful for explaining $y$)
+:::
+
+## Predictive fit: Mean squared error
+
+Mean squared error (MSE) measures the average squared difference between observed and predicted values
+
+$$
+\large{MSE = \frac{\sum_{i=1}^n (y^*_i - y_i)^2}{n}}
+$$
+
+::: {.incremental}
+- Always positive with lower MSE indicating better model fit
+- MSE can be interpreted as the squared units of the outcome variable
+- Like quadratic loss, its highly influenced by outliers
+- If the predicted value $y^*_i$ is just $\hat{y}_i$, MSE can be a measure of in-sample fit
+:::
+
+## Predictive fit: Mean squared error
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import numpy as np
+import polars as pl
+import statsmodels.formula.api as smf
+from sklearn.model_selection import train_test_split
+
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+
+# Standardize brand names
+brand_names = {
+    # Jif
+    'JIF': 'Jif', 'Jiff': 'Jif',
+    # Skippy
+    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+    # PeterPan
+    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+    # Harmons
+    "Harmon's": 'Harmons',
+}
+
+pb_data = (sl_data
+    # Fix brand naming variants
+    .with_columns([
+        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
+    ])
+    # Drop rows with missing values
+    .drop_nans(['units', 'sales'])
+    # Drop rows with "None" values
+    .remove(
+        (pl.col('brand') == "None") | (pl.col('loyal') == "None") | 
+        (pl.col('texture') == "None") | (pl.col('size') == "None")
+    )
+    # Make price numeric
+    .with_columns([
+        pl.col('price').cast(pl.Float64).alias('price'),
+        pl.col('loyal').cast(pl.Int64).alias('loyal'),
+        pl.col('promo').cast(pl.Int64).alias('promo')
+    ])
+    # Drop duplicate
+    .unique()
+    # Filter for only peanut butter purchases
+    .filter(pl.col('units') > 0)
+    # Select relevant columns
+    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+)
+
+# Specify the design matrix and outcome
+X = pb_data.select(pl.exclude('units'))
+y = pb_data.select('units')
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+
+# Transform units
+y_train = (y_train
+    .with_columns((pl.col('units') + 1).log().alias('log_units'))
+    .select('log_units')
+)
+
+# Transform price and dummy code discrete predictors
+X_train = (X_train
+    .with_columns((pl.col('price') + 1).log().alias('log_price'))
+    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+    .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
+)
+
+# Combine y_train and X_train
+pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
+    .to_pandas()
+)
+
+# Specify predictors
+predictors = [
+    'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
+    'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
+]
+
+# Fit a frequentist linear regression
+fr_fit = smf.ols(
+    'log_units ~ ' + ' + '.join(predictors), 
+    data = pb_train
+).fit()
+```
+
+Following the previous exercise solution
+
+```{python}
+#| eval: true
+#| code-line-numbers: "|1|3-8|10-15|17-18|20-21"
+
+from sklearn.metrics import mean_squared_error
+
+# Apply same transformations to y_test and X_test
+y_test = (y_test
+    .with_columns((pl.col('units') + 1).log().alias('log_units'))
+    .select('log_units')
+    .to_pandas()
+)
+
+X_test = (X_test
+    .with_columns((pl.col('price') + 1).log().alias('log_price'))
+    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+    .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
+    .to_pandas()
+)
+
+# Use test data to predict
+y_pred = fr_fit.predict(X_test)
+
+# Compute MSE
+mean_squared_error(y_test, y_pred)
+```
+
+## Predictive fit: Root mean squared error
+
+Root mean squared error (RMSE) measures the average difference between observed and predicted values
+
+$$
+\large{RMSE = \sqrt{MSE}}
+$$
+
+::: {.incremental}
+- Always positive with lower RMSE indicating better model fit
+- MSE can be interpreted with the same units of the outcome variable
+- Like MSE and quadratic loss, its highly influenced by outliers
+- Again, if the predicted value $y^*_i$ is just $\hat{y}_i$, RMSE can used as a measure in-sample fit
+:::
+
+## Predictive fit: Root mean squared error
+
+There's a scikit-learn function for that
+
+```{python}
+#| eval: true
+
+from sklearn.metrics import root_mean_squared_error
+
+# Compute RMSE
+root_mean_squared_error(y_test, y_pred)
+```
+
+## Decision theoretic fit: Expected loss
+
+Expected loss for any given action $a$ incorporates our formalized objective function and uncertainty in our parameter estimates
+
+$$
+\large{\sum_{i=1}^k \ell(a, s_i) p(s_i)}
+$$
+
+::: {.incremental}
+- Requires the objective to be formalized as a function, but directly addresses our objective
+- Since we haven't used our objective function to estimate the model, it's not something we can overfit to
+:::
+
+## Decision theoretic fit: Expected loss
+
+Let's specify our objective function and create a new data frame where **each row represents a different action**
+
+```{python}
+#| eval: true
+#| output-location: slide
+#| code-line-numbers: "|1-6|8-20"
+
+# Specify a profit function
+def profit(log_price, log_units, cost, scale):
+    log_cost = np.log(cost)
+    log_profit = log_units * (log_price - log_cost)
+    profit = np.exp(log_profit) * scale
+    return profit
+
+# Construct a new design matrix for prediction
+X_new = pl.DataFrame({
+    'brand_Harmons': [1, 1, 1, 1, 1, 1],
+    'brand_PeterPan': [0, 0, 0, 0, 0, 0],
+    'brand_Skippy': [0, 0, 0, 0, 0, 0],
+    'coupon': [0, 0, 0, 0, 0, 0],
+    'ad': [0, 0, 0, 0, 0, 0],
+    'texture_Chunky': [0, 0, 0, 0, 0, 0],
+    'size_12': [1, 1, 1, 0, 0, 0],
+    'log_price': [3.00, 3.50, 4.00, 3.00, 3.50, 4.00]
+}).with_columns(
+    pl.col('log_price').log().alias('log_price')
+).to_pandas()
+
+X_new
+```
+
+## Decision theoretic fit: Expected loss
+
+We can use predictions to compute expected profit (i.e., negative expected loss) across actions
+
+```{python}
+#| eval: true
+#| code-line-numbers: "|1-2|4-10|12-13"
+
+# Get prediction intervals for X_new
+fr_pred = fr_fit.predict(X_new)
+
+# Calculate profit for each action
+fr_pred['profit'] = profit(
+    log_price = X_new['log_price'],
+    log_units = fr_pred,
+    cost = 1.50,
+    scale = 10_000
+)
+
+# Average across actions
+print(np.mean(fr_pred['profit']))
+```
+
+# After deciding on a best model, we should re-run that model using the full dataset before interpreting results. Why? {background-color="#006242"}
+
+# Predictions
+
+## Use prediction to make model implications clear
+
+Eventually we'll select our best-fitting model(s) and make predictions directly relevant to the business objective
+
+::: {.incremental}
+- In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
+- Without being honest about uncertainty, we will mislead rather than inform decision-making
+:::
+
+::: {.fragment}
+How might using predictions make it easier to understand what the model results mean?
+:::
+
+## 
+
+```{python}
+fr_pred = fr_fit.get_prediction(X_new).summary_frame(alpha=0.05)
+```
+
+## {background-color="#006242"}
+
+### Exercise 10 {.lato-font}
+
+- INCLUDE LOYALTY DATA
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Fit the model again using OLS and a Bayesian model with uniform priors (if your computer can)
+3. Interpret the interval estimates, being careful to track transformed scales, reference levels, the presence of multiple predictors in the model, and the differences between credible and confidence intervals
+4. Submit your code, output, and interpretations as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Compared frequentist and Bayesian inference
+
+#### Next Time
+
+- Detail overall model fit and prediction
+
