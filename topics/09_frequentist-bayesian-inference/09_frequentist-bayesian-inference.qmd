@@ -112,7 +112,7 @@ X_train = (X_train
     .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
 )
 
-# Add constant for intercept
+# Combine y_train and X_train
 pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
     .to_pandas()
 )
@@ -186,7 +186,7 @@ X_train = (X_train
     .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
 )
 
-# Add constant for intercept
+# Combine y_train and X_train
 pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
     .to_pandas()
 )
