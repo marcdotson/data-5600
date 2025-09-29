@@ -121,6 +121,10 @@ The F-statistic tests the null hypothesis that **all regression coefficients are
 - The lower the $p$-value, the stronger the evidence that at least one predictor has a non-zero coefficient (i.e., is useful for explaining $y$)
 :::
 
+## In-sample fit: F-statistic
+
+![](../../figures/in-sample-fit.png){fig-align="center"}
+
 ## Predictive fit: Mean squared error
 
 Mean squared error (MSE) measures the average squared difference between observed and predicted values
@@ -146,6 +150,8 @@ import os
 import numpy as np
 import polars as pl
 import statsmodels.formula.api as smf
+import bambi as bmb
+import arviz as az
 from sklearn.model_selection import train_test_split
 
 sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
@@ -224,6 +230,23 @@ fr_fit = smf.ols(
     'log_units ~ ' + ' + '.join(predictors), 
     data = pb_train
 ).fit()
+
+# Specify a Bayesian linear regression
+ba_model = bmb.Model(
+    'log_units ~ ' + ' + '.join(predictors), 
+    data = pb_train
+)
+
+# Specify priors
+priors_dict = {
+    'Intercept': bmb.Prior("Uniform", lower=-100, upper=100),
+    **{term: bmb.Prior("Uniform", lower=-100, upper=100) for term in predictors},
+    'sigma': bmb.Prior("Exponential", lam=1)
+}
+ba_model.set_priors(priors = priors_dict)
+
+# Fit a Bayesian linear regression
+ba_fit = ba_model.fit(progressbar = False)
 ```
 
 Following the previous exercise solution
@@ -337,7 +360,7 @@ We can use predictions to compute expected profit (i.e., negative expected loss)
 #| eval: true
 #| code-line-numbers: "|1-2|4-10|12-13"
 
-# Get prediction intervals for X_new
+# Get preditions for X_new
 fr_pred = fr_fit.predict(X_new)
 
 # Calculate profit for each action
@@ -404,35 +427,38 @@ For Bayesian models, since the **parameters are random** there is no difference 
 
 ```{python}
 #| eval: true
-#| echo: false
-
-import bambi as bmb
-import arviz as az
-
-# Specify a Bayesian linear regression
-ba_model = bmb.Model(
-    'log_units ~ ' + ' + '.join(predictors), 
-    data = pb_train
-)
-
-# Specify priors
-priors_dict = {
-    'Intercept': bmb.Prior("Uniform", lower=-100, upper=100),
-    **{term: bmb.Prior("Uniform", lower=-100, upper=100) for term in predictors},
-    'sigma': bmb.Prior("Exponential", lam=1)
-}
-ba_model.set_priors(priors = priors_dict)
-
-# Fit a Bayesian linear regression
-ba_fit = ba_model.fit(progressbar = False)
-```
-
-```{python}
-#| eval: true
 #| output-location: column
 
 ba_model.predict(ba_fit, kind="response")
 az.plot_ppc(ba_fit)
+```
+
+## From parameter estimates to predictions
+
+We can interpret parameter estimates and we can make predictions to demonstrate the implications of those estimates
+
+For example, Harmon's interval estimate is (-0.188, 0.489) and log-price is (-1.040, 0.351), but what does that mean?
+
+```{python}
+#| eval: true
+#| output-location: slide
+
+# Construct a new design matrix for prediction
+X_new = pl.DataFrame({
+    'brand_Harmons': 1,
+    'brand_PeterPan': 0,
+    'brand_Skippy': 0,
+    'coupon': 0,
+    'ad': 0,
+    'texture_Chunky': 0,
+    'size_12': 0,
+    'log_price': 3.50
+}).with_columns(
+    pl.col('log_price').log().alias('log_price')
+).to_pandas()
+
+# Confidence and prediction intervals
+fr_fit.get_prediction(X_new).summary_frame(alpha=0.05)
 ```
 
 ## {background-color="#006242"}
