@@ -12,10 +12,7 @@ whiteboarding concepts.
   Improvement”)
 - Create rubrics as a set of guiding questions rather than a checklist
 - Learn names so you can call on students to share
-- Create QR code for adding me on LinkedIn
-- Produce a meme to summarize a concept
-- Speed dating to explain concepts
-- Use Quarto Projects to specify working directory on execution
+- Share LinkedIn QR code
 
 ## Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
 
@@ -31,56 +28,22 @@ whiteboarding concepts.
 - Probability and Statistics (Sept 8; Jan 14; May 13)
 - Linear Models (Sept 10; Jan 21; May 18)
 
-# Week 04 (Sept 15, 17; Jan 26, 28; May 27)
+## Week 04 (Sept 15, 17; Jan 26, 28; May 27)
 
 - Diagnostics and Remedies (Part 01) (Sept 15; Jan 26; May 27)
 - Diagnostics and Remedies (Part 02) (Sept 17; Jan 28; Jun 1)
 
-# Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
+## Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
 
 - Feature Engineering and Ordinary Least Squares (Sept 22; Feb 2; Jun 3)
 - Frequentist and Bayesian Inference (Sept 24; Feb 4; Jun 17)
 
-# Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
+## Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
 
-## Model Evaluation and Prediction
+- Model Evaluation and Prediction (Sept 29; Feb 9; Jun 22)
+- Communicating Results (Oct 1; Feb 11; Jun 24)
 
-- Overall model fit
-- Comparing predictions and real data
-- No free lunch theorem: which model is best depends on the application?
-
-Properties of MSE, RMSE, MAE, R-squared, adjusted R-squared, and F
-statistic Code: Confidence intervals, test statistics, p-value,
-prediction intervals, confidence and prediction bands, and model fit
-statistics
-
-Why do we compute a confidence band for the average of y? How do we get
-the confidence band out of a fixed confidence interval? Prediction
-intervals are about uncertainty in new data (i.e., new data is random)
-Why even produce a confidence interval around the mean if it isn’t for a
-confidence band? What’s the extra term in the standard error for the
-prediction interval? SD used twice. Are prediction intervals different
-in Bayesian statistics since data is fixed?
-
-- In-sample vs. out-of-sample vs. decision theoretic evaluation
-- Overfitting and underfitting, variance vs. bias tradeoff
-- Use theory-model-evidence.png
-
-## Communicating Results
-
-- Visualizing confidence and credible intervals
-
-- Statistical models capture association, not causation
-
-- Correlation does not imply causation, and the lack of correlation does
-  not imply lack of causation
-
-- Demonstrate presenting on a project as part of the communication
-  session
-
-- Time to work on the project in class?
-
-# Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
+## Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
 
 Presentations
 
@@ -93,13 +56,24 @@ Presentations
 
 # Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
 
-- Week 09 notes from pre-PhD seminar
+- They don’t know how sampling theory works (what did they get before?),
+  you need to illustrate it as well as Bayesian updating
+
+- Can a confidence interval be interpreted the way it is for both OLS
+  and MLE? Are we intereting confidence interval incorrecly for OLS and
+  MLE? At what point do we need bootstrapping?
+
+- Week 03 and 09 notes from pre-PhD seminar
+
 - Illustrate MLE vs. posterior
+
 - Bootstrap as poor man’s posterior
+
 - estimate, estimator, estimand meme
 
 Create a chart showing the differences between Bayesian and frequentist
-statistics?
+statistics? - No free lunch theorem: which model is best depends on the
+application?
 
 ### Module 4 (Slides 17-39, 40-55)
 

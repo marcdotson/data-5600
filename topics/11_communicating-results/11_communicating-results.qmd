@@ -66,6 +66,7 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 - Never assume those you're communicating with know about the project
 - Whenever possible, rely on clear and professional visualizations (not EDA)
 - Presentations for a non-technical or mixed audience should only have complicated details in an appendix
+- Remember that statistical models capture association, not *necessarily* causation
 - Good communication is synonymous with good storytelling
 :::
 :::
@@ -333,24 +334,111 @@ We fit a **linear regression model** to the customer-level peanut butter sales, 
 - Just including customers who made a peanut butter purchase
 - Not including sales since it was highly correlated with price
 - Log-transforming right-skewed units and price variables
+- Confirming the model assumptions were satisfied
 :::
 
 ::: {.fragment}
 We investigated including loyalty data in the model, but it didn't improve prediction accuracy or expected profit
 :::
 
-## 
+## Harmons and Skippy are indistinguishable from Jif
+
+```{python}
+#| eval: true
+#| echo: false
+
+# Selecting just brands
+df_02 = df_01.slice(1, 3)
+
+# Plotting the confidence interval
+df = df_02
+plt.figure(figsize=(4, 4))
+plt.errorbar(df['coef'], df['term'],
+    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
+    fmt='o', 
+    capsize=5, 
+    label='Estimates')
+plt.axvline(0, color='red', linestyle='--', label='y=0')
+```
+
+## Promotions and texture matter most
+
+```{python}
+#| eval: true
+#| echo: false
+
+# Selecting just brands
+# df_02 = df_01.filter(pl.col('term') != 'Intercept')
+df_03 = df_01.slice(4, 4)
+
+# Plotting the confidence interval
+df = df_03
+plt.figure(figsize=(4, 4))
+plt.errorbar(df['coef'], df['term'],
+    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
+    fmt='o', 
+    capsize=5, 
+    label='Estimates')
+plt.axvline(0, color='red', linestyle='--', label='y=0')
+```
+
+## Price sensitivity is uncertain
+
+```{python}
+#| eval: true
+#| echo: false
+
+# Selecting just brands
+df_04 = df_01.filter(pl.col('term') != 'Intercept')
+
+# Plotting the confidence interval
+df = df_04
+plt.figure(figsize=(4, 4))
+plt.errorbar(df['coef'], df['term'],
+    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
+    fmt='o', 
+    capsize=5, 
+    label='Estimates')
+plt.axvline(0, color='red', linestyle='--', label='y=0')
+```
+
+## Go for launch
+
+We recommend launching a Harmons' 12 oz, smooth-textured peanut butter at $3.50 and predict **monthly profits of $146,000 to $377,300**, assuming a cost of $1.50 per jar and 10,000 customers purchasing per month
+
+::: {.incremental}
+- Harmons has a brand strength equivalent to the national leaders
+- Promotions and texture have the largest impact on demand
+- While price sensitivity is uncertain, it appears inelastic
+:::
+
+::: {.fragment}
+With a larger loyalty dataset, we may be able to reduce uncertainty in our price estimate and improve our demand forecasts
+:::
+
+# Questions? {background-color="#288DC2"}
+
+# Technical Report
+
+## Technical report expectations
+
+Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist
+
+::: {.incremental}
+- Detail the business objective
+- Summarize the data
+- Specify the model
+- Interpret model results
+- Be professional
+:::
 
 ## {background-color="#006242"}
 
-### Exercise 10 {.lato-font}
+### Exercise 11 {.lato-font}
 
-1. Harmon's has made a portion of their loyalty CRM data available: Consider what should be included in the model
-2. Iterate on the model using these new predictors, including EDA, checking model assumptions, feature engineering, and model fitting
-3. Compare the model from the previous exercise that didn't have access to the loyalty data and this new model
-4. Choose the best-fitting model and re-run it using the full dataset
-5. Interpret the interval estimates and produce predictions relevant to the business objective using this final model
-6. Submit your code, output, and commentary as a single PDF on Canvas
+1. Choose a concept from the course to summarize
+2. [Create a meme](https://imgflip.com/memegenerator) to illustrate the concept
+3. Submit your meme as a PNG on Canvas
 
 ## {background-color="#288DC2"}
 
