@@ -66,7 +66,7 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 - Never assume those you're communicating with know about the project
 - Whenever possible, rely on clear and professional visualizations (not EDA)
 - Presentations for a non-technical or mixed audience should only have complicated details in an appendix
-- Remember that statistical models capture association, not *necessarily* causation
+- Remember that models capture association, not *necessarily* causation
 - Good communication is synonymous with good storytelling
 :::
 :::
@@ -170,6 +170,7 @@ We don't want to share the model output table in the presentation (outside of an
 ```{python}
 #| eval: true
 #| output-location: column
+#| code-line-numbers: "|1-7|10|11-16|17"
 
 # Construct confidence interval data frame
 df_01 = pl.DataFrame({
@@ -197,6 +198,7 @@ We often want to visualize **some subset of the interval estimates**
 ```{python}
 #| eval: true
 #| output-location: column
+#| code-line-numbers: "|1-2|5"
 
 # Selecting just slopes
 df_02 = df_01.filter(pl.col('term') != 'Intercept')
@@ -245,7 +247,7 @@ plt.axvline(0, color='red', linestyle='--', label='y=0')
 
 ## Using the soft-launch data
 
-The data is from a single, representative DMA across like store where each row represents a customer's category purchase during the test period
+The data is from a single, **representative DMA** across like stores where each row represents a customer's category purchase during the test period
 
 - **customer_id**: Unique customer identifier
 - **units**: Number of peanut butter jars purchased
@@ -257,7 +259,7 @@ The data is from a single, representative DMA across like store where each row r
 - **price**: Price paid per jar
 
 ::: {.fragment}
-After cleaning, including filtering the data just for those customers who made a peanut butter purchase, there are 1,095 observations
+After cleaning, including filtering the data just for those customers who made a peanut butter purchase, there are **1,095 observations**
 :::
 
 ## Customers purchase few units of peanut butter
@@ -270,6 +272,7 @@ After cleaning, including filtering the data just for those customers who made a
 (so.Plot(pb_data, x = 'units')
     .add(so.Bars(), so.Hist(bins = 10))
     .label(x="Peanut Butter Units Sold", y="Count")
+    .layout(size=(8, 6))
 )
 ```
 
@@ -281,13 +284,13 @@ After cleaning, including filtering the data just for those customers who made a
 #| fig-align: center
 
 (so.Plot(pb_data, x = 'units', color = 'brand')
-    .facet(col = 'size', row = 'texture')
     .add(so.Area(), so.Hist(bins=10))
     .label(x="Peanut Butter Units Sold", y="Count")
+    .layout(size=(8, 6))
 )
 ```
 
-## Customers don't appear price sensitive
+## Customers don't appear too price sensitive
 
 ```{python}
 #| eval: true
@@ -301,6 +304,7 @@ After cleaning, including filtering the data just for those customers who made a
     )
     .add(so.Line(), so.PolyFit(order = 1))
     .label(x="Peanut Butter Prices", y="Peanut Butter Units Sold")
+    .layout(size=(8, 6))
 )
 ```
 
@@ -310,7 +314,6 @@ After cleaning, including filtering the data just for those customers who made a
 #| eval: true
 #| echo: false
 #| fig-align: center
-#| fig-width: 10
 
 (so.Plot(pb_data, x = 'price', y = 'units')
     .facet(col = 'brand')
@@ -321,6 +324,7 @@ After cleaning, including filtering the data just for those customers who made a
     )
     .add(so.Line(), so.PolyFit(order = 1))
     .label(x="Price", y="Peanut Butter Units Sold")
+    .layout(size=(12, 6))
 )
 ```
 
@@ -341,7 +345,7 @@ We fit a **linear regression model** to the customer-level peanut butter sales, 
 We investigated including loyalty data in the model, but it didn't improve prediction accuracy or expected profit
 :::
 
-## Harmons and Skippy are indistinguishable from Jif
+## Harmons, Skippy are indistinguishable from Jif
 
 ```{python}
 #| eval: true
@@ -352,7 +356,7 @@ df_02 = df_01.slice(1, 3)
 
 # Plotting the confidence interval
 df = df_02
-plt.figure(figsize=(4, 4))
+plt.figure(figsize=(6, 4))
 plt.errorbar(df['coef'], df['term'],
     xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
     fmt='o', 
@@ -373,7 +377,7 @@ df_03 = df_01.slice(4, 4)
 
 # Plotting the confidence interval
 df = df_03
-plt.figure(figsize=(4, 4))
+plt.figure(figsize=(6, 4))
 plt.errorbar(df['coef'], df['term'],
     xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
     fmt='o', 
@@ -393,7 +397,7 @@ df_04 = df_01.filter(pl.col('term') != 'Intercept')
 
 # Plotting the confidence interval
 df = df_04
-plt.figure(figsize=(4, 4))
+plt.figure(figsize=(6, 4))
 plt.errorbar(df['coef'], df['term'],
     xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
     fmt='o', 
