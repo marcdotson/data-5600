@@ -1,0 +1,366 @@
+---
+title: "Communicating Results"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Detailed overall model fit and prediction
+
+#### Preview
+
+- Demonstrate communicating model results
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_communicate.png){fig-align="center"}
+:::
+
+## Corrected profit function
+
+Instead of converting cost to log-cost, we need to **convert log-price and log-units to price and units** so our profit calculation is correct
+
+```{python}
+def profit(price, units, cost, scale):
+    profit = units * (price - cost)
+    return profit * scale
+
+profit(
+    price = np.exp(X_new['log_price']),
+    units = np.exp(y_pred_04),
+    cost = 1.50,
+    scale = 10_000
+)
+```
+
+## Make insights accessible for decision-makers
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Having the technical capability to carefully prepare for and work with data is necessary but **not sufficient**
+
+::: {.fragment}
+Your job as a data analyst is to **serve as a bridge** between the data and technical challenges and those who make decisions, many of whom are non-technical
+:::
+
+::: {.incremental}
+- Never assume those you're communicating with know about the project
+- Whenever possible, rely on clear and professional visualizations (not EDA)
+- Presentations for a non-technical or mixed audience should only have complicated details in an appendix
+- Good communication is synonymous with good storytelling
+:::
+:::
+
+::::
+
+# Presentation
+
+## Presentation expectations
+
+Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist
+
+::: {.incremental}
+- Explain the business problem
+- Provide an executive summary
+- Summarize the data
+- Detail the model
+- Be professional
+:::
+
+## Visualizing interval estimates
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import numpy as np
+import polars as pl
+import seaborn.objects as so
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as smf
+
+# Import soft launch and loyalty data
+sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+
+# Standardize brand names
+brand_names = {
+    # Jif
+    'JIF': 'Jif', 'Jiff': 'Jif',
+    # Skippy
+    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+    # PeterPan
+    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+    # Harmons
+    "Harmon's": 'Harmons',
+}
+
+# Join the loyalty data and the cleaned soft launch data
+pb_data = (sl_data
+    # Fix brand naming variants
+    .with_columns([
+        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
+    ])
+    # Drop rows with missing values
+    .drop_nans(['units', 'sales'])
+    # Drop rows with "None" values
+    .remove(
+        (pl.col('brand') == "None") | (pl.col('loyal') == "None") | 
+        (pl.col('texture') == "None") | (pl.col('size') == "None")
+    )
+    # Make price numeric
+    .with_columns([
+        pl.col('price').cast(pl.Float64).alias('price'),
+        pl.col('loyal').cast(pl.Int64).alias('loyal'),
+        pl.col('promo').cast(pl.Int64).alias('promo')
+    ])
+    # Drop duplicate
+    .unique()
+    # Filter for only peanut butter purchases
+    .filter(pl.col('units') > 0)
+    # Select relevant columns
+    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+)
+
+# Feature engineering for training
+pb_train = (pb_data
+    .with_columns([
+        (pl.col('units') + 1).log().alias('log_units'),
+        (pl.col('price') + 1).log().alias('log_price')
+    ])
+    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+    .select(pl.exclude('units', 'price', 'brand_Jif', 'texture_Smooth', 'size_16'))
+)
+
+# Specify predictors
+predictors = [
+    'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
+    'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
+]
+
+# Fit the final model
+fit_06 = smf.ols(
+    'log_units ~ ' + ' + '.join(predictors), 
+    data = pb_train
+).fit()
+```
+
+We don't want to share the model output table in the presentation (outside of an appendix), so let's **visualize the interval estimates**
+
+```{python}
+#| eval: true
+#| output-location: column
+
+# Construct confidence interval data frame
+df_01 = pl.DataFrame({
+    'term': fit_06.conf_int().index.tolist(),
+    'coef': fit_06.params.tolist(),
+    'conf_low': fit_06.conf_int().loc[:, 0].tolist(),
+    'conf_high': fit_06.conf_int().loc[:, 1].tolist()
+})
+
+# Plotting the confidence interval
+df = df_01
+plt.figure(figsize=(4, 4))
+plt.errorbar(df['coef'], df['term'],
+    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
+    fmt='o', 
+    capsize=5, 
+    label='Estimates')
+plt.axvline(0, color='red', linestyle='--', label='y=0')
+```
+
+## Visualizing interval estimates
+
+We often want to visualize **some subset of the interval estimates**
+
+```{python}
+#| eval: true
+#| output-location: column
+
+# Selecting just slopes
+df_02 = df_01.filter(pl.col('term') != 'Intercept')
+
+# Plotting the confidence interval
+df = df_02
+plt.figure(figsize=(4, 4))
+plt.errorbar(df['coef'], df['term'],
+    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
+    fmt='o', 
+    capsize=5, 
+    label='Estimates')
+plt.axvline(0, color='red', linestyle='--', label='y=0')
+```
+
+# Launching Harmons Private Label Peanut Butter {background-color="#288DC2"}
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+::: {.incremental}
+- Harmons is considering launching a **private label peanut butter**
+- Need to make a **go/no-go** and associated **pricing** decision
+- One-week **soft launch** in a single designated market area (DMA)
+- Used **transaction data** to model customer-level peanut butter demand
+:::
+:::
+
+::: {.column width="40%"}
+![](../../figures/logo_harmons.png){fig-align="center"}
+:::
+
+::::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="100%"}
+### We recommend launching a Harmons' 12 oz, smooth-textured peanut butter at $3.50 and predict **monthly profits of $146,000 to $377,300** {.lato-font}
+:::
+
+::::
+
+## Using the soft-launch data
+
+The data is from a single, representative DMA across like store where each row represents a customer's category purchase during the test period
+
+- **customer_id**: Unique customer identifier
+- **units**: Number of peanut butter jars purchased
+- **brand**: Peanut butter brand purchased
+- **coupon**: Coupon present
+- **ad**: Advertisement present
+- **texture**: Product texture
+- **size**: Jar size purchased in ounces
+- **price**: Price paid per jar
+
+::: {.fragment}
+After cleaning, including filtering the data just for those customers who made a peanut butter purchase, there are 1,095 observations
+:::
+
+## Customers purchase few units of peanut butter
+
+```{python}
+#| eval: true
+#| echo: false
+#| fig-align: center
+
+(so.Plot(pb_data, x = 'units')
+    .add(so.Bars(), so.Hist(bins = 10))
+    .label(x="Peanut Butter Units Sold", y="Count")
+)
+```
+
+## Harmons was purchased at higher quantities
+
+```{python}
+#| eval: true
+#| echo: false
+#| fig-align: center
+
+(so.Plot(pb_data, x = 'units', color = 'brand')
+    .facet(col = 'size', row = 'texture')
+    .add(so.Area(), so.Hist(bins=10))
+    .label(x="Peanut Butter Units Sold", y="Count")
+)
+```
+
+## Customers don't appear price sensitive
+
+```{python}
+#| eval: true
+#| echo: false
+#| fig-align: center
+
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(
+        so.Dot(alpha = 0.25), 
+        so.Jitter(x = 0.25, y = 0.25)
+    )
+    .add(so.Line(), so.PolyFit(order = 1))
+    .label(x="Peanut Butter Prices", y="Peanut Butter Units Sold")
+)
+```
+
+## Price sensitivity doesn't seem to vary by brand
+
+```{python}
+#| eval: true
+#| echo: false
+#| fig-align: center
+#| fig-width: 10
+
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .facet(col = 'brand')
+    .share(x=False, y=False)
+    .add(
+        so.Dot(alpha = 0.25), 
+        so.Jitter(x = 0.25, y = 0.25)
+    )
+    .add(so.Line(), so.PolyFit(order = 1))
+    .label(x="Price", y="Peanut Butter Units Sold")
+)
+```
+
+## Modeling customer-level peanut butter demand
+
+We fit a **linear regression model** to the customer-level peanut butter sales, including
+
+::: {.incremental}
+- Cleaning up variations in brand names
+- Dropping missing values that appear to be random data errors
+- Just including customers who made a peanut butter purchase
+- Not including sales since it was highly correlated with price
+- Log-transforming right-skewed units and price variables
+:::
+
+::: {.fragment}
+We investigated including loyalty data in the model, but it didn't improve prediction accuracy or expected profit
+:::
+
+## 
+
+## {background-color="#006242"}
+
+### Exercise 10 {.lato-font}
+
+1. Harmon's has made a portion of their loyalty CRM data available: Consider what should be included in the model
+2. Iterate on the model using these new predictors, including EDA, checking model assumptions, feature engineering, and model fitting
+3. Compare the model from the previous exercise that didn't have access to the loyalty data and this new model
+4. Choose the best-fitting model and re-run it using the full dataset
+5. Interpret the interval estimates and produce predictions relevant to the business objective using this final model
+6. Submit your code, output, and commentary as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Demonstrated communicating model results
+
+#### Next Time
+
+- Project presentations
+
