@@ -7,7 +7,7 @@ Provided more opportunities for student participation beyond live coding by incl
 
 - Slow down and illustrate -- especially with case, code, questions, and activities
 - Use minimal scales for grades (e.g., "Excellent," "Good," "Needs Improvement")
-- Create rubrics as a set of guiding questions rather than a checklist
+- Have the exercises map to the project and project rubric map to the modeling workflow
 - Learn names so you can call on students to share
 - Share LinkedIn QR code
 
@@ -42,7 +42,7 @@ Provided more opportunities for student participation beyond live coding by incl
 
 ## Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
 
-Presentations
+- Presentations
 
 
 
@@ -53,13 +53,14 @@ Presentations
 
 ----- CASE TWO -----
 
-- Update the syllabus to reflect the changed schedule topics
 - Student evaluations
 - Student panel invitation
 - Post-quiz for research project
 
-# Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
+## Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
 
+- Loss and Utility Functions (Oct 13; Feb 23; Jun 29)
+- Generalized Linear Models (Oct 15; Feb 25; Jul 1)
 
 - They don't know how sampling theory works (what did they get before?), you need to illustrate it as well as Bayesian updating
 - Can a confidence interval be interpreted the way it is for both OLS and MLE? Are we intereting confidence interval incorrecly for OLS and MLE? At what point do we need bootstrapping?
@@ -68,6 +69,7 @@ Presentations
 - Illustrate MLE vs. posterior
 - Bootstrap as poor man's posterior
 - estimate, estimator, estimand meme
+- GLMs are parametric models -- the number of parameters don't increase with n
 
 Create a chart showing the differences between Bayesian and frequentist statistics?
 - No free lunch theorem: which model is best depends on the application?
@@ -77,24 +79,19 @@ Create a chart showing the differences between Bayesian and frequentist statisti
 Interpreting the F-test and model vs. coefficient p-values
 Underfitting and overfitting, the complexity vs. error plot (bias variance tradeoff?) to navigate between the two
 
-# Week 09 (Oct 20, 22; Mar 2, 4; Jul 6, 8)
+## Week 09 (Oct 20, 22; Mar 2, 4; Jul 6, 8)
 
-## Regularization
+- Logistic Regression (Oct 20; Mar 2; Jul 6)
+- Maximum Likelihood Estimation (Oct 22; Mar 4; Jul 8)
 
-- Penalize the regression to learn "regular" (i.e., generalizable) features
-- Shrinkage toward the MLE
+## Week 10 (Oct 27, 29; Mar 16, 18; Jul 13, 15)
 
-Why Bayes? Carefully and directly model uncertainty
-This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
+- Hyperparameter Tuning (Oct 27; Mar 16; Jul 13)
+- Cross-Validation (Oct 29; Mar 18; Jul 15)
 
-> "Prior predictive simulation is very useful for assigning sensible priors, because it can be quite hard to anticipate how priors influence the observable variables."
 
-Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
-Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
 
-## Hyperparameter Tuning
-
-## Module 5 (Slides 1-12, 13-38)
+### Module 5 (Slides 1-12, 13-38)
 
 Stepwise regression for model selection when focusing on prediction
 Discussed the possibility of p > n
@@ -107,24 +104,32 @@ Cross-validation for model selection as well in order to keep a larger training 
 Are variable selection and shrinkage methods primarily used for multicollinearity?
 AIC and BIC
 
-# Week 10 (Oct 27, 29; Mar 16, 18; Jul 13, 15)
-
-## Feature Engineering
-
-## Dummy Coding
-
-## Module 5 (Slides 39-59)
+### Module 5 (Slides 39-59)
 
 Ridge regression, LASSO, elastic net, best subsets, sequential replacement
 Bias-variance tradeoff and shrinkage methods
 Accuracy and precision is just bias and variance
 Code: Clunky, implementing stepwise regression and shrinkage methods with manual hyperparameter tuning
 
-# Week 11 (Nov 3, 5; Mar 23, 25; Jul 20, 22)
+## Week 11 (Nov 3, 5; Mar 23, 25; Jul 20, 22)
 
-## PCR
+- Penalized Regression (Nov 3; Mar 23; Jul 20)
+- Variable Selection (Nov 5; Mar 25; Jul 22)
 
-## Module 6 (Slides 15-27, 28-58)
+### Regularization
+
+- Penalize the regression to learn "regular" (i.e., generalizable) features
+- Shrinkage toward the MLE
+
+Why Bayes? Carefully and directly model uncertainty
+This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
+
+> "Prior predictive simulation is very useful for assigning sensible priors, because it can be quite hard to anticipate how priors influence the observable variables."
+
+Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
+Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
+
+### Module 6 (Slides 15-27, 28-58)
 
 Interactions (including higher-order interactions), including interactions
 Why do we just interpret interaction effects and not main effects?
@@ -132,40 +137,40 @@ Does this all have to be done with the statsmodels API? What about https://www.s
 What about models built to bring assumption verification, etc. to scikit-learn?
 Code: EDA, interactions plots, dummy coding, creating interactions
 
-# Week 12 (Nov 10, 12; Mar 30, Apr 1; Jul 27, 29)
+## Week 12 (Nov 10, 12; Mar 30, Apr 1; Jul 27, 29)
 
-## Multilevel Models
+- Dimension Reduction
+- Principal Components Regression
 
-- Motivate with Simpson's paradox (PML p. 80)
-
-## Module 7 (Slides 1-21, 22-35; Aug 3, 5)
+### Module 7 (Slides 1-21, 22-35; Aug 3, 5)
 
 Logistic regression basics, including maximum likelihood estimation
 Why not introduce training/testing split earlier without cross-validation?
 Probability vs. (Log) Odds
 
-# Week 13 (Nov 17, 19; Apr 6, 8)
+## Week 13 (Nov 17, 19; Apr 6, 8)
 
-## GLMs
+- Interactions
+- Multilevel Models
 
-## Module 7 (Slides 36-54, 55-61)
+- Motivate with Simpson's paradox (PML p. 80)
+
+### Module 7 (Slides 36-54, 55-61)
 
 Logistic regression assumptions and diagnostics
 If the assumptions we used previously break down, why use them at all?
 Interpreting a confusion matrix
 Code: Splitting the data into train and test, maximum likelihood, ROC/AUC
 
-# Week 14 (Nov 24; Apr 13, 15)
+## Week 14 (Nov 24; Apr 13, 15)
 
-## Logistic Regression
-
-## Module 8 (Slides 1-15, 16-36)
+### Module 8 (Slides 1-15, 16-36)
 
 Dimension reduction as opposed to variable selection and regularization
 PCA on its own and then PCA as part of PCR
 Code: Using PCA and PCR for continuous and discrete outcomes
 
-# Week 15 (Dec 1, 3; Apr 20)
+## Week 15 (Dec 1, 3; Apr 20)
 
-Presentations
+- Presentations
 

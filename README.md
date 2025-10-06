@@ -221,28 +221,28 @@ notice as it relates to assignment deadlines.
 
 ### Week 08
 
+- Loss and Utility Functions
 - Generalized Linear Models
-- Classification
 
 ### Week 09
 
 - Logistic Regression
-- Fitting and Interpreting Logistic Regression
+- Maximum Likelihood Estimation
 
 ### Week 10
-
-- Regularization
-- Variable Selection
-
-### Week 11
 
 - Hyperparameter Tuning
 - Cross-Validation
 
+### Week 11
+
+- Penalized Regression
+- Variable Selection
+
 ### Week 12
 
 - Dimension Reduction
-- PCR
+- Principal Components Regression
 
 ### Week 13
 
