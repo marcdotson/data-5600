@@ -221,7 +221,7 @@ notice as it relates to assignment deadlines.
 
 ### Week 08
 
-- Loss and Utility Functions
+- Modeling Workflow Redux
 - Generalized Linear Models
 
 ### Week 09
@@ -250,9 +250,5 @@ notice as it relates to assignment deadlines.
 - Multilevel Models
 
 ### Week 14
-
-- Thanksgiving Break
-
-### Week 15
 
 - Presentations

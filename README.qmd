@@ -129,7 +129,7 @@ Please note that the instructor reserves the right to change the following sched
 
 ### Week 08
 
-- Loss and Utility Functions
+- Modeling Workflow Redux
 - Generalized Linear Models
 
 ### Week 09
@@ -158,10 +158,6 @@ Please note that the instructor reserves the right to change the following sched
 - Multilevel Models
 
 ### Week 14
-
-- Thanksgiving Break
-
-### Week 15
 
 - Presentations
 
