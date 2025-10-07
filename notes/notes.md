@@ -38,46 +38,139 @@ TODO:
   discussion.
 - Exercise 11: Simplify or spread out to previous exercises
 
-## Week 01 (Aug 25, 27; Jan 5, 7; May 4, 6)
+## Week 01
 
-- Regression and Machine Learning (Aug 25; Jan 5; May 4)
-- Modeling Workflow (Aug 27; Jan 7; May 6)
+### Fall 2025
 
-## Week 02 (Sept 3; Jan 12, 14; May 11, 13)
+- Regression and Machine Learning (Aug 25)
+- Modeling Workflow (Aug 27)
 
-- Decisions and Data (Sept 3; Jan 12; May 11)
+### Spring 2026
 
-## Week 03 (Sept 8, 10; Jan 21; May 18, 20)
+- Regression and Machine Learning (Jan 5)
+- Modeling Workflow (Jan 7)
 
-- Probability and Statistics (Sept 8; Jan 14; May 13)
-- Linear Models (Sept 10; Jan 21; May 18)
+### Summer 2026
 
-## Week 04 (Sept 15, 17; Jan 26, 28; May 27)
+- Regression and Machine Learning (May 4)
+- Modeling Workflow (May 6)
 
-- Diagnostics and Remedies (Part 01) (Sept 15; Jan 26; May 20)
-- Diagnostics and Remedies (Part 02) (Sept 17; Jan 28; May 27)
+## Week 02
 
-## Week 05 (Sept 22, 24; Feb 2, 4; Jun 1, 3)
+### Fall 2025
 
-- Feature Engineering and Ordinary Least Squares (Sept 22; Feb 2; Jun 1)
-- Frequentist and Bayesian Inference (Sept 24; Feb 4; Jun 3)
+- Decisions and Data (Sept 3)
 
-## Week 06 (Sept 29, Oct 1; Feb 9, 11; Jun 17)
+### Spring 2026
 
-- Model Evaluation and Prediction (Sept 29; Feb 9; Jun 17)
-- Communicating Results (Oct 1; Feb 11; Jun 22)
+- Decisions and Data (Jan 12)
+- Probability and Statistics (Jan 14)
 
-## Week 07 (Oct 6, 8; Feb 18; Jun 22, 24)
+### Summer 2026
 
-- Presentations (Oct 6, 8; Feb 18; Jun 24)
+- Decisions and Data (May 11)
+- Probability and Statistics (May 13)
 
-## Week 08 (Oct 13, 15; Feb 23, 25; Jun 29, Jul 1)
+## Week 03
 
-- Loss and Utility Functions (Oct 13; Feb 23; Jun 29)
-- Generalized Linear Models (Oct 15; Feb 25; Jul 1)
+### Fall 2025
+
+- Probability and Statistics (Sept 8)
+- Linear Models (Sept 10)
+
+### Spring 2026
+
+- Linear Models (Jan 21)
+
+### Summer 2026
+
+- Linear Models (May 18)
+- Diagnostics and Remedies (Part 01) (May 20)
+
+## Week 04
+
+### Fall 2025
+
+- Diagnostics and Remedies (Part 01) (Sept 15)
+- Diagnostics and Remedies (Part 02) (Sept 17)
+
+### Spring 2026
+
+- Diagnostics and Remedies (Part 01) (Jan 26)
+- Diagnostics and Remedies (Part 02) (Jan 28)
+
+### Summer 2026
+
+- Diagnostics and Remedies (Part 02) (May 27)
+
+## Week 05
+
+### Fall 2025
+
+- Feature Engineering and Ordinary Least Squares (Sept 22)
+- Frequentist and Bayesian Inference (Sept 24)
+
+### Spring 2026
+
+- Feature Engineering and Ordinary Least Squares (Feb 2)
+- Frequentist and Bayesian Inference (Feb 4)
+
+### Summer 2026
+
+- Feature Engineering and Ordinary Least Squares (Jun 1)
+- Frequentist and Bayesian Inference (Jun 3)
+
+## Week 06
+
+### Fall 2025
+
+- Model Evaluation and Prediction (Sept 29)
+- Communicating Results (Oct 1)
+
+### Spring 2026
+
+- Model Evaluation and Prediction (Feb 9)
+- Communicating Results (Feb 11)
+
+### Summer 2026
+
+- Model Evaluation and Prediction (Jun 17)
+
+## Week 07
+
+### Fall 2025
+
+- Presentations (Oct 6, 8)
+
+### Spring 2026
+
+- Presentations (Feb 18)
+
+### Summer 2026
+
+- Communicating Results (Jun 22)
+- Presentations (Jun 24)
+
+## Week 08
+
+### Fall 2025
+
+- Fall Flex Day After Project 01 (Oct 13)
+- Generalized Linear Models (Oct 15)
+
+### Spring 2026
+
+- Review, Loss and Linear Whatever (Feb 23)
+- Generalized Linear Models (Feb 25)
+
+### Summer 2026
+
+- Generalized Linear Models (Jun 29)
+- Logistic Regression (Jul 1)
 
 ### Decision Making Under Uncertainty
 
+- Review? Loss and Utility Functions?
 - Need to revisit the modeling workflow and the place of decision theory
   as a frame for it.
 - Use this discussion to illustrate the second case and to motivate the
@@ -104,10 +197,22 @@ referred to as states of the world” -Jimmy Savage
 - No free lunch theorem: which model is best depends on the application?
 - Week 09 notes from pre-PhD seminar
 
-## Week 09 (Oct 20, 22; Mar 2, 4; Jul 6, 8)
+## Week 09
 
-- Logistic Regression (Oct 20; Mar 2; Jul 6)
-- Maximum Likelihood Estimation (Oct 22; Mar 4; Jul 8)
+### Fall 2025
+
+- Logistic Regression (Oct 20)
+- Maximum Likelihood Estimation (Oct 22)
+
+### Spring 2026
+
+- Logistic Regression (Mar 2)
+- Maximum Likelihood Estimation (Mar 4)
+
+### Summer 2026
+
+- Maximum Likelihood Estimation (Jul 6)
+- Hyperparameter Tuning (Jul 8)
 
 ### Logistic Regression
 
@@ -142,10 +247,22 @@ referred to as states of the world” -Jimmy Savage
   frequentist statistics?
 - Week 03 notes from pre-PhD seminar
 
-## Week 10 (Oct 27, 29; Mar 16, 18; Jul 13, 15)
+## Week 10
 
-- Hyperparameter Tuning (Oct 27; Mar 16; Jul 13)
-- Cross-Validation (Oct 29; Mar 18; Jul 15)
+### Fall 2025
+
+- Hyperparameter Tuning (Oct 27)
+- Cross-Validation (Oct 29)
+
+### Spring 2026
+
+- Hyperparameter Tuning (Mar 16)
+- Cross-Validation (Mar 18)
+
+### Summer 2026
+
+- Cross-Validation (Jul 13)
+- Penalized Regression (Jul 15)
 
 ### Hyperparameter Tuning
 
@@ -159,10 +276,22 @@ referred to as states of the world” -Jimmy Savage
 - Cross-validation for model selection as well in order to keep a larger
   training dataset (p. 123 of PML)
 
-## Week 11 (Nov 3, 5; Mar 23, 25; Jul 20, 22)
+## Week 11
 
-- Penalized Regression (Nov 3; Mar 23; Jul 20)
-- Variable Selection (Nov 5; Mar 25; Jul 22)
+### Fall 2025
+
+- Penalized Regression (Nov 3)
+- Variable Selection (Nov 5)
+
+### Spring 2026
+
+- Penalized Regression (Mar 23)
+- Variable Selection (Mar 25)
+
+### Summer 2026
+
+- Variable Selection (Jul 20)
+- Dimension Reduction (Jul 22)
 
 ### Penalized Regression
 
@@ -183,10 +312,22 @@ referred to as states of the world” -Jimmy Savage
 - Discussed the possibility of p \> n
 - Working from a full model and using backward or forward-selection
 
-## Week 12 (Nov 10, 12; Mar 30, Apr 1; Jul 27, 29)
+## Week 12
 
-- Dimension Reduction (Nov 10; Mar 30; Jul 27)
-- Principal Components Regression (Nov 12; Apr 1; Jul 29)
+### Fall 2025
+
+- Dimension Reduction (Nov 10)
+- Principal Components Regression (Nov 12)
+
+### Spring 2026
+
+- Dimension Reduction (Mar 30)
+- Principal Components Regression (Apr 1)
+
+### Summer 2026
+
+- Principal Components Regression (Jul 27)
+- Interactions (Jul 29)
 
 ### Dimension Reduction
 
@@ -196,10 +337,22 @@ referred to as states of the world” -Jimmy Savage
   regularization
 - PCA on its own and then PCA as part of PCR
 
-## Week 13 (Nov 17, 19; Apr 6, 8; Aug 3, 5)
+## Week 13
 
-- Interactions (Nov 17; Apr 6; Aug 3)
-- Multilevel Models (Nov 19; Apr 8; Aug 5)
+### Fall 2025
+
+- Interactions (Nov 17)
+- Multilevel Models (Nov 19)
+
+### Spring 2026
+
+- Interactions (Apr 6)
+- Multilevel Models (Apr 8)
+
+### Summer 2026
+
+- Multilevel Models (Aug 3)
+- Presentations (Aug 5)
 
 ### Interactions
 
@@ -213,18 +366,19 @@ referred to as states of the world” -Jimmy Savage
 
 - Motivate with Simpson’s paradox (PML p. 80)
 
-## Week 14 (Nov 24; Apr 13, 15)
+## Week 14
 
-- Thanksgiving Break (Nov 24)
+### Fall 2025
 
-## Week 15 (Dec 1, 3; Apr 20)
+- Presentations (Dec 1, 3)
 
-- Presentations (Dec 1, 3; Apr 13, 15, 20)
+### Spring 2026
+
+- Presentations (Apr 13, 15)
+
+### Notes
 
 - Student evaluations (IDEA)
-
 - Student panel invitation
-
 - Post-quiz for research project
-
 - Share LinkedIn QR code
