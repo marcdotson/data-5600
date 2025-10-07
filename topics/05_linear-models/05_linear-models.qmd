@@ -20,6 +20,8 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
+TODO: Add Bernie holding predictors constant meme, change additivity/linearity to linearity throughout
+
 #### Last Time
 
 - Finished building models using probability
@@ -114,8 +116,8 @@ $$
 
 ::: {.v-center}
 $$
-\Huge{\mu = \beta_0 + \beta_1 x} \\
-\Huge{y \sim \text{Normal}(\mu, \sigma^2)}
+\Huge{y \sim \text{Normal}(\mu, \sigma^2)} \\
+\Huge{\mu = \beta_0 + \beta_1 x}
 $$
 :::
 
@@ -125,8 +127,8 @@ $$
 
 ::: {.column width="50%"}
 $$
-\large{\mu = \beta_0 + \beta_1 x} \\
-\large{y \sim \text{Normal}(\mu, \sigma^2)}
+\large{y \sim \text{Normal}(\mu, \sigma^2)} \\
+\large{\mu = \beta_0 + \beta_1 x}
 $$
 :::
 
@@ -225,8 +227,8 @@ The linear model is the **deterministic component** and the normal error is the 
 A linear model with a *single* predictor is called **simple linear regression**
 
 $$
-\large{\mu_i = \beta_0 + \beta_1 x_i} \\
-\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\large{\mu_i = \beta_0 + \beta_1 x_i}
 $$
 
 - $\beta_0$ is the **intercept** or **bias** parameter
@@ -253,8 +255,8 @@ $$
 ## Simple linear regression parameters {visibility="uncounted"}
 
 $$
-\large{\mu_i = \beta_0 + \beta_1 x_i} \\
-\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\large{\mu_i = \beta_0 + \beta_1 x_i}
 $$
 
 - $\beta_0$ is the average of $y$ when $x = 0$
@@ -330,8 +332,8 @@ The linear model is the **deterministic component** and the normal error is the 
 A linear model with *multiple* predictors is called **multiple linear regression**
 
 $$
-\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}} \\
-\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
 $$
 
 - $\beta_0$ is the **intercept** or **bias** parameter
@@ -358,8 +360,8 @@ $$
 ## Multiple linear regression parameters {visibility="uncounted"}
 
 $$
-\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}} \\
-\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)}
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
 $$
 
 - $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
@@ -383,7 +385,7 @@ What about $\sigma^2$?
 
 ## Multiple linear regression and correlation
 
-For multiple linear regression, each slope $\beta_1 \cdots \beta_p$ is no longer connected directly to the correlation between the given $x$ and $y$
+For multiple linear regression, each slope $\beta_1, \cdots, \beta_p$ is no longer connected directly to the correlation between the given $x$ and $y$
 
 ```{python}
 #| eval: true
@@ -432,8 +434,8 @@ y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
 $$
 
 $$
-\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
-y_i \sim \text{Normal}(\mu_i, \sigma^2)
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
 $$
 :::
 

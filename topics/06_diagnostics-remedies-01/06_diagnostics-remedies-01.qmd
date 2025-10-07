@@ -20,6 +20,16 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
+TODO: 
+
+- Limit EDA and start with feature engineering before (sprinkle throughout?) model assumptions, including log-transformations, dummy-coding, and interaction terms (see modeling workflow redux).
+- Add log-transform, spider-man multicollinearity memes
+- Divide assumptions:
+  - Validity, Representativeness, and Linearity (correct from Additivity and Linearity)
+  - Independence, Constant Variance, Normality, and Identifiability
+- Figure out a way to simplify and streamline assumption evaluation. Provide functions – something!
+- Compare more before and after plots when the assumptions are violated and when they are satisfied using the same tools provided.
+
 #### Last Time
 
 - Formally introduced linear regression
@@ -44,7 +54,7 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 
 ::: {.column width="50%"}
 ::: {.fragment}
-![](../../figures/models_all-02.png){fig-align="center"}
+![](../../figures/models_all.png){fig-align="center"}
 :::
 :::
 
@@ -101,7 +111,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Import data
-# sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
 sl_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
   .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
   .cast({'size': pl.String})
@@ -116,7 +125,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Import data
-sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('soft_launch.parquet'))
 ```
 
 ::: {.fragment}

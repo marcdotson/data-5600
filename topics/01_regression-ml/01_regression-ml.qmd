@@ -268,9 +268,15 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 
 ::: {.incremental}
 - You will complete two group projects, one focused on multiple regression and another focused on classification
-- Groups will both present and submit a technical report
+- Groups will both present and submit a report
 - The week before the presentations, groups will submit a draft of their slides to get feedback and have time for revision
 - The other students in the class, as well as the group members themselves, will help evaluate each of the presentations
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_project-iceberg.png){fig-align="center"}
 :::
 
 # Review the syllabus. What questions do you have? What about the course makes you excited or nervous?{background-color="#006242"}
@@ -386,7 +392,7 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 
 ::: {.column width="60%"}
 $$
-\Huge{f: X \rightarrow y}
+\Huge{f: X \rightarrow Y}
 $$
 :::
 
@@ -398,7 +404,7 @@ $X$
 - predictors
 - explanatory variables
 
-$y$
+$Y$
 
 - output
 - outcome
@@ -412,33 +418,29 @@ $y$
 
 We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
-::: {.columns .fragment}
+## The mapping function is a *model* {visibility="uncounted"}
+
+We use models to **extract information** from data and inform decisions in the presence of uncertainty
+
 ![](../../figures/models_predictive.png){fig-align="center"}
-:::
 
 ## The mapping function is a *model* {visibility="uncounted"}
 
 We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
-::: {.columns}
 ![](../../figures/models_interpretable.png){fig-align="center"}
-:::
 
 ## The mapping function is a *model* {visibility="uncounted"}
 
 We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
-::: {.columns}
 ![](../../figures/models_causal.png){fig-align="center"}
-:::
 
 ## The mapping function is a *model* {visibility="uncounted"}
 
 We use models to **extract information** from data and inform decisions in the presence of uncertainty
 
-::: {.columns}
-![](../../figures/models_all-01.png){fig-align="center"}
-:::
+![](../../figures/models_all.png){fig-align="center"}
 
 ## {background-color="#006242"}
 

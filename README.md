@@ -173,7 +173,7 @@ course, serving as the means for students to apply their conceptual
 understanding and skill mastery as a group within their business domain
 of interest. Students will complete two group projects, one focused on
 multiple regression and another focused on classification. The groups
-will both present and submit a technical report.
+will both present and submit a report.
 
 The week before the presentations, groups will submit a draft of their
 slides to get feedback and have time for revision. The other students in

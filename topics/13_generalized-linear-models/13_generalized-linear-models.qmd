@@ -1,0 +1,58 @@
+---
+title: "Communicating Results"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Detailed overall model fit and prediction
+
+#### Preview
+
+- Demonstrate communicating model results
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_communicate.png){fig-align="center"}
+:::
+
+# Try and explain your project using the modeling workflow in three minutes or less{background-color="#006242"}
+
+## {background-color="#006242"}
+
+### Exercise 11 {.lato-font}
+
+1. Choose a concept from the course to summarize
+2. [Create a meme](https://imgflip.com/memegenerator) to illustrate the concept
+3. Submit your meme as a PNG on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Demonstrated communicating model results
+
+#### Next Time
+
+- Project presentations
+

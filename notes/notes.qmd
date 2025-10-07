@@ -5,24 +5,13 @@ format: gfm
 
 Provided more opportunities for student participation with question slides as prompts for activities, including coding, reflection, discussing with a neighbor, raising hands, speed dialogue, and whiteboarding concepts.
 
-- Slow down and illustrate -- especially with case, code, questions, and activities
-- Use minimal rubric for grades (e.g., "Excellent," "Good," "Needs Improvement")
-- Have the exercises map to the project and project rubric map to the modeling workflow
-- Learn names so you can call on students to share
-
 TODO: 
 
-- Add iceberg illustration of projects: presentations up top and report underneath
-- Include use the workflow explicitly as part of the project report expectations
+- Slow down and illustrate -- especially with case, code, questions, and activities
+- Have exercises map to the project and the project rubric map to the modeling workflow
+- Use minimal rubric for grades (e.g., "Excellent," "Good," "Needs Improvement")
+- Learn names so you can call on students to share
 - Add weekly milestones for each project?
-- Exercise 02: Have this exercise tied to the case and not the project.
-- Lecture 03: Didn’t get to do the second activity, and this is when we need to rely heavily on activities to provide project and case-specific context.
-- Do Feature Engineering before model assumptions, including log-transformations, dummy-coding, and interaction terms. Not as much EDA.
-- Divide assumptions into deterministic and probabilistic assumptions?
-- Figure out a way to simplify and streamline assumption evaluation. Provide functions – something!
-- Compare more before and after plots when the assumptions are violated and when they are satisfied using the same tools provided.
-- Demonstrate likelihood being used for inference as the inverse of it being used for simulation as part of OLS-as-special-case-of-MLE discussion.
-- Exercise 11: Simplify or spread out to previous exercises
 
 ## Week 01
 
@@ -154,14 +143,21 @@ TODO:
 - Generalized Linear Models (Jun 29)
 - Logistic Regression (Jul 1)
 
-### Modeling Workflow Redux
+### Modeling Workflow Redux / Data and Decision Redux
 
+- Reminder about evaluating exercises (e.g., "Excellent," "Good," "Needs Improvement").
+- Quizzes and interviews (informally).
+- Reminder about projects, iceberg illustration of projects: presentations up top and report underneath.
+    - Working to have the exercises map to the project and project rubric map to the modeling workflow.
 - Need to revisit the modeling workflow and the place of decision theory as a frame for it.
+    - Revisit loss/utility matrix
+    - Include interactions here that I'll add earlier with feature engineering before assumptions?
 - Use this discussion to illustrate the second case and to motivate the next project.
 
 Wald's basic intuition was that statistics is nothing but the science of decision making under uncertainty. Statistical problems should be considered as special instances of general decision problems, where decisions have to be taken in the face of uncertainty. “Acts have consequences for the actor, and these consequences depend on facts, not all of which are generally known to him. The unknown facts will often be referred to as states of the world” -Jimmy Savage
 
-- Generalize loss and utility functions to construct non-symmetric or non-linear utility functions.
+- Generalize loss and utility functions to construct non-symmetric, non-risk neutral, or non-linear utility functions.
+- Include a discussion of actions, states, and consequences, with non-linear or concave/convex utility functions.
 - Statistics to inform what to *do* not just what to *say*.
 - Reference to Gossett, Student T.
 
@@ -192,6 +188,7 @@ Wald's basic intuition was that statistics is nothing but the science of decisio
 ### Logistic Regression
 
 - Most common GLM
+- Refer to PMFs vs. PDFs
 - Revisit assumptions and reconciliation
 - Logistic regression assumptions and diagnostics
 - If the assumptions we used previously break down, why use them at all?
@@ -205,6 +202,7 @@ Wald's basic intuition was that statistics is nothing but the science of decisio
 
 - Generalize OLS to MLE, Generalize Confidence Intervals to Bootstrap
 - Illustrate MLE vs. posterior, MLE as an approximation to a posterior
+- Demonstrate likelihood being used for inference as the inverse of it being used for simulation as part of OLS-as-special-case-of-MLE discussion
 - Bootstrap as poor man's posterior
 - estimate, estimator, estimand meme
 - They don't know how sampling theory works (what did they get before?), you need to illustrate it as well as Bayesian updating

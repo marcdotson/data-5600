@@ -86,7 +86,7 @@ Interviews will be scheduled with the instructor at the beginning, middle, and e
 
 ### Projects (50%)
 
-Projects are the ultimate demonstration of learning by doing in the course, serving as the means for students to apply their conceptual understanding and skill mastery as a group within their business domain of interest. Students will complete two group projects, one focused on multiple regression and another focused on classification. The groups will both present and submit a technical report.
+Projects are the ultimate demonstration of learning by doing in the course, serving as the means for students to apply their conceptual understanding and skill mastery as a group within their business domain of interest. Students will complete two group projects, one focused on multiple regression and another focused on classification. The groups will both present and submit a report.
 
 The week before the presentations, groups will submit a draft of their slides to get feedback and have time for revision. The other students in the class, as well as the group members themselves, will help evaluate each of the presentations.
 

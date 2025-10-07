@@ -20,6 +20,8 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
+TODO: Add memes R-squared, Whinnie adjusted r-squared, make sure Exercise 11 is simplified and spread out to previous exercises
+
 #### Last Time
 
 - Compared frequentist and Bayesian inference
@@ -328,12 +330,14 @@ Let's specify our objective function and create a new data frame where **each ro
 #| output-location: slide
 #| code-line-numbers: "|1-6|8-20"
 
-# Specify a profit function
-def profit(log_price, log_units, cost, scale):
-    log_cost = np.log(cost)
-    log_profit = log_units * (log_price - log_cost)
-    profit = np.exp(log_profit) * scale
-    return profit
+# TODO: FIX PROFIT FUNCTION
+
+# # Specify a profit function
+# def profit(log_price, log_units, cost, scale):
+#     log_cost = np.log(cost)
+#     log_profit = log_units * (log_price - log_cost)
+#     profit = np.exp(log_profit) * scale
+#     return profit
 
 # Construct a new design matrix for prediction
 X_new = pl.DataFrame({

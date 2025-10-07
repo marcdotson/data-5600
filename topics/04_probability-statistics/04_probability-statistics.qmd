@@ -306,7 +306,7 @@ binom_p = (draws
 **Inferential Statistics**
 
 ::: {.incremental}
-- Synonymous with interpretable supervised learning (i.e., learning a mapping function $f: X \rightarrow y$)
+- Synonymous with interpretable supervised learning (i.e., learning a mapping function $f: X \rightarrow Y$)
 - Mapping functions (i.e., models) often use known probability distributions
 - Estimate parameters describing a data generating process or population
 :::
@@ -339,8 +339,8 @@ and
 
 ::: {.fragment}
 $$
-\large{\mu = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p} \\
-\large{y \sim \text{Normal}(\mu, \sigma^2)}
+\large{y \sim \text{Normal}(\mu, \sigma^2)} \\
+\large{\mu = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p}
 $$
 :::
 
@@ -350,15 +350,15 @@ are the same **linear regression** model -- how? What does this model mean?
 
 ## Using statistics to estimate parameters
 
-Our parametric model of the data $f(X | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X)$
+Our parametric model of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
 
 $$
-\LARGE{f(X | \theta) = \mathcal{L}(\theta | X)}
+\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
 $$
 
 ::: {.incremental}
-- If you give a likelihood function parameters $\theta$, it can produce plausible observations $X$
-- If you give a likelihood function observations $X$, it can determine plausible parameters $\theta$
+- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$
+- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$
 :::
 
 ::: {.fragment}
@@ -369,7 +369,7 @@ How we use the likelihood function to estimate parameters depends on what we ass
 
 ::: {.v-center}
 $$
-\Huge{X, \theta}
+\Huge{X, Y; \theta}
 $$
 :::
 
@@ -383,7 +383,7 @@ $$
 :::
 
 $$
-X \sim \text{some distribution} \\
+X, Y \sim \text{some distribution} \\
 \theta = \text{some unknown value}
 $$
 :::
@@ -394,7 +394,7 @@ $$
 :::
 
 $$
-X = \text{some known value} \\
+X, Y = \text{some known value} \\
 \theta \sim \text{some distribution}
 $$
 :::
@@ -402,6 +402,8 @@ $$
 ::::
 
 ## Using the likelihood to estimate parameters {auto-animate=true}
+
+TODO: Demonstrate likelihood being used for inference as the inverse of it being used for simulation
 
 ![](../../figures/plot_likelihood.png){fig-align="center"}
 
@@ -440,7 +442,7 @@ $$
 
 ::: {.v-center}
 $$
-\LARGE{\mathcal{L}(\theta | X)}
+\LARGE{\mathcal{L}(\theta | X, Y)}
 $$
 :::
 
@@ -448,7 +450,7 @@ $$
 
 ::: {.v-center}
 $$
-\LARGE{p(X | \theta)}
+\LARGE{p(X, Y | \theta)}
 $$
 :::
 
@@ -456,7 +458,7 @@ $$
 
 ::: {.v-center}
 $$
-\LARGE{p(\theta | X) \propto p(X | \theta) \ p(\theta)}
+\LARGE{p(\theta | X, Y) \propto p(X, Y | \theta) \ p(\theta)}
 $$
 :::
 
@@ -550,12 +552,6 @@ fr_fit.conf_int()  # Interval estimates
 
 az.summary(ba_fit) # Posterior estimates
 ```
-
-## 
-
-::: {.v-center}
-![](../../figures/meme_code-testing.png){fig-align="center"}
-:::
 
 ## {background-color="#006242"}
 

@@ -26,7 +26,7 @@ jupyter: python3
 
 #### Preview
 
-- Discuss decision-making in the presence of uncertainty
+- Discuss decision-making under uncertainty
 - Start modeling data generating processes
 
 ## {background-color="#D1CBBD"}
@@ -35,25 +35,7 @@ jupyter: python3
 ![](../../figures/workflow_plan-build.png){fig-align="center"}
 :::
 
-## 
-
-:::: {.columns .v-center}
-
-::: {.column width="40%"}
-![](../../figures/image_cellphone.png){fig-align="center"}
-:::
-
-::: {.column width="60%"}
-::: {.incremental}
-- International cell phone carrier optimizing their product line
-- Refused to narrow their focus and limit the scope of the problem
-- The more **specific the questions** the more **specific the answers**
-:::
-:::
-
-::::
-
-# Decision-Making in the Presence of Uncertainty
+# Decision-Making Under Uncertainty
 
 ## Specify the business objective and scope
 
@@ -113,7 +95,7 @@ How did you decide on your major?
 When making a decision, we need to consider what **actions** we can take and the possible relevant **states of the world**
 
 ::: {.fragment}
-We can organize this information into a decision matrix (i.e., a **loss** or **payoff/utility** matrix), assuming we know the outcomes
+We can organize this information into a decision matrix (i.e., a **loss** or **utility** matrix), assuming we know the outcomes
 :::
 
 :::: {.columns}
@@ -156,9 +138,9 @@ We don't know the state of the world, but let's assume the probability of demand
 |                 | **States** |            |            |            |
 |-----------------|------------|------------|------------|------------|
 | **Actions**     | Low        | Medium     | High       |            |
-| Price at \$4.00 | -\$20,000  | \$30,000   | \$70,000   | *\$44,000* |
-| Price at \$3.50 | -\$15,000  | \$25,000   | \$75,000   | *\$43,500* |
-| Price at \$3.00 | -\$10,000  | \$20,000   | \$80,000   | *\$43,000* |
+| Price at \$4.00 | -\$20,000  | \$30,000   | \$70,000   | *\$37,000* |
+| Price at \$3.50 | -\$15,000  | \$25,000   | \$75,000   | *\$36,500* |
+| Price at \$3.00 | -\$10,000  | \$20,000   | \$80,000   | *\$35,000* |
 | No-Go           | \$0.00     | \$0.00     | \$0.00     | *\$0.00*   |
 
 ::: {.fragment}
@@ -169,7 +151,7 @@ $$
 
 ## Decision theory provides a formal framework
 
-**Decision theory** (a.k.a., **decision science**) provides a principled, unifying framework for informing decision-making in the presence of uncertainty
+**Decision theory** (a.k.a., **decision science**) provides a principled, unifying framework for informing decision-making under uncertainty
 
 :::: {.columns}
 
@@ -193,7 +175,7 @@ $$
 
 ## Decision theory provides a formal framework {visibility="uncounted"}
 
-**Decision theory** (a.k.a., **decision science**) provides a principled, unifying framework for informing decision-making in the presence of uncertainty
+**Decision theory** (a.k.a., **decision science**) provides a principled, unifying framework for informing decision-making under uncertainty
 
 :::: {.columns}
 
@@ -291,7 +273,7 @@ In order to inform our decision-making, we need a model to **extract information
 
 ::: {.column width="50%"}
 ::: {.fragment}
-![](../../figures/models_all-02.png){fig-align="center"}
+![](../../figures/models_all.png){fig-align="center"}
 :::
 :::
 
@@ -329,14 +311,14 @@ What data story are you considering for your project? Is it simple *enough*?
 ![](../../figures/models_rockets.png){fig-align="center"}
 :::
 
-## Identify $y$ and $X$
+## Identify $Y$ and $X$
 
-For **supervised learning** we want to learn a **mapping function** from inputs to output $f: X \rightarrow y$, so start translating the data story into a model by identifying the outcome and predictor variables
+For **supervised learning** we want to learn a **mapping function** from inputs to output $f: X \rightarrow Y$, so start translating the data story into a model by identifying the outcome and predictor variables
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-$y$
+$Y$
 
 - output
 - outcome
@@ -359,7 +341,7 @@ $X$
 
 ::::
 
-## Draw the relationships between $y$ and $X$
+## Draw the relationships between $Y$ and $X$
 
 It's helpful to draw the possible data generating process as a **graph** where
 
@@ -377,7 +359,7 @@ In DATA 5620, we use this **directed acyclic graph** (DAG) to identify causal ef
 Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
 
 $$
-\Large{f(X | \theta) = \theta_0 + \theta_1 x_1 + \cdots + \theta_p x_p + \epsilon}
+\Large{f(X, Y | \theta) = \theta_0 + \theta_1 x_1 + \cdots + \theta_p x_p + \epsilon}
 $$
 
 ## Assume a functional form {visibility="uncounted"}
@@ -385,7 +367,7 @@ $$
 Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
 
 $$
-\Large{f(X | \beta) = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon}
+\Large{f(X, Y | \beta) = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon}
 $$
 
 ::: {.incremental}
@@ -399,6 +381,7 @@ $$
 We can pretend our model *is* the data generation process and **simulate data** (i.e., generate data) to prepare our analysis and test code
 
 ```{python}
+#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|12|14"
 #| eval: true
 
 import numpy as np
@@ -417,7 +400,7 @@ def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
 sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
 ```
 
-# What might $y$, $X$, and their relationships be for your project? Try drawing a graph. Keep it simple.{background-color="#006242"}
+# What might $Y$, $X$, and their relationships be for your project? Try drawing a graph. Keep it simple.{background-color="#006242"}
 
 # Uncertainty
 

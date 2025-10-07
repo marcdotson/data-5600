@@ -422,9 +422,9 @@ With a larger loyalty dataset, we may be able to reduce uncertainty in our price
 
 # Questions? {background-color="#288DC2"}
 
-# Technical Report
+# Report
 
-## Technical report expectations
+## Report expectations
 
 Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist
 

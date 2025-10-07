@@ -1,0 +1,774 @@
+---
+title: "Modeling Workflow"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Introduced the course and each other
+- Formed groups and started thinking about project ideas
+- Walked through the course syllabus and answered questions
+- Provided some context for what we'll be studying this semester
+
+#### Preview
+
+- Walk through a high-level overview of our modeling workflow
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all.png){fig-align="center"}
+:::
+
+## Why an (interpretable) modeling workflow?
+
+::: {.incremental}
+- Modeling workflows are designed to provide some **structure** as you apply regression and machine learning to inform business decision-making
+- There are lots of variations, but the details of our workflow have been informed by practice to **highlight essential decisions** in the modeling process
+- Just because you follow a workflow doesn't guarantee you'll get a good answer, you must be **careful and thoughtful**
+- The main objective of our modeling workflow is to help you be **open and direct** about your choices and assumptions
+:::
+
+# Before Data
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_plan.png){fig-align="center"}
+:::
+
+## Clearly specify the business objective {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+To inform business decision-making, there needs to be a clear objective
+
+::: {.fragment}
+What are some common business objectives?
+:::
+
+::: {.incremental}
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+:::
+
+::: {.fragment}
+It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+:::
+:::
+
+::::
+
+## Clearly specify the business objective {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+To inform business decision-making, there needs to be a clear objective
+
+What are some common business objectives?
+
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+
+It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, the decision you need to inform is a go/no-go (launch or not) and pricing strategy for the planned product launch
+
+The objective is to **maximize profit**, which means we'll need to know (or assume) something about:
+
+- Product costs
+- Expected demand
+:::
+
+::::
+
+## Consider the ideal data and its story {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+With the business objective specified, you can think about the data you need and **how that data is generated**
+
+::: {.fragment}
+All data come from somewhere and considering the generating process will help you identify the ideal data
+:::
+
+::: {.incremental}
+- Outcome and predictors
+- Their relationship
+:::
+
+::: {.fragment}
+This story about the possible **data generating process** is the beginning of a model
+:::
+:::
+
+::::
+
+## Consider the ideal data and its story {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+With the business objective specified, you can think about the data you need and **how that data is generated**
+
+All data come from somewhere and considering the generating process will help you identify the ideal data
+
+- Outcome and predictors
+- Their relationship
+
+This story about the possible **data generating process** is the beginning of a model
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, the outcome of interest is the number of units of peanut butter sold, but what is it that drives that demand?
+
+::: {.incremental}
+- Price (key predictor)
+- Brand, brand loyalty
+- Promotions
+- Size
+- Customer age, income
+- Number of children
+:::
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_build.png){fig-align="center"}
+:::
+
+## Formalize the objective as a function {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+::: {.incremental}
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+:::
+
+::: {.fragment}
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
+:::
+:::
+
+::::
+
+## Formalize the objective as a function {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we want to maximize profit (so $-\ell(a, s)$)
+
+$$
+\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)
+$$
+
+::: {.incremental}
+- $\mathcal{D}(p)$ is demand
+- $p$ is price
+- $c$ is cost
+:::
+
+::: {.fragment}
+For different prices $p$ (actions), we can compute profit $\mathcal{P}$ given demand $\mathcal{D}$ (states of the world)
+:::
+:::
+
+::::
+
+## Formalize the objective as a function
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+We can specify a profit function easily enough
+
+```{python}
+#| code-line-numbers: "|2|3|5"
+#| eval: true
+
+# Specify a profit function
+def profit(price, cost, demand):
+  return demand * (price - cost)
+
+profit(3.50, (3.50 * .20), 4500)
+```
+
+::: {.fragment}
+But what do we know about the inputs to this function?
+:::
+
+::: {.incremental}
+- Price $p$ is something we can set (action), cost $c$ is known or knowable
+- Demand $\mathcal{D}$ is unknown or known with uncertainty (state of the world)
+:::
+
+::: {.fragment}
+It is typical to have **uncertainty about the state of the world**, which motivates our need to model data and extract information
+:::
+:::
+
+::::
+
+## Translate the data story into a model {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+A model is the mapping function $f: X \rightarrow Y$ where $y$, $X$, and their relationship is consistent with the objective
+
+::: {.fragment}
+$$
+\LARGE{f(X | \theta) = \mathcal{L}(\theta | X)}
+$$
+:::
+
+::: {.fragment}
+$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
+:::
+
+::: {.fragment}
+We will see that this same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
+:::
+:::
+
+::::
+
+## Translate the data story into a model {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+A model is the mapping function $f: X \rightarrow Y$ where $y$, $X$, and their relationship is consistent with the objective
+
+$$
+\LARGE{f(X | \theta) = \mathcal{L}(\theta | X)}
+$$
+
+$\theta$ is the **weights** or **parameters** of the mapping function and the information we want to extract from the data
+
+This same model is used to determine *likely* values of $\theta$ given $X$ and is also called a **likelihood function**
+:::
+
+::: {.column .gray-box width="42%"}
+If we know little about the data generating process, we should start with a model that makes few assumptions, like a **linear model**
+
+$$
+y = \beta_0 + \beta_{price} X_{price} + \epsilon
+$$
+
+::: {.fragment}
+where $\epsilon$ represents **error**, showing that our model isn't capturing everything about the data generating process
+:::
+:::
+
+::::
+
+## Translate the data story into a model
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+If we assume a probability distribution for $\epsilon$, we can pretend our model (i.e., likelihood function) *is* the data generation process and **simulate data**
+
+```{python}
+#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|13"
+#| eval: true
+
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_price):
+    price = rng.normal(2, 1, size=n)
+    error = rng.normal(0, 1, size=n)
+    units = (beta_0 + beta_price * price + error).round(0)
+    return price, units
+
+sim_data(n = 5, beta_0 = 2, beta_price = -0.3)
+```
+
+::: {.fragment}
+We can use simulated data to prepare an analysis and test code
+:::
+:::
+
+::::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_loss-likelihood.png){fig-align="center"}
+:::
+
+# Discuss ideas as a group for your first project. What might the business objective and the data story be? {background-color="#006242"}
+
+# Using Data
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_explore.png){fig-align="center"}
+:::
+
+## Understand the data and its limitations {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+
+::: {.incremental}
+- Visualize data and relationships
+- Compute numeric summaries
+- Check for missing data
+- Ask questions
+:::
+
+::: {.fragment}
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
+:::
+:::
+
+::::
+
+## Understand the data and its limitations {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+You should always do an **exploratory data analysis** (EDA), including working through the **data dictionary**
+
+- Visualize data and relationships
+- Compute numeric summaries
+- Check for missing data
+- Ask questions
+
+It is unlikely that the data is **ideal**, however it is **your job** to understand the data so you can communicate and address its limitations
+:::
+
+::: {.column .gray-box width="42%"}
+Why not start here? It's easy to think that since we have data it must contain the information we need, but there is no guarantee
+
+In the case, the transaction data contains the critical variables, units sold and price, but it doesn't contain other variables we might want, like customer age or income, so we may need to find **proxies**
+:::
+
+::::
+
+## Understand the data and its limitations
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+I recommend visualization libraries that follow the [grammar of graphics](https://link.springer.com/book/10.1007/0-387-28695-0) where each plot is composed of **data**, a **mapping** from data to visual elements, the **specific graphic**
+
+```{python}
+#| code-line-numbers: "|1-3|5-6|8-9|11-15|12|13|14"
+
+import os
+import polars as pl
+import seaborn.objects as so
+
+# Import data
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+
+# Peanut butter purchases
+pb_data = sl_data.filter(pl.col('units') > 0)
+
+# Visualize price and units
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(so.Dot(alpha = 0.2), so.Jitter(x = 0.5, y = 0.5))
+    .add(so.Line(), so.PolyFit(order=1))
+)
+```
+:::
+
+::::
+
+## Understand the data and its limitations
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+![](../../figures/plot_price-units.png){fig-align="center" width="68%"}
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile.png){fig-align="center"}
+:::
+
+## Reconcile the model and the data {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+With a model prepared and data explored, its time to resolve the differences between the model and the data
+
+::: {.incremental}
+- Comparing simulated and real data
+- Evaluating model assumptions
+- Revising the model
+- Feature engineering
+:::
+
+::: {.fragment}
+But be careful, we are trying to extract information about the data generating process and not **overfit** to the data
+:::
+:::
+
+::::
+
+## Reconcile the model and the data {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+With a model prepared and data explored, its time to resolve the differences between the model and the data
+
+- Comparing simulated and real data
+- Evaluating model assumptions
+- Revising the model
+- Feature engineering
+
+But be careful, we are trying to extract information about the data generating process and not **overfit** to the data
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we discover that to satisfy a linear regression's assumption of **linearity in the parameters**, we need to transform the `units` outcome and `price` predictor variables
+
+Also, acknowledging that there are a number of **omitted predictors**, we find that including `brand` is critical and needs to be dummy coded to be included in the model
+:::
+
+::::
+
+## Reconcile the model and the data 
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+Feature engineering (a.k.a., preprocessing data) is data cleaning or wrangling for the benefit of the model, for example:
+
+- Log transformations need an offset
+- Dummy coding (a.k.a., indicator coding or one hot encoding) turns a discrete predictor into multiple binary predictors
+
+```{python}
+#| code-line-numbers: "|2-4|5-8|9"
+
+# Preprocess data
+lm_data = pb_data.to_dummies(
+    # Dummy code brand
+    columns = ['brand'], drop_first = True
+).with_columns(
+    # Log units and price
+    (pl.col('units') + 1).log().alias('log_units'),
+    (pl.col('price') + 1).log().alias('log_price')
+).to_pandas()
+```
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_fit.png){fig-align="center"}
+:::
+
+## Estimate the model parameters {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Fitting a model to data is trivial, but how did we get here?
+
+::: {.incremental}
+- We want to inform a decision
+- We are uncertain about information critical to making that decision
+- We built a probability model, which includes unknown parameters that represent the information we are uncertain about
+:::
+
+::: {.fragment}
+Fitting the model will give us **estimates** (i.e., guesses) of those parameters
+:::
+:::
+
+::::
+
+## Estimate the model parameters {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Fitting a model to data is trivial, but how did we get here?
+
+- We want to inform a decision
+- We are uncertain about information critical to making that decision
+- We built a probability model, which includes unknown parameters that represent the information we are uncertain about
+
+Fitting the model will give us **estimates** (i.e., guesses) of those parameters
+:::
+
+::: {.column .gray-box width="42%"}
+
+In the case:
+
+::: {.incremental}
+- Go/no-go and pricing decision to maximize profit
+- Uncertain about demand
+- Linear regression with a parameter for the relationship between price and demand
+:::
+
+::: {.fragment}
+Even with data, our estimates are still guesses, so how do we **quantify uncertainty**?
+:::
+
+:::
+
+::::
+
+## Estimate the model parameters 
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+**Frequentist statistics** assumes that parameters are fixed variables and quantifies uncertainty with interval estimates
+
+**Bayesian statistics** assumes that parameters are random variables and quantifies uncertainty with probability distributions
+
+```{python}
+#| code-line-numbers: "|1,4-8|2,10-14"
+
+import statsmodels.formula.api as smf
+import bambi as bmb
+
+# Fit a frequentist linear regression
+fr_fit = smf.ols(
+  'log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', 
+  data = lm_data
+).fit()
+
+# Fit a Bayesian linear regression
+ba_fit = bmb.Model(
+  'log_units ~ log_price + brand_Skippy + brand_PeterPan + brand_Harmons', 
+  data = lm_data
+).fit()
+```
+:::
+
+::::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_all-the-way-down.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_evaluate.png){fig-align="center"}
+:::
+
+## Interpret results and revise as needed {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Interpretable models produce a plethora of results that need to be considered
+
+::: {.incremental}
+- Parameter estimates
+- Statistical significance
+- Overall model fit
+- Comparing predictions and real data
+:::
+
+::: {.fragment}
+Just like with the reconcile step, what we discover may prompt additional exploration and revision
+:::
+:::
+
+::::
+
+## Interpret results and revise as needed {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Interpretable models produce a plethora of results that need to be considered
+
+- Parameter estimates
+- Statistical significance
+- Overall model fit
+- Comparing predictions and real data
+
+Just like with the reconcile step, what we discover may prompt additional exploration and revision
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we find that the estimated relationship between `log_price` and `log_units` is negative and statistically significant
+
+But we also want to evaluate how sensitive our results are to omitted variables and a regularizing model specification, leading to additional models to evaluate and compare
+:::
+
+::::
+
+## Interpret results and revise as needed
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+![](../../figures/plot_log-price-estimate.png){fig-align="center" width="85%"}
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_predict.png){fig-align="center"}
+:::
+
+## Use prediction to make model implications clear {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Eventually we'll select our best-fitting model(s) and make predictions directly relevant to the business objective
+
+::: {.incremental}
+- In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
+- Without being honest about uncertainty, we will mislead rather than inform decision-making
+:::
+:::
+
+::::
+
+## Use prediction to make model implications clear {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Eventually we'll select our best-fitting model(s) and make predictions directly relevant to the business objective
+
+- In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
+- Without being honest about uncertainty, we will mislead rather than inform decision-making
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, we discover that accounting for uncertainty in the price elasticity estimate (i.e., the parameter measuring the relationship between `price` and `units`) leads to a wide range of profit outcomes
+
+However, all of the predictions are positive, which supports the decision to launch the new private label
+:::
+
+::::
+
+# What is your preferred task when working with data: Data wrangling, visualizing data, or implementing methods? {background-color="#006242"}
+
+# After Data
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_communicate.png){fig-align="center"}
+:::
+
+## Make insights accessible for decision-makers
+
+:::: {.columns}
+
+::: {.column width="100%"}
+Having the technical capability to carefully prepare for and work with data is necessary but **not sufficient**
+
+::: {.fragment}
+Your job as a data analyst is to **serve as a bridge** between the data and technical challenges and those who make decisions, many of whom are non-technical
+:::
+
+::: {.incremental}
+- Never assume those you're communicating with know about the project
+- Whenever possible, rely on clear and professional visualizations (not EDA)
+- Presentations for a non-technical or mixed audience should only have complicated details in an appendix
+- Good communication is synonymous with good storytelling
+:::
+:::
+
+::::
+
+## {background-color="#006242"}
+
+### Exercise 02 {.lato-font}
+
+1. Last chance to take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
+2. Finish setting up your data stack
+3. Write about two detailed project ideas, including potential datasets
+4. Submit your response as a PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Walked through a high-level overview of our modeling workflow
+
+#### Next Time
+
+- Discuss decision-making in the presence of uncertainty
+- Start modeling data generating processes
+

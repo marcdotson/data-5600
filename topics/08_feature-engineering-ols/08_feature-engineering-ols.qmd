@@ -20,6 +20,8 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
+TODO: Just Training/Testing Split and OLS? Introduce loyalty data starting with this exercise?
+
 #### Last Time
 
 - Finished assumption diagnostics and remedies
@@ -130,7 +132,7 @@ import seaborn.objects as so
 import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
 
-sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
