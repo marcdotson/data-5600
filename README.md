@@ -221,7 +221,7 @@ notice as it relates to assignment deadlines.
 
 ### Week 08
 
-- Modeling Workflow Redux
+- Asymmetric Loss
 - Generalized Linear Models
 
 ### Week 09

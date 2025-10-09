@@ -129,7 +129,7 @@ Please note that the instructor reserves the right to change the following sched
 
 ### Week 08
 
-- Modeling Workflow Redux
+- Asymmetric Loss
 - Generalized Linear Models
 
 ### Week 09

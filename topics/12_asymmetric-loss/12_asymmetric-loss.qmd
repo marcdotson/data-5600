@@ -1,0 +1,310 @@
+---
+title: "Asymmetric Loss"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Project presentations
+
+#### Preview
+
+- Discuss the modeling workflow
+- Review decision-making under uncertainty
+- Extend symmetric loss to asymmetric loss
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_plan-build.png){fig-align="center"}
+:::
+
+# Modeling Workflow
+
+## What kind of learning?
+
+:::: {.columns}
+
+::: {.fragment .column width="33.33%"}
+**Supervised learning**
+
+::: {.incremental}
+- Learn a **mapping function** from inputs to outputs $f: X \rightarrow Y$
+- If the outputs are continuous, this learned mapping function is called **regression**
+- If the outputs are discrete, this learned mapping function is called **classification**
+:::
+:::
+
+::: {.fragment .column width="33.33%"}
+**Unsupervised learning**
+
+::: {.incremental}
+- Learn groups and patterns in data without labeled outputs
+- If we're grouping rows in a dataset, this is called **clustering**
+- If we're grouping columns in a dataset, this is called **dimensionality reduction**
+:::
+:::
+
+::: {.fragment .column width="33.33%"}
+**Reinforcement learning**
+
+::: {.incremental}
+- An agent learns how to interact with its environment through trial and error
+- The agent can take **actions** in its environment
+- It receives **rewards or penalties** based on its actions
+:::
+:::
+
+::::
+
+## The mapping function is a *model*
+
+We use models to **extract information** from data and inform decision-making under uncertainty
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.fragment}
+![](../../figures/models_all.png){fig-align="center"}
+:::
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- Why should we use an **interpretable model**?
+- Why should we use an interpretable model if we only care about **prediction**?
+- When would a flexible, **black-box model** be appropriate?
+- Why would we need a **causal model**?
+:::
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all.png){fig-align="center"}
+:::
+
+# With the benefit of your project experience, how does the modeling workflow help? {background-color="#006242"}
+
+# Decision-Making Under Uncertainty
+
+## Specify the business objective and scope
+
+Informing business decision-making requires a **clear objective** and **limited scope**
+
+::: {.incremental}
+- Communicate with domain experts and stakeholders
+- Research the industry and relevant literature
+- Learn the business model and the industry jargon
+:::
+
+::: {.fragment}
+It is **your job** as a data analyst to make sure that **the objective is clearly specified**
+:::
+
+## Formalize the objective as a function
+
+:::: {.columns}
+
+::: {.column width="100%"}
+A clearly specified objective can be translated into an objective function, which is often a loss (or utility) function
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+::: {.incremental}
+- $a$ are **actions** we can take, which we have control over
+- $s$ are **states of the world**, which we are uncertain about
+- $\ell()$ is the **loss function**, which quantifies the consequence of taking action $a$ when the state of the world is $s$
+:::
+
+::: {.fragment}
+When do we use this loss function in the modeling workflow?
+:::
+:::
+
+::::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all-decision.png){fig-align="center"}
+:::
+
+# How does framing regression and machine learning within a decision problem help? {background-color="#006242"}
+
+# Extending Symmetric Loss
+
+## Quadratic loss
+
+**Quadratic loss** or **squared error loss** is a commonly used loss function, especially for budgeting, forecasting, and production planning
+
+$$
+\LARGE{\ell(a, \theta) = (a - \theta)^2}
+$$
+
+::: {.incremental}
+- Quadratic loss is **symmetric**: Gains and losses are treated the same
+- Large deviations produce more loss than small deviations
+:::
+
+## Statistics is a special case of a decision problem
+
+OLS
+
+## Linear utility
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)}
+\end{aligned}
+$$
+
+## Linear utility {visibility="uncounted"}
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
+& \hspace{3mm} \LARGE{= r + c \theta}
+\end{aligned}
+$$
+
+## Linear utility {visibility="uncounted"}
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
+& \hspace{3mm} \LARGE{= r + c \theta} \\
+& \hspace{3mm} \LARGE{= \theta (r - c)} \\
+\end{aligned}
+$$
+
+## Linear utility {visibility="uncounted"}
+
+Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{\color{grey}{= -\ell(a, \theta)}} \\
+& \hspace{3mm} \LARGE{\color{grey}{= r + c \theta}} \\
+& \hspace{3mm} \LARGE{= \theta (r - c)}
+\end{aligned}
+$$
+
+::: {.incremental}
+- Our **profit function** $\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)$ is a linear utility function
+- Linear utility is also **symmetric** and assumes the decision-maker is **risk neutral**
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Formalize the objective as a function
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+We can specify a profit function easily enough
+
+```{python}
+#| code-line-numbers: "|2|3|5"
+#| eval: true
+
+# Specify a profit function
+def profit(price, cost, demand):
+  return demand * (price - cost)
+
+profit(3.50, (3.50 * .20), 4500)
+```
+
+::: {.fragment}
+But what do we know about the inputs to this function?
+:::
+
+::: {.incremental}
+- Price $p$ is something we can set (action), cost $c$ is known or knowable
+- Demand $\mathcal{D}$ is unknown or known with uncertainty (state of the world)
+:::
+
+::: {.fragment}
+It is typical to have **uncertainty about the state of the world**, which motivates our need to model data and extract information
+:::
+:::
+
+::::
+
+
+
+
+
+
+## {background-color="#006242"}
+
+### Exercise 12 {.lato-font}
+
+1. Review the syllabus and consider revisiting your data stack
+2. Read the case and write how you might go about informing the decision (no more than one page)
+3. Submit your response as a PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Discussed the modeling workflow
+- Reviewed decision-making under uncertainty
+- Extended symmetric loss to asymmetric loss
+
+#### Next Time
+
+- Review linear models
+- Generalize linear models beyond regression
+
