@@ -143,17 +143,9 @@ TODO:
 - Generalized Linear Models (Jun 29)
 - Logistic Regression (Jul 1)
 
-### Assymetric Loss
-
-Wald's basic intuition was that statistics is nothing but the science of decision making under uncertainty. Statistical problems should be considered as special instances of general decision problems, where decisions have to be taken in the face of uncertainty. 
-
-- Generalize loss and utility functions to construct non-symmetric, non-risk neutral, or non-linear utility functions.
-- Include a discussion of actions, states, and consequences, with non-linear or concave/convex utility functions.
-- Statistics to inform what to *do* not just what to *say*.
-- Revisit loss/utility matrix with new case?
-
 ### Generalized Linear Models
 
+- Review linear models
 - Generalize Linear Models to GLMs
 - GLMs are parametric models -- the number of parameters don't increase with n
 - No free lunch theorem: which model is best depends on the application?

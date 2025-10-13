@@ -38,7 +38,7 @@ jupyter: python3
 
 # Modeling Workflow
 
-## What kind of learning?
+## What kind of machine learning?
 
 :::: {.columns}
 
@@ -88,8 +88,8 @@ We use models to **extract information** from data and inform decision-making un
 
 ::: {.column width="50%"}
 ::: {.incremental}
-- Why should we use an **interpretable model**?
-- Why should we use an interpretable model if we only care about **prediction**?
+- Why would we use an **interpretable model**?
+- Why would we use an interpretable model if we only care about **prediction**?
 - When would a flexible, **black-box model** be appropriate?
 - Why would we need a **causal model**?
 :::
@@ -103,13 +103,65 @@ We use models to **extract information** from data and inform decision-making un
 ![](../../figures/workflow_all.png){fig-align="center"}
 :::
 
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_plan.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_build.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_explore.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_fit.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_evaluate.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_predict.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_communicate.png){fig-align="center"}
+:::
+
 # With the benefit of your project experience, how does the modeling workflow help? {background-color="#006242"}
 
 # Decision-Making Under Uncertainty
 
-## Specify the business objective and scope
+## Specify the business objective
 
-Informing business decision-making requires a **clear objective** and **limited scope**
+Informing business decision-making requires a **clear objective**, and it is **your job** as a data analyst to make sure that **the objective is clearly specified**
+
+::: {.fragment}
+How do you make sure the objective is clearly specified?
+:::
 
 ::: {.incremental}
 - Communicate with domain experts and stakeholders
@@ -117,16 +169,9 @@ Informing business decision-making requires a **clear objective** and **limited 
 - Learn the business model and the industry jargon
 :::
 
-::: {.fragment}
-It is **your job** as a data analyst to make sure that **the objective is clearly specified**
-:::
-
 ## Formalize the objective as a function
 
-:::: {.columns}
-
-::: {.column width="100%"}
-A clearly specified objective can be translated into an objective function, which is often a loss (or utility) function
+A clearly specified objective can be translated into an objective function, which is typically a loss function
 
 $$
 \LARGE{\ell(a, s)}
@@ -135,15 +180,24 @@ $$
 ::: {.incremental}
 - $a$ are **actions** we can take, which we have control over
 - $s$ are **states of the world**, which we are uncertain about
-- $\ell()$ is the **loss function**, which quantifies the consequence of taking action $a$ when the state of the world is $s$
+- $\ell()$ is the **loss function**, which quantifies the **consequence** of taking action $a$ when the state of the world is $s$
 :::
+
+## Formalize the objective as a function
+
+A clearly specified objective can be translated into an objective function, which is typically a loss function
+
+$$
+\LARGE{\color{grey}{\ell(a, }\theta\color{grey}{)}}
+$$
+
+- $a$ are **actions** we can take, which we have control over
+- $s$ are **states of the world**, which we are uncertain about
+- $\ell()$ is the **loss function**, which quantifies the **consequence** of taking action $a$ when the state of the world is $s$
 
 ::: {.fragment}
 When do we use this loss function in the modeling workflow?
 :::
-:::
-
-::::
 
 ## {background-color="#D1CBBD"}
 
@@ -163,24 +217,68 @@ When do we use this loss function in the modeling workflow?
 
 ## Quadratic loss
 
-**Quadratic loss** or **squared error loss** is a commonly used loss function, especially for budgeting, forecasting, and production planning
+**Quadratic loss** is the most common **symmetric** loss function (i.e., gains and losses are treated the same)
 
 $$
-\LARGE{\ell(a, \theta) = (a - \theta)^2}
+\begin{aligned}
+\LARGE{\ell(a, s)} & \hspace{3mm} \LARGE{= (a - s)^2}
+\end{aligned}
 $$
 
-::: {.incremental}
-- Quadratic loss is **symmetric**: Gains and losses are treated the same
-- Large deviations produce more loss than small deviations
-:::
+## Quadratic loss {visibility="uncounted"}
 
-## Statistics is a special case of a decision problem
+**Quadratic loss** is the most common **symmetric** loss function (i.e., gains and losses are treated the same)
 
-OLS
+$$
+\begin{aligned}
+\LARGE{\ell(a, \theta)} & \hspace{3mm} \LARGE{= (a - \theta)^2}
+\end{aligned}
+$$
+
+## Quadratic loss {visibility="uncounted"}
+
+**Quadratic loss** is the most common **symmetric** loss function (i.e., gains and losses are treated the same)
+
+$$
+\begin{aligned}
+\LARGE{\ell(a, \theta)} & \hspace{3mm} \LARGE{= (a - \theta)^2} \\
+& \hspace{3mm} \LARGE{= \sum_{i=1}^n (a_i - \theta_i)^2}
+\end{aligned}
+$$
+
+## Quadratic loss {visibility="uncounted"}
+
+**Quadratic loss** is the most common **symmetric** loss function (i.e., gains and losses are treated the same)
+
+$$
+\begin{aligned}
+\LARGE{\ell(a, \theta)} & \hspace{3mm} \LARGE{= (a - \theta)^2} \\
+& \hspace{3mm} \LARGE{= \sum_{i=1}^n (a_i - \theta_i)^2} \\
+& \hspace{3mm} \LARGE{= \sum_{i=1}^n (\hat{y}_i - y_i)^2}
+\end{aligned}
+$$
+
+## Quadratic loss {visibility="uncounted"}
+
+**Quadratic loss** is the most common **symmetric** loss function (i.e., gains and losses are treated the same)
+
+![](../../figures/lm_SSE_02.png){fig-align="center"}
+
+# Point estimation is a type of decision problem
 
 ## Linear utility
 
-Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+**Linear utility** is the most common **symmetric** utility function (i.e., gains and losses are treated the same)
+
+$$
+\begin{aligned}
+\LARGE{u(a, s)} & \hspace{3mm} \LARGE{= -\ell(a, s)}
+\end{aligned}
+$$
+
+## Linear utility {visibility="uncounted"}
+
+**Linear utility** is the most common **symmetric** utility function (i.e., gains and losses are treated the same)
 
 $$
 \begin{aligned}
@@ -190,107 +288,115 @@ $$
 
 ## Linear utility {visibility="uncounted"}
 
-Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+**Linear utility** is the most common **symmetric** utility function (i.e., gains and losses are treated the same)
 
 $$
 \begin{aligned}
 \LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
-& \hspace{3mm} \LARGE{= r + c \theta}
+& \hspace{3mm} \LARGE{= a + c \theta}
 \end{aligned}
 $$
 
 ## Linear utility {visibility="uncounted"}
 
-Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+**Linear utility** is the most common **symmetric** utility function (i.e., gains and losses are treated the same)
 
 $$
 \begin{aligned}
 \LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
-& \hspace{3mm} \LARGE{= r + c \theta} \\
-& \hspace{3mm} \LARGE{= \theta (r - c)} \\
+& \hspace{3mm} \LARGE{= a + c \theta} \\
+& \hspace{3mm} \LARGE{= \theta (a + c)}
 \end{aligned}
 $$
 
 ## Linear utility {visibility="uncounted"}
 
-Instead of minimizing loss, we can also maximize a **payoff** or **utility function**, with **linear utility** commonly used
+**Linear utility** is the most common **symmetric** utility function (i.e., gains and losses are treated the same)
 
 $$
 \begin{aligned}
-\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{\color{grey}{= -\ell(a, \theta)}} \\
-& \hspace{3mm} \LARGE{\color{grey}{= r + c \theta}} \\
-& \hspace{3mm} \LARGE{= \theta (r - c)}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
+& \hspace{3mm} \LARGE{= a + c \theta} \\
+& \hspace{3mm} \LARGE{= \theta (a + c)} \\
+& \hspace{3mm} \LARGE{= \theta (p - c)}
 \end{aligned}
 $$
 
-::: {.incremental}
-- Our **profit function** $\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)$ is a linear utility function
-- Linear utility is also **symmetric** and assumes the decision-maker is **risk neutral**
-:::
+## Linear utility {visibility="uncounted"}
 
+**Linear utility** is the most common **symmetric** utility function (i.e., gains and losses are treated the same)
 
+$$
+\begin{aligned}
+\LARGE{u(a, \theta)} & \hspace{3mm} \LARGE{= -\ell(a, \theta)} \\
+& \hspace{3mm} \LARGE{= a + c \theta} \\
+& \hspace{3mm} \LARGE{= \theta (a + c)} \\
+& \hspace{3mm} \LARGE{= \theta (p - c)} \\
+& \hspace{3mm} \LARGE{= \mathcal{D} (p - c)}
+\end{aligned}
+$$
 
+## Linear utility {visibility="uncounted"}
 
+**Linear utility** is the most common **symmetric** utility function (i.e., gains and losses are treated the same)
 
+![](../../figures/risk-neutral.png){fig-align="center"}
 
+## Asymmetric utility
 
-
-
-
-
-
-
-
-
-
-
-
-
-## Formalize the objective as a function
-
-:::: {.columns}
-
-::: {.column .gray-box width="92%"}
-We can specify a profit function easily enough
-
-```{python}
-#| code-line-numbers: "|2|3|5"
-#| eval: true
-
-# Specify a profit function
-def profit(price, cost, demand):
-  return demand * (price - cost)
-
-profit(3.50, (3.50 * .20), 4500)
-```
+If a symmetric utility function implies **risk neutrality**, then an **asymmetric utility** function implies either **risk aversion** (i.e., losses loom larger than gains) or **risk seeking** (i.e., larger gains are worth the risk of larger losses)
 
 ::: {.fragment}
-But what do we know about the inputs to this function?
+![](../../figures/risk-averse-neutral-taking.png){fig-align="center"}
+:::
+
+## Asymmetric loss
+
+Asymmetric loss (or utility) functions are **more complicated** but **more realistic**
+
+::: {.fragment}
+What kind of business decisions would call for asymmetric loss (or utility)?
 :::
 
 ::: {.incremental}
-- Price $p$ is something we can set (action), cost $c$ is known or knowable
-- Demand $\mathcal{D}$ is unknown or known with uncertainty (state of the world)
+- Realtors may prefer overpricing to underpricing
+- Inventory may prefer a surplus to a shortage
+- Doctors may prefer false positives to false negatives
+- Investors may prefer achieving gains to avoiding losses
 :::
+
+## Piecewise linear loss
+
+**Piecewise linear loss** or **lin-lin loss** is a common **asymmetric** loss function (i.e., gains and losses are treated differently)
+
+$$
+\LARGE{\ell(a, s) = \begin{cases}
+c_1 (s - a) & \text{if } a < s \\
+c_2 (a - s) & \text{if } a \geq s
+\end{cases}}
+$$
+
+## Piecewise linear loss {visibility="uncounted"}
+
+**Piecewise linear loss** or **lin-lin loss** is a common **asymmetric** loss function (i.e., gains and losses are treated differently)
+
+$$
+\LARGE{\ell(a, \theta) = \begin{cases}
+c_1 (\theta - a) & \text{if } a < \theta \\
+c_2 (a - \theta) & \text{if } a \geq \theta
+\end{cases}}
+$$
 
 ::: {.fragment}
-It is typical to have **uncertainty about the state of the world**, which motivates our need to model data and extract information
+If $a$ is a point estimate $\hat{\theta}$, then $c_1$ is the **cost of underestimating** $\theta$, $c_2$ is the **cost of overestimating** $\theta$, and the loss function is symmetric if $c_1 = c_2$
 :::
-:::
-
-::::
-
-
-
-
-
 
 ## {background-color="#006242"}
 
 ### Exercise 12 {.lato-font}
 
 1. Review the syllabus and consider revisiting your data stack
-2. Read the case and write how you might go about informing the decision (no more than one page)
+2. Read the case and write how you might go about informing the decision (no more than one page), including specifying asymmetric loss (or utility) using the piecewise linear function
 3. Submit your response as a PDF on Canvas
 
 ## {background-color="#288DC2"}
