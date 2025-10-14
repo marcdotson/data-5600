@@ -1,5 +1,5 @@
 ---
-title: "Communicating Results"
+title: "Generalized Linear Models"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -22,27 +22,43 @@ jupyter: python3
 
 #### Last Time
 
-- Detailed overall model fit and prediction
+- Discussed the modeling workflow
+- Reviewed decision-making under uncertainty
+- Extended symmetric loss to asymmetric loss
 
 #### Preview
 
-- Demonstrate communicating model results
+- Review linear models
+- Generalize linear models beyond regression
 
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
-![](../../figures/workflow_communicate.png){fig-align="center"}
+![](../../figures/workflow_plan-build.png){fig-align="center"}
 :::
+
+
+
+
+
+
 
 # Try and explain your project using the modeling workflow in three minutes or less{background-color="#006242"}
 
+
+
+
+
+
+
+
 ## {background-color="#006242"}
 
-### Exercise 11 {.lato-font}
+### Exercise 13 {.lato-font}
 
-1. Choose a concept from the course to summarize
-2. [Create a meme](https://imgflip.com/memegenerator) to illustrate the concept
-3. Submit your meme as a PNG on Canvas
+1. Review the syllabus and consider revisiting your data stack
+2. Read the case and write how you might go about informing the decision (no more than one page), including specifying asymmetric loss (or utility) using the piecewise linear function
+3. Submit your response as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -50,9 +66,10 @@ jupyter: python3
 
 #### Summary
 
-- Demonstrated communicating model results
+- Reviewed linear models
+- Generalized linear models beyond regression
 
 #### Next Time
 
-- Project presentations
+- 
 
