@@ -143,14 +143,6 @@ TODO:
 - Generalized Linear Models (Jun 29)
 - Logistic Regression (Jul 1)
 
-### Generalized Linear Models
-
-- Review linear models
-- Generalize Linear Models to GLMs
-- GLMs are parametric models -- the number of parameters don't increase with n
-- No free lunch theorem: which model is best depends on the application?
-- Week 09 notes from pre-PhD seminar
-
 ## Week 09
 
 ### Fall 2025

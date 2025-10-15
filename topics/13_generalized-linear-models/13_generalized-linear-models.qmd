@@ -1,5 +1,5 @@
 ---
-title: "Generalized Linear Models"
+title: "Generalized <br>Linear Models"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -37,18 +37,333 @@ jupyter: python3
 ![](../../figures/workflow_plan-build.png){fig-align="center"}
 :::
 
+# Linear Models
 
+## Decision-making motivates modeling data
 
+In order to inform decision-making under uncertainty, we need a model to **extract information** from data about the unknown state of the world $\theta$, whether we want to interpret $\hat{\theta}$ or predict future outcomes $\tilde{y}$
 
+::: {.incremental}
+- All data come from somewhere and narrating the **data generating process** will help you identify the ideal data
+- Every model is a **simplification of reality**, but the goal is to capture the essence of the data generating process
+- **No free lunch theorem**: There is no single best model that works best for all problems, it depends on the context
+:::
 
+## Identify $Y$ and $X$
 
+For **supervised learning** we want to learn a **mapping function** from inputs to output $f: X \rightarrow Y$, so start **translating the data story into a model** by identifying the outcome and predictor variables
 
-# Try and explain your project using the modeling workflow in three minutes or less{background-color="#006242"}
+:::: {.columns}
 
+::: {.column width="50%"}
+$Y$
 
+- output
+- outcome
+- response
+- dependent variable
+- continuous for **regression**
+- discrete for **classification**
+:::
 
+::: {.column width="50%"}
+$X$
 
+- inputs
+- features
+- predictors
+- independent variables
+- explanatory variables
+- continuous and discrete
+:::
 
+::::
+
+## Draw the relationships between $Y$ and $X$
+
+It's helpful to draw the possible data generating process as a **graph** where
+
+- Each node is a variable
+- Each edge is an association
+
+![](../../figures/dag.png){fig-align="center"}
+
+## Assume a functional form
+
+Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
+
+$$
+\Large{f(X, Y | \theta) = \theta_0 + \theta_1 x_1 + \cdots + \theta_p x_p + \epsilon}
+$$
+
+## Assume a functional form {visibility="uncounted"}
+
+Unless we know a lot about the data generating process, we should start with a functional form that makes few assumptions, like a **linear model**
+
+$$
+\Large{f(X, Y | \beta) = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon}
+$$
+
+::: {.incremental}
+- $\beta$ is the **weights** or **parameters** of the mapping function, with $\beta_0$ the **intercept** or **bias** and $\beta_1$ through $\beta_p$ the **slopes**
+- $\epsilon$ represents **error**, showing that our model isn't capturing everything about the data generating process
+- typically $\epsilon \sim \text{Normal}(0, \sigma^2)$
+:::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="100%"}
+$$
+\Large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i} \\
+\Large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+:::
+
+::::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="100%"}
+$$
+\Large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i} \\
+\Large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+$$
+\Large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\Large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+:::
+
+::::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+:::
+
+::: {.column width="40%"}
+Modeling the mean $\mu$ of a **normal distribution** using a **linear function** of predictors $X$ and other parameters $\beta$ is called **linear regression** or, more generally, a **linear model**
+:::
+
+::::
+
+# Why is modeling the mean of a normal distribution with a linear function of predictors a good model? {background-color="#006242"}
+
+# Likelihoods and Link Functions
+
+## A model is a likelihood function
+
+Our **parametric model** of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
+
+$$
+\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+$$
+
+::: {.incremental}
+- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$
+- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$
+:::
+
+::: {.fragment}
+Models are parametric if they **use the parameters of probability distributions** such that the number of parameters doesn't increase with $n$
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_all-the-way-down.png){fig-align="center"}
+:::
+
+## Keeping it as simple as possible
+
+A normal distribution is the **simplest** distribution (i.e., the **maximum entropy** distribution) to use to model a **continuous** $y$ and a linear function is the **simplest** way to map predictors $X$ to a continuous $y$
+
+$$
+\Large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\Large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+
+::: {.fragment}
+But what if $y$ isn't continuous? [What if $y$ is binary?]{.fragment}
+:::
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\Large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+::::
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+::::
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{p_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+::::
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{f(p_i) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+::::
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{\text{logit}(p_i) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+::::
+
+## Still keeping it as simple as possible
+
+A Binomial distribution is the **simplest** distribution (i.e., the **maximum entropy** distribution) to use to model a **binary** $y$ and a linear function is the **simplest** way to map predictors $X$ to a continuous $y$
+
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{\text{logit}(p_i) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+
+::: {.incremental}
+- The **logit function** maps a probability onto a linear space
+- $\beta_0$ is still the **intercept** or **bias** and $\beta_1$ through $\beta_p$ are still **slopes**
+- Using a link function so we can still use a linear model but with a non-normal likelihood is a **generalized linear model**
+:::
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Distribution}(\theta_i)} \\
+\Large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+::::
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Distribution}(\theta_i)} \\
+\Large{\theta_i = f^{-1}(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i})}
+$$
+::::
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+:::
+
+::: {.column width="40%"}
+Where is the **link function** for linear regression?
+:::
+
+::::
+
+## Maximum entropy distributions
+
+![](../../figures/exponential_family.png){fig-align="center"}
+
+## Generalized linear models
+
+There are lots of generalized linear models (GLMs) and they get their names from the **distribution**, the **link function**, or the **inverse link function**
+
+::: {.fragment}
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{\text{logit}(p_i) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+:::
+
+## Generalized linear models {visibility="uncounted"}
+
+There are lots of generalized linear models (GLMs) and they get their names from the **distribution**, the **link function**, or the **inverse link function**
+
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{p_i = \text{logistic}(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i})}
+$$
+
+## Generalized linear models {visibility="uncounted"}
+
+There are lots of generalized linear models (GLMs) and they get their names from the **distribution**, the **link function**, or the **inverse link function**
+
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{p_i = {\exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right) \over 1 + \exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right)}}
+$$
+
+::: {.fragment}
+This is the most common GLM known as **Binomial regression**, the **logit model**, or **logistic regression**
+:::
+
+# Discuss ideas as a group for your second project. What might the business objective and the data story be? {background-color="#006242"}
+
+# Simulate Data
+
+## Prepare for your analysis
+
+Remember, we can pretend our model *is* the data generation process and **simulate data** (i.e., generate data) to prepare for our analysis
+
+```{python}
+#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|12|14"
+#| eval: true
+
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_x1, beta_x2):
+    x1 = rng.normal(10, 3, size=n)
+    x2 = rng.binomial(1, 0.5, size=n)
+    prob_y = np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
+    y = rng.binomial(1, prob_y, size=n)
+    return y, x1, x2
+
+sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4)
+```
+
+## Recover parameters
 
 
 
@@ -56,9 +371,15 @@ jupyter: python3
 
 ### Exercise 13 {.lato-font}
 
-1. Review the syllabus and consider revisiting your data stack
-2. Read the case and write how you might go about informing the decision (no more than one page), including specifying asymmetric loss (or utility) using the piecewise linear function
-3. Submit your response as a PDF on Canvas
+1. Simulate lead qualification data as a function of four or more predictors
+2. Instead of `y`, `x1`, etc. use meaningful variable names
+3. Assume the error is distributed normal
+4. Use different parameter values than we did in class
+5. Comment your code clearly
+6. Visualize the simulated data using at least two different plots
+7. Submit your code and printed output as a PDF on Canvas
+
+2. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
 
 ## {background-color="#288DC2"}
 
