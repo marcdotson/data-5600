@@ -166,6 +166,7 @@ TODO:
 - Refer to PMFs vs. PDFs
 - Revisit assumptions and reconciliation
 - Logistic regression assumptions and diagnostics
+- Interpreting logistic regression coefficients
 - If the assumptions we used previously break down, why use them at all?
 - Interpreting a confusion matrix
 - Prior predictive checks for helping to set priors

@@ -332,7 +332,7 @@ $$
 $$
 
 ::: {.fragment}
-This is the most common GLM known as **Binomial regression**, the **logit model**, or **logistic regression**
+This is the most common GLM known as **binomial regression** (or **Bernoulli regression**), the **logit model**, or **logistic regression**
 :::
 
 # Discuss ideas as a group for your second project. What might the business objective and the data story be? {background-color="#006242"}
@@ -341,13 +341,18 @@ This is the most common GLM known as **Binomial regression**, the **logit model*
 
 ## Prepare for your analysis
 
-Remember, we can pretend our model *is* the data generation process and **simulate data** (i.e., generate data) to prepare for our analysis
+Remember, we can pretend our model *is* the data generation process and **simulate data** (i.e., generate data) to prepare for our analysis and **test our code**
 
 ```{python}
-#| code-line-numbers: "|1|3-4|6-7|8|9|10|11|12|14"
+#| code-line-numbers: "|1-6|8-9|12|13-14|15-18|19|20|22"
 #| eval: true
 
 import numpy as np
+import polars as pl
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import bambi as bmb
+import arviz as az
 
 # Set randomization seed
 rng = np.random.default_rng(42)
@@ -356,16 +361,44 @@ rng = np.random.default_rng(42)
 def sim_data(n, beta_0, beta_x1, beta_x2):
     x1 = rng.normal(10, 3, size=n)
     x2 = rng.binomial(1, 0.5, size=n)
-    prob_y = np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
+    prob_y = (
+      np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / 
+      (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
+    )
     y = rng.binomial(1, prob_y, size=n)
     return y, x1, x2
 
-sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4)
+data_arr = sim_data(n = 500, beta_0 = 0.25, beta_x1 = -0.15, beta_x2 = 0.75)
 ```
 
-## Recover parameters
+## Recover parameters with a frequentist model
 
+I set `beta_0 = 0.25`, `beta_x1 = -0.15`, and `beta_x2 = 0.75`
 
+```{python}
+#| code-line-numbers: "|5"
+#| eval: true
+
+# Convert array to a dataframe
+data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2']).to_pandas()
+
+# Fit a frequentist logistic regression
+fr_fit = smf.glm('y ~ x1 + x2', data = data_df, family = sm.families.Binomial()).fit()
+print(fr_fit.summary())
+```
+
+## Recover parameters with a Bayesian model
+
+I set `beta_0 = 0.25`, `beta_x1 = -0.15`, and `beta_x2 = 0.75`
+
+```{python}
+#| code-line-numbers: "|2"
+#| eval: true
+
+# Fit a Bayesian logistic regression
+ba_fit = bmb.Model('y ~ x1 + x2', data = data_df, family = 'bernoulli').fit(progressbar=False)
+print(az.summary(ba_fit))
+```
 
 ## {background-color="#006242"}
 
@@ -373,13 +406,12 @@ sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4)
 
 1. Simulate lead qualification data as a function of four or more predictors
 2. Instead of `y`, `x1`, etc. use meaningful variable names
-3. Assume the error is distributed normal
-4. Use different parameter values than we did in class
+3. Assume `y` is distributed binomial with a linear model and logit link function
+4. Use different parameter values than we did in class (keep them small)
 5. Comment your code clearly
 6. Visualize the simulated data using at least two different plots
-7. Submit your code and printed output as a PDF on Canvas
-
-2. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
+7. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
+8. Submit your code and printed output as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -392,5 +424,6 @@ sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4)
 
 #### Next Time
 
-- 
+- Review assumption diagnostics and remedies
+- Expand diagnostics and remedies to GLMs
 
