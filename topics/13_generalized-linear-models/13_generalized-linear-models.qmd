@@ -424,6 +424,7 @@ print(az.summary(ba_fit))
 
 #### Next Time
 
+- Interpret logistic regression coefficients
 - Review assumption diagnostics and remedies
 - Expand diagnostics and remedies to GLMs
 
