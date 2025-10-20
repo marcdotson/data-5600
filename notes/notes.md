@@ -6,37 +6,16 @@ slides as prompts for activities, including coding, reflection,
 discussing with a neighbor, raising hands, speed dialogue, and
 whiteboarding concepts.
 
-- Slow down and illustrate – especially with case, code, questions, and
-  activities
-- Use minimal rubric for grades (e.g., “Excellent,” “Good,” “Needs
-  Improvement”)
-- Have the exercises map to the project and project rubric map to the
-  modeling workflow
-- Learn names so you can call on students to share
-
 TODO:
 
-- Add iceberg illustration of projects: presentations up top and report
-  underneath
-- Include use the workflow explicitly as part of the project report
-  expectations
+- Slow down and illustrate – especially with case, code, questions, and
+  activities
+- Have exercises map to the project and the project rubric map to the
+  modeling workflow
+- Use minimal rubric for grades (e.g., “Excellent,” “Good,” “Needs
+  Improvement”)
+- Learn names so you can call on students to share
 - Add weekly milestones for each project?
-- Exercise 02: Have this exercise tied to the case and not the project.
-- Lecture 03: Didn’t get to do the second activity, and this is when we
-  need to rely heavily on activities to provide project and
-  case-specific context.
-- Do Feature Engineering before model assumptions, including
-  log-transformations, dummy-coding, and interaction terms. Not as much
-  EDA.
-- Divide assumptions into deterministic and probabilistic assumptions?
-- Figure out a way to simplify and streamline assumption evaluation.
-  Provide functions – something!
-- Compare more before and after plots when the assumptions are violated
-  and when they are satisfied using the same tools provided.
-- Demonstrate likelihood being used for inference as the inverse of it
-  being used for simulation as part of OLS-as-special-case-of-MLE
-  discussion.
-- Exercise 11: Simplify or spread out to previous exercises
 
 ## Week 01
 
@@ -155,47 +134,18 @@ TODO:
 
 ### Fall 2025
 
-- Fall Flex Day After Project 01 (Oct 13)
+- Assymetric Loss (Oct 13)
 - Generalized Linear Models (Oct 15)
 
 ### Spring 2026
 
-- Review, Loss and Linear Whatever (Feb 23)
+- Assymetric Loss (Feb 23)
 - Generalized Linear Models (Feb 25)
 
 ### Summer 2026
 
 - Generalized Linear Models (Jun 29)
 - Logistic Regression (Jul 1)
-
-### Decision Making Under Uncertainty
-
-- Review? Loss and Utility Functions?
-- Need to revisit the modeling workflow and the place of decision theory
-  as a frame for it.
-- Use this discussion to illustrate the second case and to motivate the
-  next project.
-
-Wald’s basic intuition was that statistics is nothing but the science of
-decision making under uncertainty. Statistical problems should be
-considered as special instances of general decision problems, where
-decisions have to be taken in the face of uncertainty. “Acts have
-consequences for the actor, and these consequences depend on facts, not
-all of which are generally known to him. The unknown facts will often be
-referred to as states of the world” -Jimmy Savage
-
-- Generalize loss and utility functions to construct non-symmetric or
-  non-linear utility functions.
-- Statistics to inform what to *do* not just what to *say*.
-- Reference to Gossett, Student T.
-
-### Generalized Linear Models
-
-- Generalize Linear Models to GLMs
-- GLMs are parametric models – the number of parameters don’t increase
-  with n
-- No free lunch theorem: which model is best depends on the application?
-- Week 09 notes from pre-PhD seminar
 
 ## Week 09
 
@@ -214,37 +164,44 @@ referred to as states of the world” -Jimmy Savage
 - Maximum Likelihood Estimation (Jul 6)
 - Hyperparameter Tuning (Jul 8)
 
-### Logistic Regression
+### Maximum Likelihood Estimation
 
-- Most common GLM
-- Revisit assumptions and reconciliation
-- Logistic regression assumptions and diagnostics
-- If the assumptions we used previously break down, why use them at all?
-- Interpreting a confusion matrix
+- Generalize OLS to MLE, Generalize Confidence Intervals to Bootstrap
+
+- Illustrate MLE vs. posterior, MLE as an approximation to a posterior
+
+- Demonstrate likelihood being used for inference as the inverse of it
+  being used for simulation as part of OLS-as-special-case-of-MLE
+  discussion
+
+- Bootstrap as poor man’s posterior
+
+- estimate, estimator, estimand meme
+
+- They don’t know how sampling theory works (what did they get before?),
+  you need to illustrate it as well as Bayesian updating
+
+- Can a confidence interval be interpreted the way it is for both OLS
+  and MLE? Are we intereting confidence interval incorrecly for OLS and
+  MLE? At what point do we need bootstrapping?
+
 - Prior predictive checks for helping to set priors
+
 - This prior predictive distribution is the expected distribution of our
   data, given how we’ve specified our likelihood and priors. Does this
   look reasonable? No one has a negative height, for a start. At this
   point we can iterate on how we’ve specified our likelihood and priors,
   produce another prior predictive distribution and evaluate again, etc.
+
 - Does Bambi have an easy way to do prior predictive checks? Or just
   expand our Monte Carlo simulation?
+
 - Facet in seaborn.objects to compare the distribution of the outcome
   vs. the prior predictive check
 
-### Maximum Likelihood Estimation
-
-- Generalize OLS to MLE, Generalize Confidence Intervals to Bootstrap
-- Illustrate MLE vs. posterior, MLE as an approximation to a posterior
-- Bootstrap as poor man’s posterior
-- estimate, estimator, estimand meme
-- They don’t know how sampling theory works (what did they get before?),
-  you need to illustrate it as well as Bayesian updating
-- Can a confidence interval be interpreted the way it is for both OLS
-  and MLE? Are we intereting confidence interval incorrecly for OLS and
-  MLE? At what point do we need bootstrapping?
 - Create a chart showing the differences between Bayesian and
   frequentist statistics?
+
 - Week 03 notes from pre-PhD seminar
 
 ## Week 10
@@ -266,8 +223,11 @@ referred to as states of the world” -Jimmy Savage
 
 ### Hyperparameter Tuning
 
+- Include new overall model fit measures for discrete outcomes,
+  likelihood ratio tests? ROC/AUC?
+- Interpreting a confusion matrix?
 - Maybe introduce interactions as well? To decide on whether or not to
-  include them?
+  include them? Also include standardizing/normalizing features?
 - Start with model selection as a form of “hyperparameter tuning”
 
 ### Cross-Validation
