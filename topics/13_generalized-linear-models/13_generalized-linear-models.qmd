@@ -315,6 +315,15 @@ $$
 
 ## Generalized linear models {visibility="uncounted"}
 
+There are lots of generalized linear models (GLMs) and they get their names from the **likelihood**, the **link function**, or the **inverse link function**
+
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{\log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+
+## Generalized linear models {visibility="uncounted"}
+
 There are lots of generalized linear models (GLMs) and they get their names from the **distribution**, the **link function**, or the **inverse link function**
 
 $$
