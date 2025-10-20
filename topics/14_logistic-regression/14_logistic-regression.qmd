@@ -1,0 +1,219 @@
+---
+title: "Logistic Regression"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Reviewed linear models
+- Generalized linear models beyond regression
+
+#### Preview
+
+- Interpret logistic regression coefficients
+- Review assumption diagnostics and remedies
+- Expand diagnostics and remedies to GLMs
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_explore-reconcile){fig-align="center"}
+:::
+
+# Interpreting Parameter Estimates
+
+## 
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{p_i = {\exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right) \over 1 + \exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right)}}
+$$
+::::
+
+## {visibility="uncounted"}
+
+:::: {.v-center}
+$$
+\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{\color{grey}{p_i = {\exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right) \over 1 + \exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right)}}}
+$$
+::::
+
+## {visibility="uncounted"}
+
+:::: {.v-center}
+$$
+\Large{\color{grey}{y_i \sim \text{Binomial}(n_i, p_i)}} \\
+\Large{p_i = {\exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right) \over 1 + \exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right)}}
+$$
+::::
+
+## Likelihoods and link functions
+
+Using a **link function** so we can still use a linear model but with a non-normal likelihood is a **generalized linear model**
+
+::: {.incremental}
+- There are lots of generalized linear models (GLMs), but logistic regression is the most common
+- Each GLM gets its name from the likelihood (PMF or PDF), link function, or **inverse link function**
+- Logistic regression is also known as **binomial regression**, **Bernoulli regression**, and the **logit model**
+:::
+
+## Multiple logistic regression parameters
+
+$$
+\large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
+\large{\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+
+- $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+
+## Multiple logistic regression parameters {visibility="uncounted"}
+
+$$
+\large{\text{sales}_i = 5.39 - 2.65 \times \text{price}_i + \cdots - 0.22 \times \text{promo}_i + \epsilon_i} \\
+\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+$$
+
+- $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
+- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+
+::: {.fragment}
+What about $\sigma^2$?
+:::
+
+## 
+
+$$
+\text{Pr}(\text{top_selling}) = {\exp\left(-6.74 + 0.75 \times \text{Any_Price_Decr_Spend} + \ldots \right) \over 1 + \exp\left(-6.74 + 0.75 \times \text{Any_Price_Decr_Spend} + \ldots \right)}
+$$
+
+Each $\beta$ represents the **log-odds** of "success" (getting a one in the binary outcome) while $plogis(\beta)$ is the *probability* of success, holding all other variables fixed (relative to the baseline level if discrete).
+
+```{r}
+# Interpreting the parameter estimates as probabilities.
+tidy(fit, conf.int = TRUE) |> 
+  mutate(
+    estimate = plogis(estimate),
+    conf.low = plogis(conf.low),
+    conf.high = plogis(conf.high)
+  )
+```
+
+# Why is modeling the mean of a normal distribution with a linear function of predictors a good model? {background-color="#006242"}
+
+# Validity and Representativeness
+
+## Ensuring valid inference
+
+We need to use **diagnostics** to confirm the model assumptions are met, and **remedy** any issues, so that our interpretation (i.e., statistical inference) is valid
+
+::: {.incremental}
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+4. **Independence**: Observations are independent of each other
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+6. **Normality**: Variation or error is normally distributed
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
+:::
+
+## Parquet, *pour quoi*?
+
+Apache Parquet is an open source, **column-oriented data file format** designed for efficient data storage and retrieval
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import polars as pl
+import seaborn.objects as so
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Import data
+sl_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
+  .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
+  .cast({'size': pl.String})
+)
+```
+
+```{python}
+import os
+import polars as pl
+import seaborn.objects as so
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Import data
+sl_data = pl.read_parquet(os.path.join('soft_launch.parquet'))
+```
+
+::: {.fragment}
+The working directory may be different depending on how you run the code
+
+- The **root** when running code line-by-line
+- The **current folder** when rendering the document to PDF
+:::
+
+## {.scrollable}
+
+Let's look at some already cleaned data to review the **data dictionary** and use Positron's **data explorer**
+
+```{python}
+#| eval: true
+
+sl_data
+```
+
+# Why is modeling the mean of a normal distribution with a linear function of predictors a good model? {background-color="#006242"}
+
+# Linearity, Independence, and Identifiability
+
+
+
+## {background-color="#006242"}
+
+### Exercise 14 {.lato-font}
+
+1. Clean up the soft launch data
+2. Create two interesting visualizations that help you understand the data and its limitations
+3. Walk through the validity, representativeness, and additivity/linearity assumptions and justify whether or not they are satisfied for your cleaned data
+4. Submit your code, output, and explanations as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Interpreted logistic regression coefficients
+- Reviewed assumption diagnostics and remedies
+- Expanded diagnostics and remedies to GLMs
+
+#### Next Time
+
+- Extend model fitting beyond ordinary least squares
+- Continue comparing frequentist and Bayesian inference
+

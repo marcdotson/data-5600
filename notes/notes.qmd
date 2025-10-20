@@ -162,17 +162,9 @@ TODO:
 
 ### Logistic Regression
 
-- Most common GLM
-- Refer to PMFs vs. PDFs
-- Revisit assumptions and reconciliation
-- Logistic regression assumptions and diagnostics
-- Interpreting logistic regression coefficients
+- These are all log-odds. We can use the inverse link function `inv_logit()` (i.e., the logistic function) to look at the estimates in the probability space.
 - If the assumptions we used previously break down, why use them at all?
 - Interpreting a confusion matrix
-- Prior predictive checks for helping to set priors
-- This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
-- Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
-- Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
 
 ### Maximum Likelihood Estimation
 
@@ -183,6 +175,12 @@ TODO:
 - estimate, estimator, estimand meme
 - They don't know how sampling theory works (what did they get before?), you need to illustrate it as well as Bayesian updating
 - Can a confidence interval be interpreted the way it is for both OLS and MLE? Are we intereting confidence interval incorrecly for OLS and MLE? At what point do we need bootstrapping?
+
+- Prior predictive checks for helping to set priors
+- This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
+- Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
+- Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
+
 - Create a chart showing the differences between Bayesian and frequentist statistics?
 - Week 03 notes from pre-PhD seminar
 
@@ -205,6 +203,7 @@ TODO:
 
 ### Hyperparameter Tuning
 
+- Include new overall model fit measures for discrete outcomes
 - Maybe introduce interactions as well? To decide on whether or not to include them? Also include standardizing/normalizing features?
 - Start with model selection as a form of "hyperparameter tuning"
 
