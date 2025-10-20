@@ -43,7 +43,7 @@ jupyter: python3
 
 :::: {.v-center}
 $$
-\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{y_i \sim \text{Binomial}(1, p_i)} \\
 \Large{p_i = {\exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right) \over 1 + \exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right)}}
 $$
 ::::
@@ -52,7 +52,7 @@ $$
 
 :::: {.v-center}
 $$
-\Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
+\Large{y_i \sim \text{Binomial}(1, p_i)} \\
 \Large{\color{grey}{p_i = {\exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right) \over 1 + \exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right)}}}
 $$
 ::::
@@ -61,22 +61,32 @@ $$
 
 :::: {.v-center}
 $$
-\Large{\color{grey}{y_i \sim \text{Binomial}(n_i, p_i)}} \\
+\Large{\color{grey}{y_i \sim \text{Binomial}(1, p_i)}} \\
 \Large{p_i = {\exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right) \over 1 + \exp\left(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}\right)}}
+$$
+::::
+
+## {visibility="uncounted"}
+
+:::: {.v-center}
+$$
+\Large{\color{grey}{y_i \sim \text{Binomial}(1, p_i)}} \\
+\Large{\log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
 $$
 ::::
 
 ## Likelihoods and link functions
 
-Using a **link function** so we can still use a linear model but with a non-normal likelihood is a **generalized linear model**
+Using a **link function** so we can still have a linear model with a non-normal likelihood is a **generalized linear model**
 
 ::: {.incremental}
-- There are lots of generalized linear models (GLMs), but logistic regression is the most common
-- Each GLM gets its name from the likelihood (PMF or PDF), link function, or **inverse link function**
+- There are lots of generalized linear models (GLMs), but **logistic regression** is the most common
+- Each GLM gets its name from the **likelihood** (PMF or PDF), link function, or **inverse link function**
 - Logistic regression is also known as **binomial regression**, **Bernoulli regression**, and the **logit model**
+- Using a link function makes interpreting parameter estimates tricky
 :::
 
-## Multiple logistic regression parameters
+## Multiple *linear* regression parameters
 
 $$
 \large{y_i \sim \text{Normal}(\mu_i, \sigma^2)} \\
@@ -85,44 +95,140 @@ $$
 
 - $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
 - $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
-- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
 
-## Multiple logistic regression parameters {visibility="uncounted"}
+## Multiple *logistic* regression parameters
 
 $$
-\large{\text{sales}_i = 5.39 - 2.65 \times \text{price}_i + \cdots - 0.22 \times \text{promo}_i + \epsilon_i} \\
-\large{\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)}
+\Large{y_i \sim \text{Binomial}(1, p_i)} \\
+\Large{\log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
 $$
 
-- $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
-- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
-- the **residuals** are the difference between the observed $y$ and the *average* or *fitted* value of $y$ based on the linear model
+Each $\beta$ represents the **log-odds** of $y = 1$ (i.e., "success") where $\beta > 0$ increases and $\beta < 0$ descrease the log-odds of $y = 1$
 
-::: {.fragment}
-What about $\sigma^2$?
+::: {.incremental}
+- $\beta_0$ is the **log-odds** of $y = 1$ when $x_1 \cdots x_p = 0$
+- $\beta_1$ is the **log-odds** of $y = 1$ for every one unit increase in $x_1$, **holding all other predictors constant** (and **relative to the reference level** if discrete)
 :::
 
-## 
+## Odds ratios and probabilities
 
-$$
-\text{Pr}(\text{top_selling}) = {\exp\left(-6.74 + 0.75 \times \text{Any_Price_Decr_Spend} + \ldots \right) \over 1 + \exp\left(-6.74 + 0.75 \times \text{Any_Price_Decr_Spend} + \ldots \right)}
-$$
+It's not just you, **log-odds** are not intuitive
 
-Each $\beta$ represents the **log-odds** of "success" (getting a one in the binary outcome) while $plogis(\beta)$ is the *probability* of success, holding all other variables fixed (relative to the baseline level if discrete).
+:::: {.columns}
 
-```{r}
-# Interpreting the parameter estimates as probabilities.
-tidy(fit, conf.int = TRUE) |> 
-  mutate(
-    estimate = plogis(estimate),
-    conf.low = plogis(conf.low),
-    conf.high = plogis(conf.high)
-  )
+::: {.fragment .column width="50%"}
+**Odds Ratios**
+
+::: {.incremental}
+- Exponentiating the coefficients gives us **odds ratios** where $\exp(\beta) > 1$ increases and $\exp(\beta) < 1$ decreases the odds of $y = 1$ by $\exp(\beta)$ *times*
+- For every one unit increase in $x_1$, the odds of $y = 1$ are *multiplied* by $\exp(\beta_1)$ or increase by $100 \times (\exp(\beta_1) - 1)\%$, **holding all other predictors constant** (and **relative to the reference level** if discrete)
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Probabilities**
+
+::: {.incremental}
+- Applying the logistic (i.e., **sigmoid**) function to the coefficients gives us **probabilities** where values closer to 1 increase and values closer to 0 decrease the probability of $y = 1$
+- For every one unit increase in $x_1$, the probability of $y = 1$ changes by $\text{logistic}(\beta_1)$, **holding all other predictors constant** (and **relative to the reference level** if discrete)
+:::
+:::
+
+::::
+
+## Logistic regression parameters as *log-odds*
+
+```{python}
+#| eval: true
+#| echo: false
+
+import numpy as np
+import polars as pl
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_days, beta_large, beta_trade, beta_online):
+    # Simulate days since first contact using a normal distribution
+    days = rng.normal(20, 5, size=n)
+    # Simulate large company size using a binomial distribution
+    large = rng.binomial(1, 0.3, size=n)
+    # Simulate trade show contact using a binomial distribution
+    trade = rng.binomial(1, 0.2, size=n)
+    # Simulate online contact using a binomial distribution
+    online = rng.binomial(1, 0.7, size=n)
+    
+    # Simulate the probability of a lead qualifying
+    prob_y = (
+      np.exp(beta_0 + beta_days * days + beta_large * large + beta_trade * trade + beta_online * online) / 
+      (1 + np.exp(beta_0 + beta_days * days + beta_large * large + beta_trade * trade + beta_online * online))
+    )
+    # Use prob_y to simulate the qualifed outcome variable
+    qualified = rng.binomial(1, prob_y, size=n)
+
+    # Return the output
+    return qualified, days, large, trade, online
+
+# Call the function and save as an array
+data_arr = sim_data(n = 500, beta_0 = 0.10, beta_days = -0.07, beta_large = 1, beta_trade = 0.75, beta_online = 0.25)
+
+# Convert to a dataframe
+data_df = pl.DataFrame(data_arr, schema = ['qualified', 'days', 'large', 'trade', 'online'])
+
+# Fit a frequentist logistic regression
+fr_fit = smf.glm(
+    'qualified ~ days + large + trade + online', 
+    data = data_df.to_pandas(), 
+    family = sm.families.Binomial()
+).fit()
 ```
 
-# Why is modeling the mean of a normal distribution with a linear function of predictors a good model? {background-color="#006242"}
+Each $\beta$ represents the **log-odds** of $y = 1$ (i.e., "success") where $\beta > 0$ increases and $\beta < 0$ decreases the log-odds of $y = 1$
 
-# Validity and Representativeness
+```{python}
+#| eval: true
+
+# Confidence intervals
+fr_fit.conf_int()
+```
+
+## Logistic regression parameters as *odds ratios*
+
+Exponentiating the coefficients gives us **odds ratios** where $\exp(\beta) > 1$ increases and $\exp(\beta) < 1$ decreases the odds of $y = 1$ by $\exp(\beta)$ *times*
+
+```{python}
+#| eval: true
+
+# Confidence intervals
+np.exp(fr_fit.conf_int())
+```
+
+## Logistic regression parameters as *odds ratios* {visibility="uncounted"}
+
+Exponentiating the coefficients gives us **odds ratios** where $\exp(\beta) > 1$ increases and $\exp(\beta) < 1$ decreases the odds of $y = 1$ by $\exp(\beta)$ *times*
+
+```{python}
+#| eval: true
+
+# Confidence intervals
+100 * np.exp(fr_fit.conf_int() - 1)
+```
+
+## Logistic regression parameters as *probabilities*
+
+Applying the logistic (i.e., **sigmoid**) function to the coefficients gives us **probabilities** where values closer to 1 increase and values closer to 0 decrease the probability of $y = 1$
+
+```{python}
+#| eval: true
+
+from scipy.special import expit
+
+# Confidence intervals
+expit(fr_fit.conf_int())
+```
 
 ## Ensuring valid inference
 
@@ -138,7 +244,7 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 :::
 
-## Ensuring valid inference
+## Ensuring valid inference {visibility="uncounted"}
 
 We need to use **diagnostics** to confirm the model assumptions are met, and **remedy** any issues, so that our interpretation (i.e., statistical inference) is valid
 
@@ -150,58 +256,14 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 6. ~~**Normality**: Variation or error is normally distributed~~
 7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 
-## Parquet, *pour quoi*?
+# We want to keep our model as simple as possible, so why would we use multiple logistic regression? {background-color="#006242"}
 
-Apache Parquet is an open source, **column-oriented data file format** designed for efficient data storage and retrieval
+# Validity and Representativeness
 
-```{python}
-#| eval: true
-#| echo: false
 
-import os
-import polars as pl
-import seaborn.objects as so
-import seaborn as sns
-import matplotlib.pyplot as plt
 
-# Import data
-sl_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
-  .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
-  .cast({'size': pl.String})
-)
-```
 
-```{python}
-import os
-import polars as pl
-import seaborn.objects as so
-import seaborn as sns
-import matplotlib.pyplot as plt
 
-# Import data
-sl_data = pl.read_parquet(os.path.join('soft_launch.parquet'))
-```
-
-::: {.fragment}
-The working directory may be different depending on how you run the code
-
-- The **root** when running code line-by-line
-- The **current folder** when rendering the document to PDF
-:::
-
-## {.scrollable}
-
-Let's look at some already cleaned data to review the **data dictionary** and use Positron's **data explorer**
-
-```{python}
-#| eval: true
-
-sl_data
-```
-
-## Sigmoid function
-
-Visualize the sigmoid / logistic function
 
 # Why is modeling the mean of a normal distribution with a linear function of predictors a good model? {background-color="#006242"}
 
