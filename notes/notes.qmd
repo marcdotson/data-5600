@@ -162,6 +162,7 @@ TODO:
 
 ### Logistic Regression
 
+- Visualize the sigmoid / logistic function? As part of the EDA?
 - These are all log-odds. We can use the inverse link function `inv_logit()` (i.e., the logistic function) to look at the estimates in the probability space.
 - If the assumptions we used previously break down, why use them at all?
 - Interpreting a confusion matrix
@@ -203,7 +204,7 @@ TODO:
 
 ### Hyperparameter Tuning
 
-- Include new overall model fit measures for discrete outcomes
+- Include new overall model fit measures for discrete outcomes, likelihood ratio tests? ROC/AUC?
 - Maybe introduce interactions as well? To decide on whether or not to include them? Also include standardizing/normalizing features?
 - Start with model selection as a form of "hyperparameter tuning"
 

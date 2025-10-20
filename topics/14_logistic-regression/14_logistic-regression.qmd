@@ -128,7 +128,7 @@ tidy(fit, conf.int = TRUE) |>
 
 We need to use **diagnostics** to confirm the model assumptions are met, and **remedy** any issues, so that our interpretation (i.e., statistical inference) is valid
 
-::: {.incremental}
+::: {.fragment}
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 2. **Representativeness**: Data is representative of the data generating process or population
 3. **Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
@@ -137,6 +137,18 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 6. **Normality**: Variation or error is normally distributed
 7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 :::
+
+## Ensuring valid inference
+
+We need to use **diagnostics** to confirm the model assumptions are met, and **remedy** any issues, so that our interpretation (i.e., statistical inference) is valid
+
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+4. **Independence**: Observations are independent of each other
+5. ~~**Constant Variance**: Homoscedasticity or constant variance of errors~~
+6. ~~**Normality**: Variation or error is normally distributed~~
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 
 ## Parquet, *pour quoi*?
 
@@ -186,6 +198,10 @@ Let's look at some already cleaned data to review the **data dictionary** and us
 
 sl_data
 ```
+
+## Sigmoid function
+
+Visualize the sigmoid / logistic function
 
 # Why is modeling the mean of a normal distribution with a linear function of predictors a good model? {background-color="#006242"}
 
