@@ -304,7 +304,7 @@ Where is the **link function** for linear regression?
 
 ## Generalized linear models
 
-There are lots of generalized linear models (GLMs) and they get their names from the **distribution**, the **link function**, or the **inverse link function**
+There are lots of generalized linear models (GLMs) and they get their names from the **likelihood**, the **link function**, or the **inverse link function**
 
 ::: {.fragment}
 $$
