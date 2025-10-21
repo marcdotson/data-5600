@@ -592,7 +592,7 @@ The mapping function from the predictors to the outcome is additive and a linear
 
 ::::
 
-## Functional form of the determinstic component
+## Functional form of the deterministic component
 
 The mapping function from the predictors to the outcome is additive and a linear function of the parameters
 

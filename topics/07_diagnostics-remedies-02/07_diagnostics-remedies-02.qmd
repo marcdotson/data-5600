@@ -351,14 +351,14 @@ Why would this be a problem for identifiability (think about how we interpret th
 
 ::: {.incremental}
 - Drop some predictors
-- Use penalized regression (e.g., ridege, lasso, elastic net)
+- Use penalized regression (e.g., ridge, lasso, elastic net)
 - Combine the correlated predictors (e.g., PCR)
 :::
 :::
 
 ::::
 
-## Compute variation inflation factors {.scrollable}
+## Compute variance inflation factors {.scrollable}
 
 A rough rule of thumb is that multicollinearity is problematic if at least one of these occur: The largest VIF is "much more" than 10 or the mean VIF is "much more" than 1
 
