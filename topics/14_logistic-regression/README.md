@@ -1,11 +1,11 @@
----
-title: "Logistic Regression"
-format: gfm
----
+# Logistic Regression
+
 
 ## Data Dictionary
 
-Sales leads data for B2B electronic sales. Each of the rows represents one lead along with its resulting Stage (i.e., Qualified or Disqualified) along with various lead features.
+Sales leads data for B2B electronic sales. Each of the rows represents
+one lead along with its resulting Stage (i.e., Qualified or
+Disqualified) along with various lead features.
 
 - **Stage**: Progress through the sales development pipeline
 - **Industry**: The type of product or service the business provides
@@ -19,16 +19,16 @@ Sales leads data for B2B electronic sales. Each of the rows represents one lead 
 - **EmployeeId**: Unique ID for the sales rep assigned to the Lead
 - **ActivityTypeEmail**: Indicator of email contact with the Lead
 - **ActivityTypePhone Call**: Indicator of call contact with the Lead
-- **ActivityTypeEmail Response**: Indicator of email response with the Lead
+- **ActivityTypeEmail Response**: Indicator of email response with the
+  Lead
 - **ActivityTypeMeeting**: Indicator of meeting with the Lead
-- **ActivityTypeLead Handraise**: Indicator of Lead requesting information
-- **ActivityTypeWeb Schedule**: Indicator of Lead scheduling an appointment
+- **ActivityTypeLead Handraise**: Indicator of Lead requesting
+  information
+- **ActivityTypeWeb Schedule**: Indicator of Lead scheduling an
+  appointment
 - **Amount**: Estimate of how much the Lead is worth if closed
 
-```{python}
-#| eval: false
-#| echo: true
-
+``` python
 import os
 import polars as pl
 import polars.selectors as cs
@@ -48,4 +48,3 @@ leads = (pl.read_parquet(os.path.join('data', 'original_leads.parquet'))
 # Write data frames
 leads.write_parquet(os.path.join('data', 'leads.parquet'))
 ```
-
