@@ -94,7 +94,7 @@ $$
 $$
 
 - $\beta_0$ is the average of $y$ when $x_1 \cdots x_p = 0$
-- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant**
+- $\beta_1$ is the average change in $y$ for every one unit increase in $x_1$, **holding all other predictors constant** (and **relative to the reference level** if discrete)
 
 ## Multiple *logistic* regression parameters
 
@@ -180,7 +180,7 @@ data_df = pl.DataFrame(data_arr, schema = ['qualified', 'days', 'large', 'trade'
 
 # Fit a frequentist logistic regression
 fr_fit = smf.glm(
-    'qualified ~ days + large + trade + online', 
+    'qualified ~ days + large + trade', 
     data = data_df.to_pandas(), 
     family = sm.families.Binomial()
 ).fit()
@@ -195,6 +195,10 @@ Each $\beta$ represents the **log-odds** of $y = 1$ (i.e., "success") where $\be
 fr_fit.conf_int()
 ```
 
+::: {.fragment}
+Holding all other predictors constant, we are 95% confident that for every additional day since first contact, the log-odds of a lead qualifying decreases between -0.097 and -0.017
+:::
+
 ## Logistic regression parameters as *odds ratios*
 
 Exponentiating the coefficients gives us **odds ratios** where $\exp(\beta) > 1$ increases and $\exp(\beta) < 1$ decreases the odds of $y = 1$ by $\exp(\beta)$ *times*
@@ -206,7 +210,15 @@ Exponentiating the coefficients gives us **odds ratios** where $\exp(\beta) > 1$
 np.exp(fr_fit.conf_int())
 ```
 
-## Logistic regression parameters as *odds ratios* {visibility="uncounted"}
+::: {.fragment}
+Holding all other predictors constant, we are 95% confident that for a large company (relative to a small company), the odds of a lead qualifying increases between 1.61 and 3.57 times
+:::
+
+::: {.fragment .fade-up}
+For *negative* log-odds, it can be helpful to think about the **reciprocal** of the odds ratio (i.e., $1 / \exp(\beta)$) to understand how many times more likely $y = 0$ is to occur
+:::
+
+## Logistic regression parameters as *odds ratios*
 
 Exponentiating the coefficients gives us **odds ratios** where $\exp(\beta) > 1$ increases and $\exp(\beta) < 1$ decreases the odds of $y = 1$ by $\exp(\beta)$ *times*
 
@@ -216,6 +228,14 @@ Exponentiating the coefficients gives us **odds ratios** where $\exp(\beta) > 1$
 # Confidence intervals
 100 * np.exp(fr_fit.conf_int() - 1)
 ```
+
+::: {.fragment}
+Holding all other predictors constant, we are 95% confident that for a large company (relative to a small company), the odds of a lead qualifying increases between 59.23% and 131.50%
+:::
+
+::: {.fragment .fade-up}
+Again, for *negative* log-odds, it can be helpful to think about the **reciprocal** of the odds ratio percentage (i.e., $100 \times (1 / (\exp(\beta_1) - 1))\%$) for the odds of $y = 0$
+:::
 
 ## Logistic regression parameters as *probabilities*
 
@@ -229,6 +249,10 @@ from scipy.special import expit
 # Confidence intervals
 expit(fr_fit.conf_int())
 ```
+
+::: {.fragment}
+Holding all other predictors constant, we are 95% confident that a lead generated at a trade show (relative to it not being generated at a trade show), the probability of a lead qualifying increases between 0.592 and 0.779
+:::
 
 ## Ensuring valid inference
 
@@ -260,24 +284,189 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 
 # Validity and Representativeness
 
+## Validity
 
+Data is relevant to the objective and no predictors are missing
 
+::: {.fragment}
+Why should we care about **omitted variables**? [What about including variables that don't matter?]{.fragment}
+:::
 
+:::: {.columns}
 
+::: {.fragment .column width="50%"}
+**Diagnostics**
 
-# Why is modeling the mean of a normal distribution with a linear function of predictors a good model? {background-color="#006242"}
+::: {.incremental}
+- Is the data relevant to the objective?
+- How well does the data match the ideal data?
+- How do the simulated and real outcomes compare?
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Get different data
+- Find additional data
+- Justify **proxy variables**
+:::
+:::
+
+::::
+
+## Representativeness
+
+Data is representative of the data generating process or population
+
+::: {.fragment}
+Why should we care about the data being representative?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- How was the data collected?
+- Is it representiave of the process or population we care about?
+- Is data **missing at random**?
+- Check for **influential points**
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Get different data
+- **Drop or impute** missing data
+- Investigate influential points and **consider** removing
+:::
+:::
+
+::::
+
+# What data are you considering for your second project? Discuss validity and representativeness as a group. {background-color="#006242"}
 
 # Linearity, Independence, and Identifiability
 
+## Functional form of the deterministic component
 
+The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+
+::: {.fragment}
+If the process or population isn't approximated by an additive and linear function, what happens to our inferences?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Scatterplot of **log-odds** and predictor(s)
+- Partial regression plots
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Transform $X$
+- Transform $y$
+- Use a nonlinear model
+:::
+:::
+
+::::
+
+## Scatterplot of *log-odds* and predictor(s)
+
+The relationship between the **log-odds** and predictor(s) should be roughly linear and **monotone** (i.e., always increasing or always decreasing) in probability
+
+![](../../figures/temp_linearity.png){fig-align="center"}
+
+## Independence and exchangeability
+
+This assumption is often expressed as observations being **independent and identically distributed** (i.e., iid) or, if not identical, at least **exchangeable** (i.e., there is no order to the observations)
+
+::: {.fragment}
+In what ways could this assumption be violated (and often is)?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Is the data a random sample?
+- Is each observation a different unit or are there **repeat measures**?
+- Are the observations **clustered** (e.g., a hierarchy or spatially corellated)?
+- Is there a **sequence** to the observations (e.g., a time series)?
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Include a predictor to control for the dependence
+- Use a more advanced model (i.e., multilevel, spatial, or time series model)
+:::
+:::
+
+::::
+
+## Multicollinearity and identifiability
+
+**Multicollinearity** is when two or more predictors are highly correlated
+
+::: {.fragment}
+Why would this be a problem for identifiability (think about how we interpret the slope parameters)?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Scatterplot matrix
+- Correlation matrix
+- Variance inflation factors (VIF)
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Fixes**
+
+::: {.incremental}
+- Drop some predictors
+- Use penalized regression (e.g., ridge, lasso, elastic net)
+- Combine the correlated predictors (e.g., PCR)
+:::
+:::
+
+::::
+
+## Compute variance inflation factors
+
+VIF is based on $R^2$, but we don’t have a way to calculate $R^2$ in logistic regression (i.e., the loss function used to compute the point estimates isn't quadratic, so no sums of squares)
+
+We can still run an OLS model to compute VIF for a model with a binary outcome since our its based on the relationship among predictors and the way the model is estimated isn't relevate to estimating collinearity
 
 ## {background-color="#006242"}
 
 ### Exercise 14 {.lato-font}
 
-1. Clean up the soft launch data
-2. Create two interesting visualizations that help you understand the data and its limitations
-3. Walk through the validity, representativeness, and additivity/linearity assumptions and justify whether or not they are satisfied for your cleaned data
+1. Clean up the leads data
+2. Create two interesting visualizations that help you understand the data and its limitations, including plotting a sigmoid curve
+3. Walk through the logistic regression model assumptions, use diagnostics, and justify whether or not they are satisfied for your cleaned data
 4. Submit your code, output, and explanations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
