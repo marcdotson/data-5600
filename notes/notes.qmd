@@ -160,24 +160,6 @@ TODO:
 - Maximum Likelihood Estimation (Jul 6)
 - Hyperparameter Tuning (Jul 8)
 
-### Maximum Likelihood Estimation
-
-- Generalize OLS to MLE, Generalize Confidence Intervals to Bootstrap
-- Illustrate MLE vs. posterior, MLE as an approximation to a posterior
-- Demonstrate likelihood being used for inference as the inverse of it being used for simulation as part of OLS-as-special-case-of-MLE discussion
-- Bootstrap as poor man's posterior
-- estimate, estimator, estimand meme
-- They don't know how sampling theory works (what did they get before?), you need to illustrate it as well as Bayesian updating
-- Can a confidence interval be interpreted the way it is for both OLS and MLE? Are we intereting confidence interval incorrecly for OLS and MLE? At what point do we need bootstrapping?
-
-- Prior predictive checks for helping to set priors
-- This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
-- Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
-- Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
-
-- Create a chart showing the differences between Bayesian and frequentist statistics?
-- Week 03 notes from pre-PhD seminar
-
 ## Week 10
 
 ### Fall 2025

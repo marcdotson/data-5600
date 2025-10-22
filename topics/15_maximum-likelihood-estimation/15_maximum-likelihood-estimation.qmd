@@ -1,0 +1,205 @@
+---
+title: "Maximum Likelihood Estimation"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Interpreted logistic regression coefficients
+- Reviewed assumption diagnostics and remedies
+- Expanded diagnostics and remedies to GLMs
+
+#### Preview
+
+- Extend model fitting beyond ordinary least squares
+- Continue comparing frequentist and Bayesian inference
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_fit.png){fig-align="center"}
+:::
+
+# Ordinary Least Squares
+
+## Using geometry to estimate model parameters {auto-animate=true}
+
+![](../../figures/lm_fit_04.png){fig-align="center"}
+
+## Using geometry to estimate model parameters {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/lm_fit_04.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- We find the fitted line (and estimate parameters) $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ by **minimizing the sum of squared residuals**
+- Ordinary least squares (OLS) is a special case of **maximum likelihood estimation** (MLE)
+- In other words, the parameter estimates that **minimize** the sum of squared residuals are the same as those that **maximize** the likelihood function
+- OLS and MLE are frequentist methods
+:::
+:::
+
+::::
+
+## Minimizing the sum of squared residuals
+
+The best line should be the one that makes **the sum** of the **residuals** (i.e., vertical bars) as **small as possible** such that our model
+
+$$
+\large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+
+yields the fitted or expected value $\hat{y}$
+
+$$
+\large{\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}}
+$$
+
+where $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ are the parameter estimates
+
+## Minimizing quadratic loss
+
+Choosing $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
+
+$$
+\LARGE{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2}
+$$
+
+::: {.fragment}
+Fitting models and estimating parameters is a decision theory problem where the actions are the **possible parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and we are uncertain about the possible values of the parameter estimates
+:::
+
+# What are the pros and cons of fitting a model using ordinary least squares? {background-color="#006242"}
+
+# Likelihood-Based Methods
+
+## A model is a likelihood function
+
+Our **parametric model** of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
+
+$$
+\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+$$
+
+::: {.incremental}
+- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$
+- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$
+:::
+
+## Using the likelihood to estimate parameters {auto-animate=true}
+
+![](../../figures/plot_likelihood.png){fig-align="center"}
+
+## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_likelihood.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.fragment}
+**Frequentist**
+
+::: {.incremental}
+- Find the single value of $\theta$ that maximizes the likelihood function
+- Searching for this estimate involves **optimization** like gradient ascent
+- This **maximum likelihood estimate** is a point estimate of the fixed but unknown value $\theta$
+:::
+:::
+
+::: {.fragment}
+**Bayesian**
+
+::: {.incremental}
+- Use Bayes' theorem to combine the likelihood with a **prior distribution** $p(\theta)$
+- This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
+- Instead of computing this distribution analytically, we draw samples from it using **Markov chain Monte Carlo** (MCMC)
+:::
+:::
+:::
+
+::::
+
+## Minimizing the negative log-likelihood
+
+Include the loss function for MLE...
+
+## MLE as an approximation to Bayes
+
+Connection between MLE and MAP estimates when using uniform priors?
+
+# What are the pros and cons of fitting a model using maximum likelihood estimation? {background-color="#006242"}
+
+# Sampling vs. Posterior Distributions
+
+## From likelihood to sampling distribution
+
+- Generalize Confidence Intervals to Bootstrap
+- Bootstrap as poor man's posterior
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_estimand-estimator-estimate.png){fig-align="center"}
+:::
+
+## From likelihood to posterior distribution
+
+- Prior predictive checks for helping to set priors
+- This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
+- Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
+- Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
+
+## Frequentist vs. Bayesian inference
+
+- Create a chart showing the differences between Bayesian and frequentist statistics?
+
+## {background-color="#006242"}
+
+### Exercise 15 {.lato-font}
+
+1. Clean up the leads data
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
+3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
+4. Submit your code, output, and interpretations as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Interpreted logistic regression coefficients
+- Reviewed assumption diagnostics and remedies
+- Expanded diagnostics and remedies to GLMs
+
+#### Next Time
+
+- Extend model fitting beyond ordinary least squares
+- Continue comparing frequentist and Bayesian inference
+
