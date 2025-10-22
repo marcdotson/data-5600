@@ -179,6 +179,11 @@ TODO:
 
 ### Hyperparameter Tuning
 
+- Prior predictive checks for helping to set priors
+- This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
+- Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
+- Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
+
 - Include new overall model fit measures for discrete outcomes, likelihood ratio tests? ROC/AUC?
 - Interpreting a confusion matrix?
 - Maybe introduce interactions as well? To decide on whether or not to include them? Also include standardizing/normalizing features?

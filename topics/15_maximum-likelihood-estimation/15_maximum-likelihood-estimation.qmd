@@ -53,41 +53,31 @@ jupyter: python3
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- We find the fitted line (and estimate parameters) $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ by **minimizing the sum of squared residuals**
-- Ordinary least squares (OLS) is a special case of **maximum likelihood estimation** (MLE)
-- In other words, the parameter estimates that **minimize** the sum of squared residuals are the same as those that **maximize** the likelihood function
-- OLS and MLE are frequentist methods
+- We find the fitted line (and estimate parameters) $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x_{1} + \cdots + \hat{\beta}_p x_{p}$ by **minimizing the sum of squared residuals**
+- **Ordinary least squares** (OLS) has a closed-form solution $\hat{\beta} = (X'X)^{-1}X'y$
+- Note that the "line" has **as many dimensions as there are slope parameters** in the model
+- OLS is a special case of **maximum likelihood estimation** (MLE), such that the $\hat{\beta}$ that **minimize** the sum of squared residuals are the same that **maximize** the likelihood function
+- OLS is a frequentist method used to find **point estimates**
 :::
 :::
 
 ::::
 
-## Minimizing the sum of squared residuals
-
-The best line should be the one that makes **the sum** of the **residuals** (i.e., vertical bars) as **small as possible** such that our model
-
-$$
-\large{y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
-$$
-
-yields the fitted or expected value $\hat{y}$
-
-$$
-\large{\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}}
-$$
-
-where $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ are the parameter estimates
-
 ## Minimizing quadratic loss
 
-Choosing $\hat{\beta}_0, \hat{\beta}_1 \cdots \hat{\beta}_p$ to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
+Choosing the $\hat{\beta}$s to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
 
 $$
 \LARGE{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2}
 $$
 
 ::: {.fragment}
-Fitting models and estimating parameters is a decision theory problem where the actions are the **possible parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and we are uncertain about the possible values of the parameter estimates
+Point estimation is a type of decision problem
+
+::: {.incremental}
+- the actions are the **parameter estimates** in the fitted model $\hat{y}$
+- the state we are uncertain about is the **parameters** in the model $y$
+:::
 :::
 
 # What are the pros and cons of fitting a model using ordinary least squares? {background-color="#006242"}
@@ -120,24 +110,11 @@ $$
 :::
 
 ::: {.column width="60%"}
-::: {.fragment}
-**Frequentist**
-
 ::: {.incremental}
-- Find the single value of $\theta$ that maximizes the likelihood function
-- Searching for this estimate involves **optimization** like gradient ascent
-- This **maximum likelihood estimate** is a point estimate of the fixed but unknown value $\theta$
-:::
-:::
-
-::: {.fragment}
-**Bayesian**
-
-::: {.incremental}
-- Use Bayes' theorem to combine the likelihood with a **prior distribution** $p(\theta)$
-- This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
-- Instead of computing this distribution analytically, we draw samples from it using **Markov chain Monte Carlo** (MCMC)
-:::
+- We find parameter estimates by **maximizing the likelihood**
+- Searching for this estimate involves **optimization** methods like **gradient ascent/descent** to explore and find the maximum/minimum
+- Note that the likelihood has **as many dimensions as there are parameters** in the model
+- MLE is a frequentist method used to find **point estimates**
 :::
 :::
 
@@ -145,20 +122,101 @@ $$
 
 ## Minimizing the negative log-likelihood
 
-Include the loss function for MLE...
+Choosing the $\hat{\theta}$s that maximize the likelihood is equivalent to choosing the $\hat{\theta}$s that **minimize the negative log-likelihood**
 
-## MLE as an approximation to Bayes
+$$
+\LARGE{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i)}
+$$
 
-Connection between MLE and MAP estimates when using uniform priors?
+::: {.incremental}
+- Most optimization algorithms are designed to **minimize** loss functions
+- Log-transforming the likelihood avoids **precision** and **overflow** issues
+:::
 
-# What are the pros and cons of fitting a model using maximum likelihood estimation? {background-color="#006242"}
+## Using the likelihood to estimate parameters {auto-animate=true}
 
-# Sampling vs. Posterior Distributions
+![](../../figures/plot_likelihood.png){fig-align="center"}
 
-## From likelihood to sampling distribution
+## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
 
-- Generalize Confidence Intervals to Bootstrap
-- Bootstrap as poor man's posterior
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_likelihood.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- Use Bayes' theorem to combine the likelihood $p(X, Y | \theta)$ with a **prior distribution** $p(\theta)$ to produce a **posterior distribution** $p(\theta | X, Y)$
+- Computing this estimate involves **sampling** methods like **Markov chain Monte Carlo** (MCMC) to explore and approximate the posterior
+- Note that the posterior, like the likelihood, has **as many dimensions as there are parameters** in the model
+- The posterior distribution is the Bayesian estimate, but there are different methods for approximating the posterior
+:::
+:::
+
+::::
+
+# What is the relationship between a maximum likelihood point estimate and a posterior distribution? {background-color="#006242"}
+
+# Quantifying Uncertainty
+
+## Points, intervals, and distributions
+
+Remember that there are three types of parameters estimates:
+
+::: {.incremental}
+1. **Point estimates**: A **single number** that represents our best guess of the parameter
+2. **Interval estimates**: A **range of numbers** that represent our best guess of the parameter
+3. **Distributions**: An entire **probability distribution** representing our best guess over the support of all parameter values simultaneously in a **joint distribution** or of a given parameter individually in a **marginal distribution**
+:::
+
+::: {.fragment}
+Frequentist inference **starts with a point** and constructs an interval estimate, Bayesian inference **starts with a distribution** that can be summarized as an interval or point estimate
+:::
+
+## Points, intervals, and distributions {visibility="uncounted"}
+
+![](../../figures/plot_log-price-estimate.png){fig-align="center"}
+
+## Posterior vs. sampling distributions
+
+Where does the variation come from in our parameter estimates?
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Bayesian**
+
+::: {.fragment}
+$$
+X = \text{data we observe} \\
+\theta \sim \text{a probability distribution}
+$$
+:::
+
+::: {.incremental}
+- Start with what we know about the parameters and use the data we observe to **update what we know** about the parameters
+- **Directly use probability** to describe uncertainty when working with incomplete knowledge
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Frequentist**
+
+::: {.fragment}
+$$
+X \sim \text{a probability distribution} \\
+\theta = \text{a value we don't observe}
+$$
+:::
+
+::: {.incremental}
+- Consider what point estimates we would expect to get if we had many hypothetical datasets so that our interval estimate is based on the **asymptotic properties of the estimator**, the procedure used to get our point estimate
+- **Indirectly use probability** to describe uncertainty as a repeatable event under identical conditions
+:::
+:::
+
+::::
 
 ## 
 
@@ -166,25 +224,62 @@ Connection between MLE and MAP estimates when using uniform priors?
 ![](../../figures/meme_estimand-estimator-estimate.png){fig-align="center"}
 :::
 
-## From likelihood to posterior distribution
+## Using the likelihood to quantify uncertainty {auto-animate=true}
 
-- Prior predictive checks for helping to set priors
-- This prior predictive distribution is the expected distribution of our data, given how we've specified our likelihood and priors. Does this look reasonable? No one has a negative height, for a start. At this point we can iterate on how we've specified our likelihood and priors, produce another prior predictive distribution and evaluate again, etc.
-- Does Bambi have an easy way to do prior predictive checks? Or just expand our Monte Carlo simulation?
-- Facet in seaborn.objects to compare the distribution of the outcome vs. the prior predictive check
+![](../../figures/plot_likelihood.png){fig-align="center"}
 
-## Frequentist vs. Bayesian inference
+## Using the likelihood to quantify uncertainty {auto-animate=true visibility="uncounted"}
 
-- Create a chart showing the differences between Bayesian and frequentist statistics?
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/plot_likelihood.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.fragment}
+**Frequentist**
+
+::: {.incremental}
+- Find the MLE point estimate $\hat{\theta}$
+- Rely on theoretical properties of the MLE to construct an interval estimate or use a **bootstrap** procedure to approximate the sampling distribution of the MLE $p(\hat{\theta} | X, Y)$
+- A different estimator has a different sampling distribution
+:::
+:::
+
+::: {.fragment}
+**Bayesian**
+
+::: {.incremental}
+- Use Bayes' theorem to combine the likelihood and prior to produce a posterior
+- Sample from the posterior $p(\theta | X, Y)$
+:::
+:::
+:::
+
+::::
+
+## Summarizing frequentist and Bayesian inference
+
+::: {.center}
+|                    | **Frequentist**    | **Bayesian**        |
+|--------------------|--------------------|---------------------|
+| *Probability*      | Long-run frequency | Information/belief  |
+| *Random Variables* | Data               | Parameters          |
+| *Distributions*    | Sampling           | Posterior           |
+| *Estimation*       | Point              | Posterior           |
+| *Intervals*        | Confidence         | Credible            |
+| *Algorithms*       | Optimization       | Sampling            |
+| *Speed*            | Faster             | Slower              |
+:::
 
 ## {background-color="#006242"}
 
 ### Exercise 15 {.lato-font}
 
 1. Clean up the leads data
-
-1. Return to your data from the previous exercise (or start with the exercise solution)
-2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
+<!-- 1. Return to your data from the previous exercise (or start with the exercise solution) -->
+2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using MLE or a Bayesian model
 3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
 4. Submit your code, output, and interpretations as a single PDF on Canvas
 
@@ -194,12 +289,10 @@ Connection between MLE and MAP estimates when using uniform priors?
 
 #### Summary
 
-- Interpreted logistic regression coefficients
-- Reviewed assumption diagnostics and remedies
-- Expanded diagnostics and remedies to GLMs
+- Extended model fitting beyond ordinary least squares
+- Continued comparing frequentist and Bayesian inference
 
 #### Next Time
 
-- Extend model fitting beyond ordinary least squares
-- Continue comparing frequentist and Bayesian inference
+- Introduce hyperparameter tuning
 
