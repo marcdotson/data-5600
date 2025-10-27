@@ -20,6 +20,8 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
+# TO DO: Include the Bayesian tryptych to show how uncertainty changes from prior to posterior predictive, include previous of confusion matrix
+
 #### Last Time
 
 - Extended model fitting beyond ordinary least squares
@@ -27,7 +29,6 @@ jupyter: python3
 
 #### Preview
 
-- Introduce hyperparameters
 - Use prior predictive checks to set priors
 - Discuss using model selection to tune hyperparameters
 
@@ -37,257 +38,329 @@ jupyter: python3
 ![](../../figures/workflow_reconcile-fit.png){fig-align="center"}
 :::
 
+# Prior Predictive Checks
 
+## Bayesian models
 
-
-
-
-
-# Ordinary Least Squares
-
-## Using geometry to estimate model parameters {auto-animate=true}
-
-![](../../figures/lm_fit_04.png){fig-align="center"}
-
-## Using geometry to estimate model parameters {auto-animate=true visibility="uncounted"}
+Both frequentist and Bayesian models use **likelihood functions**, so how does a Bayesian model differ?
 
 :::: {.columns}
-
-::: {.column width="40%"}
-![](../../figures/lm_fit_04.png){fig-align="center"}
-:::
 
 ::: {.column width="60%"}
-::: {.incremental}
-- We find the fitted line (and estimate parameters) $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x_{1} + \cdots + \hat{\beta}_p x_{p}$ by **minimizing the sum of squared residuals**
-- **Ordinary least squares** (OLS) has a closed-form solution $\hat{\beta} = (X'X)^{-1}X'y$
-- Note that the "line" has **as many dimensions as there are slope parameters** in the model
-- OLS is a special case of **maximum likelihood estimation** (MLE), such that the $\hat{\beta}$ that **minimize** the sum of squared residuals are the same that **maximize** the likelihood function
-- OLS is a frequentist method used to find **point estimates**
-:::
-:::
-
-::::
-
-## Minimizing quadratic loss
-
-Choosing the $\hat{\beta}$s to minimize the sum of squared residuals is equivalent to minimizing **quadratic loss** or **squared error loss** (a.k.a., $\ell_2$ loss)
-
 $$
-\LARGE{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2}
+y_i \sim \text{Binomial}(1, p_i) \\
+\log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
 $$
-
-::: {.fragment}
-Point estimation is a type of decision problem
-
-::: {.incremental}
-- the actions are the **parameter estimates** in the fitted model $\hat{y}$
-- the state we are uncertain about is the **parameters** in the model $y$
 :::
-:::
-
-# What are the pros and cons of fitting a model using ordinary least squares? {background-color="#006242"}
-
-# Likelihood-Based Methods
-
-## A model is a likelihood function
-
-Our **parametric model** of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
-
-$$
-\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
-$$
-
-::: {.incremental}
-- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$
-- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$
-:::
-
-## Using the likelihood to estimate parameters {auto-animate=true}
-
-![](../../figures/plot_likelihood.png){fig-align="center"}
-
-## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
-
-:::: {.columns}
 
 ::: {.column width="40%"}
-![](../../figures/plot_likelihood.png){fig-align="center"}
-:::
-
-::: {.column width="60%"}
 ::: {.incremental}
-- We find parameter estimates by **maximizing the likelihood**
-- Searching for this estimate involves **optimization** methods like **gradient ascent/descent** to explore and find the maximum/minimum
-- Note that the likelihood has **as many dimensions as there are parameters** in the model
-- MLE is a frequentist method used to find **point estimates**
+- Parameters are **random variables**
+- The **likelihood** $p(X, Y | \theta)$ is combined with a **prior** $p(\theta)$ to create a **posterior** $p(\theta | X, Y)$
+- We sample draws from the posterior using **MCMC**
 :::
 :::
 
 ::::
 
-## Minimizing the negative log-likelihood
+## Bayesian models {visibility="uncounted"}
 
-Choosing the $\hat{\theta}$s that maximize the likelihood is equivalent to choosing the $\hat{\theta}$s that **minimize the negative log-likelihood**
-
-$$
-\LARGE{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i)}
-$$
-
-::: {.incremental}
-- Most optimization algorithms are designed to **minimize** loss functions
-- Log-transforming the likelihood avoids **precision** and **overflow** issues
-:::
-
-## Using the likelihood to estimate parameters {auto-animate=true}
-
-![](../../figures/plot_likelihood.png){fig-align="center"}
-
-## Using the likelihood to estimate parameters {auto-animate=true visibility="uncounted"}
+Both frequentist and Bayesian models use **likelihood functions**, so how does a Bayesian model differ?
 
 :::: {.columns}
+
+::: {.column width="60%"}
+$$
+y_i \sim \text{Binomial}(1, p_i) \\
+\log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
+\beta \sim \text{Normal}(0, 10)
+$$
+:::
 
 ::: {.column width="40%"}
-![](../../figures/plot_likelihood.png){fig-align="center"}
-:::
-
-::: {.column width="60%"}
-::: {.incremental}
-- Use Bayes' theorem to combine the likelihood $p(X, Y | \theta)$ with a **prior distribution** $p(\theta)$ to produce a **posterior distribution** $p(\theta | X, Y)$
-- Computing this estimate involves **sampling** methods like **Markov chain Monte Carlo** (MCMC) to explore and approximate the posterior
-- Note that the posterior, like the likelihood, has **as many dimensions as there are parameters** in the model
-- The posterior distribution is the Bayesian estimate, but there are different methods for approximating the posterior
-:::
+- Parameters are **random variables**
+- The **likelihood** $p(X, Y | \theta)$ is combined with a **prior** $p(\theta)$ to create a **posterior** $p(\theta | X, Y)$
+- We sample draws from the posterior using **MCMC**
 :::
 
 ::::
 
-# What is the relationship between a maximum likelihood point estimate and a posterior distribution? {background-color="#006242"}
+::: {.fragment .fade-up .h-center}
+### How do we specify priors?
+:::
 
-# Quantifying Uncertainty
+## Priors are part of the model
 
-## Points, intervals, and distributions
+A prior distribution's parameters are known as **hyperparameters** and should be set to reflect what information we have about the parameters outside the data
 
-Remember that there are three types of parameters estimates:
+::: {.fragment}
+If we don't specify priors, most **probabilistic programming languages** (PPLs) will use default priors
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import numpy as np
+import polars as pl
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import bambi as bmb
+import arviz as az
+from sklearn.model_selection import train_test_split
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_price, beta_discount, beta_online, beta_promo, sigma):
+    price = rng.normal(4, 2, size=n)
+    discount = rng.normal(2, 1, size=n)
+    online = rng.binomial(1, 0.7, size=n)
+    promo = rng.binomial(1, 0.2, size=n)
+    error = rng.normal(0, sigma, size=n)
+    sales = beta_0 + beta_price * price + beta_discount * discount + beta_online * online + beta_promo * promo + error
+
+    # Return the output
+    return sales, price, discount, online, promo
+
+# Call the function and convert to a dataframe
+data_arr = sim_data(n = 100, beta_0 = 10, beta_price = -2, beta_discount = 3, beta_online = 5, beta_promo = 3, sigma = 5)
+data_df = pl.DataFrame(data_arr, schema = ['sales', 'price', 'discount', 'online', 'promo']).to_pandas()
+```
+
+```{python}
+#| eval: true
+#| output-location: slide
+
+# Specify predictors
+predictors = [
+  'price', 'discount', 'online', 'promo'
+]
+
+# Specify a Bayesian linear regression
+ba_model = bmb.Model(
+  'sales ~ ' + ' + '.join(predictors), 
+  data = data_df
+)
+
+ba_model
+```
+:::
+
+## Start with a prior predictive distribution
+
+What information could we have about the parameters outside of what's included in the data? [What is the minimum amount of data we need?]{.fragment}
+
+::: {.fragment}
+A **prior predictive distribution** (a.k.a., a prior predictive check) is the distribution of possible outcomes based on the likelihood and prior specifications alone
+
+```{python}
+#| eval: true
+#| output-location: slide
+#| code-line-numbers: "|1-6|8|10-13|11|12|13"
+
+# Specify priors
+priors_dict = {
+  'Intercept': bmb.Prior('Normal', mu = 0, sigma = 10),
+  **{term: bmb.Prior('Normal', mu = 0, sigma = 10) for term in predictors},
+  'sigma': bmb.Prior("Exponential", lam=1)
+}
+
+ba_model.set_priors(priors = priors_dict)
+
+# Prior predictive sampling
+ba_model.build()
+ba_ppc = ba_model.prior_predictive()
+az.plot_ppc(ba_ppc, group = 'prior')
+```
+:::
+
+## Prior and posterior predictive distributions
+
+The "updated" version of the prior predictive distribution is the **posterior predictive distribution**, which incorporates information from the data as well
+
+::: {.fragment}
+We can use the prior predictive distribution to check if our model is **reasonable** before estimation and the posterior predictive distribution to check if our model is **missing something** after estimation
+
+```{python}
+#| eval: true
+#| echo: false
+
+# Import data and clean
+leads = (pl.read_parquet(os.path.join('..', '..', 'data', 'leads.parquet'))
+    # Make the outcome binary where "Qualified" = 1
+    .with_columns(
+        pl.when(pl.col('Stage') == 'Qualified').then(1)
+        .when(pl.col('Stage') == 'Disqualified').then(0)
+        .alias('qualified')
+    )
+    # Dummy code Industry, Employees, TimeZone, LeadSource, and EmployeeId
+    .to_dummies(
+        columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
+        drop_first = False
+    )
+    .select(pl.exclude('Stage', 'Amount', 'Industry_Business', 'Employees_Small', 'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'))
+    # Log-transform all activity counts
+    .with_columns((pl.col('ActivityTypeEmail') + 1).log().alias('log_ActivityTypeEmail'))
+    .with_columns((pl.col('ActivityTypePhone Call') + 1).log().alias('log_ActivityTypePhoneCall'))
+    .with_columns((pl.col('ActivityTypeEmail Response') + 1).log().alias('log_ActivityTypeEmailResponse'))
+    .with_columns((pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting'))
+    .with_columns((pl.col('ActivityTypeLead Handraise') + 1).log().alias('log_ActivityTypeLeadHandraise'))
+    .with_columns((pl.col('ActivityTypeWeb Schedule') + 1).log().alias('log_ActivityTypeWebSchedule'))
+    # Rename columns to remove spaces
+    .rename({
+        'Industry_Construction & Manufacturing': 'Industry_ConstructionManufacturing',
+        'Industry_Government & Non-Profits': 'Industry_GovernmentNonProfits',
+        'Industry_Professional Services': 'Industry_ProfessionalServices',
+        'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
+        'LeadSource_Web Registration': 'LeadSource_WebRegistration'
+    })
+    # Remove the original activity count columns
+    .select(
+        pl.exclude(
+            'ActivityTypeEmail', 'ActivityTypePhone Call', 'ActivityTypeEmail Response', 
+            'ActivityTypeMeeting', 'ActivityTypeLead Handraise', 'ActivityTypeWeb Schedule'
+        )
+    )
+).to_pandas()
+```
+
+```{python}
+#| eval: true
+#| output-location: slide
+
+# Specify predictors
+predictors = [
+  'Industry_Airlines', 'Industry_CPG',
+  'Industry_ConstructionManufacturing', 'Industry_Consulting',
+  'Industry_Education', 'Industry_Finance', 'Industry_GovernmentNonProfits',
+  'Industry_Luxury', 'Industry_Marketing', 'Industry_Media', 'Industry_Medical',
+  'Industry_Other', 'Industry_ProfessionalServices', 'Industry_Retail',
+  'Industry_Tech', 'Industry_Utilities', 'Industry_eCommerce', 'Employees_Large',
+  'Employees_Medium', 'Employees_Unknown', 'TimeZone_CST', 'TimeZone_MST',
+  'TimeZone_PST', 'TimeZone_Unknown', 'LeadSource_TradeShowsandEvents',
+  'LeadSource_WebRegistration', 'days_elapsed', 'created_quarter',
+  'contact_quarter', 'latest_quarter', 'EmployeeId_2', 'EmployeeId_3',
+  'EmployeeId_4', 'EmployeeId_5', 'log_ActivityTypeEmail',
+  'log_ActivityTypePhoneCall', 'log_ActivityTypeEmailResponse',
+  'log_ActivityTypeMeeting', 'log_ActivityTypeLeadHandraise',
+  'log_ActivityTypeWebSchedule'
+]
+
+# Specify a Bayesian logistic regression
+ba_model = bmb.Model(
+  'qualified ~ ' + ' + '.join(predictors), 
+  data = leads,
+  family = 'bernoulli'
+)
+
+ba_model
+```
+:::
+
+## Propagating uncertainty into our predictions
+
+How will the uncertainty we have about our parameters be reflected in the prior vs. posterior predictive distributions?
+
+```{python}
+#| eval: true
+#| output-location: slide
+
+# Specify priors
+priors_dict = {
+  'Intercept': bmb.Prior('Normal', mu = 0, sigma = 10),
+  **{term: bmb.Prior('Normal', mu = 0, sigma = 10) for term in predictors}
+}
+
+ba_model.set_priors(priors = priors_dict)
+
+# Prior predictive sampling
+ba_model.build()
+ba_ppc = ba_model.prior_predictive()
+az.plot_ppc(ba_ppc, group = 'prior')
+```
+
+# Try specifying different priors. How does the prior predictive distribution change? {background-color="#006242"}
+
+# Hyperparameter Tuning
+
+## Dealing with hyperparameters
+
+In general, **hyperparameters** are parameters that are not directly estimated when we fit the model
+
+::: {.fragment}
+What "hyperparameters" have we already seen?
 
 ::: {.incremental}
-1. **Point estimates**: A **single number** that represents our best guess of the parameter
-2. **Interval estimates**: A **range of numbers** that represent our best guess of the parameter
-3. **Distributions**: An entire **probability distribution** representing our best guess over the support of all parameter values simultaneously in a **joint distribution** or of a given parameter individually in a **marginal distribution**
+- Prior distribution hyperparameters (e.g., $\mu$ and $\sigma^2$ for a normal prior)
+- Deciding on what predictors to include in the model, including **interactions**
+- Feature engineering decisions (e.g., whether or not to **standardize/normalize**)
+- Choosing between different likelihood and link functions
+:::
 :::
 
 ::: {.fragment}
-Frequentist inference **starts with a point** and constructs an interval estimate, Bayesian inference **starts with a distribution** that can be summarized as an interval or point estimate
+Predictive models often have **many** hyperparameters, so how do we set them?
 :::
 
-## Points, intervals, and distributions {visibility="uncounted"}
+## Overall model fit and hyperparameter tuning
 
-![](../../figures/plot_log-price-estimate.png){fig-align="center"}
+We can use **overall model fit** to compare models with different hyperparameters and choose the one that predicts best, a process known as **hyperparameter tuning**
 
-## Posterior vs. sampling distributions
+```{python}
+#| eval: false
 
-Where does the variation come from in our parameter estimates?
+# Specify a second set of predictors
+predictors_02 = [
+  'Industry_Airlines', 'Industry_CPG',
+  'Industry_ConstructionManufacturing', 'Industry_Consulting',
+  'Industry_Education', 'Industry_Finance', 'Industry_GovernmentNonProfits',
+  'Industry_Luxury', 'Industry_Marketing', 'Industry_Media', 'Industry_Medical',
+  'Industry_Other', 'Industry_ProfessionalServices', 'Industry_Retail',
+  'Industry_Tech', 'Industry_Utilities', 'Industry_eCommerce', 'Employees_Large',
+  'Employees_Medium', 'Employees_Unknown', 'TimeZone_CST', 'TimeZone_MST',
+  'TimeZone_PST', 'TimeZone_Unknown', 'LeadSource_TradeShowsandEvents',
+  'LeadSource_WebRegistration', 'days_elapsed', 'created_quarter',
+  'contact_quarter', 'latest_quarter', 'EmployeeId_2', 'EmployeeId_3',
+  'EmployeeId_4', 'EmployeeId_5'
+]
 
-:::: {.columns}
+# Fit two frequentist logistic regressions
+fr_fit_01 = smf.glm(
+    'qualified ~ ' + ' + '.join(predictors), 
+    data = leads_train, 
+    family = sm.families.Binomial()
+).fit()
 
-::: {.fragment .column width="50%"}
-**Bayesian**
+fr_fit_02 = smf.glm(
+    'qualified ~ ' + ' + '.join(predictors_02), 
+    data = leads_train, 
+    family = sm.families.Binomial()
+).fit()
+```
 
-::: {.fragment}
-$$
-X = \text{data we observe} \\
-\theta \sim \text{a probability distribution}
-$$
-:::
+# Compare these two models using overall model fit. Which one predicts best? {background-color="#006242"}
+
+# Accuracy
+
+## Discrete outcomes and overall model fit
 
 ::: {.incremental}
-- Start with what we know about the parameters and use the data we observe to **update what we know** about the parameters
-- **Directly use probability** to describe uncertainty when working with incomplete knowledge
-:::
-:::
-
-::: {.fragment .column width="50%"}
-**Frequentist**
-
-::: {.fragment}
-$$
-X \sim \text{a probability distribution} \\
-\theta = \text{a value we don't observe}
-$$
-:::
-
-::: {.incremental}
-- Consider what point estimates we would expect to get if we had many hypothetical datasets so that our interval estimate is based on the **asymptotic properties of the estimator**, the procedure used to get our point estimate
-- **Indirectly use probability** to describe uncertainty as a repeatable event under identical conditions
-:::
-:::
-
-::::
-
-## 
-
-::: {.v-center}
-![](../../figures/meme_estimand-estimator-estimate.png){fig-align="center"}
-:::
-
-## Using the likelihood to quantify uncertainty {auto-animate=true}
-
-![](../../figures/plot_likelihood.png){fig-align="center"}
-
-## Using the likelihood to quantify uncertainty {auto-animate=true visibility="uncounted"}
-
-:::: {.columns}
-
-::: {.column width="40%"}
-![](../../figures/plot_likelihood.png){fig-align="center"}
-:::
-
-::: {.column width="60%"}
-::: {.fragment}
-**Frequentist**
-
-::: {.incremental}
-- Find the MLE point estimate $\hat{\theta}$
-- Rely on theoretical properties of the MLE to construct an interval estimate or use a **bootstrap** procedure to approximate the sampling distribution of the MLE $p(\hat{\theta} | X, Y)$
-- A different estimator has a different sampling distribution
-:::
-:::
-
-::: {.fragment}
-**Bayesian**
-
-::: {.incremental}
-- Use Bayes' theorem to combine the likelihood and prior to produce a posterior
-- Sample from the posterior $p(\theta | X, Y)$
-:::
-:::
-:::
-
-::::
-
-## Summarizing frequentist and Bayesian inference
-
-::: {.center}
-|                    | **Frequentist**    | **Bayesian**        |
-|--------------------|--------------------|---------------------|
-| *Probability*      | Long-run frequency | Information/belief  |
-| *Random Variables* | Data               | Parameters          |
-| *Distributions*    | Sampling           | Posterior           |
-| *Estimation*       | Point              | Posterior           |
-| *Intervals*        | Confidence         | Credible            |
-| *Algorithms*       | Optimization       | Sampling            |
-| *Speed*            | Faster             | Slower              |
+- What measure of overall model fit is appropriate when you have a discrete outcome?
+- Do we want to rely on in-sample, predictive, or decision-theoretic fit?
+- What could go wrong with using the test data to tune hyperparameters?
 :::
 
 ## {background-color="#006242"}
 
 ### Exercise 16 {.lato-font}
 
-1. Clean up the leads data
-<!-- 1. Return to your data from the previous exercise (or start with the exercise solution) -->
-2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using MLE or a Bayesian model
-3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
-4. Submit your code, output, and interpretations as a single PDF on Canvas
+1. Review the advanced materials from the course thus far
+2. Identify lingering questions you have about the concepts covered
+3. Use an AI tool to ask your questions and reflect on the responses you receive
+4. Identify at least two questions you feel have been answered and share your prompts, the responses you received, and your reflections on the responses
+5. Submit your prompts, responses, and reflections as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -295,7 +368,6 @@ $$
 
 #### Summary
 
-- Introduce hyperparameters
 - Use prior predictive checks to set priors
 - Discuss using model selection to tune hyperparameters
 

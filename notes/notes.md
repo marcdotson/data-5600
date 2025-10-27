@@ -162,37 +162,39 @@ TODO:
 ### Summer 2026
 
 - Maximum Likelihood Estimation (Jul 6)
-- Hyperparameter Tuning (Jul 8)
+- Hyperparameters (Jul 8)
 
 ## Week 10
 
 ### Fall 2025
 
-- Hyperparameter Tuning (Oct 27)
-- Cross-Validation (Oct 29)
+- Hyperparameters (Oct 27)
+- Confusion and Cross-Validation (Oct 29)
 
 ### Spring 2026
 
-- Hyperparameter Tuning (Mar 16)
-- Cross-Validation (Mar 18)
+- Hyperparameters (Mar 16)
+- Confusion and Cross-Validation (Mar 18)
 
 ### Summer 2026
 
-- Cross-Validation (Jul 13)
+- Confusion and Cross-Validation (Jul 13)
 - Penalized Regression (Jul 15)
 
-### Hyperparameter Tuning
+### Confusion and Cross-Validation
+
+- Maybe introduce interactions as well? To decide on whether or not to
+  include them? Also include standardizing/normalizing features?
 
 - Include new overall model fit measures for discrete outcomes,
   likelihood ratio tests? ROC/AUC?
-- Interpreting a confusion matrix?
-- Maybe introduce interactions as well? To decide on whether or not to
-  include them? Also include standardizing/normalizing features?
-- Start with model selection as a form of “hyperparameter tuning”
 
-### Cross-Validation
+- Interpreting a confusion matrix
+
+- Warning about extrapolation (use earlier)
 
 - Cross-validation is needed for hyperparameter tuning
+
 - Cross-validation for model selection as well in order to keep a larger
   training dataset (p. 123 of PML)
 
@@ -215,21 +217,40 @@ TODO:
 
 ### Penalized Regression
 
+- Parameter estimates are picked by minimizing the loss on the training
+  data, but that’s not guarantee it will have low loss on future data
+  (i.e., generalize) thus overfitting remains a problem
+
 - Generalize Regression to Penalized Regression/Bayesian Models (with
   PyMC?)
+
 - Penalize the regression to learn “regular” (i.e., generalizable)
   features
+
+- PML p. 119 with the MLE + $\lambda C(\theta)$ where $\lambda$ is the
+  regularization hyperparameter and $C(\theta)$ is the complexity
+  penalty; for the Bayesian equivalent, $\lambda = 1$
+
 - Ridge regression, LASSO, elastic net, best subsets, sequential
   replacement
+
 - Bias-variance tradeoff and shrinkage methods
+
 - Accuracy and precision is just bias and variance
+
 - Shrinkage toward the MLE
+
 - Why Bayes? Carefully and directly model uncertainty
 
 ### Variable Selection
 
+- Another exercise where they use AI to help them evaluate what they’re
+  learning?
+
 - Stepwise regression for model selection when focusing on prediction
+
 - Discussed the possibility of p \> n
+
 - Working from a full model and using backward or forward-selection
 
 ## Week 12
