@@ -231,8 +231,8 @@ notice as it relates to assignment deadlines.
 
 ### Week 10
 
-- Hyperparameter Tuning
-- Cross-Validation
+- Hyperparameters
+- Confusion and Cross-Validation
 
 ### Week 11
 

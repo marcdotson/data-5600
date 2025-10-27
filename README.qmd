@@ -139,8 +139,8 @@ Please note that the instructor reserves the right to change the following sched
 
 ### Week 10
 
-- Hyperparameter Tuning
-- Cross-Validation
+- Hyperparameters
+- Confusion and Cross-Validation
 
 ### Week 11
 
