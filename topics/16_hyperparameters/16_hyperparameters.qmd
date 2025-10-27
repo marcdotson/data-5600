@@ -1,5 +1,5 @@
 ---
-title: "Maximum Likelihood Estimation"
+title: "Hyperparameters"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -22,20 +22,26 @@ jupyter: python3
 
 #### Last Time
 
-- Interpreted logistic regression coefficients
-- Reviewed assumption diagnostics and remedies
-- Expanded diagnostics and remedies to GLMs
+- Extended model fitting beyond ordinary least squares
+- Continued comparing frequentist and Bayesian inference
 
 #### Preview
 
-- Extend model fitting beyond ordinary least squares
-- Continue comparing frequentist and Bayesian inference
+- Introduce hyperparameters
+- Use prior predictive checks to set priors
+- Discuss using model selection to tune hyperparameters
 
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
-![](../../figures/workflow_fit.png){fig-align="center"}
+![](../../figures/workflow_reconcile-fit.png){fig-align="center"}
 :::
+
+
+
+
+
+
 
 # Ordinary Least Squares
 
@@ -275,7 +281,7 @@ $$
 
 ## {background-color="#006242"}
 
-### Exercise 15 {.lato-font}
+### Exercise 16 {.lato-font}
 
 1. Clean up the leads data
 <!-- 1. Return to your data from the previous exercise (or start with the exercise solution) -->
@@ -289,10 +295,12 @@ $$
 
 #### Summary
 
-- Extended model fitting beyond ordinary least squares
-- Continued comparing frequentist and Bayesian inference
+- Introduce hyperparameters
+- Use prior predictive checks to set priors
+- Discuss using model selection to tune hyperparameters
 
 #### Next Time
 
-- Introduce hyperparameter tuning
+- Discuss additional measures of overall classification model fit
+- Introduce cross-validation for model selection and hyperparameter tuning
 

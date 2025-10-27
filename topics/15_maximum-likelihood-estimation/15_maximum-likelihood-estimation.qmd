@@ -294,5 +294,7 @@ $$
 
 #### Next Time
 
-- Introduce hyperparameter tuning
+- Introduce hyperparameters
+- Use prior predictive checks to set priors
+- Discuss using model selection to tune hyperparameters
 
