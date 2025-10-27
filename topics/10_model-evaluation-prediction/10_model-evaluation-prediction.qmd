@@ -20,7 +20,7 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-TODO: Add memes R-squared, Whinnie adjusted r-squared, make sure Exercise 11 is simplified and spread out to previous exercises
+# TODO: Add memes R-squared, Whinnie adjusted r-squared, make sure Exercise 11 is simplified and spread out to previous exercises, refer to predictive fit as a proxy for decision-theoretic fit
 
 #### Last Time
 
