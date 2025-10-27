@@ -17,14 +17,13 @@ Disqualified) along with various lead features.
 - **contact_quarter**: Quarter when the Lead was first contacted
 - **latest_quarter**: Quarter when the Lead was last contacted
 - **EmployeeId**: Unique ID for the sales rep assigned to the Lead
-- **ActivityTypeEmail**: Indicator of email contact with the Lead
-- **ActivityTypePhone Call**: Indicator of call contact with the Lead
-- **ActivityTypeEmail Response**: Indicator of email response with the
-  Lead
-- **ActivityTypeMeeting**: Indicator of meeting with the Lead
-- **ActivityTypeLead Handraise**: Indicator of Lead requesting
+- **ActivityTypeEmail**: Count of email contacts with the Lead
+- **ActivityTypePhone Call**: Count of call contacts with the Lead
+- **ActivityTypeEmail Response**: Count of email responses with the Lead
+- **ActivityTypeMeeting**: Count of meetings with the Lead
+- **ActivityTypeLead Handraise**: Count of times Lead requesting
   information
-- **ActivityTypeWeb Schedule**: Indicator of Lead scheduling an
+- **ActivityTypeWeb Schedule**: Count of times Lead scheduling an
   appointment
 - **Amount**: Estimate of how much the Lead is worth if closed
 
