@@ -294,7 +294,7 @@ X_test = (X_test
 
 # Use test data to predict
 p_pred = fr_fit.predict(X_test)
-y_pred = (p_pred > 0.05).astype(int)
+y_pred = (p_pred > 0.50).astype(int)
 
 # Creat a confusion matrix
 conf_mat = confusion_matrix(y_test, y_pred)
@@ -310,11 +310,11 @@ conf_mat
 # Confusion matrix with labels
 plt.figure(figsize = (4, 4))
 sns.heatmap(
-  conf_mat, 
-  annot = True, 
-  fmt = ".0f", 
-  square = True, 
-  cmap = 'Blues_r'
+    conf_mat, 
+    annot = True, 
+    fmt = ".0f", 
+    square = True, 
+    cmap = 'Blues_r'
 )
 plt.ylabel('Actual Label')
 plt.xlabel('Predicted Label')
@@ -333,10 +333,10 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- How many true **true positives** do we have? [`40`]{.fragment}
-- How many true **true negatives** do we have? [`3513`]{.fragment}
-- How many true **false positives** (i.e., **type I errors**) do we have? [`51`]{.fragment}
-- How many true **false negatives** (i.e., **type II errors**) do we have? [`7`]{.fragment}
+- How many **true positives** do we have? [`11`]{.fragment}
+- How many **true negatives** do we have? [`3545`]{.fragment}
+- How many **false positives** (i.e., **type I errors**) do we have? [`19`]{.fragment}
+- How many **false negatives** (i.e., **type II errors**) do we have? [`36`]{.fragment}
 :::
 :::
 
@@ -354,10 +354,10 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- **Accuracy** is the percent of correct predictions [`(40 + 3513)/3611 = 0.98`]{.fragment}
-- We can compare accuracy to the **baseline accuracy** of always predicting the majority class [`(3513 + 51)/3611 = 0.99`]{.fragment}
-- **Sensitivity** or **recall** is the percent of actual positives that were predicted correctly [`40/(40 + 7) = 0.85`]{.fragment}
-- **Specificity** is the percent of actual negatives that were predicted correctly [`3513/(3513 + 51) = 0.99`]{.fragment}
+- **Accuracy** is the percent of correct predictions [`(11 + 3545)/3611 = 0.98`]{.fragment}
+- We can compare accuracy to the **baseline accuracy** of always predicting the majority class [`(3545 + 19)/3611 = 0.99`]{.fragment}
+- **Sensitivity** or **recall** is the percent of actual positives that were predicted correctly [`11/(11 + 36) = 0.23`]{.fragment}
+- **Specificity** is the percent of actual negatives that were predicted correctly [`3545/(3545 + 19) = 0.99`]{.fragment}
 :::
 :::
 
@@ -375,8 +375,8 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- **Precision** or **positive predictive value** is the percent of predicted positives that were predicted correctly [`40/(40 + 51) = 0.44`]{.fragment}
-- **Negative predictive value** is the percent of predicted negatives that were predicted correctly [`3513/(3513 + 7) = 1`]{.fragment}
+- **Precision** or **positive predictive value** is the percent of predicted positives that were predicted correctly [`11/(11 + 19) = 0.37`]{.fragment}
+- **Negative predictive value** is the percent of predicted negatives that were predicted correctly [`3545/(3545 + 36) = 0.99`]{.fragment}
 :::
 :::
 
@@ -394,7 +394,7 @@ $$
 $$
 
 ::: {.fragment}
-We used `c = 0.05` for the previous example, but how could we choose a better cutoff? [Choose $c$ to minimize the misclassification rate]{.fragment}
+We used `c = 0.50` for the previous example, but how could we choose a better cutoff? [Choose $c$ to minimize the misclassification rate]{.fragment}
 :::
 
 ::: {.fragment}
