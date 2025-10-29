@@ -1,0 +1,99 @@
+---
+title: "Penalized Regression"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Discussed additional measures of overall classification model fit
+- Introduced cross-validation for model selection and hyperparameter tuning
+
+#### Preview
+
+- Introduce penalized regression and shrinkage estimates
+- Apply cross-validation for tuning regularization hyperparameters
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_fit-evaluate.png){fig-align="center"}
+:::
+
+# Bias-Variance Tradeoff
+
+## Adding bias to reduce variance
+
+If our point estimate $\hat{\theta} = \theta$ then it is **unbiased** [and we naturally want to have the **lowest variance** in our interval estimates as possible]{.fragment}
+
+::: {.fragment}
+$$
+\large{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2 = \text{MSE} = \text{Variance} + \text{Bias}^2}
+$$
+:::
+
+::: {.fragment}
+While MLE (including OLS) are unbiased, low variance point and interval estimators **when the model assumptions are met**, it is often useful to use a biased estimator if it reduces our variance
+:::
+
+## Model complexity and total error
+
+This central machine learning idea is called the **bias-variance tradeoff**
+
+![](../../figures/bias-variance-01.png){fig-align="center"}
+
+## Model complexity and total error {visibility="uncounted"}
+
+This central machine learning idea is called the **bias-variance tradeoff**
+
+![](../../figures/bias-variance-02.png){fig-align="center"}
+
+::: {.fragment}
+When might we want to add bias to reduce variance?
+:::
+
+# What could go wrong with using the test data to choose the cutoff probability? {background-color="#006242"}
+
+
+
+
+
+
+## {background-color="#006242"}
+
+### Exercise 18 {.lato-font}
+
+1. Return to your data from the latest coding exercise (or start with that exercise's solution)
+2. Implement 5-fold cross-validation to tune the cutoff probability hyperparameter so that you maximize overall accuracy
+3. When splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
+4. Given the computational expense of cross-validation, using MLE is sufficient
+5. Submit your code, output, and explanation as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- 
+
+#### Next Time
+
+- 
+
