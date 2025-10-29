@@ -368,8 +368,8 @@ fr_fit_02 = smf.glm(
 
 #### Summary
 
-- Use prior predictive checks to set priors
-- Discuss using model selection to tune hyperparameters
+- Used prior predictive checks to set priors
+- Discussed using model selection to tune hyperparameters
 
 #### Next Time
 

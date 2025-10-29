@@ -181,23 +181,6 @@ TODO:
 - Confusion and Cross-Validation (Jul 13)
 - Penalized Regression (Jul 15)
 
-### Confusion and Cross-Validation
-
-- Maybe introduce interactions as well? To decide on whether or not to
-  include them? Also include standardizing/normalizing features?
-
-- Include new overall model fit measures for discrete outcomes,
-  likelihood ratio tests? ROC/AUC?
-
-- Interpreting a confusion matrix
-
-- Warning about extrapolation (use earlier)
-
-- Cross-validation is needed for hyperparameter tuning
-
-- Cross-validation for model selection as well in order to keep a larger
-  training dataset (p. 123 of PML)
-
 ## Week 11
 
 ### Fall 2025
@@ -224,30 +207,50 @@ TODO:
 - Generalize Regression to Penalized Regression/Bayesian Models (with
   PyMC?)
 
-- Penalize the regression to learn “regular” (i.e., generalizable)
-  features
+- Penalize the regression to learn “regular” (i.e., generalizable) or
+  “not extreme” features
+
+- Reference muticollinearity as one source of variance inflation
 
 - PML p. 119 with the MLE + $\lambda C(\theta)$ where $\lambda$ is the
   regularization hyperparameter and $C(\theta)$ is the complexity
-  penalty; for the Bayesian equivalent, $\lambda = 1$
+  penalty; for the Bayesian equivalent, $\lambda = 1$ when the
+  complexity penalty is $C(\theta) = -\log p(\theta)$
+
+- Choose the value of $\lambda$ that results in the best validation
+  performance
+
+- CV estimate provides a point but not interval estimate of validation
+  performance
+
+- The one-standard error rule is a frequentist heuristic based on the
+  theoretical underlying sampling distribution: The simplest model that
+  is no more than one standard error above the best model
 
 - Ridge regression, LASSO, elastic net, best subsets, sequential
   replacement
 
-- Bias-variance tradeoff and shrinkage methods
+- Bias-variance tradeoff and shrinkage methods – plotting the learning
+  curve (see PML p. 158-159, 161)
 
 - Accuracy and precision is just bias and variance
 
-- Shrinkage toward the MLE
+- Shrinkage toward the MLE (or toward zero with ridge regression)
+
+- Bias-variance tradeoff and shrinkage methods – plotting the learning
+  curve (see PML p. 158-159, 161)
 
 - Why Bayes? Carefully and directly model uncertainty
 
 ### Variable Selection
 
-- Another exercise where they use AI to help them evaluate what they’re
-  learning?
+- Refer to variable selection as “feature selection”?
+
+- Just do LASSO?
 
 - Stepwise regression for model selection when focusing on prediction
+
+- Ridge regression is a “soft” version of variable selection methods
 
 - Discussed the possibility of p \> n
 
@@ -276,6 +279,7 @@ TODO:
 
 - Dimension reduction as opposed to variable selection and
   regularization
+- Ridge regression is a “soft” version of PCR (see PML p. 379-380)
 - PCA on its own and then PCA as part of PCR
 
 ## Week 13

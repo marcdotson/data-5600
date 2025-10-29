@@ -1,0 +1,541 @@
+---
+title: "Confusion and <br>Cross-Validation"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Used prior predictive checks to set priors
+- Discussed using model selection to tune hyperparameters
+
+#### Preview
+
+- Discuss additional measures of overall classification model fit
+- Introduce cross-validation for model selection and hyperparameter tuning
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_fit-evaluate.png){fig-align="center"}
+:::
+
+# It's only confusing because you're paying attention
+
+# Confusion Matrices
+
+## Interpret results and revise as needed
+
+Interpretable models produce a plethora of results that need to be evaluated
+
+::: {.incremental}
+- Parameter estimates [(e.g., **point**, **interval** and **distribution** estimates)]{.fragment}
+- Statistical significance [(i.e., estimates **different from zero**)]{.fragment}
+- Overall model fit [(i.e., **in-sample**, **predictive**, and **decision theoretic**)]{.fragment}
+- Comparing predictions and real data [(e.g., **posterior prediction checks**)]{.fragment}
+:::
+
+::: {.fragment}
+Just like with the reconcile step, what we discover may prompt **additional exploration and revision**
+:::
+
+## 
+
+::: {.columns .v-center}
+![](../../figures/theory-model-evidence.png){fig-align="center"}
+:::
+
+## Comparing and choosing between models
+
+Metrics of **overall model fit** provide a single number that describes how well our model is doing, especially when we are **comparing models**
+
+::: {.incremental}
+1. **In-sample fit**: How well our model fits the data it was trained on
+2. **Predictive fit**: How well our model predicts data it wasn't trained on
+3. **Decision theoretic fit**: How well our model performs using our loss function
+:::
+
+::: {.fragment}
+In-sample fit can be misleading thanks to **overfitting** while predictive fit **serves as a proxy** for decision theoretic fit
+:::
+
+::: {.fragment}
+For classification models we don't use sum of squares (i.e., quadratic loss), we no longer assume normality, and we **don’t have residuals**, so no $R^2$, Adjusted $R^2$, F-statistic, MSE, or RMSE
+:::
+
+## In-sample fit: Log-Likelihood
+
+The **log-likelihood** is a measure of how well the model fits the training data
+
+$$
+\LARGE{\text{Log-Likelihood} = \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i)}
+$$
+
+::: {.incremental}
+- The closer the log-likelihood is to zero, the better the model fit
+- Remember that MLE chose the $\hat{\theta}$s that **minimized the negative log-likelihood**
+- Interpret the log-likelihood as what's leftover after fitting the model
+- Easy to compare across models, but still in-sample fit
+:::
+
+## In-sample fit: Log-Likelihood
+
+::: {.v-center}
+![](../../figures/mle_in-sample-fit.png){fig-align="center"}
+:::
+
+## In-sample fit: Pseudo $R^2$
+
+Pseudo $R^2$ is the proportion of variation in $\log\left({p_i \over 1 - p_i}\right)$ explained by the model
+
+$$
+\large{\text{Pseudo }R^2 = 1 - \frac{\text{Log-Likelihood}}{\text{Null Log-Likelihood}}}
+$$
+
+::: {.incremental}
+- A higher Pseudo $R^2$ means a better fit
+- Unlike $R^2$, the upper bound of Pseudo $R^2$ is usually not 1
+- Comparison of what's leftover after fitting the model to what's leftover after fitting the null model
+- Adding more predictors will always increase Pseudo $R^2$
+- Easy to interpret and compare across models, but still in-sample fit
+:::
+
+## In-sample fit: Pseudo $R^2$
+
+::: {.v-center}
+![](../../figures/mle_in-sample-fit.png){fig-align="center"}
+:::
+
+## In-sample fit: $\chi^2$-statistic
+
+The $\chi^2$-statistic is the test statistic of the null hypothesis that **all regression coefficients are equal to zero** (analogous to the F-statistic for OLS), so what does a small $p$-value or Prob($\chi^2$-statistic) mean?
+
+::: {.incremental}
+- The lower the $p$-value, the stronger the evidence that at least one predictor has a non-zero coefficient (i.e., is useful for explaining $y$)
+- Not as easy to interpret or compare and still in-sample fit
+:::
+
+## In-sample fit: $\chi^2$-statistic
+
+::: {.v-center}
+![](../../figures/mle_in-sample-fit.png){fig-align="center"}
+:::
+
+## Predictive fit: Confusion matrix
+
+For a discrete outcome, instead of measuring **how close** our predictions are to the test data, we count **how many times** our predictions are correct (and incorrect) by class (i.e., 0 and 1) in a **confusion matrix**
+
+$$
+\large{\text{Confusion Matrix} = \begin{cases}
+\sum_{i=1}^n (y^*_i = 1) & \text{when } \hat{y}_i = 1 \\
+\sum_{i=1}^n (y^*_i = 0) & \text{when } \hat{y}_i = 0 \\
+\sum_{i=1}^n (y^*_i = 1) & \text{when } \hat{y}_i = 0 \\
+\sum_{i=1}^n (y^*_i = 0) & \text{when } \hat{y}_i = 1
+\end{cases}}
+$$
+
+::: {.incremental}
+- Predictions of 1 when the actual value is 1 are **true positives**
+- Predictions of 0 when the actual value is 0 are **true negatives**
+- Predictions of 1 when the actual value is 0 are **false positives**
+- Predictions of 0 when the actual value is 1 are **false negatives**
+:::
+
+## Predictive fit: Confusion matrix
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import polars as pl
+import seaborn.objects as so
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from sklearn.model_selection import train_test_split
+
+# Import data and clean
+# leads = (pl.read_parquet(os.path.join('data', 'leads.parquet'))
+leads = (pl.read_parquet(os.path.join('..', '..', 'data', 'leads.parquet'))
+    # Make the outcome binary where "Qualified" = 1
+    .with_columns(
+        pl.when(pl.col('Stage') == 'Qualified').then(1)
+        .when(pl.col('Stage') == 'Disqualified').then(0)
+        .alias('qualified')
+    )
+    # Dummy code Industry, Employees, TimeZone, LeadSource, and EmployeeId
+    .to_dummies(
+        columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
+        drop_first = False
+    )
+    .select(pl.exclude('Stage', 'Amount', 'Industry_Business', 'Employees_Small', 'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'))
+)
+
+# Specify the design matrix and outcome
+X = leads.select(pl.exclude('qualified'))
+y = leads.select('qualified')
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y.to_numpy())
+
+X_train = (X_train
+    # Log-transform all activity counts
+    .with_columns((pl.col('ActivityTypeEmail') + 1).log().alias('log_ActivityTypeEmail'))
+    .with_columns((pl.col('ActivityTypePhone Call') + 1).log().alias('log_ActivityTypePhoneCall'))
+    .with_columns((pl.col('ActivityTypeEmail Response') + 1).log().alias('log_ActivityTypeEmailResponse'))
+    .with_columns((pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting'))
+    .with_columns((pl.col('ActivityTypeLead Handraise') + 1).log().alias('log_ActivityTypeLeadHandraise'))
+    .with_columns((pl.col('ActivityTypeWeb Schedule') + 1).log().alias('log_ActivityTypeWebSchedule'))
+    # Rename columns to remove spaces
+    .rename({
+        'Industry_Construction & Manufacturing': 'Industry_ConstructionManufacturing',
+        'Industry_Government & Non-Profits': 'Industry_GovernmentNonProfits',
+        'Industry_Professional Services': 'Industry_ProfessionalServices',
+        'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
+        'LeadSource_Web Registration': 'LeadSource_WebRegistration'
+    })
+    # Remove the original activity count columns
+    .select(
+        pl.exclude(
+            'ActivityTypeEmail', 'ActivityTypePhone Call', 'ActivityTypeEmail Response', 
+            'ActivityTypeMeeting', 'ActivityTypeLead Handraise', 'ActivityTypeWeb Schedule'
+        )
+    )
+)
+
+# Combine y_train and X_train
+leads_train = (pl.concat([y_train, X_train], how = 'horizontal')
+    .to_pandas()
+)
+
+# Specify predictors
+predictors = [
+    'Industry_Airlines', 'Industry_CPG',
+    'Industry_ConstructionManufacturing', 'Industry_Consulting',
+    'Industry_Education', 'Industry_Finance', 'Industry_GovernmentNonProfits',
+    'Industry_Luxury', 'Industry_Marketing', 'Industry_Media', 'Industry_Medical',
+    'Industry_Other', 'Industry_ProfessionalServices', 'Industry_Retail',
+    'Industry_Tech', 'Industry_Utilities', 'Industry_eCommerce', 'Employees_Large',
+    'Employees_Medium', 'Employees_Unknown', 'TimeZone_CST', 'TimeZone_MST',
+    'TimeZone_PST', 'TimeZone_Unknown', 'LeadSource_TradeShowsandEvents',
+    'LeadSource_WebRegistration', 'days_elapsed', 'created_quarter',
+    'contact_quarter', 'latest_quarter', 'EmployeeId_2', 'EmployeeId_3',
+    'EmployeeId_4', 'EmployeeId_5', 'log_ActivityTypeEmail',
+    'log_ActivityTypePhoneCall', 'log_ActivityTypeEmailResponse',
+    'log_ActivityTypeMeeting', 'log_ActivityTypeLeadHandraise',
+    'log_ActivityTypeWebSchedule'
+]
+
+# Fit a frequentist logistic regression
+fr_fit = smf.glm(
+    'qualified ~ ' + ' + '.join(predictors), 
+    data = leads_train, 
+    family = sm.families.Binomial()
+).fit()
+```
+
+Following the latest exercise solution
+
+```{python}
+#| eval: true
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+
+# Apply same transformations to test data
+X_test = (X_test
+    # Log-transform all activity counts
+    .with_columns((pl.col('ActivityTypeEmail') + 1).log().alias('log_ActivityTypeEmail'))
+    .with_columns((pl.col('ActivityTypePhone Call') + 1).log().alias('log_ActivityTypePhoneCall'))
+    .with_columns((pl.col('ActivityTypeEmail Response') + 1).log().alias('log_ActivityTypeEmailResponse'))
+    .with_columns((pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting'))
+    .with_columns((pl.col('ActivityTypeLead Handraise') + 1).log().alias('log_ActivityTypeLeadHandraise'))
+    .with_columns((pl.col('ActivityTypeWeb Schedule') + 1).log().alias('log_ActivityTypeWebSchedule'))
+    # Rename columns to remove spaces
+    .rename({
+        'Industry_Construction & Manufacturing': 'Industry_ConstructionManufacturing',
+        'Industry_Government & Non-Profits': 'Industry_GovernmentNonProfits',
+        'Industry_Professional Services': 'Industry_ProfessionalServices',
+        'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
+        'LeadSource_Web Registration': 'LeadSource_WebRegistration'
+    })
+    # Remove the original activity count columns
+    .select(
+        pl.exclude(
+            'ActivityTypeEmail', 'ActivityTypePhone Call', 'ActivityTypeEmail Response', 
+            'ActivityTypeMeeting', 'ActivityTypeLead Handraise', 'ActivityTypeWeb Schedule'
+        )
+    )
+    .to_pandas()
+)
+```
+
+## Predictive fit: Confusion matrix
+
+```{python}
+#| eval: true
+
+# Use test data to predict
+p_pred = fr_fit.predict(X_test)
+y_pred = (p_pred > 0.05).astype(int)
+
+# Creat a confusion matrix
+conf_mat = confusion_matrix(y_test, y_pred)
+conf_mat
+```
+
+## Predictive fit: Confusion matrix
+
+```{python}
+#| eval: true
+#| output-location: column
+
+# Confusion matrix with labels
+plt.figure(figsize = (4, 4))
+sns.heatmap(
+  conf_mat, 
+  annot = True, 
+  fmt = ".0f", 
+  square = True, 
+  cmap = 'Blues_r'
+)
+plt.ylabel('Actual Label')
+plt.xlabel('Predicted Label')
+plt.show()
+```
+
+## Predictive fit: Confusion matrix
+
+We can use the confusion matrix to compute a number of different measures of predictive fit
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/confusion-matrix.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- How many true **true positives** do we have? [`40`]{.fragment}
+- How many true **true negatives** do we have? [`3513`]{.fragment}
+- How many true **false positives** (i.e., **type I errors**) do we have? [`51`]{.fragment}
+- How many true **false negatives** (i.e., **type II errors**) do we have? [`7`]{.fragment}
+:::
+:::
+
+::::
+
+## Predictive fit: Confusion matrix {visibility="uncounted"}
+
+We can use the confusion matrix to compute a number of different measures of predictive fit
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/confusion-matrix.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- **Accuracy** is the percent of correct predictions [`(40 + 3513)/3611 = 0.98`]{.fragment}
+- We can compare accuracy to the **baseline accuracy** of always predicting the majority class [`(3513 + 51)/3611 = 0.99`]{.fragment}
+- **Sensitivity** or **recall** is the percent of actual positives that were predicted correctly [`40/(40 + 7) = 0.85`]{.fragment}
+- **Specificity** is the percent of actual negatives that were predicted correctly [`3513/(3513 + 51) = 0.99`]{.fragment}
+:::
+:::
+
+::::
+
+## Predictive fit: Confusion matrix {visibility="uncounted"}
+
+We can use the confusion matrix to compute a number of different measures of predictive fit
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](../../figures/confusion-matrix.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- **Precision** or **positive predictive value** is the percent of predicted positives that were predicted correctly [`40/(40 + 51) = 0.44`]{.fragment}
+- **Negative predictive value** is the percent of predicted negatives that were predicted correctly [`3513/(3513 + 7) = 1`]{.fragment}
+:::
+:::
+
+::::
+
+## Classification requires a cutoff
+
+Logistic regression **doesn't predict classes** (i.e., 0 or 1), it **predicts probabilities** (i.e., between 0 and 1), so we need to choose a cutoff probability in order to classify
+
+$$
+\large{\hat{y}_i = \begin{cases}
+1 \text{ if } \hat{p}_i > c \\
+0 \text{ if } \hat{p}_i \leq c \\
+\end{cases}}
+$$
+
+::: {.fragment}
+We used `c = 0.05` for the previous example, but how could we choose a better cutoff? [Choose $c$ to minimize the misclassification rate]{.fragment}
+:::
+
+::: {.fragment}
+$$
+\large{\text{Percent Misclassified} = \frac{1}{n} \sum_{i=1}^n I(\hat{y}_i \neq y_i)}
+$$
+:::
+
+## ROC/AUC
+
+For the cutoff probability hyperparameter, we can see how well our model does across all cutoff values using the **receiver operating characterstic** (ROC) curve
+
+![](../../figures/roc.png){fig-align="center"}
+
+## ROC/AUC {visibility="uncounted"}
+
+We can summarize an ROC curve by finding the **area under the curve** (AUC), where AUC is the rate of successful classification across all cutoff values
+
+![](../../figures/roc.png){fig-align="center"}
+
+# What could go wrong with using the test data to choose the cutoff probability? {background-color="#006242"}
+
+# Cross-Validation
+
+## Hyperparameter tuning and cross-validation
+
+Remember that **hyperparameters** are parameters that are not directly estimated when we fit the model[, so we use **overall model fit** to compare models with different hyperparameter values (e.g., different cutoff probabilities $c$)]{.fragment} [and choose the one that predicts best (e.g., minimizes the misclassification rate by maximizing accuracy)]{.fragment}
+
+::: {.incremental}
+- Hyperparameter tuning is **not specific to classification models**
+- Using the test data to tune hyperparameters creates **data leakage**
+- We need **training data** to fit the model, **validation data** to tune hyperparameters, and **test data** to evaluate final model performance
+- Splitting the data into three parts reduces the amount of training data available
+- Using **cross-validation** allows us to use all of the training data while still tuning hyperparameters
+:::
+
+## Cross-validation
+
+Cross-validation is a **resampling procedure** that splits the training data into training and validation data **many times** in order to use all of the training data while tuning hyperparameters
+
+![](../../figures/cross-validation.png){fig-align="center"}
+
+## Using $k$-fold cross-validation
+
+::: {.fragment}
+Cross-validation is an **algorithmic** procedure that provides more stable measures of predictive fit because the entire training data is used for both fitting and model validation
+:::
+
+::: {.incremental}
+1. Randomly split your training data into $k$ "folds" of roughly equal size
+2. Use the first fold as the **validation data** or hold-out data
+3. Fit the model on the remaining $k−1$ folds of the training data
+4. Compute **predictive fit** on the validation data (e.g., MSE, accuracy, etc.)
+5. Repeat using the next fold as the validation data
+6. **Average the predictive fit** across all $k$ folds
+:::
+
+::: {.fragment}
+To tune a given hyperparameter, repeat the entire $k$-fold cross-validation procedure **for each hyperparameter value** and choose the one with the **best average predictive fit**
+:::
+
+## Choosing the number of folds $k$
+
+The more folds we use, the **more stable** the average predictive fit and the **more computationally expensive** cross-validation becomes
+
+::: {.fragment}
+$k = n$
+
+- Results in fitting the model $n$ times
+- Referred to as leave-one-out cross-validation (LOOCV)
+:::
+
+::: {.fragment}
+$k = 10$
+
+- Results in fitting the model 10 times
+- Typically preferred over LOOCV
+:::
+
+::: {.fragment}
+$k = 5$
+
+- Results in fitting the model 5 times
+- Typically preferred over LOOCV and 10-fold CV
+:::
+
+# How would you implement cross-validation to tune the cutoff probability? {background-color="#006242"}
+
+# Bias-Variance Tradeoff
+
+## Adding bias to reduce variance
+
+If our point estimate $\hat{\theta} = \theta$ then it is **unbiased** [and we naturally want to have the **lowest variance** in our interval estimates as possible]{.fragment}
+
+::: {.fragment}
+$$
+\large{\ell(\hat{y}, y) = \sum_{i=1}^n (\hat{y}_i - y_i)^2 = \text{MSE} = \text{Variance} + \text{Bias}^2}
+$$
+:::
+
+::: {.fragment}
+While MLE (including OLS) are unbiased, low variance point and interval estimators **when the model assumptions are met**, it is often useful to use a biased estimator if it reduces our variance
+:::
+
+## Model complexity and total error
+
+This central machine learning idea is called the **bias-variance tradeoff**
+
+![](../../figures/bias-variance-01.png){fig-align="center"}
+
+## Model complexity and total error {visibility="uncounted"}
+
+This central machine learning idea is called the **bias-variance tradeoff**
+
+![](../../figures/bias-variance-02.png){fig-align="center"}
+
+::: {.fragment}
+When might we want to add bias to reduce variance?
+:::
+
+## {background-color="#006242"}
+
+### Exercise 17 {.lato-font}
+
+1. Return to your data from the latest coding exercise (or start with that exercise's solution)
+2. Implement 5-fold cross-validation to tune the cutoff probability hyperparameter so that you maximize overall accuracy
+3. When splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
+4. Given the computational expense of cross-validation, using MLE is sufficient
+5. Submit your code, output, and explanation as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Discussed additional measures of overall classification model fit
+- Introduced cross-validation for model selection and hyperparameter tuning
+
+#### Next Time
+
+- Introduce penalized regression and shrinkage estimates
+- Apply cross-validation for tuning regularization hyperparameters
+
