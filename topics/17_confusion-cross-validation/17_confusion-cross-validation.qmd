@@ -537,5 +537,6 @@ When might we want to add bias to reduce variance?
 #### Next Time
 
 - Introduce penalized regression and shrinkage estimates
-- Apply cross-validation for tuning regularization hyperparameters
+- Discuss cross-validation for tuning regularization hyperparameters
+- Walk through variable selection techniques as an alternative
 
