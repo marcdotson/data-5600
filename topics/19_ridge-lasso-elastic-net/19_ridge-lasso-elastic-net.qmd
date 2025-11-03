@@ -1,0 +1,112 @@
+---
+title: "Ridge, LASSO, <br>and Elastic Net"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Introduced penalized regression and shrinkage estimates
+- Discussed cross-validation for tuning regularization hyperparameters
+- Walked through variable selection techniques as an alternative
+
+#### Preview
+
+- Apply and compare specific regularization techniques
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile-fit-evaluate.png){fig-align="center"}
+:::
+
+# Ridge Regression
+
+## $\ell_2$ complexity penalty, normal prior
+
+**Ridge regression** uses an $\ell_2$ (i.e., quadratic) complexity penalty which corresponds to a **normal prior**
+
+$$
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} \theta_k^2}
+$$
+
+## Code
+
+- Predictors must be **standardized** for fitting penalized regression models
+- The **regularization hyperparameter(s)** must be tuned via cross-validation
+- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+
+# Start with the solution from the previous exercise and implement ridge regression {background-color="#006242"}
+
+# LASSO
+
+## $\ell_1$ complexity penalty, Laplace prior
+
+**LASSO** uses an $\ell_1$ complexity penalty which corresponds to a **Laplace prior**
+
+$$
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} | \theta_k |}
+$$
+
+## Code
+
+- Predictors must be **standardized** for fitting penalized regression models
+- The **regularization hyperparameter(s)** must be tuned via cross-validation
+- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+
+# Now implement and compare LASSO {background-color="#006242"}
+
+# Elastic Net
+
+## $\ell_1$ and $\ell_2$ complexity penalty, normal/Laplace mixture prior
+
+**Elastic net** uses a combined $\ell_1$ and $\ell_2$ complexity penalty which corresponds to a **normal/Laplace mixture prior**
+
+$$
+\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda_1 \sum_{k=1}^{p-1} \theta_k^2 + \lambda_2 \sum_{k=1}^{p-1} | \theta_k |
+$$
+
+## Code
+
+- Predictors must be **standardized** for fitting penalized regression models
+- The **regularization hyperparameter(s)** must be tuned via cross-validation
+- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+
+## {background-color="#006242"}
+
+### Exercise 19 {.lato-font}
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Reuse the 5-fold cross-validation code to tune the regularization hyperparameter for the `LogisticRegression()` model from `scikit-learn` using the default `l2` complexity penalty (i.e., ridge regression) to maximize overall accuracy
+3. To calculate overall accuracy, use the tuned cutoff value from the previous exercise and, again, when splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
+4. Given the computational expense of cross-validation, using MLE is sufficient, though you are welcome to compare overall accuracy with a Bayesian logistic regression with regularizing standard normal priors
+5. Submit your code, output, and explanation as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Applied and compared specific regularization techniques
+
+#### Next Time
+
+- 
+
