@@ -33,10 +33,50 @@ jupyter: python3
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
-![](../../figures/workflow_fit-evaluate.png){fig-align="center"}
+![](../../figures/workflow_reconcile-fit-evaluate.png){fig-align="center"}
 :::
 
 # Bias-Variance Tradeoff
+
+## Posterior distributions vs. sampling distributions
+
+Where does the **variation** come from in our parameter estimates?
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Bayesian**
+
+::: {.fragment}
+$$
+X = \text{data we observe} \\
+\theta \sim \text{a probability distribution}
+$$
+:::
+
+::: {.incremental}
+- Start with **prior distributions** for the parameters
+- Use the **likelihood** and the data we observe to update our priors into a **posterior distribution** for the parameters
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Frequentist**
+
+::: {.fragment}
+$$
+X \sim \text{a probability distribution} \\
+\theta = \text{a value we don't observe}
+$$
+:::
+
+::: {.incremental}
+- Use the **likelihood** and the data we observe to get **point estimates** for the parameters
+- Use the theoretical **sampling distribution** of the estimator from many hypothetical datasets to construct **interval estimates** for the parameters
+:::
+:::
+
+::::
 
 ## Adding bias to reduce variance
 
@@ -49,7 +89,7 @@ $$
 :::
 
 ::: {.fragment}
-While MLE (including OLS) are unbiased, low variance point and interval estimators **when the model assumptions are met**, it is often useful to use a biased estimator if it reduces our variance
+While MLE (including OLS) are unbiased, low variance estimators **when the model assumptions are met**, it is often useful to use a biased estimator if it reduces our variance
 :::
 
 ## Model complexity and total error
@@ -64,15 +104,132 @@ This central machine learning idea is called the **bias-variance tradeoff**
 
 ![](../../figures/bias-variance-02.png){fig-align="center"}
 
+# When would we want to add bias to reduce variance in our parameter estimates? {background-color="#006242"}
+
+# Regularization
+
+## Overfitting and shrinkage
+
+Point estimates are chosen by **minimizing the loss** on the training data, but that's not guarantee it will have low loss on future data (i.e., **generalize**) thus overfitting remains a problem
+
 ::: {.fragment}
-When might we want to add bias to reduce variance?
+$$
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i)}
+$$
 :::
 
-# What could go wrong with using the test data to choose the cutoff probability? {background-color="#006242"}
+## Overfitting and shrinkage {visibility="uncounted"}
 
+Point estimates are chosen by **minimizing the loss** on the training data, but that's not guarantee it will have low loss on future data (i.e., **generalize**) thus overfitting remains a problem
 
+$$
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda C(\theta)}
+$$
 
+::: {.fragment}
+$\lambda$ is the **regularization** hyperparameter and $C(\theta)$ is the **complexity penalty**
+:::
 
+::: {.incremental}
+- Adding a complexity penalty **adds bias to reduce variance**
+- The complexity penalty **shrinks** parameter estimes toward zero
+- These **shrinkage estimates** are less extreme and more **regular**
+:::
+
+## Shrinkage methods
+
+**Penalized regression** (a.k.a., **regularization** or **shrinkage methods**) are frequently used to reduce overfitting and improve generalization, especially since model assumptions (e.g., multicollinearity) are not always satisfied
+
+::: {.fragment}
+Where have we seen shrinkage before?
+:::
+
+::: {.fragment}
+![](../../figures/plot_bayesian-updating.png){fig-align="center"}
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_regularizing-priors.png){fig-align="center"}
+:::
+
+## Choice of prior/complexity penalty
+
+There is a **one-to-one correspondence** between complexity penalties and prior distributions
+
+![](../../figures/regularization_priors.png){fig-align="center"}
+
+## Choice of prior/complexity penalty {visibility="uncounted"}
+
+There is a **one-to-one correspondence** between complexity penalties and prior distributions
+
+$$
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} \theta_k^2}
+$$
+
+::: {.fragment}
+**Ridge regression** uses an $\ell_2$ (i.e., quadratic) complexity penalty which corresponds to a **normal prior**
+:::
+
+## Choice of prior/complexity penalty {visibility="uncounted"}
+
+There is a **one-to-one correspondence** between complexity penalties and prior distributions
+
+$$
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} | \theta_k |}
+$$
+
+::: {.fragment}
+**LASSO** uses an $\ell_1$ complexity penalty which corresponds to a **Laplace prior**
+:::
+
+## Choice of prior/complexity penalty {visibility="uncounted"}
+
+There is a **one-to-one correspondence** between complexity penalties and prior distributions
+
+$$
+\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda_1 \sum_{k=1}^{p-1} \theta_k^2 + \lambda_2 \sum_{k=1}^{p-1} | \theta_k |
+$$
+
+::: {.fragment}
+**Elastic net** uses a combined $\ell_1$ and $\ell_2$ complexity penalty which corresponds to a **normal/Laplace mixture prior**
+:::
+
+## Engineering, tuning, and bootstrapping
+
+Penalized regression helps us navigate the bias-variance tradeoff using shrinkage so that we can deal with overfitting, improve generalization, and learn regular features, but complexity comes with a cost
+
+::: {.incremental}
+- Predictors must be **standardized** for fitting penalized regression models
+- The **regularization hyperparameter(s)** must be tuned via cross-validation
+- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+:::
+
+::: {.fragment}
+Bayesian models include shrinkage by default with all the same benefits and none of these additional costs, though the same computational costs for fitting a Bayesian model apply
+:::
+
+# Holding everything else constant, why do we prefer model *parsimony*? {background-color="#006242"}
+
+# Variable Selection
+
+## Dealing with multicollinearity
+
+There are a number of ways to **deal with multicollinearity** and **improve model parsimony**
+
+::: {.incremental}
+1. Manually drop variables from the model
+2. Use penalized regression (which also deals with overfitting)
+3. Apply a variable selection method
+4. Combine correlated variables via dimension reduction
+:::
+
+::: {.fragment}
+Depending on the prior/complexity penalty, certain penalized regression methods also perform variable selection
+:::
+
+## 
 
 
 ## {background-color="#006242"}
