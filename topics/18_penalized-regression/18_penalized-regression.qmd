@@ -79,6 +79,38 @@ $$
 
 ::::
 
+## Posterior distributions vs. sampling distributions {visibility="uncounted"}
+
+Where does the **variation** come from in our parameter estimates?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Bayesian**
+
+$$
+X = \text{data we observe} \\
+\theta \sim \color{red}{\text{a posterior distribution}}
+$$
+
+- Start with **prior distributions** for the parameters
+- Use the **likelihood** and the data we observe to update our priors into a **posterior distribution** for the parameters
+:::
+
+::: {.column width="50%"}
+**Frequentist**
+
+$$
+X \sim \color{red}{\text{a sampling distribution}} \\
+\theta = \text{a value we don't observe}
+$$
+
+- Use the **likelihood** and the data we observe to get **point estimates** for the parameters
+- Use the theoretical **sampling distribution** of the estimator from many hypothetical datasets to construct **interval estimates** for the parameters
+:::
+
+::::
+
 ## Adding bias to reduce variance
 
 If our point estimate $\hat{\theta} = \theta$ then it is **unbiased** [and we naturally want to have the **lowest variance** in our interval estimates as possible]{.fragment}
@@ -111,7 +143,7 @@ This central machine learning idea is called the **bias-variance tradeoff**
 
 ## Overfitting and shrinkage
 
-Point estimates are chosen by **minimizing the loss** on the training data, but that's not guarantee it will have low loss on future data (i.e., **generalize**) thus overfitting remains a problem
+Point estimates are chosen by **minimizing the loss** on the training data, but that's no guarantee it will have low loss on future data (i.e., **generalize**) thus overfitting remains a problem
 
 ::: {.fragment}
 $$
@@ -121,7 +153,7 @@ $$
 
 ## Overfitting and shrinkage {visibility="uncounted"}
 
-Point estimates are chosen by **minimizing the loss** on the training data, but that's not guarantee it will have low loss on future data (i.e., **generalize**) thus overfitting remains a problem
+Point estimates are chosen by **minimizing the loss** on the training data, but that's no guarantee it will have low loss on future data (i.e., **generalize**) thus overfitting remains a problem
 
 $$
 \large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda C(\theta)}
@@ -199,7 +231,7 @@ $$
 
 ## Engineering, tuning, and bootstrapping
 
-Penalized regression helps us navigate the bias-variance tradeoff using shrinkage so that we can deal with overfitting, improve generalization, and learn regular features, but complexity comes with a cost
+Penalized regression is powerful as it helps us **navigate the bias-variance tradeoff** using **shrinkage** so that we can **deal with overfitting**, improve **generalization**, and **learn regular features**, but complexity comes with a cost
 
 ::: {.incremental}
 - Predictors must be **standardized** for fitting penalized regression models
@@ -208,7 +240,7 @@ Penalized regression helps us navigate the bias-variance tradeoff using shrinkag
 :::
 
 ::: {.fragment}
-Bayesian models include shrinkage by default with all the same benefits and none of these additional costs, though the same computational costs for fitting a Bayesian model apply
+Bayesian models include **shrinkage by default** with all the same benefits and none of these additional costs, though the same computational costs for fitting a Bayesian model apply
 :::
 
 # Holding everything else constant, why do we prefer model *parsimony*? {background-color="#006242"}
@@ -260,7 +292,8 @@ Comparing **all possible subsets** of predictors (i.e., each subset is its own m
 ::: {.incremental}
 - The sample size $n$ must be sufficiently large relative to $p$
 - A good rule of thumb is $n$ should be 6-10 times larger than $p$
-- Computationally expensive when $p$ is large, so only possible if $p$ is relatively small
+- Computationally expensive when $p$ is large
+- Only feasible if $p$ is relatively small
 :::
 
 ## Stepwise methods
@@ -304,7 +337,7 @@ What problems might this method have? [**Don't use it**]{.fragment}
 Why is backward selection a better option than forward selection?
 :::
 
-## Stepwise methods: Stepwise/sequential replacement
+## Stepwise methods: Sequential replacement
 
 ::: {.incremental}
 1. Start with an intercept-only model
@@ -321,10 +354,10 @@ How does this *approximate* the best subset method?
 
 ### Exercise 18 {.lato-font}
 
-1. Return to your data from the latest coding exercise (or start with that exercise's solution)
-2. Implement 5-fold cross-validation to tune the cutoff probability hyperparameter so that you maximize overall accuracy
-3. When splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
-4. Given the computational expense of cross-validation, using MLE is sufficient
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Reuse the 5-fold cross-validation code to tune the regularization hyperparameter for the `LogisticRegression()` model from `scikit-learn` using the default `l2` complexity penalty (i.e., ridge regression) to maximize overall accuracy
+3. To calculate overall accuracy, use the tuned cutoff value from the previous exercise and, again, when splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
+4. Given the computational expense of cross-validation, using MLE is sufficient, though you are welcome to compare overall accuracy with a Bayesian logistic regression with regularizing standard normal priors
 5. Submit your code, output, and explanation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
