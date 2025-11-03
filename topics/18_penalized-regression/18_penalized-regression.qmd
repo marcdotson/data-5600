@@ -28,7 +28,8 @@ jupyter: python3
 #### Preview
 
 - Introduce penalized regression and shrinkage estimates
-- Apply cross-validation for tuning regularization hyperparameters
+- Discuss cross-validation for tuning regularization hyperparameters
+- Walk through variable selection techniques as an alternative
 
 ## {background-color="#D1CBBD"}
 
@@ -221,7 +222,7 @@ There are a number of ways to **deal with multicollinearity** and **improve mode
 ::: {.incremental}
 1. Manually drop variables from the model
 2. Use penalized regression (which also deals with overfitting)
-3. Apply a variable selection method
+3. Apply a **variable selection method**
 4. Combine correlated variables via dimension reduction
 :::
 
@@ -229,8 +230,92 @@ There are a number of ways to **deal with multicollinearity** and **improve mode
 Depending on the prior/complexity penalty, certain penalized regression methods also perform variable selection
 :::
 
-## 
+## Removing variables from the model
 
+Given three predictors, how do we choose which model is best?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](../../figures/variable-selection.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+1. Compare **all possible models**
+2. Instead of comparing all possible models, **incrementally build a good model**
+:::
+
+::: {.fragment}
+Variable selection methods are a **simple, algorithmic** way to arrive at model parsimony (i.e., parameters are set to 0) compared with penalized regression (i.e., parameters are shrunk toward 0)
+:::
+:::
+
+::::
+
+## Best subset method
+
+Comparing **all possible subsets** of predictors (i.e., each subset is its own model) with $p - 1$ predictors means we have $2^{p-1}$ models to compare
+
+::: {.incremental}
+- The sample size $n$ must be sufficiently large relative to $p$
+- A good rule of thumb is $n$ should be 6-10 times larger than $p$
+- Computationally expensive when $p$ is large, so only possible if $p$ is relatively small
+:::
+
+## Stepwise methods
+
+To avoid comparing all possible subsets of predictors, we can **incrementally build a good model** using stepwise methods
+
+::: {.incremental}
+- There is no guarantee the "right" model will be chosen
+- These methods are best used as a heuristic to confirm model choices
+- Methods include **forward**, **backward**, and **stepwise/sequential replacement**
+- Different methods and overall fit metrics will yield different results
+- Once you have a final model, you'll need to re-run the model assumption diagnostics
+:::
+
+## Stepwise methods: Forward selection
+
+::: {.incremental}
+1. Find the predictor that is most correlated with the response
+    a. Fit a regression model with that one predictor
+    b. Leave the predictor in the model if overall model fit improves
+2. Given the previously entered predictor, find the predictor with the highest partial correlation with the response
+    a. Add this predictor to the model created in Step 1
+    b. Leave the predictor in the model if overall model fit improves
+3. Continue this process of adding predictors one at a time until adding predictors no longer improves overall model fit
+:::
+
+::: {.fragment}
+What problems might this method have? [**Don't use it**]{.fragment}
+:::
+
+## Stepwise methods: Backward selection
+
+::: {.incremental}
+1. Fit a model with all $p-1$ predictors
+2. Fit a second model with one predictor from the model
+3. Keep the second model if it improves overall model fit
+4. Repeat with the remaining $p-2$ predictors until removing predictors no longer improves overall model fit
+:::
+
+::: {.fragment}
+Why is backward selection a better option than forward selection?
+:::
+
+## Stepwise methods: Stepwise/sequential replacement
+
+::: {.incremental}
+1. Start with an intercept-only model
+2. Take a forward step: Add a predictor to the model if the predictor improves overall model fit
+3. Take a backward step: Drop a predictor from the model if dropping the preditor improves overall model fit
+4. Iterate the forward and backward steps until the model stays the same
+:::
+
+::: {.fragment}
+How does this *approximate* the best subset method?
+:::
 
 ## {background-color="#006242"}
 
@@ -248,9 +333,11 @@ Depending on the prior/complexity penalty, certain penalized regression methods 
 
 #### Summary
 
-- 
+- Introduced penalized regression and shrinkage estimates
+- Discussed cross-validation for tuning regularization hyperparameters
+- Walked through variable selection techniques as an alternative
 
 #### Next Time
 
-- 
+- Apply and compare specific regularization techniques
 
