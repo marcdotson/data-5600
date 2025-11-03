@@ -198,24 +198,11 @@ TODO:
 - Variable Selection (Jul 20)
 - Dimension Reduction (Jul 22)
 
-### Penalized Regression
+### Ridge, Lasso, and Elastic Net
 
-- Parameter estimates are picked by minimizing the loss on the training
-  data, but that’s not guarantee it will have low loss on future data
-  (i.e., generalize) thus overfitting remains a problem
+- Discussed the possibility of p \> n
 
-- Generalize Regression to Penalized Regression/Bayesian Models (with
-  PyMC?)
-
-- Penalize the regression to learn “regular” (i.e., generalizable) or
-  “not extreme” features
-
-- Reference muticollinearity as one source of variance inflation
-
-- PML p. 119 with the MLE + $\lambda C(\theta)$ where $\lambda$ is the
-  regularization hyperparameter and $C(\theta)$ is the complexity
-  penalty; for the Bayesian equivalent, $\lambda = 1$ when the
-  complexity penalty is $C(\theta) = -\log p(\theta)$
+- Ridge regression is a “soft” version of variable selection methods
 
 - Choose the value of $\lambda$ that results in the best validation
   performance
@@ -226,35 +213,6 @@ TODO:
 - The one-standard error rule is a frequentist heuristic based on the
   theoretical underlying sampling distribution: The simplest model that
   is no more than one standard error above the best model
-
-- Ridge regression, LASSO, elastic net, best subsets, sequential
-  replacement
-
-- Bias-variance tradeoff and shrinkage methods – plotting the learning
-  curve (see PML p. 158-159, 161)
-
-- Accuracy and precision is just bias and variance
-
-- Shrinkage toward the MLE (or toward zero with ridge regression)
-
-- Bias-variance tradeoff and shrinkage methods – plotting the learning
-  curve (see PML p. 158-159, 161)
-
-- Why Bayes? Carefully and directly model uncertainty
-
-### Variable Selection
-
-- Refer to variable selection as “feature selection”?
-
-- Just do LASSO?
-
-- Stepwise regression for model selection when focusing on prediction
-
-- Ridge regression is a “soft” version of variable selection methods
-
-- Discussed the possibility of p \> n
-
-- Working from a full model and using backward or forward-selection
 
 ## Week 12
 
@@ -277,9 +235,13 @@ TODO:
 
 ### Principal Components Regression
 
+- Discussed the possibility of p \> n
+
 - Dimension reduction as opposed to variable selection and
   regularization
+
 - Ridge regression is a “soft” version of PCR (see PML p. 379-380)
+
 - PCA on its own and then PCA as part of PCR
 
 ## Week 13

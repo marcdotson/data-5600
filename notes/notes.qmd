@@ -196,19 +196,12 @@ TODO:
 
 ### Ridge, Lasso, and Elastic Net
 
-- Refer to variable selection as "feature selection"?
-
-- Stepwise regression for model selection when focusing on prediction
-- Ridge regression is a "soft" version of variable selection methods
 - Discussed the possibility of p > n
-- Working from a full model and using backward or forward-selection
+- Ridge regression is a "soft" version of variable selection methods
 
 - Choose the value of $\lambda$ that results in the best validation performance
-
 - CV estimate provides a point but not interval estimate of validation performance
 - The one-standard error rule is a frequentist heuristic based on the theoretical underlying sampling distribution: The simplest model that is no more than one standard error above the best model
-
-- Ridge regression, LASSO, elastic net
 
 ## Week 12
 
@@ -230,6 +223,8 @@ TODO:
 ### Dimension Reduction
 
 ### Principal Components Regression
+
+- Discussed the possibility of p > n
 
 - Dimension reduction as opposed to variable selection and regularization
 - Ridge regression is a "soft" version of PCR (see PML p. 379-380)
