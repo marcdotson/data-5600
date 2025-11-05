@@ -194,14 +194,6 @@ TODO:
 - Variable Selection (Jul 20)
 - Dimension Reduction (Jul 22)
 
-### Ridge, Lasso, and Elastic Net
-
-- Compare with Bayesian options -- something other than HMC?
-- Ridge regression is a "soft" version of variable selection methods
-
-- CV estimate provides a point but not interval estimate of validation performance
-- The one-standard error rule is a frequentist heuristic based on the theoretical underlying sampling distribution: The simplest model that is no more than one standard error above the best model
-
 ## Week 12
 
 ### Fall 2025
@@ -221,13 +213,14 @@ TODO:
 
 ### Dimension Reduction
 
+- IDEA and Registration?
+- Discuss the possibility of p > n
+- See old notes on dimension reduction from Marketing Analytics
+
 ### Principal Components Regression
 
-- Discussed the possibility of p > n
-
 - Dimension reduction as opposed to variable selection and regularization
-- Ridge regression is a "soft" version of PCR (see PML p. 379-380)
-- PCA on its own and then PCA as part of PCR
+- Bayesian version?
 
 ## Week 13
 
