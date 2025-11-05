@@ -360,7 +360,7 @@ How does this *approximate* the best subset method?
 1. Return to your data from the previous exercise (or start with the exercise solution)
 2. Reuse the 5-fold cross-validation code to tune the regularization hyperparameter for the `LogisticRegression()` model from `scikit-learn` using the default `l2` complexity penalty (i.e., ridge regression) to maximize overall accuracy
 3. To calculate overall accuracy, use the tuned cutoff value from the previous exercise and, again, when splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
-4. Given the computational expense of cross-validation, using MLE is sufficient, though you are welcome to compare overall accuracy with a Bayesian logistic regression with regularizing standard normal priors
+4. Using MLE is sufficient, though you are welcome to compare overall accuracy with a Bayesian logistic regression with regularizing standard normal priors
 5. Submit your code, output, and explanation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
