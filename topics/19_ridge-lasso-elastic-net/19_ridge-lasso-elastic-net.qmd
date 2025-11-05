@@ -226,7 +226,7 @@ n_samples = 100
 boot_est = np.empty((n_samples, len(point_est)))
 for b in range(n_samples):
   # Resample data with replacement
-  X_b, y_b = resample(X, y, replace = True, random_state = 42 + b)
+  X_b, y_b = resample(X_train, y_train, replace = True, random_state = 42 + b)
   
   # Fit logistic regression on resampled data
   ridge_pipe.fit(X_b, y_b)
@@ -257,7 +257,6 @@ ci_upper = np.percentile(boot_est, 97.5, axis=0)
 We don't have a model output table to share and we shouldn't in the presentation (outside of an appendix), so let's **visualize the bootstrap intervals**
 
 ```{python}
-#| code-line-numbers: "|1-7|10|12-13|14-17|18-20|21"
 #| eval: true
 #| output-location: column
 
