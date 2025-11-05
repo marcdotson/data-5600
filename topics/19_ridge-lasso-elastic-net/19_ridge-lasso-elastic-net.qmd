@@ -1,5 +1,5 @@
 ---
-title: "Ridge, LASSO, <br>and Elastic Net"
+title: "Ridge Regression, <br>LASSO, and Elastic Net"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -36,38 +36,51 @@ jupyter: python3
 ![](../../figures/workflow_reconcile-fit-evaluate.png){fig-align="center"}
 :::
 
+## Engineering, tuning, and bootstrapping
+
+Penalized regression is powerful as it helps us **navigate the bias-variance tradeoff** using **shrinkage** so that we can **deal with overfitting**, improve **generalization**, and **learn regular features**, but complexity comes with a cost
+
+::: {.incremental}
+- Predictors must be **standardized** for fitting penalized regression models
+- The **regularization hyperparameter(s)** must be tuned via cross-validation
+- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+:::
+
+::: {.fragment}
+Bayesian models include **shrinkage by default** with all the same benefits and none of these additional costs, though the same computational costs for fitting a Bayesian model apply
+:::
+
 ## Simulate data with correlated predictors
 
 Let's simulate data to test our penalized regression code
 
 ```{python}
-#| code-line-numbers: "|1-6|8-9|12|13-14|15-18|19|20|22"
+#| code-line-numbers: "|12|13-16"
 #| eval: true
 
 import numpy as np
 import polars as pl
+import matplotlib.pyplot as plt
 
 # Set randomization seed
 rng = np.random.default_rng(42)
 
 # Specify a function to simulate data
-def sim_data(n, beta_0, beta_x1, beta_x2, beta_x3):
-    x1 = rng.normal(10, 3, size=n)
-    x2 = rng.binomial(1, 0.5, size=n)
-    x3 = 2 * x1 + 3 * x2
-    prob_y = (
-      np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2 + beta_x3 * x3) / 
-      (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2 + beta_x3 * x3))
-    )
-    y = rng.binomial(1, prob_y, size=n)
-    return y, x1, x2, x3
+def sim_data(n, beta_0, beta_x1, beta_x2):
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  x3 = 2 * x1 + 3 * x2
+  prob_y = (
+    np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / 
+    (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
+  )
+  y = rng.binomial(1, prob_y, size=n)
+  return y, x1, x2, x3
 
-data_arr = sim_data(n = 500, beta_0 = 0.25, beta_x1 = -0.15, beta_x2 = 0.75, beta_x3 = -0.10)
-
-# Convert to a dataframe
-data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2', 'x3'])
-y_train = data_df.select('y').to_numpy().ravel()
-X_train = data_df.select(['x1', 'x2', 'x3']).to_numpy()
+# Simulate data
+y, x1, x2, x3 = sim_data(n = 500, beta_0 = 0.30, beta_x1 = -0.15, beta_x2 = 0.75)
+X = np.column_stack([x1, x2, x3])
+predictors = ['x1', 'x2', 'x3']
 ```
 
 # Ridge Regression
@@ -80,67 +93,119 @@ $$
 \large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} \theta_k^2}
 $$
 
-## Code
+::: {.incremental}
+- The $\ell_2$ complexity penalty **shrinks** parameter estimates toward zero, but never **exactly** zero
+- Since ridge regression doesn't shrink coefficients to exactly zero, it performs a "soft" **variable selection**
+- Ridge regression allows us to **keep all predictors in the model**, even with multicollinearity
+:::
 
-- Predictors must be **standardized** for fitting penalized regression models
-- The **regularization hyperparameter(s)** must be tuned via cross-validation
-- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+## Combine standardizing and model specification
+
+A **pipeline** is a scikit-learn object that combines feature engineering (i.e., transformations) and the model
 
 ```{python}
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegressionCV
-from sklearn.metrics import confusion_matrix, accuracy_score
+#| code-line-numbers: "|1-6|8-11|13-17|15|16"
+#| eval: true
 
-# Split data into training (temp) and testing data
-X_temp, X_test, y_temp, y_test = train_test_split(
-    X, y, test_size = 0.2, random_state = 42, stratify = y.to_numpy()
+from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, roc_auc_score
+from sklearn.utils import resample
+
+# Split data into train and test
+X_train, X_test, y_train, y_test = train_test_split(
+  X, y, test_size = 0.2, stratify = y, random_state = 42
 )
 
-# Standardize the training (temp) data
-scaler = StandardScaler()
-scaler.fit(X_temp)
-X_temp = scaler.transform(X_temp)
-
-# Specify a range of regularization hyperparameters and a container for average accuracies
-lambdas = np.logspace(-4, 4, 20)
-avg_accuracy = np.zeros(len(lambdas))
-
-# Specify the already-tuned cutoff probability
-cutoff_prob = 0.35
-
-# Loop through each lambda
-for i in range(len(lambdas)):
-    # Specify a container for accuracies across folds
-    accuracy = np.zeros(5)
-    
-    # Across 5-fold cross-validation
-    for k in range(5):
-        # Split training (temp) data into training and validation data
-        X_train, X_val, y_train, y_val = train_test_split(
-            X_temp, y_temp, test_size = 0.2, random_state = 42, stratify = y_temp.to_numpy()
-        )
-        
-        # Make sure y_train is a 1D array
-        y_train = y_train.to_numpy().ravel()
-        
-        # Fit penalized logistic regression
-        fr_fit = LogisticRegression(C = lambdas[i]).fit(X_train, y_train)
-        
-        # Use validation data to predict
-        p_pred = fr_fit.predict_proba(X_val)[:, 1]
-        y_pred = (p_pred > cutoff_prob).astype(int)
-        
-        # Calculate accuracy
-        conf_mat = confusion_matrix(y_val, y_pred)
-        accuracy[k] = (conf_mat[0, 0] + conf_mat[1, 1]) / conf_mat.sum()
-    
-    # Average accuracy across folds for this cutoff probability
-    avg_accuracy[i] = np.mean(accuracy)
-
-# Identify the best lambda and its associated average accuracy
-lambdas[np.argmax(avg_accuracy)]
+# Create a pipeline
+ridge_pipe = Pipeline([
+  ('feature_engineering', StandardScaler()),
+  ('classification', LogisticRegression(penalty = 'l2'))
+])
 ```
+
+## Use a grid search for hyperparameter tuning
+
+The set of possible hyperparameter values is called a **grid**
+
+```{python}
+#| code-line-numbers: "|1-2|4-10|5|6-9|10|12-14|13|14"
+#| eval: true
+
+# Create a grid using a log scale (inverse of regularization strength)
+hyper_grid = {'classification__C': np.logspace(-10, 10, 30)}
+
+# Use the grid to tune hyperparameters via cross-validation
+kfold_cv = StratifiedKFold(n_splits = 5)
+tune = GridSearchCV(
+  ridge_pipe, hyper_grid, scoring = 'accuracy', 
+  cv = kfold_cv, n_jobs = -1, refit = True
+)
+tune.fit(X_train, y_train)
+
+# Extract the best hyperparameter and CV accuracy
+best_C = tune.best_params_['classification__C']
+best_cv_score = tune.best_score_
+
+print(
+  f'Best C: {best_C}', 
+  f'Best CV Accuracy: {best_cv_score:.4f}', 
+  sep = '\n'
+)
+```
+
+## Ridge regression and selecting $\lambda$
+
+The **amount of regularizing** changes as the regularization hyperparameter $\lambda$ changes, including a non-regularized model when $\lambda = 0$
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](../../figures/ridge-regression.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- When $\lambda$ is small, there isn't much regularizing and the estimates are close to MLE or OLS
+- As $\lambda$ increases, the estimates shrink toward zero, but never reach zero exactly
+- It is typical for a $\lambda$ to be selected that results in the simplest model that is no more than **one standard error** above the best model[, why?]{.fragment}
+:::
+:::
+
+::::
+
+## Bootstrap confidence intervals
+
+We've relied on the theoretical properties of OLS and MLE to construct interval estimates, but now we need to **bootstrap** a confidence interval
+
+```{python}
+#| code-line-numbers: "|2-3|4-5|6|"
+#| eval: true
+
+# Extract point estimates from refit best_estimator
+best_estimator = tune.best_estimator_
+ridge_final = best_estimator.named_steps['classification']
+intercept = ridge_final.intercept_.ravel()
+slopes = ridge_final.coef_.ravel()
+point_est = np.concatenate([intercept, slopes])
+
+point_est
+```
+
+```{python}
+#| code-line-numbers: "|4|"
+#| eval: true
+
+# Update the pipeline for bootstrapping
+ridge_pipe = Pipeline([
+  ('feature_engineering', StandardScaler()),
+  ('classification', LogisticRegression(penalty = 'l2', C = best_C))
+])
+```
+
+[Bootstrapping will give us repeated draws from **which distribution**?]{.fragment}
 
 ## 
 
@@ -148,31 +213,139 @@ lambdas[np.argmax(avg_accuracy)]
 ![](../../figures/meme_sampling-distributions-01.png){fig-align="center"}
 :::
 
+## Bootstrap confidence intervals
+
+We don't have access to the sampling distribution, but we can use **Monte Carlo simulation** to bootstrap an **approximation** of the sampling distribution
+
+```{python}
+#| code-line-numbers: "|2|3|4|5-6|8-10|12-15|17-18|4-18|20-21|"
+#| eval: true
+
+# Bootstrap confidence intervals
+n_samples = 100
+boot_est = np.empty((n_samples, len(point_est)))
+for b in range(n_samples):
+  # Resample data with replacement
+  X_b, y_b = resample(X, y, replace = True, random_state = 42 + b)
+  
+  # Fit logistic regression on resampled data
+  ridge_pipe.fit(X_b, y_b)
+  ridge_b = ridge_pipe.named_steps['classification']
+  
+  # Extract point estimates using resampled data
+  intercept_b = ridge_b.intercept_.ravel()
+  slopes_b = ridge_b.coef_.ravel()
+  point_est_b = np.concatenate([intercept_b, slopes_b])
+
+  # Save point estimates using resampled data
+  boot_est[b, :] = point_est_b
+
+ci_lower = np.percentile(boot_est, 2.5, axis=0)
+ci_upper = np.percentile(boot_est, 97.5, axis=0)
+```
+
+[What do you learn about **sampling distributions** from the bootstrap code?]{.fragment}
+
 ## 
 
 ::: {.v-center}
 ![](../../figures/meme_sampling-distributions-02.png){fig-align="center"}
 :::
 
-# Start with the solution from the previous exercise and implement ridge regression {background-color="#006242"}
+## Visualizing bootstrap intervals
+
+We don't have a model output table to share and we shouldn't in the presentation (outside of an appendix), so let's **visualize the bootstrap intervals**
+
+```{python}
+#| code-line-numbers: "|1-7|10|12-13|14-17|18-20|21"
+#| eval: true
+#| output-location: column
+
+# Output of point and interval estimates
+int_est = pl.DataFrame({
+  'predictors': ['Intercept'] + predictors,
+  'point_est': point_est,
+  'ci_lower': ci_lower,
+  'ci_upper': ci_upper
+})
+
+# Plot the confidence intervals
+plt.figure(figsize=(4, 4))
+plt.errorbar(
+  int_est['point_est'], 
+  int_est['predictors'],
+  xerr=[
+    int_est['point_est'] - int_est['ci_lower'], 
+    int_est['ci_upper'] - int_est['point_est']
+  ], 
+  fmt='o', 
+  capsize=5, 
+  label='Estimates')
+plt.axvline(0, color='red', linestyle='--', label='y=0')
+```
+
+## Evaluate model performance on the test data
+
+Since `GridSearchCV()` already refit the best model using all training data, we can use that model to get a **final prediction on the test data**
+
+```{python}
+#| code-line-numbers: "|1-3|5-7"
+#| eval: true
+
+# Extract probability and predictions on the test data
+probs_test = best_estimator.predict_proba(X_test)[:, 1]
+preds_test = (probs_test >= 0.35).astype(int)
+
+# Compute the test accuracy and AUC
+test_accuracy = accuracy_score(y_test, preds_test)
+test_auc = roc_auc_score(y_test, probs_test)
+
+print(
+  f'Test Accuracy: {test_accuracy:.4f}', 
+  f'Test AUC: {test_auc:.4f}', 
+  sep = '\n'
+)
+```
+
+# Complexity penalties operate like priors, so how would the equivalent Bayesian model differ from ridge regression? {background-color="#006242"}
 
 # LASSO
 
 ## $\ell_1$ complexity penalty, Laplace prior
 
-**LASSO** uses an $\ell_1$ complexity penalty which corresponds to a **Laplace prior**
+**LASSO** (i.e., Least Absolute Shrinkage and Selection Operator) uses an $\ell_1$ complexity penalty which corresponds to a **Laplace prior**
 
 $$
 \large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} | \theta_k |}
 $$
 
-## Code
+::: {.incremental}
+- The $\ell_1$ complexity penalty **shrinks** parameter estimates toward zero, including **exactly** zero
+- Since LASSO can shrink coefficients to exactly zero, it also performs **variable selection**
+- LASSO is known to give more biased estimates for nonzero coefficients (see Adaptive LASSO)
+:::
 
-- Predictors must be **standardized** for fitting penalized regression models
-- The **regularization hyperparameter(s)** must be tuned via cross-validation
-- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+## LASSO and selecting $\lambda$
 
-# Now implement and compare LASSO {background-color="#006242"}
+The **amount of regularizing** changes as the regularization hyperparameter $\lambda$ changes, including a non-regularized model when $\lambda = 0$
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](../../figures/lasso.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- When $\lambda$ is small, there isn't much regularizing and the estimates are close to MLE or OLS
+- As $\lambda$ increases, the estimates shrink toward zero, including exactly zero
+- It is typical for a $\lambda$ to be selected that results in the simplest model that is no more than **one standard error** above the best model as a heuristic
+:::
+:::
+
+::::
+
+# Modify the ridge regression code to implement LASSO. Which model performs better on the test data? {background-color="#006242"}
 
 # Elastic Net
 
@@ -184,21 +357,83 @@ $$
 \ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda_1 \sum_{k=1}^{p-1} \theta_k^2 + \lambda_2 \sum_{k=1}^{p-1} | \theta_k |
 $$
 
-## Code
+::: {.incremental}
+- The combined $\ell_1$ and $\ell_2$ complexity penalty **shrinks** parameter estimates toward zero, including **exactly** zero
+- Since elastic net can shrink coefficients to exactly zero, like LASSO it also performs **variable selection**
+- Overcomes some of ridge and LASSO limitations with adding the complexity of two regularization hyperparamters
+:::
 
-- Predictors must be **standardized** for fitting penalized regression models
-- The **regularization hyperparameter(s)** must be tuned via cross-validation
-- Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+## Accounting for $\lambda_1$ and $\lambda_2$
+
+```{python}
+#| code-line-numbers: "|4-7|10-14"
+#| eval: true
+
+# Create an elastic net pipeline
+elastic_pipe = Pipeline([
+  ('feature_engineering', StandardScaler()),
+  ('classification', LogisticRegression(
+    penalty = 'elasticnet', 
+    solver = 'saga', max_iter=5000, random_state=42
+  ))
+])
+
+# Create a grid that includes both hyperparameters
+hyper_grid = {
+  'classification__C': np.logspace(-10, 10, 30),
+  'classification__l1_ratio': [0.1, 0.25, 0.5, 0.75, 0.9]
+}
+
+# Use the grid to tune both hyperparameters via cross-validation
+tune = GridSearchCV(
+  elastic_pipe, hyper_grid, scoring = 'accuracy', 
+  cv = kfold_cv, n_jobs = -1, refit = True
+)
+tune.fit(X_train, y_train)
+
+# Extract the best hyperparameters and CV accuracy
+best_C = tune.best_params_['classification__C']
+best_l1 = tune.best_params_['classification__l1_ratio']
+best_cv_score = tune.best_score_
+
+print(
+  f'Best C: {best_C}', 
+  f'Best l1_ratio: {best_l1}',
+  f'Best CV Accuracy: {best_cv_score:.4f}', 
+  sep = '\n'
+)
+```
+
+## Elastic net and selecting $\lambda_1$ and $\lambda_2$
+
+The **amount of regularizing** changes as the regularization hyperparameters $\lambda_1$ and $\lambda_2$ change, including a non-regularized model when $\lambda_1 = 0$ and $\lambda_2 = 0$
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](../../figures/elastic-net.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- When $\lambda_1$ and $\lambda_2$ are small, there isn't much regularizing and the estimates are close to MLE or OLS
+- As $\lambda_1$ or $\lambda_2$ increases, the estimates shrink toward zero, including exactly zero
+- It is typical for $\lambda_1$ and $\lambda_2$ to be selected that results in the simplest model that is no more than **one standard error** above the best model as a heuristic
+:::
+:::
+
+::::
 
 ## {background-color="#006242"}
 
 ### Exercise 19 {.lato-font}
 
 1. Return to your data from the previous exercise (or start with the exercise solution)
-2. Reuse the 5-fold cross-validation code to tune the regularization hyperparameter for the `LogisticRegression()` model from `scikit-learn` using the default `l2` complexity penalty (i.e., ridge regression) to maximize overall accuracy
-3. To calculate overall accuracy, use the tuned cutoff value from the previous exercise and, again, when splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
-4. Given the computational expense of cross-validation, using MLE is sufficient, though you are welcome to compare overall accuracy with a Bayesian logistic regression with regularizing standard normal priors
-5. Submit your code, output, and explanation as a single PDF on Canvas
+2. Use the penalized regression code to fit ridge regression, LASSO, and elastic net models
+3. Compare all three models based on overall accuracy on the test data using the tuned cutoff value
+4. Bootstrap and the confidence intervals for the best-performing model and comment on how they differ from your previous non-regularized model output
+5. Using frequentist models is sufficient, though you are welcome to compare overall accuracy, interval estimates, and computational complexity with a Bayesian logistic regression using the relevant regularizing priors
+6. Submit your code, output, and commentary as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -210,5 +445,6 @@ $$
 
 #### Next Time
 
-- 
+- Consider using dimension reduction methods, especially when $p > n$
+- Introduce principle components analysis (PCA)
 
