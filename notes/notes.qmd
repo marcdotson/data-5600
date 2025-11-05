@@ -213,7 +213,10 @@ TODO:
 
 ### Dimension Reduction
 
-- IDEA and Registration?
+- IDEA and Class Registration
+- Follow-up on coding extra credit
+- Make sure post-class survey is available
+
 - Discuss the possibility of p > n
 - See old notes on dimension reduction from Marketing Analytics
 

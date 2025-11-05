@@ -362,6 +362,12 @@ $$
 - Overcomes some of ridge and LASSO limitations with adding the complexity of two regularization hyperparamters
 :::
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_elastic-net.png){fig-align="center"}
+:::
+
 ## Accounting for $\lambda_1$ and $\lambda_2$
 
 ```{python}
