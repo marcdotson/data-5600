@@ -436,7 +436,7 @@ The **amount of regularizing** changes as the regularization hyperparameters $\l
 1. Return to your data from the previous exercise (or start with the exercise solution)
 2. Use the penalized regression code to fit ridge regression, LASSO, and elastic net models
 3. Compare all three models based on overall accuracy on the test data using the tuned cutoff value
-4. Bootstrap and the confidence intervals for the best-performing model and comment on how they differ from your previous non-regularized model output
+4. Bootstrap the confidence intervals for the best-performing model and comment on how they differ from your previous non-regularized model output
 5. Using frequentist models is sufficient, though you are welcome to compare overall accuracy, interval estimates, and computational complexity with a Bayesian logistic regression using the relevant regularizing priors
 6. Submit your code, output, and commentary as a single PDF on Canvas
 
