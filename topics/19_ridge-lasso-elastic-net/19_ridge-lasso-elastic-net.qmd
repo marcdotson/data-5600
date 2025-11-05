@@ -36,6 +36,40 @@ jupyter: python3
 ![](../../figures/workflow_reconcile-fit-evaluate.png){fig-align="center"}
 :::
 
+## Simulate data with correlated predictors
+
+Let's simulate data to test our penalized regression code
+
+```{python}
+#| code-line-numbers: "|1-6|8-9|12|13-14|15-18|19|20|22"
+#| eval: true
+
+import numpy as np
+import polars as pl
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_x1, beta_x2, beta_x3):
+    x1 = rng.normal(10, 3, size=n)
+    x2 = rng.binomial(1, 0.5, size=n)
+    x3 = 2 * x1 + 3 * x2
+    prob_y = (
+      np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2 + beta_x3 * x3) / 
+      (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2 + beta_x3 * x3))
+    )
+    y = rng.binomial(1, prob_y, size=n)
+    return y, x1, x2, x3
+
+data_arr = sim_data(n = 500, beta_0 = 0.25, beta_x1 = -0.15, beta_x2 = 0.75, beta_x3 = -0.10)
+
+# Convert to a dataframe
+data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2', 'x3'])
+y_train = data_df.select('y').to_numpy().ravel()
+X_train = data_df.select(['x1', 'x2', 'x3']).to_numpy()
+```
+
 # Ridge Regression
 
 ## $\ell_2$ complexity penalty, normal prior
@@ -51,6 +85,74 @@ $$
 - Predictors must be **standardized** for fitting penalized regression models
 - The **regularization hyperparameter(s)** must be tuned via cross-validation
 - Confidence intervals for parameter estimates must be obtained via **bootstrapping**
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegressionCV
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Split data into training (temp) and testing data
+X_temp, X_test, y_temp, y_test = train_test_split(
+    X, y, test_size = 0.2, random_state = 42, stratify = y.to_numpy()
+)
+
+# Standardize the training (temp) data
+scaler = StandardScaler()
+scaler.fit(X_temp)
+X_temp = scaler.transform(X_temp)
+
+# Specify a range of regularization hyperparameters and a container for average accuracies
+lambdas = np.logspace(-4, 4, 20)
+avg_accuracy = np.zeros(len(lambdas))
+
+# Specify the already-tuned cutoff probability
+cutoff_prob = 0.35
+
+# Loop through each lambda
+for i in range(len(lambdas)):
+    # Specify a container for accuracies across folds
+    accuracy = np.zeros(5)
+    
+    # Across 5-fold cross-validation
+    for k in range(5):
+        # Split training (temp) data into training and validation data
+        X_train, X_val, y_train, y_val = train_test_split(
+            X_temp, y_temp, test_size = 0.2, random_state = 42, stratify = y_temp.to_numpy()
+        )
+        
+        # Make sure y_train is a 1D array
+        y_train = y_train.to_numpy().ravel()
+        
+        # Fit penalized logistic regression
+        fr_fit = LogisticRegression(C = lambdas[i]).fit(X_train, y_train)
+        
+        # Use validation data to predict
+        p_pred = fr_fit.predict_proba(X_val)[:, 1]
+        y_pred = (p_pred > cutoff_prob).astype(int)
+        
+        # Calculate accuracy
+        conf_mat = confusion_matrix(y_val, y_pred)
+        accuracy[k] = (conf_mat[0, 0] + conf_mat[1, 1]) / conf_mat.sum()
+    
+    # Average accuracy across folds for this cutoff probability
+    avg_accuracy[i] = np.mean(accuracy)
+
+# Identify the best lambda and its associated average accuracy
+lambdas[np.argmax(avg_accuracy)]
+```
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_sampling-distributions-01.png){fig-align="center"}
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_sampling-distributions-02.png){fig-align="center"}
+:::
 
 # Start with the solution from the previous exercise and implement ridge regression {background-color="#006242"}
 

@@ -20,6 +20,9 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
+<!-- TODO:
+- Discussed the possibility of p > n
+ -->
 #### Last Time
 
 - Discussed additional measures of overall classification model fit
