@@ -21,7 +21,7 @@ jupyter: python3
 ### Get Started {.permanent-marker-font}
 
 <!-- TODO:
-- Discussed the possibility of p > n
+- Discuss the possibility of p > n
  -->
 #### Last Time
 
@@ -168,7 +168,7 @@ $\lambda$ is the **regularization** hyperparameter and $C(\theta)$ is the **comp
 
 ::: {.incremental}
 - Adding a complexity penalty **adds bias to reduce variance**
-- The complexity penalty **shrinks** parameter estimes toward zero
+- The complexity penalty **shrinks** parameter estimates toward zero
 - These **shrinkage estimates** are less extreme and more **regular**
 :::
 
