@@ -19,3 +19,6 @@ private/*
 *.html
 !assignments/random-draw.py
 
+
+/.quarto/
+**/*.quarto_ipynb
