@@ -1,0 +1,178 @@
+---
+title: "Dimensionality Reduction"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Applied and compared specific regularization techniques
+
+#### Preview
+
+- Discuss using dimensionality reduction methods
+- Introduce principal component analysis (PCA)
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile.png){fig-align="center"}
+:::
+
+## Continuing the modeling sequence
+
+::: {.v-center}
+![](../../figures/modeling-sequence.png){fig-align="center"}
+:::
+
+# Unsupervised Learning
+
+## Dealing with high-demensional data
+
+There are a number of ways to **improve model parsimony** in the presence of multicollinearity, $p \approx n$, or $p \gt n$
+
+::: {.incremental}
+1. Remove variables from the model (manually or via variable selection)
+2. Use penalized regression (which also deals with overfitting)
+3. Combine correlated variables via **dimensionality reduction**
+:::
+
+::: {.fragment}
+Note that high-dimensional data is **relative** to the number of observations $n$ and can result in overfitting and unstable parameter estimates
+:::
+
+## Where does unsupervised learning fit?
+
+:::: {.columns}
+
+::: {.fragment .column width="33.33%"}
+**Supervised learning**
+
+::: {.incremental}
+- Learn a **mapping function** from inputs to outputs $f: X \rightarrow Y$
+- If the outputs are continuous, this learned mapping function is called **regression**
+- If the outputs are discrete, this learned mapping function is called **classification**
+:::
+:::
+
+::: {.fragment .column width="33.33%"}
+**Unsupervised learning**
+
+::: {.incremental}
+- Learn groups and patterns in data without labeled outputs
+- If we're grouping rows in a dataset, this is called **clustering**
+- If we're grouping columns in a dataset, this is called **dimensionality reduction**
+:::
+:::
+
+::: {.fragment .column width="33.33%"}
+**Reinforcement learning**
+
+::: {.incremental}
+- An agent learns how to interact with its environment through trial and error
+- The agent can take **actions** in its environment
+- It receives **rewards or penalties** based on its actions
+:::
+:::
+
+::::
+
+## Cause of correlated predictors
+
+Why do different applications result in a large number of correlated **predictors or dimensions**?
+
+::: {.fragment}
+| # | Survey Item |
+|---|---------------------------|
+| 1 | The standard features on Apple tablets are useful
+| 2 | I am satisfied with the features of my Apple tablet
+| 3 | Apple tablet quality is comparable to other tablets
+| 4 | I am happy with my purchase of an Apple tablet
+| 5 | Apple tablets could be improved substantially
+:::
+
+::: {.fragment}
+We often want many different measures of the same **latent concept** if it's difficult (or impossible) to measure directly
+:::
+
+## Dimensionality reduction methods
+
+Dimensionality (e.g., dimension) reduction refers to unsupervised learning methods that **summarize a large number of variables** into a smaller number of **latent variables**
+
+::: {.incremental}
+- Factor analysis
+- Principal component analysis (PCA)
+- Multi-dimensional scaling
+:::
+
+::: {.fragment}
+Each of these methods has advantages and disadvantages when applied as **feature engineering**, but our focus will be on PCA
+:::
+
+# Which approach seems best for your project: removing variables, penalized regression, or dimensionality reduction? {background-color="#006242"}
+
+# Principal Component Analysis
+
+## Learning a low-dimensional representation
+
+The goal of **principal component analysis** (PCA) is to find a **low-dimensional representation of the data** that captures the important information from the original high-dimensional data
+
+::: {.incremental}
+- For example, PCA could let us go from a 10-variable model to a 2-variable model while still retaining the important information from all 10 variables
+- These new variables are called **principal components**
+- Evidence suggests most data sets exist on a lower-dimensional manifold (e.g., balled up piece of paper)
+- While all $n$ observations exist in a $p$-dimensional space, not every dimension is informative
+:::
+
+## 
+
+
+
+
+
+
+
+# Complexity penalties operate like priors, so how would the equivalent Bayesian model differ from ridge regression? {background-color="#006242"}
+
+
+
+## {background-color="#006242"}
+
+### Exercise 20 {.lato-font}
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Use the penalized regression code to fit ridge regression, LASSO, and elastic net models
+3. Compare all three models based on overall accuracy on the test data using the tuned cutoff value
+4. Bootstrap the confidence intervals for the best-performing model and comment on how they differ from your previous non-regularized model output
+5. Using frequentist models is sufficient, though you are welcome to compare overall accuracy, interval estimates, and computational complexity with a Bayesian logistic regression using the relevant regularizing priors
+6. Submit your code, output, and commentary as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Discussed using dimensionality reduction methods
+- Introduced principal component analysis (PCA)
+
+#### Next Time
+
+- Connect PCA to regression via principal components regression (PCR)
+

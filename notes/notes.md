@@ -196,18 +196,18 @@ TODO:
 ### Summer 2026
 
 - Variable Selection (Jul 20)
-- Dimension Reduction (Jul 22)
+- Dimensionality Reduction (Jul 22)
 
 ## Week 12
 
 ### Fall 2025
 
-- Dimension Reduction (Nov 10)
+- Dimensionality Reduction (Nov 10)
 - Principal Components Regression (Nov 12)
 
 ### Spring 2026
 
-- Dimension Reduction (Mar 30)
+- Dimensionality Reduction (Mar 30)
 - Principal Components Regression (Apr 1)
 
 ### Summer 2026
@@ -215,15 +215,9 @@ TODO:
 - Principal Components Regression (Jul 27)
 - Interactions (Jul 29)
 
-### Dimension Reduction
-
-- IDEA and Registration?
-- Discuss the possibility of p \> n
-- See old notes on dimension reduction from Marketing Analytics
-
 ### Principal Components Regression
 
-- Dimension reduction as opposed to variable selection and
+- Dimensionality reduction as opposed to variable selection and
   regularization
 - Bayesian version?
 
@@ -246,9 +240,15 @@ TODO:
 
 ### Interactions
 
+- IDEA Evaluation
+
+- Make sure post-class survey is available
+
 - Interactions (including higher-order interactions), including
   interactions
+
 - Why do we just interpret interaction effects and not main effects?
+
 - Does this all have to be done with the statsmodels API? What about
   https://www.scikit-yb.org/en/latest/index.html?
 
