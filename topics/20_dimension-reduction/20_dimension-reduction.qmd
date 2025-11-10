@@ -99,12 +99,12 @@ Why do different applications result in a large number of correlated **predictor
 
 ::: {.fragment}
 | # | Survey Item |
-|---|---------------------------|
-| 1 | The standard features on Apple tablets are useful
-| 2 | I am satisfied with the features of my Apple tablet
-| 3 | Apple tablet quality is comparable to other tablets
-| 4 | I am happy with my purchase of an Apple tablet
-| 5 | Apple tablets could be improved substantially
+|----|---------------------------|
+| 01 | The standard features on Apple tablets are useful
+| 02 | I am satisfied with the features of my Apple tablet
+| 03 | Apple tablet quality is comparable to other tablets
+|    | ...
+| 10 | Apple tablets could be improved substantially
 :::
 
 ::: {.fragment}
@@ -136,32 +136,173 @@ The goal of **principal component analysis** (PCA) is to find a **low-dimensiona
 ::: {.incremental}
 - For example, PCA could let us go from a 10-variable model to a 2-variable model while still retaining the important information from all 10 variables
 - These new variables are called **principal components**
-- Evidence suggests most data sets exist on a lower-dimensional manifold (e.g., balled up piece of paper)
+- Evidence suggests most data sets exist on a **lower-dimensional manifold** (e.g., balled-up piece of paper)
 - While all $n$ observations exist in a $p$-dimensional space, not every dimension is informative
 :::
 
-## 
+## Normalized linear combinations
 
+Each $k$ principal components is a **normalized linear combination** of the original $p-1$ predictor variables
 
+$$
+PC_{k} = \phi_{1,k} X_{1} + \phi_{2,k} X_{2} + \phi_{3,k} X_{3} + \cdots + \phi_{p-1,k} X_{p-1}
+$$
 
+where $\sum_{j=1}^{p-1} \phi_{j,k}^2 = 1$ (i.e., "normalized")
 
+::: {.incremental}
+- There are $p$ predictors including the intercept so we really have $p−1$ predictors
+- $\phi$s are the **loadings** of each principal component
+- $\phi_{j,1}$ represents the $j$th loading corresponding to the $j$th predictor of the first principal component
+- The predictors all need to be **standardized before preforming PCA**
+- At most there are $p$ principal commponents
+:::
 
+## Uncorrelated components
 
+PCA identifies new dimensions that are linear combinations of all the predictor variables
 
-# Complexity penalties operate like priors, so how would the equivalent Bayesian model differ from ridge regression? {background-color="#006242"}
+$$
+\begin{align}
+PC_{1} &= 0.3 Q_{1} - 0.1 Q_{2} - 0.3 Q_{3} + \cdots + 0.5 Q_{8} + 0.7 Q_{9} + 0.5 Q_{10}\\
+PC_{2} &= 0.7 Q_{1} + 0.6 Q_{2} - 0.2 Q_{3} + \cdots + 0.8 Q_{8} + 0.5 Q_{9} - 0.2 Q_{10}
+\end{align}
+$$
 
+::: {.incremental}
+- PCA can transform highly correlated variables into a few main, **uncorrelated principal components**
+- Since the principal components are uncorrelated, multicollinearity is no longer an issue
+- However, **interpretability** of the components can be difficult
+:::
 
+## Variation and orthogonality {auto-animate=true}
+
+![](../../figures/plot_pca-01.png){fig-align="center"}
+
+## Variation and orthogonality {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](../../figures/plot_pca-01.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- The first principal component goes in the direction where the **observations vary the most**
+- The second principal component is **orthogonal to the first principal component** and goes in the direction of the **second largest variance of the observations**
+- Each subsequent principal component finds the **next** largest variance witch each **orthogonal to all previous principal components**
+:::
+:::
+
+::::
+
+## Variation and orthogonality
+
+![](../../figures/plot_pca-02.png){fig-align="center"}
+
+# PCA is only useful when $k < p$, so how do we choose $k$? {background-color="#006242"}
+
+## Simulate data with correlated predictors
+
+Let's simulate data to test our PCA code
+
+```{python}
+#| code-line-numbers: "|17"
+#| eval: true
+
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n):
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  x3 = rng.normal(5, 2, size=n)
+  x4 = 2 * x1 + 3 * x2
+  x5 = x3 + rng.normal(0, 1, size=n)
+  x6 = rng.binomial(1, 0.3, size=n)
+  x7 = x6 + rng.normal(0, 0.5, size=n)
+  return np.column_stack([x1, x2, x3, x4, x5, x6, x7])
+
+# Simulate data
+X = sim_data(n = 500)
+```
+
+## Combine standardizing and model specification
+
+Remember, a **pipeline** is a scikit-learn object that combines feature engineering (i.e., transformations) and the model (e.g., PCA)
+
+```{python}
+#| code-line-numbers: "|4|7|12"
+#| eval: true
+
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+# Split data into train and test
+X_train, X_test = train_test_split(X, test_size = 0.2, random_state = 42)
+
+# Create a pipeline
+pca_pipe = Pipeline([
+  ('feature_engineering', StandardScaler()),
+  ('pca', PCA(n_components = X_train.shape[1])),
+])
+```
+
+## Fit the model and extract components
+
+Hyperparameter tuning on $k$ is accomplished by PCA fitting up to $p$ principal components
+
+```{python}
+#| code-line-numbers: "|1-2|4-6|5|6|8"
+#| eval: true
+
+# Fit PCA
+pca_fit = pca_pipe.fit(X_train)
+
+# Extract explained variance ratio
+pca_steps = pca_fit.named_steps['pca']
+pca_scores = pca_steps.explained_variance_ratio_
+
+print(pca_scores)
+```
+
+## Visualize a scree plot
+
+It's easiest to visualize at what point adding additional princiapl components does not add much additional information using a **scree plot** or **elbow plot**
+
+```{python}
+#| eval: true
+#| output-location: column
+
+# Create scree plot
+sns.lineplot(
+  x = np.arange(1, X_train.shape[1] + 1), 
+  y = pca_scores
+)
+plt.xlabel('Number of Principal Components')
+plt.ylabel('Proportion of Variance Explained')
+plt.title('Scree Plot')
+plt.show()
+```
 
 ## {background-color="#006242"}
 
 ### Exercise 20 {.lato-font}
 
 1. Return to your data from the previous exercise (or start with the exercise solution)
-2. Use the penalized regression code to fit ridge regression, LASSO, and elastic net models
-3. Compare all three models based on overall accuracy on the test data using the tuned cutoff value
-4. Bootstrap the confidence intervals for the best-performing model and comment on how they differ from your previous non-regularized model output
-5. Using frequentist models is sufficient, though you are welcome to compare overall accuracy, interval estimates, and computational complexity with a Bayesian logistic regression using the relevant regularizing priors
-6. Submit your code, output, and commentary as a single PDF on Canvas
+2. Fit a PCA model to the standardized predictors (not the outcome)
+3. Create a scree plot to choose $k$, the number of principal components to keep
+4. Using the chosen $k$, visualize a two-dimensional projection of the data
+5. Try and name the principal components based on the projection and their loadings
+6. Submit your code, output, and interpretation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
