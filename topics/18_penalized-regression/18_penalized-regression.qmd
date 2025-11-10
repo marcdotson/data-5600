@@ -252,10 +252,9 @@ Bayesian models include **shrinkage by default** with all the same benefits and 
 There are a number of ways to **deal with multicollinearity** and **improve model parsimony**
 
 ::: {.incremental}
-1. Manually drop variables from the model
+1. Remove variables from the model (manually or via **variable selection**)
 2. Use penalized regression (which also deals with overfitting)
-3. Apply a **variable selection method**
-4. Combine correlated variables via dimensionality reduction
+3. Combine correlated variables via dimensionality reduction
 :::
 
 ::: {.fragment}

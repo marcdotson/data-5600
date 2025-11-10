@@ -451,5 +451,5 @@ The **amount of regularizing** changes as the regularization hyperparameters $\l
 #### Next Time
 
 - Discuss using dimensionality reduction methods
-- Introduce principal components analysis (PCA)
+- Introduce principal component analysis (PCA)
 
