@@ -154,7 +154,7 @@ where $\sum_{j=1}^{p-1} \phi_{j,k}^2 = 1$ (i.e., "normalized")
 - There are $p$ predictors including the intercept so we really have $p−1$ predictors
 - $\phi$s are the **loadings** of each principal component
 - $\phi_{j,1}$ represents the $j$th loading corresponding to the $j$th predictor of the first principal component
-- The predictors all need to be **standardized before preforming PCA**
+- The predictors all need to be **standardized before performing PCA**
 - At most there are $p$ principal commponents
 :::
 
@@ -164,8 +164,8 @@ PCA identifies new dimensions that are linear combinations of all the predictor 
 
 $$
 \begin{align}
-PC_{1} &= 0.3 Q_{1} - 0.1 Q_{2} - 0.3 Q_{3} + \cdots + 0.5 Q_{8} + 0.7 Q_{9} + 0.5 Q_{10}\\
-PC_{2} &= 0.7 Q_{1} + 0.6 Q_{2} - 0.2 Q_{3} + \cdots + 0.8 Q_{8} + 0.5 Q_{9} - 0.2 Q_{10}
+PC_{1} &= 0.3 X_{1} - 0.1 X_{2} - 0.3 X_{3} + \cdots + 0.5 X_{8} + 0.7 X_{9} + 0.5 X_{10}\\
+PC_{2} &= 0.7 X_{1} + 0.6 X_{2} - 0.2 X_{3} + \cdots + 0.8 X_{8} + 0.5 X_{9} - 0.2 X_{10}
 \end{align}
 $$
 
@@ -276,7 +276,7 @@ print(pca_scores)
 
 ## Visualize a scree plot
 
-It's easiest to visualize at what point adding additional princiapl components does not add much additional information using a **scree plot** or **elbow plot**
+It's easiest to visualize at what point adding additional principal components does not add much additional information using a **scree plot** or **elbow plot**
 
 ```{python}
 #| eval: true
