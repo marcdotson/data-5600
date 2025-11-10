@@ -20,9 +20,6 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-<!-- TODO:
-- Discuss the possibility of p > n
- -->
 #### Last Time
 
 - Discussed additional measures of overall classification model fit
@@ -258,7 +255,7 @@ There are a number of ways to **deal with multicollinearity** and **improve mode
 1. Manually drop variables from the model
 2. Use penalized regression (which also deals with overfitting)
 3. Apply a **variable selection method**
-4. Combine correlated variables via dimension reduction
+4. Combine correlated variables via dimensionality reduction
 :::
 
 ::: {.fragment}

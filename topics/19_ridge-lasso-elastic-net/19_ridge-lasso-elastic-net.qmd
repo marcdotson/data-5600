@@ -450,6 +450,6 @@ The **amount of regularizing** changes as the regularization hyperparameters $\l
 
 #### Next Time
 
-- Consider using dimension reduction methods, especially when $p > n$
-- Introduce principle components analysis (PCA)
+- Discuss using dimensionality reduction methods
+- Introduce principal components analysis (PCA)
 
