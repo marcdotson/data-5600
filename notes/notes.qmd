@@ -228,7 +228,7 @@ TODO:
 - Multilevel Models (Aug 3)
 - Presentations (Aug 5)
 
-### Interactions
+### Interactions and Multilevel Models?
 
 - IDEA Evaluation
 - Make sure post-class survey is available
@@ -239,12 +239,17 @@ TODO:
 
 - Does this all have to be done with the statsmodels API? What about https://www.scikit-yb.org/en/latest/index.html?
 
-### Multilevel Models
+### Multilevel Models / Adaptive Shrinkage?
 
 - Its silly to only use point estimates and its silly to assume homogeneity
 - Motivate with Simpson's paradox (PML p. 80)
+
 - Bring full circle with decision theory and heterogeneous effects
 - Use the loss specification meme
+- Provide an assymetric loss function for the case study that can be used/adapted for project work
+- Note how this changes the presentation of prediction and executive summary (no repeat presentation illustration)
+
+- Reuse the presentation/report meme and discuss organizing the results (see pic) which each model ending in cross-validated predictive/decision-theoretic fit
 
 ## Week 14
 
