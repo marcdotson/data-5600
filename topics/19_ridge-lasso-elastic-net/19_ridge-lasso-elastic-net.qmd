@@ -293,7 +293,7 @@ Since `GridSearchCV()` already refit the best model using all training data, we 
 
 # Extract probability and predictions on the test data
 probs_test = best_estimator.predict_proba(X_test)[:, 1]
-preds_test = (probs_test >= 0.35).astype(int)
+preds_test = (probs_test >= 0.50).astype(int)
 
 # Compute the test accuracy and AUC
 test_accuracy = accuracy_score(y_test, preds_test)
