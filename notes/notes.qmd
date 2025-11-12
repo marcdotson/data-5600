@@ -211,11 +211,6 @@ TODO:
 - Principal Components Regression (Jul 27)
 - Interactions (Jul 29)
 
-### Principal Component Regression
-
-- Dimensionality reduction as opposed to variable selection and regularization
-- Bayesian version?
-
 ## Week 13
 
 ### Fall 2025
@@ -240,13 +235,16 @@ TODO:
 
 - Interactions (including higher-order interactions), including interactions
 - Why do we just interpret interaction effects and not main effects?
+- Let's decide on the best-fitting model using cross-validation specificity?
+
 - Does this all have to be done with the statsmodels API? What about https://www.scikit-yb.org/en/latest/index.html?
 
 ### Multilevel Models
 
-- Its silly to only use point estimates and its silly to assume homogeneity.
+- Its silly to only use point estimates and its silly to assume homogeneity
 - Motivate with Simpson's paradox (PML p. 80)
-- Bring full circle with decision theory and heterogeneous effects.
+- Bring full circle with decision theory and heterogeneous effects
+- Use the loss specification meme
 
 ## Week 14
 

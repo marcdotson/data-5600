@@ -18,6 +18,8 @@ jupyter: python3
 
 ## {background-color="#288DC2"}
 
+<!-- TO DO: Move PCA and PCR to the last week of class, after interactions and multilevel models. -->
+
 ### Get Started {.permanent-marker-font}
 
 #### Last Time

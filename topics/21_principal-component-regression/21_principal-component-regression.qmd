@@ -37,27 +37,287 @@ jupyter: python3
 
 # Principal Component Analysis
 
+## Improving model parsimony
 
-# Have you found meaningful lower-dimensional representations of your project data? {background-color="#006242"}
+How do we improve model parsimony in the presence of **high-dimensional data** and/or **multicollinearity**?
 
-# Adding Supervised Learning
+::: {.incremental}
+1. Remove variables from the model (manually or via variable selection)
+2. Use penalized regression (which also deals with overfitting)
+3. Combine correlated variables via dimensionality reduction
+:::
 
+::: {.fragment}
+Are these approaches complementary or mutually exclusive? [Are they frequentist or Bayesian, and why should you care?]{.fragment}
+:::
 
-# PCA is only useful when $k < p$, so how do we choose $k$? {background-color="#006242"}
+## Normalized linear combinations
 
-# Using Principal Component Regression
+Each $k$ principal components is a **normalized linear combination** of the original $p-1$ predictor variables
 
+$$
+PC_{k} = \phi_{1,k} X_{1} + \phi_{2,k} X_{2} + \phi_{3,k} X_{3} + \cdots + \phi_{p-1,k} X_{p-1}
+$$
+
+where $\sum_{j=1}^{p-1} \phi_{j,k}^2 = 1$ (i.e., "normalized")
+
+::: {.incremental}
+- $\phi$s are the **loadings** of each principal component
+- $\phi_{j,1}$ represents the $j$th loading corresponding to the $j$th predictor of the first principal component
+- The predictors all need to be **standardized before performing PCA**
+- At most there are $p$ principal commponents
+:::
+
+# Have you found a meaningful lower-dimensional representation of your project data? What do you expect? {background-color="#006242"}
+
+# Supervised Learning
+
+## Principal component regression
+
+Once you have a set of principal components, they can be used as the predictors in a supervised learning model, which is appropriately called **principal component regression (PCR)**
+
+::: {.incremental}
+- By using the principal components, you have a **smaller number of predictors** while still containing all of the information from high-dimensional data
+- This can help avoid overfitting and, by construction, multicollinearity (i.e., **each principal component is orthogonoal** to the others)
+:::
+
+::: {.fragment}
+Is PCR easy to interpret? [Does PCR does perform variable selection or include shrinkage estimates?]{.fragment}
+:::
+
+## Choosing the number of components
+
+PCR, like PCA, is only useful when $k < p$, so how do we choose $k$? [Since we now have an outcome $y$, the number of principal components used should be **selected via cross-validation**]{.fragment}
+
+:::: {.columns}
+::: {.fragment .column width="50%"}
+![](../../figures/plot_pcr.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- It is typical for $k$ to be selected that results in the simplest model that is no more than **one standard error** above the best model
+- Why is this used as a heuristic?
+:::
+:::
+::::
+
+# How might PCR serve as a useful conceptual bridge from interpretable models to black-box predictive models? {background-color="#006242"}
+
+# Using PCR
+
+<!-- TO DO: Combine this act with the previous one and use this time to wrap up the course -->
+
+## Simulate data with correlated predictors
+
+Let's simulate data to test our PCR code
+
+```{python}
+#| code-line-numbers: "|7|16|17|23"
+#| eval: true
+
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, betas):
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  x3 = rng.normal(5, 2, size=n)
+  x4 = x1 + 1.5 * x2
+  x5 = x3 + rng.normal(0, 1, size=n)
+  x6 = rng.binomial(1, 0.3, size=n)
+  x7 = x6 + rng.normal(0, 0.5, size=n)
+
+  X = np.column_stack([np.ones(n), x1, x2, x3, x4, x5, x6, x7])
+  prob_y = (np.exp(X @ betas) / (1 + np.exp(X @ betas)))
+  y = rng.binomial(1, prob_y, size=n)
+
+  return y, X
+
+# Simulate data
+y, X = sim_data(n = 500, betas = np.array([-0.7, -0.3, -0.5, -0.2, 0.4, 0.1, -0.1, -0.2]))
+```
+
+## Extend the pipeline beyond two steps
+
+Remember that a **pipeline** is a scikit-learn object that combines feature engineering (i.e., transformations) and the model specification
+
+```{python}
+#| code-line-numbers: "|17-18|19"
+#| eval: true
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, roc_auc_score
+
+# Split data into train and test
+X_train, X_test, y_train, y_test = train_test_split(
+  X, y, test_size = 0.2, stratify = y, random_state = 42
+)
+
+# Create a pipeline
+pcr_pipe = Pipeline([
+  ('scaler', StandardScaler()),
+  ('pca', PCA(random_state = 42)),
+  ('classify', LogisticRegression(fit_intercept = False, penalty = None)),
+])
+```
+
+## Use a grid search for hyperparameter tuning
+
+Again, the set of possible hyperparameter values is called a **grid**
+
+```{python}
+#| code-line-numbers: "|2|7|12-14"
+#| eval: true
+
+# Create a hyperparameter grid for number of PCA components
+hyper_grid = {"pca__n_components": np.arange(1, X_train.shape[1], 1)}
+
+# Use the grid to tune hyperparameters via cross-validation
+kfold_cv = StratifiedKFold(n_splits = 5)
+tune = GridSearchCV(
+  pcr_pipe, hyper_grid, scoring = 'accuracy', 
+  cv = kfold_cv, n_jobs = -1, refit = True
+)
+tune.fit(X_train, y_train)
+
+# Extract the best hyperparameter and CV accuracy
+best_n_components = tune.best_params_['pca__n_components']
+best_cv_score = tune.best_score_
+
+print(
+  f'Best K: {best_n_components}', 
+  f'Best CV Accuracy: {best_cv_score:.4f}', 
+  sep = '\n'
+)
+```
+
+## Visualizing the one-standard-error rule
+
+Since there is no measure of uncertainty for the tuned hyperparameters, it is typical to apply the **one-standard-error rule** for frequentist models and select the hyperparameter that results in the simplest model no more than **one standard error** from the best model
+
+```{python}
+#| eval: true
+
+def lower_bound(cv_results):
+  best_score_idx = np.argmax(cv_results['mean_test_score'])
+  return (
+    cv_results['mean_test_score'][best_score_idx]
+    - (cv_results['std_test_score'][best_score_idx] / np.sqrt(5)) # 5-fold CV
+  )
+
+def best_low_complexity(cv_results):
+  threshold = lower_bound(cv_results)
+  candidate_idx = np.flatnonzero(cv_results['mean_test_score'] >= threshold)
+  best_idx = candidate_idx[
+    cv_results['param_reduce_dim__n_components'][candidate_idx].argmin()
+  ]
+  return best_idx
+```
+
+## Visualizing the one-standard-error rule {visibility="uncounted"}
+
+```{python}
+#| code-line-numbers: "|1-3|5-12|14-25|27-32"
+#| output-location: slide
+#| eval: true
+
+# Extracted cross-validation results
+n_components = tune.cv_results_['param_pca__n_components']
+mean_test_score = tune.cv_results_['mean_test_score']
+
+# Visualize cross-validated results
+plt.figure(figsize = (12, 5))
+plt.bar(n_components, 
+  mean_test_score, 
+  width = 1,
+  color = 'grey',
+  edgecolor = 'black'
+)
+
+# Add lines for best score and one-standard-error rule
+lower = lower_bound(tune.cv_results_)
+plt.axhline(np.max(mean_test_score), 
+  linestyle = '-', 
+  color = 'blue', 
+  label = 'Best Score'
+)
+plt.axhline(lower, 
+  linestyle = '--',
+  color = 'red', 
+  label = 'Best Score - 1 SE'
+)
+
+# Add title, labels, and legend
+plt.title('Balancing Model Complexity and Cross-Validated Accuracy')
+plt.xlabel('Number of PCA Components Used')
+plt.ylabel('Accuracy')
+plt.xticks(n_components.tolist())
+plt.legend(loc = 'lower right')
+```
+
+## Evaluate model performance on the test data
+
+If using the one-standard-error rule results in a different hyperparameter, we'll have to refit the model to get a **final prediction on the test data**
+
+```{python}
+#| code-line-numbers: "|1-7|4"
+#| eval: true
+
+# Update the pipeline and refit the model
+pcr_pipe = Pipeline([
+  ('scaler', StandardScaler()),
+  ('pca', PCA(random_state = 42, n_components = 2)),
+  ('classify', LogisticRegression(fit_intercept = False, penalty = None)),
+])
+pcr_pipe.fit(X_train, y_train)
+
+# Extract probability and predictions on the test data
+probs_test = pcr_pipe.predict_proba(X_test)[:, 1]
+preds_test = (probs_test >= 0.50).astype(int)
+
+# Compute the test accuracy and AUC
+test_accuracy = accuracy_score(y_test, preds_test)
+test_auc = roc_auc_score(y_test, probs_test)
+
+print(
+  f'Test Accuracy: {test_accuracy:.4f}', 
+  f'Test AUC: {test_auc:.4f}', 
+  sep = '\n'
+)
+```
+
+## Model assumptions, hyperparameters, and fit
+
+Note that since PCR uses PCA as feature engineering, we will need to **validate model assumptions** on the lower-dimensional representation of the data (yes, VIF scores will be all 1)
+
+::: {.fragment}
+What hyperparameter have we not tuned yet that is common to all our classification models? [The classification cutoff will need to be tuned **simultaneously or separately**]{.fragment}
+:::
+
+::: {.fragment}
+Fitting many models and comparing them is common in machine learning, so how do we decide which model is best? [Choose the best model based on **cross-validated** predictive or decision-theoretic fit]{.fragment}
+:::
 
 ## {background-color="#006242"}
 
 ### Exercise 21 {.lato-font}
 
 1. Return to your data from the previous exercise (or start with the exercise solution)
-2. Fit a PCA model to the standardized predictors (not the outcome)
-3. Create a scree plot to choose $k$, the number of principal components to keep
-4. Using the chosen $k$, visualize a two-dimensional projection of the data
-5. Try and name the principal components based on the projection and their loadings
-6. Submit your code, output, and interpretation as a single PDF on Canvas
+2. Fit PCR to the leads qualification data, including choosing the number of principal components using 5-fold cross-validation
+<!-- 3. Validate model assumptions after fitting PCR -->
+3. Also tune the classification cutoff separately using 5-fold cross-validation
+4. Name the principal components based on their loadings and interpret the interval estimates
+5. Submit your code, output, and interpretation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
