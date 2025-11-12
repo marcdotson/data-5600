@@ -315,5 +315,5 @@ plt.show()
 
 #### Next Time
 
-- Connect PCA to regression via principal components regression (PCR)
+- Connect PCA to regression via principal component regression (PCR)
 

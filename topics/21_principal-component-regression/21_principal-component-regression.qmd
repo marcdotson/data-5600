@@ -1,0 +1,74 @@
+---
+title: "Principal Component Regression"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Discussed using dimensionality reduction methods
+- Introduced principal component analysis (PCA)
+
+#### Preview
+
+- Connect PCA to regression via principal component regression (PCR)
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_reconcile-fit-evaluate.png){fig-align="center"}
+:::
+
+# Principal Component Analysis
+
+
+# Have you found meaningful lower-dimensional representations of your project data? {background-color="#006242"}
+
+# Adding Supervised Learning
+
+
+# PCA is only useful when $k < p$, so how do we choose $k$? {background-color="#006242"}
+
+# Using Principal Component Regression
+
+
+## {background-color="#006242"}
+
+### Exercise 21 {.lato-font}
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Fit a PCA model to the standardized predictors (not the outcome)
+3. Create a scree plot to choose $k$, the number of principal components to keep
+4. Using the chosen $k$, visualize a two-dimensional projection of the data
+5. Try and name the principal components based on the projection and their loadings
+6. Submit your code, output, and interpretation as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Connected PCA to regression via principal components regression (PCR)
+
+#### Next Time
+
+- Introduce two-way and higher-order interactions
+- Start motivating multilevel models using interactions
+

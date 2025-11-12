@@ -211,7 +211,7 @@ TODO:
 - Principal Components Regression (Jul 27)
 - Interactions (Jul 29)
 
-### Principal Components Regression
+### Principal Component Regression
 
 - Dimensionality reduction as opposed to variable selection and regularization
 - Bayesian version?
@@ -244,7 +244,9 @@ TODO:
 
 ### Multilevel Models
 
+- Its silly to only use point estimates and its silly to assume homogeneity.
 - Motivate with Simpson's paradox (PML p. 80)
+- Bring full circle with decision theory and heterogeneous effects.
 
 ## Week 14
 
