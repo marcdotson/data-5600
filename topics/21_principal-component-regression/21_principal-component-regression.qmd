@@ -78,11 +78,11 @@ Once you have a set of principal components, they can be used as the predictors 
 
 ::: {.incremental}
 - By using the principal components, you have a **smaller number of predictors** while still containing all of the information from high-dimensional data
-- This can help avoid overfitting and, by construction, multicollinearity (i.e., **each principal component is orthogonoal** to the others)
+- This can help avoid overfitting and, by construction, multicollinearity (i.e., **each principal component is orthogonal** to the others)
 :::
 
 ::: {.fragment}
-Is PCR easy to interpret? [Does PCR does perform variable selection or include shrinkage estimates?]{.fragment}
+Is PCR easy to interpret? [Does PCR perform variable selection or include shrinkage estimates?]{.fragment}
 :::
 
 ## Choosing the number of components
