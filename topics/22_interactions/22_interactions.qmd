@@ -1,0 +1,212 @@
+---
+title: "Interactions"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## 
+
+![](../../figures/qr-code_idea-evals.png){fig-align="center"}
+
+## {background-color="#288DC2"}
+
+### Get Started {.permanent-marker-font}
+
+#### Last Time
+
+- Connected PCA to regression via principal components regression (PCR)
+
+#### Preview
+
+- Introduce two-way and higher-order interactions
+- Start motivating multilevel models using interactions
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_build.png){fig-align="center"}
+:::
+
+# Including Interactions
+
+## Conditioning in machine learning
+
+Conditioning is one of the **most important principles in regression and machine learning**, so where have we seen it?
+
+$$
+\LARGE{a | b}
+$$
+
+::: {.incremental}
+- Loss functions are conditional on the business objective
+- Models are conditional on what we know about the data-generating process
+- Data are conditional on the data-generating process
+- Likelihoods are conditional on the data and the model
+:::
+
+::: {.fragment}
+However, the linear model we've been using assumes that each predictor has an **independent relationship** with the outcome
+:::
+
+## Visualizing conditional effects
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](../../figures/plot_interactions-01.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- If you have a HS degree and become a manager, how much does your salary go up, on average?
+- If you have a BS degree and become a manager, how much does your salary go up, on average?
+- How much your salary increases when you become a manager is **conditional on how much education you have**
+:::
+:::
+
+::::
+
+## Adding interaction terms
+
+Interactions occur when the effect of one predictor $x_1$ on the outcome $y$ is **conditional** on the value of another predictor $x_2$
+
+$$
+\large{y_i \sim \text{Distribution}(\theta_i)} \\
+\large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \beta_3 x_{1,i} x_{2,i}}
+$$
+
+::: {.incremental}
+- The term $x_1 x_2$ is an **interaction term**, specifically a **two-way interaction term**
+- Both $x_1$ and $x_2$ are known as **main effects** and must be included in the model if the interaction term $x_{1,i} x_{2,i}$ is included
+- Including two-way interactions $x_1 x_2$ can be helpful to capture a **more complete and complex data-generating process** and can still be interpretable
+- Higher-order interactions (e.g., **three-way interactions** $x_1 x_2 x_3$) are also possible but the model **must include all lower-order interactions and main effects** and they can be difficult to interpret
+:::
+
+## Interaction plots
+
+Interaction plots can be a helpful part of EDA to determine if there is an interaction, but **only between discrete predictors**
+
+:::: {.columns}
+
+::: {.column width="50%"}
+- Parallel lines indicate no interaction
+- Non-parallel lines indicate an interaction
+- The more non-parallel the lines, the stronger the interaction
+:::
+
+::: {.column width="50%"}
+![](../../figures/plot_interactions-02.png){fig-align="center"}
+:::
+
+::::
+
+# What two-way interactions might be meaningful to include for your project? {background-color="#006242"}
+
+# Interpreting Interactions
+
+## Interpreting *continuous-continuous* interactions
+
+Interpreting $\beta$ when $x_1$ and $x_2$ are **both continuous** is conditioned on the link function $f(\theta)$ and the relationship between $\theta$ and $y$, so we'll refer to this generally as the effect on $y$
+
+$$
+\large{y_i \sim \text{Distribution}(\theta_i)} \\
+\large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \beta_3 x_{1,i} x_{2,i}}
+$$
+
+::: {.incremental}
+- $\beta_0$ is the effect on $y$ when $x_1$ and $x_2 = 0$ [(not always meaningful)]{.fragment}
+- $\beta_1$ and $\beta_2$ are the effects on $y$ **for every one unit increase** in $x_1$ or $x_2$ when $x_2$ or $x_1 = 0$, holding all other predictors constant [(not always meaningful)]{.fragment}
+- $\beta_1 + \beta_3 x_2$ is the effect on $y$ **for every one unit increase** in $x_1$ when $x_2$ and all other predictors are constant
+- $\beta_2 + \beta_3 x_1$ is the effect on $y$ **for every one unit increase** in $x_2$ when $x_1$ and all other predictors are constant
+:::
+
+## Interpreting *discrete-discrete* interactions
+
+Interpreting $\beta$ when $x_1$ and $x_2$ are **both discrete** is conditioned on the link function $f(\theta)$ and the relationship between $\theta$ and $y$, so we'll refer to this generally as the effect on $y$
+
+$$
+\large{y_i \sim \text{Distribution}(\theta_i)} \\
+\large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \beta_3 x_{1,i} x_{2,i}}
+$$
+
+::: {.incremental}
+- $\beta_0$ is the effect on $y$ when $x_1$ and $x_2 = 0$ [(not always meaningful)]{.fragment}
+- $\beta_1$ and $\beta_2$ are the effects on $y$ when $x_1$ or $x_2 = 1$ and $x_2$ or $x_1 = 0$, holding all other predictors constant and **relative to the reference level** [(not always meaningful)]{.fragment}
+- $\beta_1 + \beta_3 x_2$ is the effect on $y$ when $x_1 = 1$, holding $x_2$ and all other predictors constant and **relative to the reference level**
+- $\beta_2 + \beta_3 x_1$ is the effect on $y$ when $x_2 = 1$, holding $x_1$ and all other predictors constant and **relative to the reference level**
+:::
+
+## Interpreting *continuous-discrete* interactions
+
+Interpreting $\beta$ when $x_1$ is **continuous** and $x_2$ is **discrete** is similarly conditioned, so we'll refer to this generally as the effect on $y$
+
+$$
+\large{y_i \sim \text{Distribution}(\theta_i)} \\
+\large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \beta_3 x_{1,i} x_{2,i}}
+$$
+
+::: {.incremental}
+- $\beta_0$ is the effect on $y$ when $x_1$ and $x_2 = 0$ [(not always meaningful)]{.fragment}
+- $\beta_1$ is the effect on $y$ **for every one unit increase** in $x_1$ when $x_2 = 0$, holding all other predictors constant [(not always meaningful)]{.fragment}
+- $\beta_2$ is the effect on $y$ when $x_2 = 1$ and $x_1 = 0$, holding all other predictors constant and **relative to the reference level** [(not always meaningful)]{.fragment}
+- $\beta_1 + \beta_3 x_2$ is the effect on $y$ **for every one unit increase** in $x_1$ when $x_2$ and all other predictors are constant
+- $\beta_2 + \beta_3 x_1$ is the effect on $y$ when $x_2 = 1$, holding $x_1$ and all other predictors constant and **relative to the reference level**
+:::
+
+## Multicollinearity, sparsity, and polynomials
+
+Interactions **complicate and change our interpretation of a model** where the effect of any predictor on the outcome is conditioned on the other predictor(s) in the interaction term(s)
+
+::: {.incremental}
+- If you have interaction terms in the model, the interaction effects are typically **the only meaningful thing to interpret** and not the main effects by themselves
+- Including interaction effects is independent from addressing multicollinearity since **multicollinearity is about the relationship between predictors alone**
+- If you have sparse levels of a discrete predictor, be careful using them in interaction terms and **consider combining or dropping sparse levels**
+- A two-way (or higher-order) interaction for the same predictor is a **polynomial effect** and, when used correctly, can help capture non-linear relationships
+:::
+
+::: {.fragment}
+$$
+\large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \beta_3 x_{1,i}^2}
+$$
+:::
+
+# Does including interactions make regularization, variable selection, and dimensionality reduction more or less relevant? {background-color="#006242"}
+
+
+
+## {background-color="#006242"}
+
+### Exercise 22 {.lato-font}
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Fit PCR to the leads qualification data, including choosing the number of principal components using 5-fold cross-validation
+<!-- 3. Validate model assumptions after fitting PCR -->
+3. Also tune the classification cutoff separately using 5-fold cross-validation
+4. Name the principal components based on their loadings and interpret the interval estimates
+5. Submit your code, output, and interpretation as a single PDF on Canvas
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### Summary
+
+- Introduced two-way and higher-order interactions
+- Started motivating multilevel models using interactions
+
+#### Next Time
+
+- 
+
