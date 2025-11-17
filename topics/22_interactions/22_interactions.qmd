@@ -184,18 +184,54 @@ $$
 
 # Does including interactions make regularization, variable selection, and dimensionality reduction more or less relevant? {background-color="#006242"}
 
+# Beyond Interactions
 
+## Conditioning in the model
+
+Interactions allow **predictors to be conditioned on each other** so we can keep our linear model while no longer requiring independent predictors[, but where else have we been relying on **independence instead of conditioning**?]{.fragment}
+
+::: {.fragment}
+$$
+\large{y_i \sim \text{Distribution}(\theta_i)} \\
+\large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \beta_3 x_{1,i} x_{2,i}}
+$$
+:::
+
+::: {.fragment}
+We assume that observations are independent of each other, but are they really? [How might we include **conditioning for our parameters**?]{.fragment}
+:::
+
+## Multilevel logistic regression
+
+$$
+\large{y_i \sim \text{Binomial}(1, p_i)} \\
+\large{\log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
+$$
+
+## Multilevel logistic regression {visibility="uncounted"}
+
+$$
+\large{y_i \sim \text{Binomial}(1, p_i)} \\
+\large{\log\left({p_i \over 1 - p_i}\right) = \beta_{0,h} + \beta_{1,h} x_{1,i} + \cdots + \beta_{p,h} x_{p,i}}
+$$
+
+::: {.incremental}
+- The $h$ index references the **group** that observation $i$ belongs to
+- We can condition the intercept $\beta_{0,h}$, slopes $\beta_{j,h}$, or both by group
+- This allows us to capture **heterogeneous effects** across groups
+- Estimating Bayesian multilevel models not only includes regularization, it includes **adaptive regularization** via partial pooling
+:::
 
 ## {background-color="#006242"}
 
 ### Exercise 22 {.lato-font}
 
 1. Return to your data from the previous exercise (or start with the exercise solution)
-2. Fit PCR to the leads qualification data, including choosing the number of principal components using 5-fold cross-validation
-<!-- 3. Validate model assumptions after fitting PCR -->
-3. Also tune the classification cutoff separately using 5-fold cross-validation
-4. Name the principal components based on their loadings and interpret the interval estimates
-5. Submit your code, output, and interpretation as a single PDF on Canvas
+2. Justify at least one two-way interaction to include in your model
+3. Fit one of the following models with and without your interaction term(s): ridge regression, LASSO, elastic net, variable selection, or PCR
+4. Interpret the parameter estimate(s) associated with your interaction term(s)
+5. Identify which model performed better via 5-fold cross-validation and comment on why
+6. Submit your code, output, and interpretation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
@@ -208,5 +244,6 @@ $$
 
 #### Next Time
 
-- 
+- Finish introducing multilevel models
+- Summarize decision-making under uncertainty
 

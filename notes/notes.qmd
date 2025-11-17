@@ -244,6 +244,12 @@ TODO:
 
 - Reuse the presentation/report meme and discuss organizing the results (see pic) which each model ending in cross-validated predictive/decision-theoretic fit
 
+- Student panel invitation
+- Post-quiz for research project
+- Share LinkedIn QR code
+
+- Meme assignment
+
 ## Week 14
 
 ### Fall 2025
@@ -253,11 +259,4 @@ TODO:
 ### Spring 2026
 
 - Presentations (Apr 13, 15)
-
-### Notes
-
-- Student evaluations (IDEA)
-- Student panel invitation
-- Post-quiz for research project
-- Share LinkedIn QR code
 
