@@ -29,38 +29,17 @@ jupyter: python3
 
 - Finish introducing multilevel models
 - Summarize decision-making under uncertainty
+- Discuss project expectations
 
 ## {background-color="#D1CBBD"}
 
 ::: {.columns .v-center}
-![](../../figures/workflow_build.png){fig-align="center"}
+![](../../figures/workflow_build-predict.png){fig-align="center"}
 :::
 
-# Beyond Interactions
-
-## Conditioning in the model
-
-Interactions allow **predictors to be conditioned on each other** so we can keep our linear model while no longer requiring independent predictors[, but where else have we been relying on **independence instead of conditioning**?]{.fragment}
-
-::: {.fragment}
-$$
-\large{y_i \sim \text{Distribution}(\theta_i)} \\
-\large{f(\theta_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \beta_3 x_{1,i} x_{2,i}}
-$$
-:::
-
-::: {.fragment}
-We assume that observations are independent of each other, but are they really? [How might we include **conditioning for our parameters**?]{.fragment}
-:::
+# Partial Pooling
 
 ## Multilevel logistic regression
-
-$$
-\large{y_i \sim \text{Binomial}(1, p_i)} \\
-\large{\log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}}
-$$
-
-## Multilevel logistic regression {visibility="uncounted"}
 
 $$
 \large{y_i \sim \text{Binomial}(1, p_i)} \\
@@ -76,22 +55,196 @@ $$
 
 ## 
 
+Motivate with Simpson's paradox (PML p. 80)?
+
+## 
+
 ::: {.v-center}
 ![](../../figures/meme_multilevel-models.png){fig-align="center"}
 :::
 
 # What two-way interactions might be meaningful to include for your project? {background-color="#006242"}
 
+# Decision-Making Under Uncertainty
 
-# Does including interactions make regularization, variable selection, and dimensionality reduction more or less relevant? {background-color="#006242"}
+## {background-color="#D1CBBD"}
 
+::: {.columns .v-center}
+![](../../figures/workflow_all.png){fig-align="center"}
+:::
 
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all-decision.png){fig-align="center"}
+:::
+
+## Using data to inform decision-making
+
+There are two types of data analysts: **those who know what decision they are informing** and **those who don't**
+
+::: {.incremental}
+- A clearly specified objective can be translated into an objective function, typically a **loss function**
+- We can use this loss function to **evaluate overall model performance** and select the model that performs best on what matters most
+- Since we want to **use data to quantify uncertainty** about the state of the world, using Bayesian statistics to get posterior estimates is optimal
+- Frequentist interval estimates and predictive fit **can be useful approximations** (i.e., using `scoring = 'accuracy'` vs. `scoring = 'recall'` when classifying)
+:::
+
+## 
+
+::: {.v-center}
+![](../../figures/meme_loss-specification.png){fig-align="center"}
+:::
+
+## Formalize the objective as a function
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+The objective for the lead qualification program is to maximize time spent along with commissions by minimizing the expected opportunity costs
+
+- For every lead that we don't convert that could have been, we lose $1,000 in unrealized commission
+- For every lead that we do convert, we don't lose anything
+- For every lead that we try and convert that won't be, we lose a total of $1,500 in wasted time and lost commission
+
+We can use a piecewise linear loss function to represent the asymmetric loss from unrealized vs. wasted commissions
+:::
+
+::::
+
+## Formalize the objective as a function {visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column .gray-box width="92%"}
+Instead of relying on **accuracy**, **sensitivity**/**recall**, **specificity**, etc. we can create a custom loss function that directly reflects the business objective
+
+```{python}
+#| eval: true
+#| echo: false
+
+import numpy as np
+
+conf_matrix = np.array([3562, 2, 46, 11]).reshape(2, 2)
+```
+
+```{python}
+#| eval: true
+
+def commission_loss(false_positives, false_negatives):
+  unrealized = false_negatives * 1000
+  wasted = false_positives * 1500
+  return unrealized + wasted
+
+commission_loss(
+  false_positives = conf_matrix[0, 1],
+  false_negatives = conf_matrix[1, 0]
+)
+```
+
+The model that minimizes this loss function is the best model for the lead qualification problem, with a value we can include in our **executive summary**
+:::
+
+::::
+
+## 
+
+![](../../figures/meme_draw-an-owl.png){fig-align="center"}
+
+# After this introduction to regression and machine learning, what are you excited about learning next? {background-color="#006242"}
+
+# Projects
+
+## 
+
+![](../../figures/meme_project-iceberg.png){fig-align="center"}
+
+## Presentation expectations
+
+Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist
+
+::: {.incremental}
+- Explain the business problem
+- Provide an executive summary
+- Summarize the data
+- Detail the model
+- Be professional
+:::
+
+## Executive summaries
+
+:::: {.columns .v-center}
+
+::: {.column width="100%"}
+### Our best-performing classification model accurately identifies the leads most likely to be qualified 98.9% of the time and minimizes unrealized or wasted commission at $49,000 {.lato-font}
+:::
+
+::::
+
+## Report expectations
+
+Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist
+
+::: {.incremental}
+- Detail the business objective
+- Summarize the data
+- Specify the model
+- Interpret model results
+- Be professional
+:::
+
+## Report expectations {visibility="uncounted"}
+
+Structure the report using the modeling workflow, with headings for Plan, Build, Explore, etc.
+
+[**Plan**]{.fragment}
+
+::: {.incremental}
+- Describe the business problem
+- Detail the ideal data
+:::
+
+[**Build**]{.fragment}
+
+::: {.incremental}
+- Specify the decision's loss function
+- Specfiy the model's likelihood function, simulate and recover parameters
+:::
+
+[**Explore**]{.fragment}
+
+::: {.incremental}
+- Exploratory data analysis
+- Revise the model specification as needed
+:::
+
+## Report expectations {visibility="uncounted"}
+
+[**Reconcile, Fit, and Evaluate**]{.fragment}
+
+[*for model in [Logistic Regression, Ridge Regression, LASSO, Elastic Net, PCR]:*]{.fragment}
+
+::: {.incremental}
+- Work through each of the model assumptions when relevant
+- Run diagnostics and comment on how well assumptions are met
+- Fit the model and tune hyperparameters using cross-valdiation
+- Evaluate cross-validated overall model fit
+:::
+
+[*Interpret model results from the best-performing model*]{.fragment}
+
+[**Predict**]{.fragment}
+
+::: {.incremental}
+- Compute relevant predictions on the test data
+- Use this to demosntrate the implications of the model
+:::
 
 ## {background-color="#006242"}
 
 ### Exercise 23 {.lato-font}
 
-1. Choose a concept from the course to summarize
+1. Choose a concept from the second half of the course to summarize
 2. [Create a meme](https://imgflip.com/memegenerator) to illustrate the concept
 3. Submit your meme as a PNG on Canvas
 
@@ -103,6 +256,7 @@ $$
 
 - Finished introducing multilevel models
 - Summarized decision-making under uncertainty
+- Discussed project expectations
 
 #### Next Time
 

@@ -296,7 +296,7 @@ X_test = (X_test
 p_pred = fr_fit.predict(X_test)
 y_pred = (p_pred > 0.50).astype(int)
 
-# Creat a confusion matrix
+# Create a confusion matrix
 conf_mat = confusion_matrix(y_test, y_pred)
 conf_mat
 ```

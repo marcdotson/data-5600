@@ -275,9 +275,7 @@ Projects are the ultimate demonstration of learning by doing in the course, serv
 
 ## 
 
-::: {.v-center}
 ![](../../figures/meme_project-iceberg.png){fig-align="center"}
-:::
 
 # Review the syllabus. What questions do you have? What about the course makes you excited or nervous?{background-color="#006242"}
 

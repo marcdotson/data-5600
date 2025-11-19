@@ -230,16 +230,11 @@ TODO:
 
 ### Multilevel Models
 
-- Motivate with Simpson's paradox (PML p. 80)?
+- Use job talk/teaching demo example
+- Show how to easily implement using Bambi
 
-- "There are two types of statisticians: those who know what decision problem they are solving and those who don't"
 - Bring full circle with decision theory and heterogeneous effects
-- Use the loss specification meme
-- Use the draw the owl meme
 - Provide an assymetric loss function for the case study that can be used/adapted for project work
-
-- Reuse the presentation/report meme and discuss organizing the results (see pic) which each model ending in cross-validated predictive/decision-theoretic fit
-- Note how this changes the presentation of prediction and executive summary (no repeat presentation illustration)
 
 ## Week 14
 
