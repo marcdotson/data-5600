@@ -37,7 +37,7 @@ jupyter: python3
 ![](../../figures/workflow_build-predict.png){fig-align="center"}
 :::
 
-# Partial Pooling
+# Adaptive Regularization
 
 ## Multilevel logistic regression
 
@@ -55,7 +55,45 @@ $$
 
 ## 
 
-Motivate with Simpson's paradox (PML p. 80)?
+:::: {.columns .v-center .h-center}
+
+::: {.column width="33.33%"}
+**Complete pooling**
+
+Groups have the same parameters from one model
+:::
+
+::: {.fragment fragment-index=3 .column width="33.33%"}
+**Partial pooling**
+
+Each group has their own parameters but they **pool information** in one model
+:::
+
+::: {.fragment fragment-index=2 .column width="33.33%"}
+**No pooling**
+
+Each group has their own parameters from separate models
+:::
+
+::::
+
+## 
+
+::: {.v-center}
+
+$$
+\LARGE{p(\theta | X, Y) \propto p(X, Y | \theta) \ p(\theta)}
+$$
+:::
+
+## 
+
+::: {.v-center}
+
+$$
+\LARGE{p(\theta, \alpha | X, Y) \propto p(X, Y | \theta) \ \color{red}{p(\theta | \alpha)} \ p(\alpha)}
+$$
+:::
 
 ## 
 
@@ -63,7 +101,105 @@ Motivate with Simpson's paradox (PML p. 80)?
 ![](../../figures/meme_multilevel-models.png){fig-align="center"}
 :::
 
-# What two-way interactions might be meaningful to include for your project? {background-color="#006242"}
+## Fixed, random, and mixed effects
+
+::: {.incremental}
+- **Fixed effects** refers to what we've done all semester up until now: a common set of parameters in our flat/aggregate model
+- **Random effects** refers to what has been introduced with multilevel models so far: a separate intercept and/or slope for each group
+- **Mixed effects** refers to the combination of both fixed and random effects
+:::
+
+## Fixed, random, and mixed effects {visibility="uncounted"}
+
+- **Fixed effects** refers to what we've done all semester up until now: a common set of parameters in our flat/aggregate model
+- **Random effects** refers to what has been introduced with multilevel models so far: a separate intercept and/or slope for each group
+- **Mixed effects** refers to the combination of both fixed and random effects
+
+```{python}
+#| eval: true
+#| echo: false
+
+import numpy as np
+import polars as pl
+import bambi as bmb
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, betas):
+  group = rng.integers(0, 5, size=n)
+
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  x3 = rng.normal(5, 2, size=n)
+
+  X = np.column_stack([np.ones(n), x1, x2, x3])
+  prob_y = (np.exp(X @ betas) / (1 + np.exp(X @ betas)))
+  y = rng.binomial(1, prob_y, size=n)
+
+  return group, y, x1, x2, x3
+
+# Simulate data
+data_arr = sim_data(n = 500, betas = np.array([-0.7, -0.3, -0.5, 0.2]))
+data_df = pl.DataFrame(data_arr, schema = ['group', 'y', 'x1', 'x2', 'x3']).to_pandas()
+```
+
+```{python}
+#| eval: true
+
+ba_model = bmb.Model(
+  'y ~ x1 + x2 + x3',
+  data = data_df,
+  family = 'bernoulli'
+)
+
+ba_model
+```
+
+## Fixed, random, and mixed effects
+
+```{python}
+#| eval: true
+
+ba_model = bmb.Model(
+  'y ~ (1 | group) + x1 + x2 + x3',
+  data = data_df,
+  family = 'bernoulli'
+)
+
+ba_model
+```
+
+## Fixed, random, and mixed effects
+
+```{python}
+#| eval: true
+
+ba_model = bmb.Model(
+  'y ~ x1 + x2 + (x3 | group)',
+  data = data_df,
+  family = 'bernoulli'
+)
+
+ba_model
+```
+
+## Fixed, random, and mixed effects
+
+```{python}
+#| eval: true
+
+ba_model = bmb.Model(
+  'y ~ 0 + (1 + x1 + x2 + x3 | group)',
+  data = data_df,
+  family = 'bernoulli'
+)
+
+ba_model
+```
+
+# Is there a group structure in your project data? What random effects might make sense to include? {background-color="#006242"}
 
 # Decision-Making Under Uncertainty
 
@@ -171,7 +307,7 @@ Use the rubric as a **set of guiding principles** for communicating clearly rath
 - Be professional
 :::
 
-## Executive summaries
+## 
 
 :::: {.columns .v-center}
 
@@ -208,7 +344,7 @@ Structure the report using the modeling workflow, with headings for Plan, Build,
 
 ::: {.incremental}
 - Specify the decision's loss function
-- Specfiy the model's likelihood function, simulate and recover parameters
+- Specify the model's likelihood function, simulate and recover parameters
 :::
 
 [**Explore**]{.fragment}

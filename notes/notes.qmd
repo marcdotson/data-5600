@@ -228,14 +228,6 @@ TODO:
 - Multilevel Models (Aug 3)
 - Presentations (Aug 5)
 
-### Multilevel Models
-
-- Use job talk/teaching demo example
-- Show how to easily implement using Bambi
-
-- Bring full circle with decision theory and heterogeneous effects
-- Provide an assymetric loss function for the case study that can be used/adapted for project work
-
 ## Week 14
 
 ### Fall 2025

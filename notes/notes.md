@@ -232,34 +232,6 @@ TODO:
 - Multilevel Models (Aug 3)
 - Presentations (Aug 5)
 
-### Multilevel Models
-
-- Week 10 Notes
-
-- Its silly to only use point estimates and its silly to assume
-  homogeneity
-
-- Motivate with Simpson’s paradox (PML p. 80)
-
-- “There are two types of statisticians: those who know what decision
-  problem they are solving and those who don’t.”
-
-- Bring full circle with decision theory and heterogeneous effects
-
-- Use the loss specification meme
-
-- Use the draw the owl meme
-
-- Provide an assymetric loss function for the case study that can be
-  used/adapted for project work
-
-- Note how this changes the presentation of prediction and executive
-  summary (no repeat presentation illustration)
-
-- Reuse the presentation/report meme and discuss organizing the results
-  (see pic) which each model ending in cross-validated
-  predictive/decision-theoretic fit
-
 ## Week 14
 
 ### Fall 2025
@@ -270,9 +242,8 @@ TODO:
 
 - Presentations (Apr 13, 15)
 
-### Notes
+### Epilogue
 
-- Student evaluations (IDEA)
 - Student panel invitation
-- Post-quiz for research project
 - Share LinkedIn QR code
+- Post-quiz for research project
