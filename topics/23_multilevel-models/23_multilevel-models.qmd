@@ -363,17 +363,17 @@ Structure the report using the modeling workflow, with headings for Plan, Build,
 ::: {.incremental}
 - Work through each of the model assumptions when relevant
 - Run diagnostics and comment on how well assumptions are met
-- Fit the model and tune hyperparameters using cross-valdiation
+- Fit the model and tune hyperparameters using cross-validation
 - Evaluate cross-validated overall model fit
 :::
 
-[*Interpret model results from the best-performing model*]{.fragment}
+[*Rerun the best-performing model on all of the training data and interpret results*]{.fragment}
 
 [**Predict**]{.fragment}
 
 ::: {.incremental}
 - Compute relevant predictions on the test data
-- Use this to demosntrate the implications of the model
+- Use this to demonstrate the implications of the model
 :::
 
 ## {background-color="#006242"}
