@@ -246,4 +246,5 @@ $$
 
 - Finish introducing multilevel models
 - Summarize decision-making under uncertainty
+- Discuss project expectations
 
