@@ -1,0 +1,25 @@
+---
+title: "Linear Regression Assumptions — Consistent Workflow"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+jupyter: python3
+---
+
+I'd like to put together a set of Python functions for checking model assumptions for both linear and logistic regression. Since I want it to work both linear and logistic regression models, diagnostics that rely on residuals should be avoided. I'm using both statsmodels and scikit-learn, but scikit-learn is preferred as much as possible.
+
+Here are the assumptions I want diagnostics to help evaluate:
+
+1. **Validity**: Data is relevant to the objective and no predictors are missing
+2. **Representativeness**: Data is representative of the data generating process or population
+3. **Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+4. **Independence**: Observations are independent of each other
+5. **Constant Variance**: Homoscedasticity or constant variance of errors
+6. **Normality**: Variation or error is normally distributed
+7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
+
+These are functions that are meant to be accessible and comprehensible for undergraduates, so simplicity is preferred over efficiency.
+
+There is a preference for using polars over pandas along with seaborn.objects when available followed by seaborn and matplotlib.
+
