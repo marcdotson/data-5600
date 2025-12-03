@@ -241,9 +241,3 @@ TODO:
 ### Spring 2026
 
 - Presentations (Apr 13, 15)
-
-### Epilogue
-
-- Discuss TA opportunity
-- Student panel invitation
-- Post-quiz for research project
