@@ -1,0 +1,114 @@
+---
+title: "Regression and <br>Other Stories"
+subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Wrap Up {.permanent-marker-font}
+
+#### This Semester
+
+- Introduced machine learning for business analytics
+- Focused on supervised learning, specifically generalized linear models
+- Applied linear, logistic, and penalized regression to real-world projects
+- Built, evaluated, and interpreted models to inform decision-making
+- Diagnosed and addressed violations of model assumptions
+- Communicated model results clearly in a business context
+
+#### What's Next?
+
+- Applying regression and machine learning in practice
+- Navigating a world shaped by the hope and hype of AI
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all-decision.png){fig-align="center"}
+:::
+
+## Mapping functions, likelihoods, and models
+
+We use models to **extract information** from data and **inform decision-making under uncertainty**, so be sure to use the right model for the job
+
+![](../../figures/models_all.png){fig-align="center"}
+
+## 
+
+::: {.v-center}
+![](../../figures/example-resume.png){fig-align="center"}
+:::
+
+# Correlation is not causation
+
+## 
+
+![](../../figures/meme_correlation-causation.png){fig-align="center"}
+
+# Correlation is not cognition
+
+## {auto-animate=true}
+
+![](../../figures/meme_ai-learning.png){fig-align="center"}
+
+## {auto-animate=true}
+
+:::: {.columns .v-center}
+
+::: {.column width="50%"}
+![](../../figures/meme_ai-learning.png){fig-align="center"}
+:::
+
+::: {.fragment .column width="50%"}
+How do you **navigate data analytics** in the world of AI?
+
+::: {.incremental}
+- Knowing how to ask good questions is more important than ever
+- Understanding the fundamentals is more important than ever
+- Human-readable code is more important than ever
+:::
+:::
+
+::::
+
+## IDEA Evaluations
+
+![](../../figures/qr-code_idea-evals.png){fig-align="center"}
+
+## LinkedIn
+
+![](../../figures/qr-code_linkedin.png){fig-align="center"}
+
+## 
+
+::: {.v-center}
+![](../../figures/modeling-sequence.png){fig-align="center"}
+:::
+
+# What questions do you have? {background-color="#006242"}
+
+## {background-color="#288DC2"}
+
+::: {.v-center .h-center}
+### Thank you for a great semester! {.permanent-marker-font}
+:::
+

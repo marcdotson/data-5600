@@ -244,6 +244,6 @@ TODO:
 
 ### Epilogue
 
+- Discuss TA opportunity
 - Student panel invitation
-- Share LinkedIn QR code
 - Post-quiz for research project
