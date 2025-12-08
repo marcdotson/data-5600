@@ -149,7 +149,8 @@ encouraged to work together, each student is required to submit their
 own work. Each class begins with a student being called on at random to
 share their exercise solution. Additionally, for each exercise, every
 student will be randomly assigned to review one other student’s exercise
-solution.
+solution, including rating their work from 1-3 (e.g., “Needs
+Improvement,” “Good,” “Excellent”).
 
 Students won’t get credit for an exercise if they don’t submit their
 exercise on time, aren’t prepared to share their exercise when called on
@@ -163,8 +164,8 @@ their conceptual understanding of the course material, including their
 efforts in exercise and project work, and evaluate their performance in
 the course.
 
-Interviews will be scheduled with the instructor at the beginning,
-middle, and end of the semester during office hours or by appointment.
+Interviews with the instructor will occur at the beginning, middle, and
+end of the semester during office hours or by appointment.
 
 ### Projects (50%)
 
@@ -237,12 +238,12 @@ notice as it relates to assignment deadlines.
 ### Week 11
 
 - Penalized Regression
-- Variable Selection
+- Ridge Regression, LASSO, and Elastic Net
 
 ### Week 12
 
-- Dimension Reduction
-- Principal Components Regression
+- Dimensionality Reduction
+- Principal Component Regression
 
 ### Week 13
 
@@ -252,3 +253,4 @@ notice as it relates to assignment deadlines.
 ### Week 14
 
 - Presentations
+- Regression and Other Stories
