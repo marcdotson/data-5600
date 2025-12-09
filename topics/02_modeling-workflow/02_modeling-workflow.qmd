@@ -20,8 +20,6 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-TODO: Update walkthrough with actual case data (e.g., plots using filtered data), consider referencing population alongside data generating process
-
 #### Last Time
 
 - Introduced the course and each other
@@ -271,7 +269,7 @@ A model is the mapping function $f: X \rightarrow Y$ where $Y$, $X$, and their r
 
 ::: {.fragment}
 $$
-\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\large{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
 $$
 :::
 
@@ -294,7 +292,7 @@ We will see that this same model is used to determine *likely* values of $\theta
 A model is the mapping function $f: X \rightarrow Y$ where $Y$, $X$, and their relationship is consistent with the objective
 
 $$
-\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\large{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
 $$
 
 $\theta$ is the **weights** or **parameters** of the mapping function from $X$ to $Y$ and the information we want to extract from the data
