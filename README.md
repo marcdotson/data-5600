@@ -149,7 +149,7 @@ encouraged to work together, each student is required to submit their
 own work. Each class begins with a student being called on at random to
 share their exercise solution. Additionally, for each exercise, every
 student will be randomly assigned to review one other student’s exercise
-solution, including rating their work from 1-3 (e.g., “Needs
+solution, including rating their work from 1-3 (i.e., “Needs
 Improvement,” “Good,” “Excellent”).
 
 Students won’t get credit for an exercise if they don’t submit their
@@ -158,23 +158,23 @@ at random, or don’t complete their randomly assigned exercise review.
 
 ### Interviews (30%)
 
-Interviews are an opportunity for students to practice discussing
-regression and machine learning. Students will individually demonstrate
-their conceptual understanding of the course material, including their
-efforts in exercise and project work, and evaluate their performance in
-the course.
+Interviews are an opportunity for students to demonstrate their personal
+understanding and prepare for future real-world job interviews. Designed
+to complement exercise practice and group project work, interviews will
+include questions about course concepts, exercise and project work
+(including code), and reflections on performance in the course.
 
 Interviews with the instructor will occur at the beginning, middle, and
 end of the semester during office hours or by appointment.
 
 ### Projects (50%)
 
-Projects are the ultimate demonstration of learning by doing in the
-course, serving as the means for students to apply their conceptual
-understanding and skill mastery as a group within their business domain
-of interest. Students will complete two group projects, one focused on
-multiple regression and another focused on classification. The groups
-will both present and submit a report.
+Projects are the focus of learning by doing in the course, serving as
+the means for students to apply their conceptual understanding and skill
+mastery both as a group and within their business domain of interest.
+Students will complete two group projects, one focused on regression and
+another focused on classification. The groups will both present and
+submit a report.
 
 The week before the presentations, groups will submit a draft of their
 slides to get feedback and have time for revision. The other students in

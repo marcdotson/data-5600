@@ -238,26 +238,26 @@ Each lecture ends with an exercise designed to help you practice what was covere
 - Each exercise is due before the following class
 - You are encouraged to work together, but you are required to submit your own work
 - Each class begins with one of you being called on at random to share your exercise solution
-- For each exercise, you will be randomly assigned to review one other student’s exercise solution, including rating their work from 1-3 (e.g., "Needs Improvement," "Good," "Excellent")
+- For each exercise, you will be randomly assigned to review one other student’s exercise solution, including rating their work from 1-3 (i.e., "Needs Improvement," "Good," "Excellent")
 - You won’t get credit for an exercise if you don’t submit your exercise on time, aren’t prepared to share your exercise solution when called on at random, or don’t complete your randomly assigned exercise review
 :::
 
 ## Interviews (30%)
 
-Interviews are an opportunity for you to practice discussing regression and machine learning
+Interviews are an opportunity for you to demonstrate your personal understanding and prepare for future real-world job interviews
 
 ::: {.incremental}
-- You will demonstrate your conceptual understanding of the course material, including your efforts in exercise and project work
-- We will also evaluate your performance in the course
+- Designed to complement exercise practice and group project work
+- Includes questions about course concepts, exercise and project work (including code), and reflections on your performance in the course
 - Interviews with me will occur at the beginning, middle, and end of the semester during office hours or by appointment
 :::
 
 ## Projects (50%)
 
-Projects are the ultimate demonstration of learning by doing in the course, serving as the means for you to apply your conceptual understanding and skill mastery as a group within your business domain of interest
+Projects are the focus of learning by doing in the course, serving as the means for you to apply your conceptual understanding and skill mastery both as a group and within your business domain of interest
 
 ::: {.incremental}
-- You will complete two group projects, one focused on multiple regression and another focused on classification
+- You will complete two group projects, one focused on regression and another focused on classification
 - Groups will both present and submit a report
 - The week before the presentations, groups will submit a draft of their slides to get feedback and have time for revision
 - The other students in the class, as well as the group members themselves, will help evaluate each of the presentations
