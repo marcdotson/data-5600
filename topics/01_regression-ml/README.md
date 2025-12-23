@@ -1,7 +1,27 @@
 # Regression and Machine Learning
 
 
-## Case Overview
+Welcome to DATA 5600 Introduction to Regression and Machine Learning!
+During this class we will:
+
+- Make introductions
+- Form groups to work on projects
+- Walk through the course syllabus
+- Provide some context for what we’ll be studying
+
+## Learn
+
+You can also download the slides as an .html file. Once you’ve previewed
+the material and identified any questions, start watching the lecture.
+
+Go the discussions to introduce yourself and starting forming groups of
+**two students each** before continuining with the lecture.
+
+Review the syllabus. What questions do you have? What about the course
+makes you excited or nervous? Go the discussions to share before
+finishing the lecture.
+
+## Case
 
 As a data analyst at Harmons, you are tasked with using product and
 customer data to inform a variety of business decisions, including
@@ -34,13 +54,13 @@ rng = np.random.default_rng(42)
 # Parameter values
 n = 4_793
 beta_0 = 0.05
-beta_jif = 0.30
-beta_skippy = 0.25  
-beta_peterpan = -0.15
-beta_harmons = 0.20
-beta_coupon = 0.25
-beta_ad = 0.18
-beta_loyal = 0.22
+beta_jif = 0.20
+beta_skippy = 0.15
+beta_peterpan = -0.05
+beta_harmons = 0.10
+beta_coupon = 0.12
+beta_ad = 0.08
+beta_loyal = 0.15
 beta_log_price = -0.90
 beta_texture_smooth = 0.10
 beta_texture_chunky = -0.10
@@ -290,3 +310,21 @@ loyalty_df = (raw_df.select([
 transaction_df.write_parquet(os.path.join('data', 'soft_launch.parquet'))
 loyalty_df.write_parquet(os.path.join('data', 'loyalty.parquet'))
 ```
+
+## Apply
+
+### Exercise 01
+
+1.  Take the [course
+    pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
+2.  Start setting up your data stack
+3.  Read the case and write how you might go about informing the
+    decision (no more than one page)
+4.  Include in your response the members of your group
+5.  Submit your response as a PDF on Canvas
+
+### Milestone 01
+
+Discuss the project with your group. Identify a business problem that
+has data you can acquire. Note that the outcome of this project will be
+continuous.

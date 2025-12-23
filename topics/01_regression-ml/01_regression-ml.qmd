@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -267,7 +268,7 @@ Projects are the focus of learning by doing in the course, serving as the means 
 
 ![](../../figures/meme_project-iceberg.png){fig-align="center"}
 
-# Review the syllabus. What questions do you have? What about the course makes you excited or nervous?{background-color="#006242"}
+# Review the syllabus. What questions do you have? What about the course makes you excited or nervous? {background-color="#006242"}
 
 # Regression and Other Stories
 
