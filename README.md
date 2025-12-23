@@ -2,8 +2,8 @@
 
 # DATA 5600 Introduction to Regression and Machine Learning for Analytics
 
-- Monday and Wednesday 1:30-2:45 pm
-- Huntsman Hall 260
+<!-- - Monday and Wednesday 1:30-2:45 pm
+- Huntsman Hall 260 -->
 
 This course introduces machine learning for business analytics,
 including linear, logistic, and penalized regression. Emphasis is on
@@ -195,10 +195,10 @@ notice as it relates to assignment deadlines.
 ### Week 02
 
 - Decisions and Data
+- Probability and Statistics
 
 ### Week 03
 
-- Probability and Statistics
 - Linear Models
 
 ### Week 04
@@ -232,25 +232,29 @@ notice as it relates to assignment deadlines.
 
 ### Week 10
 
+- Spring Break
+
+### Week 11
+
 - Hyperparameters
 - Confusion and Cross-Validation
 
-### Week 11
+### Week 12
 
 - Penalized Regression
 - Ridge Regression, LASSO, and Elastic Net
 
-### Week 12
+### Week 13
 
 - Dimensionality Reduction
 - Principal Component Regression
 
-### Week 13
+### Week 14
 
 - Interactions
 - Multilevel Models
 
-### Week 14
+### Week 15
 
 - Presentations
 - Regression and Other Stories
