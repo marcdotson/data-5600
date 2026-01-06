@@ -4,6 +4,9 @@
 During this class we will walk through a high-level overview of a
 modeling workflow.
 
+To share their solution for Exercise 01, the randomly selected student
+is \_\_\_.
+
 Running statistical models.
 
 ``` python
