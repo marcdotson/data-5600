@@ -13,12 +13,10 @@
 # Folders
 assignments/*
 private/*
+/.quarto/
 
 # Files
 *.pdf
 *.html
-!assignments/random-draw.py
-
-
-/.quarto/
 **/*.quarto_ipynb
+
