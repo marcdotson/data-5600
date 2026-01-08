@@ -481,6 +481,12 @@ $k = 5$
 - Typically preferred over LOOCV and 10-fold CV
 :::
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_test-accuracy.png){fig-align="center"}
+:::
+
 # How would you implement cross-validation to tune the cutoff probability? {background-color="#006242"}
 
 # Bias-Variance Tradeoff
