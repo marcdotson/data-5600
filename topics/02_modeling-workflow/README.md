@@ -5,7 +5,7 @@ During this class we will walk through a high-level overview of a
 modeling workflow.
 
 To share their solution for Exercise 01, the randomly selected student
-is \_\_\_.
+is \*\*\_\_\_\*\*.
 
 Running statistical models.
 
@@ -87,9 +87,9 @@ plt.show()
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
 
-Go the discussions to discuss ideas as a group for your first project,
-including what might the business objective and the data story be,
-before continuining with the lecture.
+Go to the discussions to discuss ideas as a group for your first
+project, including what might the business objective and the data story
+be, before continuing with the lecture.
 
 What is your preferred task when working with data: Data wrangling,
 visualizing data, or implementing methods? Go the discussions to share

@@ -14,8 +14,8 @@ During this class we will:
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
 
-Go the discussions to introduce yourself and starting forming groups of
-**two students each** before continuining with the lecture.
+Go to the discussions to introduce yourself and starting forming groups
+of **two students each** before continuing with the lecture.
 
 Review the syllabus. What questions do you have? What about the course
 makes you excited or nervous? Go the discussions to share before
