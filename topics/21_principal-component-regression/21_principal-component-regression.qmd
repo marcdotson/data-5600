@@ -85,6 +85,12 @@ Once you have a set of principal components, they can be used as the predictors 
 Is PCR easy to interpret? [Does PCR perform variable selection or include shrinkage estimates?]{.fragment}
 :::
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_pcr.png){fig-align="center"}
+:::
+
 ## Choosing the number of components
 
 PCR, like PCA, is only useful when $k < p$, so how do we choose $k$? [Since we now have an outcome $y$, the number of principal components used should be **selected via cross-validation**]{.fragment}
