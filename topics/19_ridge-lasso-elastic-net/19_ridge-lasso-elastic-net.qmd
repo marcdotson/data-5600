@@ -324,6 +324,12 @@ $$
 - LASSO is known to give more biased estimates for nonzero coefficients (see Adaptive LASSO)
 :::
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_lasso.png){fig-align="center"}
+:::
+
 ## LASSO and selecting $\lambda$
 
 The **amount of regularizing** changes as the regularization hyperparameter $\lambda$ changes, including a non-regularized model when $\lambda = 0$
