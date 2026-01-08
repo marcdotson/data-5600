@@ -148,6 +148,12 @@ ba_model
 ```
 :::
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_frequentists-priors.png){fig-align="center"}
+:::
+
 ## Start with a prior predictive distribution
 
 What information could we have about the parameters outside of what's included in the data? [What is the minimum amount of data we need?]{.fragment}
