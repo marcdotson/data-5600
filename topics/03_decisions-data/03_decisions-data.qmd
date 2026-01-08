@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -400,7 +401,7 @@ def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
 sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
 ```
 
-# What might $Y$, $X$, and their relationships be for your project? Try drawing a graph. Keep it simple.{background-color="#006242"}
+# What might $Y$, $X$, and their relationships be for your project? Try drawing a graph. Keep it simple. {background-color="#006242"}
 
 # Uncertainty
 
@@ -418,7 +419,7 @@ What kind of uncertainty?
 :::
 
 ::: {.fragment}
-For interpretable models, we **assume a mapping function exists** and try and to carefully build one so we can focus on quantifying uncertainty by estimating parameters
+For interpretable models, we **assume a mapping function exists** and try to carefully build one so we can focus on quantifying uncertainty by estimating parameters
 :::
 
 ## 
