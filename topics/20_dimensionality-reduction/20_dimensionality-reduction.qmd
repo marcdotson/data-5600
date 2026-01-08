@@ -295,6 +295,12 @@ plt.title('Scree Plot')
 plt.show()
 ```
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_pca.png){fig-align="center"}
+:::
+
 ## {background-color="#006242"}
 
 ### Exercise 20 {.lato-font}
