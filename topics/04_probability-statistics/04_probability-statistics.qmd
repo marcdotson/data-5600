@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -357,12 +358,71 @@ $$
 $$
 
 ::: {.incremental}
-- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$
-- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$
+- $f(X, Y | \theta)$: If you give a likelihood function parameters $\theta$, it can simulate plausible data $X$ and $Y$
+- $\mathcal{L}(\theta | X, Y)$: If you give a likelihood function data $X$ and $Y$, it can determine plausible parameters $\theta$
 :::
 
+## Simulate data $f(X, Y | \theta)$
+
+```{python}
+#| code-line-numbers: "|1|3-4|6-12|14-15|16"
+#| eval: true
+
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
+    x1 = rng.normal(10, 3, size=n)
+    x2 = rng.binomial(1, 0.5, size=n)
+    error = rng.normal(0, sigma, size=n)
+    y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
+    return y, x1, x2
+
+# Call the function and save as an array
+data = sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
+data
+```
+
+## Estimate parameters $\mathcal{L}(\theta | X, Y)$
+
+```{python}
+#| code-line-numbers: "|1|3-5|7-8|10-11|13-14|16"
+#| eval: true
+
+from scipy.stats import norm
+
+def log_likelihood(y, x1, x2, beta_0, beta_x1, beta_x2, sigma):
+    mu = beta_0 + beta_x1 * x1 + beta_x2 * x2
+    return np.sum(norm.logpdf(y, loc=mu, scale=sigma))
+
+# Create an array to hold the likelihood of different sets of parameters
+likelihood = np.zeros(2)
+
+# How likely are a random set of parameter values?
+likelihood[0] = log_likelihood(y = data[0], x1 = data[1], x2 = data[2], beta_0 = 5, beta_x1 = 3, beta_x2 = -2, sigma = 2)
+
+# How likely are the true values?
+likelihood[1] = log_likelihood(y = data[0], x1 = data[1], x2 = data[2], beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
+
+likelihood
+```
+
+## Using statistics to estimate parameters
+
+Our parametric model of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
+
+$$
+\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+$$
+
+- $f(X, Y | \theta)$: If you give a likelihood function parameters $\theta$, it can simulate plausible data $X$ and $Y$
+- $\mathcal{L}(\theta | X, Y)$: If you give a likelihood function data $X$ and $Y$, it can determine plausible parameters $\theta$
+
 ::: {.fragment}
-How we use the likelihood function to estimate parameters depends on what we assume is a random variable (i.e., how we interpret probability)
+How we use the likelihood function to estimate parameters **depends on what we assume is a random variable** (i.e., how we interpret probability)
 :::
 
 ## 
@@ -402,8 +462,6 @@ $$
 ::::
 
 ## Using the likelihood to estimate parameters {auto-animate=true}
-
-TODO: Demonstrate likelihood being used for inference as the inverse of it being used for simulation
 
 ![](../../figures/plot_likelihood.png){fig-align="center"}
 
