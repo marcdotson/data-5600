@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -20,7 +21,7 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-TODO: Add Bernie holding predictors constant meme, change additivity/linearity to linearity throughout
+<!-- TODO: Add Bernie holding predictors constant meme, change additivity/linearity to linearity throughout -->
 
 #### Last Time
 
