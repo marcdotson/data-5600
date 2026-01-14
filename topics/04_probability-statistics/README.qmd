@@ -8,7 +8,7 @@ During this class we will:
 - Finish building models using probability
 - Demonstrate fitting models to recover parameters
 
-To share their solution for Exercise 03, the randomly selected student is **Justin Hofhiens**.
+To share their solution for Exercise 03, the randomly selected student is **___**.
 
 ## Learn
 

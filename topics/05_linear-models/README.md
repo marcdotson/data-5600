@@ -4,7 +4,7 @@
 During this class we will formally introduce linear regression.
 
 To share their solution for Exercise 04, the randomly selected student
-is **Blake Bacino**.
+is \*\*\_\_\_\*\*.
 
 ## Learn
 

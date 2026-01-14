@@ -7,7 +7,7 @@ During this class we will:
 - Start modeling data generating processes
 
 To share their solution for Exercise 02, the randomly selected student
-is **Jose Sosa**.
+is \*\*\_\_\_\*\*.
 
 ## Learn
 

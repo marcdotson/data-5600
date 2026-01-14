@@ -7,7 +7,7 @@ During this class we will:
 - Demonstrate fitting models to recover parameters
 
 To share their solution for Exercise 03, the randomly selected student
-is **Justin Hofhiens**.
+is \*\*\_\_\_\*\*.
 
 ## Learn
 
