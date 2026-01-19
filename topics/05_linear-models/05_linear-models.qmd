@@ -21,8 +21,6 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-<!-- TODO: Add Bernie holding predictors constant meme, change additivity/linearity to linearity throughout -->
-
 #### Last Time
 
 - Finished building models using probability
@@ -384,6 +382,10 @@ $$
 What about $\sigma^2$?
 :::
 
+## 
+
+![](../../figures/meme_holding-constant.png){fig-align="center"}
+
 ## Multiple linear regression and correlation
 
 For multiple linear regression, each slope $\beta_1, \cdots, \beta_p$ is no longer connected directly to the correlation between the given $x$ and $y$
@@ -417,7 +419,7 @@ Before interpreting results from linear regression, we need to confirm the model
 ::: {.incremental}
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 2. **Representativeness**: Data is representative of the data generating process or population
-3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+3. **Linearity**: The mapping function from the predictors to the outcome is an linear function of the parameters
 4. **Independence**: Observations are independent of each other
 5. **Constant Variance**: Homoscedasticity or constant variance of errors
 6. **Normality**: Variation or error is normally distributed
@@ -443,7 +445,7 @@ $$
 ::: {.column width="40%"}
 1. Validity
 2. Representativeness
-3. Additivity and Linearity
+3. Linearity
 4. Independence
 5. Constant Variance
 6. Normality

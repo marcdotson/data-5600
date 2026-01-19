@@ -4,36 +4,38 @@
 During this class we will formally introduce linear regression.
 
 To share their solution for Exercise 04, the randomly selected student
-is \*\*\_\_\_\*\*.
+is **Hannah Hamilton**.
 
 ## Learn
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
 
-Copy the Monte Carlo code for a distribution and try different parameter
-values. How does the distribution change? Go the discussions to share
-before continuing with the lecture.
+If we use a line to model the mean of the data generating process, what
+is a “good” line? Go the discussions to share before continuing with the
+lecture.
 
-Both frequentist and Bayesian statistics use probability to quantify
-uncertainty, so how are they different? Go the discussions to share
-before finishing the lecture.
+We want to keep our model as simple as possible, so why would we use
+multiple linear regression? Go the discussions to share before finishing
+the lecture.
 
 ## Apply
 
-### Exercise 04
+### Exercise 05
 
-1.  Return to your simulated sales data from the previous exercise (or
-    start with the exercise solution)
-2.  Demonstrate that you can recover the parameters you used to simulate
-    the data using either a frequentist or Bayesian model
-3.  Reflect on how the interval estimates of the two approaches differ
-    and how you might interpret each of them
-4.  Submit your code, output, and reflection as a single PDF on Canvas
+1.  Review the materials from the course thus far
+2.  Identify lingering questions you have about the concepts covered
+3.  Use an AI tool to ask your questions and reflect on the responses
+    you receive
+4.  Identify at least two questions you feel have been answered and
+    share your prompts, the responses you received, and your reflections
+    on the responses
+5.  Submit your prompts, responses, and reflections as a single PDF on
+    Canvas
 
-### Milestone 04
+### Milestone 05
 
-Continue working on simulating data that reflects the data generating
-process/the ideal data for your project. Can you recover parameters for
-your project’s simulated data using either a frequentist or Bayesian
-model?
+It’s time to have real data to work with. If you can’t get the data you
+want, you may need to adjust your business problem and the associated
+loss or utility function. Confirm as a group that your data satisfies
+the requirements in the project assignment details.
