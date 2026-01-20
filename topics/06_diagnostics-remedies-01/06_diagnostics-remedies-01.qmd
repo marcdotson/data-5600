@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -20,7 +21,7 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-TODO: 
+<!-- TODO: 
 
 - Limit EDA and start with feature engineering before (sprinkle throughout?) model assumptions, including log-transformations, dummy-coding, and interaction terms (see modeling workflow redux).
 - Add log-transform, spider-man multicollinearity memes
@@ -28,7 +29,7 @@ TODO:
   - Validity, Representativeness, and Linearity (correct from Additivity and Linearity)
   - Independence, Constant Variance, Normality, and Identifiability
 - Figure out a way to simplify and streamline assumption evaluation. Provide functions – something!
-- Compare more before and after plots when the assumptions are violated and when they are satisfied using the same tools provided.
+- Compare more before and after plots when the assumptions are violated and when they are satisfied using the same tools provided. -->
 
 #### Last Time
 

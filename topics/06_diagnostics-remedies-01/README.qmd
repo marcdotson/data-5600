@@ -3,6 +3,22 @@ title: "Diagnostics and Remedies"
 format: gfm
 ---
 
+During this class we will:
+
+- Start working with real data
+- Conduct exploratory data analysis
+- Begin reconciling the data and the model
+
+To share their solution for Exercise 05, the randomly selected student is **__**.
+
+## Learn
+
+You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
+
+If we use a line to model the mean of the data generating process, what is a “good” line? Go the discussions to share before continuing with the lecture.
+
+We want to keep our model as simple as possible, so why would we use multiple linear regression? Go the discussions to share before finishing the lecture.
+
 ## Data Dictionary
 
 Transaction data from a one-week peanut butter soft launch test in a single designated market area (DMA). Each of the 4,793 rows represents one customer's peanut butter category purchase behavior during the test period.
@@ -18,4 +34,18 @@ Transaction data from a one-week peanut butter soft launch test in a single desi
 - **texture**: Product texture
 - **size**: Jar size purchased in ounces
 - **price**: Price paid per jar
+
+## Apply
+
+### Exercise 05
+
+1. Review the materials from the course thus far
+2. Identify lingering questions you have about the concepts covered
+3. Use an AI tool to ask your questions and reflect on the responses you receive
+4. Identify at least two questions you feel have been answered and share your prompts, the responses you received, and your reflections on the responses
+5. Submit your prompts, responses, and reflections as a single PDF on Canvas
+
+### Milestone 05
+
+It's time to have real data to work with. If you can't get the data you want, you may need to adjust your business problem and the associated loss or utility function. Confirm as a group that your data satisfies the requirements in the project assignment details.
 
