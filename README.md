@@ -203,12 +203,12 @@ notice as it relates to assignment deadlines.
 
 ### Week 04
 
-- Diagnostics and Remedies (Part 01)
-- Diagnostics and Remedies (Part 02)
+- Validity, Representativeness, and Linearity
+- Independence, Constant Variance, Normality, and Identifiability
 
 ### Week 05
 
-- Feature Engineering and Ordinary Least Squares
+- Ordinary Least Squares
 - Frequentist and Bayesian Inference
 
 ### Week 06
