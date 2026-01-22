@@ -1,5 +1,5 @@
 ---
-title: "Feature Engineering and <br>Ordinary Least Squares"
+title: "Ordinary Least Squares"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -20,7 +21,7 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-TODO: Just Training/Testing Split and OLS? Introduce loyalty data starting with this exercise?
+<!-- TODO: Just Training/Testing Split and OLS? Introduce loyalty data starting with this exercise? -->
 
 #### Last Time
 
