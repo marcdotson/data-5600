@@ -5,7 +5,7 @@ format: gfm
 
 During this class we will formally introduce linear regression.
 
-To share their solution for Exercise 04, the randomly selected student is **Hannah Hamilton**.
+To share their solution for Exercise 04, the randomly selected student is **___**.
 
 ## Learn
 
