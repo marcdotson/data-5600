@@ -1,5 +1,5 @@
 ---
-title: "Diagnostics and Remedies"
+title: "Validity, Representativeness, <br>and Linearity"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -21,16 +21,6 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-<!-- TODO: 
-
-- Limit EDA and start with feature engineering before (sprinkle throughout?) model assumptions, including log-transformations, dummy-coding, and interaction terms (see modeling workflow redux).
-- Add log-transform, spider-man multicollinearity memes
-- Divide assumptions:
-  - Validity, Representativeness, and Linearity (correct from Additivity and Linearity)
-  - Independence, Constant Variance, Normality, and Identifiability
-- Figure out a way to simplify and streamline assumption evaluation. Provide functions – something!
-- Compare more before and after plots when the assumptions are violated and when they are satisfied using the same tools provided. -->
-
 #### Last Time
 
 - Formally introduced linear regression
@@ -49,7 +39,7 @@ jupyter: python3
 
 ## Assumptions all the way down
 
-We need to use **diagnostics** to confirm the model assumptions are met, and **remedy** any issues, so that our interpretation (i.e., statistical inference) is valid
+We need to use **diagnostics** to see if the model assumptions are met and **remedy** any issues so that our interpretation (i.e., statistical inference) is valid
 
 :::: {.columns}
 
@@ -73,7 +63,7 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 2. **Representativeness**: Data is representative of the data generating process or population
-3. **Additivity and Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+3. **Linearity**: The mapping function from the predictors to the outcome is an additive, linear function of the parameters
 4. **Independence**: Observations are independent of each other
 5. **Constant Variance**: Homoscedasticity or constant variance of errors
 6. **Normality**: Variation or error is normally distributed
@@ -112,13 +102,15 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Import data
-sl_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
+sl_data = (pl.read_parquet(os.path.join('data', 'original_df.parquet'))
   .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
   .cast({'size': pl.String})
 )
 ```
 
 ```{python}
+#| code-line-numbers: "|1,8"
+
 import os
 import polars as pl
 import seaborn.objects as so
@@ -126,14 +118,11 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Import data
-sl_data = pl.read_parquet(os.path.join('soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
 ```
 
 ::: {.fragment}
-The working directory may be different depending on how you run the code
-
-- The **root** when running code line-by-line
-- The **current folder** when rendering the document to PDF
+When including a file path in your code to read or write other files, use a library to create a **relative file path**
 :::
 
 ## {.scrollable}
@@ -293,6 +282,46 @@ pb_data['units'].drop_nans().mean()
 Why is **right-skewed continuous data** common? Why might this be a problem with our assumptions?
 :::
 
+## Log transformations
+
+In the spirit of conducting EDA **with the model assumptions in mind**, it is common to transform either our $X$ predictor(s), $y$ outcome, or *both* to help satisfy model assumptions
+
+::: {.incremental}
+- If we have **right-skewed continuous data**, this is most commonly addressed by using a log transformation
+- Any transformation, including a log transformation, is simply putting the data on a different **scale**
+- When performing a log transformation, make sure to include an **offset** to avoid taking the log of zero
+:::
+
+::: {.fragment}
+```{python}
+#| eval: true
+
+pb_data = (pb_data
+  .with_columns(
+    (pl.col('units') + 1).log().alias('log_units')
+  )
+)
+```
+:::
+
+## *Log transformed* means and histograms
+
+```{python}
+#| eval: true
+#| output-location: column
+
+pb_data['log_units'].drop_nans().mean()
+```
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_data, x = 'log_units')
+  .add(so.Bars(), so.Hist(bins = 10))
+)
+```
+
 ## Correlations
 
 ```{python}
@@ -423,7 +452,7 @@ Why should we care about **omitted variables**? What about including variables t
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Get different data
@@ -456,7 +485,7 @@ Why should we care about the data being representative? What's the difference be
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Get different data
@@ -511,6 +540,7 @@ pb_train = (pb_data
 
 ```{python}
 #| eval: true
+#| code-line-numbers: "|7|8|11-12"
 
 import numpy as np
 import statsmodels.api as sm
@@ -569,7 +599,7 @@ outliers_dffits_sorted.head()
 
 # Why are both validity and representativeness the most essential of the linear regression assumptions? {background-color="#006242"}
 
-# Additivity and Linearity
+# Linearity
 
 ## 
 
@@ -588,17 +618,17 @@ $$
 :::
 
 ::: {.column width="40%"}
-The mapping function from the predictors to the outcome is additive and a linear function **of the parameters**
+The mapping function from the predictors to the outcome is an additive, linear function **of the parameters**
 :::
 
 ::::
 
 ## Functional form of the deterministic component
 
-The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+The mapping function from the predictors to the outcome is an additive, linear function of the parameters
 
 ::: {.fragment}
-If the process or population isn't approximated by an additive and linear function, what happens to our inferences?
+If the process or population isn't approximated by an additive, linear function, what happens to our inferences?
 :::
 
 :::: {.columns}
@@ -615,7 +645,7 @@ If the process or population isn't approximated by an additive and linear functi
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Transform $X$
@@ -633,10 +663,7 @@ The relationship between the outcome and predictor(s) should be roughly linear o
 ```{python}
 #| eval: true
 #| output-location: column
-
-# Save the residuals and fitted values
-pb_train['residuals'] = fit_01.resid
-pb_train['fittedvalues'] = fit_01.fittedvalues
+#| code-line-numbers: "|1"
 
 (so.Plot(pb_data, x = 'price', y = 'units')
     .add(so.Dot(alpha = 0.25))
@@ -644,13 +671,33 @@ pb_train['fittedvalues'] = fit_01.fittedvalues
 )
 ```
 
-## Scatterplot of outcome and predictor(s)
+## 
+
+![](../../figures/meme_log-transform.png){fig-align="center"}
+
+## Scatterplot of outcome and predictor(s) {visibility="uncounted"}
 
 The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
 
 ```{python}
 #| eval: true
 #| output-location: column
+#| code-line-numbers: "|1"
+
+(so.Plot(pb_data, x = 'price', y = 'log_units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## Scatterplot of outcome and predictor(s) {visibility="uncounted"}
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+#| code-line-numbers: "|1"
 
 (so.Plot(pb_train, x = 'log_price', y = 'log_units')
     .add(so.Dot(alpha = 0.25))
@@ -665,6 +712,10 @@ The relationship between the residuals and predictor(s) should also be roughly l
 ```{python}
 #| eval: true
 #| output-location: column
+
+# Save the residuals and fitted values
+pb_train['residuals'] = fit_01.resid
+pb_train['fittedvalues'] = fit_01.fittedvalues
 
 (so.Plot(pb_train, x = 'residuals', y = 'log_units')
     .add(so.Dot(alpha = 0.25))
@@ -730,7 +781,7 @@ plt.show()
 
 1. Clean up the soft launch data
 2. Create two interesting visualizations that help you understand the data and its limitations
-3. Walk through the validity, representativeness, and additivity/linearity assumptions and justify whether or not they are satisfied for your cleaned data
+3. Walk through the validity, representativeness, and linearity assumptions and justify whether or not they are satisfied for your cleaned data
 4. Submit your code, output, and explanations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
