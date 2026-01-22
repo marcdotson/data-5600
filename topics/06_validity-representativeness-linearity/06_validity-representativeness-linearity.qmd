@@ -478,7 +478,7 @@ Why should we care about the data being representative? What's the difference be
 
 ::: {.incremental}
 - How was the data collected?
-- Is it representiave of the process or population we care about?
+- Is it representative of the process or population we care about?
 - Is data **missing at random**?
 - Check for **influential points**
 :::
@@ -681,6 +681,32 @@ The relationship between the outcome and predictor(s) should be roughly linear o
 
 ```{python}
 #| eval: true
+#| echo: false
+
+pb_data = (pb_data
+  .with_columns(
+    (pl.col('price') + 1).log().alias('log_price')
+  )
+)
+```
+
+```{python}
+#| eval: true
+#| output-location: column
+#| code-line-numbers: "|1"
+
+(so.Plot(pb_data, x = 'log_price', y = 'units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## Scatterplot of outcome and predictor(s) {visibility="uncounted"}
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
 #| output-location: column
 #| code-line-numbers: "|1"
 
@@ -746,8 +772,12 @@ How is that different from a scatterplot of the outcome and the same predictor?
 :::
 
 ::: {.incremental}
-- Partial regression plots attempt to show the effect of adding an additional variable to the model (given that one or more predictors are already in the model)
-- For a specific predictor, we take whatever is leftover after the fit of the other variables and look to see if what remains is correlated with the part of the predictor that is not already accounted for by the other variables
+- Partial regression plots attempt to show the effect of adding each new predictor to the model (given that one or more predictors are already in the model)
+- For each new predictor, we take whatever is leftover after the fit of the other predictors and look to see if adding the new predictor matters
+:::
+
+::: {.fragment}
+If the linearity assumption is met, each of the partial regression plots should be roughly linear
 :::
 
 ## Partial regression plots
