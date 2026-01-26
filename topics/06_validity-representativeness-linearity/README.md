@@ -4,7 +4,7 @@
 During this class we will:
 
 - Start working with real data
-- Conduct exploratory data analysis
+- Quickly review exploratory data analysis
 - Begin reconciling the data and the model
 
 Start by downloading the soft launch data. To share their solution for
