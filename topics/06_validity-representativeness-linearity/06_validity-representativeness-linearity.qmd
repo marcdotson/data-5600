@@ -28,7 +28,7 @@ jupyter: python3
 #### Preview
 
 - Start working with real data
-- Conduct exploratory data analysis
+- Quickly review exploratory data analysis
 - Begin reconciling the data and the model
 
 ## {background-color="#D1CBBD"}
@@ -821,7 +821,7 @@ plt.show()
 #### Summary
 
 - Started working with real data
-- Conducted exploratory data analysis
+- Quickly reviewed exploratory data analysis
 - Began reconciling the data and the model
 
 #### Next Time
