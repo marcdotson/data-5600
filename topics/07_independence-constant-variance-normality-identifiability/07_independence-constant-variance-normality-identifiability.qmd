@@ -1,5 +1,5 @@
 ---
-title: "Diagnostics and Remedies"
+title: "Independence, Constant Variance, Normality, and Identifiability"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -23,7 +24,7 @@ jupyter: python3
 #### Last Time
 
 - Started working with real data
-- Conducted exploratory data analysis
+- Quickly reviewed exploratory data analysis
 - Began reconciling the data and the model
 
 #### Preview
@@ -82,7 +83,7 @@ In what ways could this assumption be violated (and often is)?
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Include a predictor to control for the dependence
@@ -110,7 +111,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 # Import data
-pb_data = (pl.read_parquet(os.path.join('..', '..', 'data', 'original_df.parquet'))
+pb_data = (pl.read_parquet(os.path.join('data', 'original_df.parquet'))
   .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
   .cast({'size': pl.String})
   .filter(pl.col('units') > 0)
@@ -194,7 +195,7 @@ If the variance isn't constant or homoscedastic it's called **heteroscedasticity
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Transform $y$
@@ -221,7 +222,7 @@ Errors are reflected in the residuals, so if there is constant variance in error
 
 # Does your project data satisfy the independence and constant variance assumptions? If not, what can you do? {background-color="#006242"}
 
-# Normality and Identifiability
+# Normality
 
 ## 
 
@@ -261,7 +262,7 @@ This assumption is **not that the outcome is normally distributed**, but that th
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Transform $y$
@@ -302,7 +303,9 @@ plt.title("Normal Q-Q")
 plt.show()
 ```
 
-<!-- # What does it mean that the variation or error is approximately normally distributed? {background-color="#006242"} -->
+# What does it mean that the variation or error is approximately normally distributed? {background-color="#006242"}
+
+# Identifiability
 
 ## 
 
@@ -347,7 +350,7 @@ Why would this be a problem for identifiability (think about how we interpret th
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Drop some predictors
@@ -357,6 +360,10 @@ Why would this be a problem for identifiability (think about how we interpret th
 :::
 
 ::::
+
+## 
+
+![](../../figures/meme_multicollinearity.png){fig-align="center"}
 
 ## Compute variance inflation factors {.scrollable}
 
