@@ -3,8 +3,8 @@
 
 During this class we will compare frequentist and Bayesian inference.
 
-To share their solution for Exercise 08, the randomly selected student
-is \*\*\_\_\_\*\*.
+Start by downloading the loyalty data. To share their solution for
+Exercise 08, the randomly selected student is \*\*\_\_\_\*\*.
 
 ## Learn
 
@@ -17,6 +17,20 @@ lecture.
 
 When might prior information be especially important in an analysis? Go
 the discussions to share before finishing the lecture.
+
+## Data Dictionary
+
+Loyalty data includes consumers who have signed up for the loyalty
+program.
+
+- **customer_id**: Unique customer identifier
+- **units**: Number of peanut butter jars purchased
+- **loyal**: Enrolled in Harmon’s loyalty program
+- **age**: Age
+- **avg_spend**: Average spend per week
+- **gender**: Gender
+- **points**: Points accrued
+- **email**: Signed up for email promotions
 
 ## Apply
 
