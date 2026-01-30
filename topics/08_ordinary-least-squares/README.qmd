@@ -1,0 +1,33 @@
+---
+title: "Ordinary Least Squares"
+format: gfm
+---
+
+During this class we will:
+
+- Complete feature engineering
+- Begin detailing model estimation
+
+To share their solution for Exercise 07, the randomly selected student is **___**.
+
+## Learn
+
+You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
+
+Why do we need to reconcile the differences between the model and the data? Go the discussions to share before continuing with the lecture.
+
+What are the pros and cons of fitting a model using ordinary least squares? Go the discussions to share before finishing the lecture.
+
+## Apply
+
+### Exercise 08
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
+3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
+4. Submit your code, output, and interpretations as a single PDF on Canvas
+
+### Milestone 08
+
+Complete the feature engineering for your project and run an initial model using OLS. Interpret the parameter estimates.
+

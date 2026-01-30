@@ -21,8 +21,6 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-<!-- TODO: Just Training/Testing Split and OLS? Introduce loyalty data starting with this exercise? -->
-
 #### Last Time
 
 - Finished assumption diagnostics and remedies
@@ -88,7 +86,7 @@ import seaborn.objects as so
 import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
 
-sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
@@ -188,7 +186,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 
 ## Transforming continuous $y$ and $X$
 
-Having **approximately normal continuous data** will help satisfy all of the linear regression assumptions: additivity/linearity, constant variance, and normality
+Having **approximately normal continuous data** will help satisfy some of the linear regression assumptions: linearity, constant variance, and normality
 
 :::: {.columns}
 
@@ -217,7 +215,7 @@ Feature engineering for interpretable models isn't just about satisfying assumpt
 
 ## Transforming continuous $y$ and $X$
 
-When performing a log transformation, make sure to include an **offset** to avoid taking the log of zero
+When performing a log transformation, remember to include an **offset** to avoid taking the log of zero
 
 ```{python}
 #| eval: true
@@ -238,7 +236,7 @@ y_train = (y_train
 
 ## Different scales, same model
 
-Transforming $y$ and $X$ shows that linear models aren't necessarily **lines** and we can always **back-transform** or use the **inverse function** to get back to the original scale
+Transforming $y$ and $X$ shows that linear models aren't necessarily **lines** and we can always **back-transform** using the **inverse function** to get back to the original scale
 
 ![](../../figures/transformations.png){fig-align="center"}
 
@@ -362,12 +360,12 @@ $$
 $$
 
 ::: {.fragment}
-Fitting models and estimating parameters is a decision theory problem where the actions are the **possible parameter estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and we are uncertain about the possible values of the parameter estimates
+Fitting models to get point estimates is a decision theory problem where the actions are the **possible point estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and we are uncertain about the possible values of the parameter
 :::
 
 ## Fitting models with ordinary least squares {.scrollable}
 
-Choosing parameter estimates by minimizing the sum of squared residuals is a frequentist method called **ordinary least squares** (OLS) and is a special case of **maximum likelihood estimation** (MLE)
+Choosing point estimates by minimizing the sum of squared residuals is a frequentist method called **ordinary least squares** (OLS) and is a special case of **maximum likelihood estimation** (MLE)
 
 ```{python}
 #| eval: true
