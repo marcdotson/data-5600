@@ -360,7 +360,7 @@ $$
 $$
 
 ::: {.fragment}
-Fitting models to get point estimates is a decision theory problem where the actions are the **possible point estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and we are uncertain about the possible values of the parameter
+Fitting models to get point estimates is a decision theory problem where the actions are the **possible point estimates** in the fitted model $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1,i} + \cdots + \hat{\beta}_p x_{p,i}$ and we are uncertain about the possible values of the parameter estimates
 :::
 
 ## Fitting models with ordinary least squares {.scrollable}
