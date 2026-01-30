@@ -1,0 +1,31 @@
+---
+title: "Frequentist and Bayesian Inference"
+format: gfm
+---
+
+During this class we will compare frequentist and Bayesian inference.
+
+To share their solution for Exercise 08, the randomly selected student is **___**.
+
+## Learn
+
+You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
+
+Why do we care about model parameters? What is missing from our estimates so far? Go the discussions to share before continuing with the lecture.
+
+When might prior information be especially important in an analysis? Go the discussions to share before finishing the lecture.
+
+## Apply
+
+### Exercise 09
+
+1. Harmon's has made a portion of their loyalty CRM data available: Consider what should be included in the model
+2. Iterate on the model using these new predictors, including EDA, checking model assumptions, and feature engineering
+3. Fit the model using the additional data using OLS and, if you can, a Bayesian model with uniform priors
+4. Interpret the interval estimates, being careful to track transformed scales, reference levels, the presence of multiple predictors in the model, and the differences between credible and confidence intervals
+5. Submit your code, output, and interpretations as a single PDF on Canvas
+
+### Milestone 09
+
+Update your project's parameter estimate interpretations using interval estimates and statistical significance. If you can, run a Bayesian model and compare credible and confidence intervals.
+
