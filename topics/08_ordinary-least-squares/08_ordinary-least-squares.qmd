@@ -78,7 +78,6 @@ Before we do any feature engineering, we need to split the data into **training*
 
 ```{python}
 #| eval: true
-#| echo: false
 
 import os
 import polars as pl
@@ -87,51 +86,6 @@ import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
 
 sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
-
-# Standardize brand names
-brand_names = {
-    # Jif
-    'JIF': 'Jif', 'Jiff': 'Jif',
-    # Skippy
-    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
-    # PeterPan
-    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
-    # Harmons
-    "Harmon's": 'Harmons',
-}
-
-# Clean the data
-pb_data = (sl_data
-    # Fix brand naming variants
-    .with_columns([
-        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
-    ])
-    # Drop rows with missing values
-    .drop_nans(['units'])
-    .remove(
-        (pl.col('brand') == "None") | 
-        (pl.col('texture') == "None") | 
-        (pl.col('size') == "None")
-    )
-    # Make price numeric
-    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
-    # Drop duplicate rows
-    .unique()
-    # Filter for only peanut butter purchases
-    .filter(pl.col('units') > 0)
-    # Select relevant columns
-    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
-)
-```
-
-```{python}
-import os
-import polars as pl
-import seaborn.objects as so
-import statsmodels.api as sm
-from sklearn.model_selection import train_test_split
-
-sl_data = pl.read_parquet(os.path.join('soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
