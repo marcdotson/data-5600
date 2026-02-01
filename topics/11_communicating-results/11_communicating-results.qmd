@@ -34,23 +34,6 @@ jupyter: python3
 ![](../../figures/workflow_communicate.png){fig-align="center"}
 :::
 
-## Corrected profit function
-
-Instead of converting cost to log-cost, we need to **convert log-price and log-units to price and units** so our profit calculation is correct
-
-```{python}
-def profit(price, units, cost, scale):
-    profit = units * (price - cost)
-    return profit * scale
-
-profit(
-    price = np.exp(X_new['log_price']),
-    units = np.exp(y_pred_04),
-    cost = 1.50,
-    scale = 10_000
-)
-```
-
 ## Make insights accessible for decision-makers
 
 :::: {.columns}

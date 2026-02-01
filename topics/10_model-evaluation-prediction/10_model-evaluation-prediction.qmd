@@ -21,8 +21,6 @@ jupyter: python3
 
 ### Get Started {.permanent-marker-font}
 
-<!-- TODO: Make sure Exercise 10 is simplified, Add memes R-squared, Whinnie adjusted r-squared, refer to predictive fit as a proxy for decision-theoretic fit, reference dangers of extrapolation in prediction -->
-
 #### Last Time
 
 - Compared frequentist and Bayesian inference
@@ -75,7 +73,7 @@ Metrics of **overall model fit** provide a single number that describes how well
 :::
 
 ::: {.fragment}
-There is no guarantee that statistical or predictive criteria are consistent with what is optimal for informing our decision
+There is no guarantee that statistical or predictive criteria are consistent with what is optimal for informing our decision; at best, they are **proxies for decision-theoretic fit**
 :::
 
 ## In-sample fit: $R^2$
@@ -97,6 +95,10 @@ $$
 
 ![](../../figures/lm_in-sample-fit.png){fig-align="center"}
 
+## 
+
+![](../../figures/meme_r-squared.png){fig-align="center"}
+
 ## In-sample fit: Adjusted $R^2$
 
 Adjusted R-Squared is the proportion of variation in $y$ that is explained by the model, penalized by the number of predictors in the model
@@ -115,6 +117,10 @@ $$
 ## In-sample fit: Adjusted $R^2$
 
 ![](../../figures/lm_in-sample-fit.png){fig-align="center"}
+
+## 
+
+![](../../figures/meme_adjusted-r-squared.png){fig-align="center"}
 
 ## In-sample fit: F-statistic
 
@@ -158,7 +164,7 @@ import bambi as bmb
 import arviz as az
 from sklearn.model_selection import train_test_split
 
-sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
@@ -253,7 +259,7 @@ ba_model.set_priors(priors = priors_dict)
 ba_fit = ba_model.fit(progressbar = False)
 ```
 
-Following the previous exercise solution
+Following our original model (i.e., without loyalty data)
 
 ```{python}
 #| eval: true
@@ -330,16 +336,12 @@ Let's specify our objective function and create a new data frame where **each ro
 ```{python}
 #| eval: true
 #| output-location: slide
-#| code-line-numbers: "|1-6|8-20"
+#| code-line-numbers: "|1-4|6-18"
 
-# TODO: FIX PROFIT FUNCTION
-
-# # Specify a profit function
-# def profit(log_price, log_units, cost, scale):
-#     log_cost = np.log(cost)
-#     log_profit = log_units * (log_price - log_cost)
-#     profit = np.exp(log_profit) * scale
-#     return profit
+# Specify a profit function
+def profit(price, units, cost, scale):
+    profit = units * (price - cost)
+    return profit * scale
 
 # Construct a new design matrix for prediction
 X_new = pl.DataFrame({
@@ -371,8 +373,8 @@ fr_pred = fr_fit.predict(X_new)
 
 # Calculate profit for each action
 fr_pred['profit'] = profit(
-    log_price = X_new['log_price'],
-    log_units = fr_pred,
+    price = np.exp(X_new['log_price']),
+    units = np.exp(fr_pred),
     cost = 1.50,
     scale = 10_000
 )
@@ -392,6 +394,7 @@ Eventually we'll select our best-fitting model(s) and make predictions directly 
 ::: {.incremental}
 - In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
 - Without being honest about uncertainty, we will mislead rather than inform decision-making
+- When we make predictions, be careful with **extrapolation** or making predictions outside the range of the data used to fit the model
 :::
 
 ::: {.fragment}
@@ -471,12 +474,10 @@ fr_fit.get_prediction(X_new).summary_frame(alpha=0.05)
 
 ### Exercise 10 {.lato-font}
 
-1. Harmon's has made a portion of their loyalty CRM data available: Consider what should be included in the model
-2. Iterate on the model using these new predictors, including EDA, checking model assumptions, feature engineering, and model fitting
-3. Compare the model from the previous exercise that didn't have access to the loyalty data and this new model
-4. Choose the best-fitting model and re-run it using the full dataset
-5. Interpret the interval estimates and produce predictions relevant to the business objective using this final model
-6. Submit your code, output, and commentary as a single PDF on Canvas
+1. Compare the models from the previous two exercises: the model that didn't include the loyalty data and the model that did
+2. Choose the best-fitting model and re-run it using the full dataset
+3. Update your interpretation of the interval estimates and produce predictions relevant to the business objective using this final, best-fitting model
+4. Submit your code, output, and commentary as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
