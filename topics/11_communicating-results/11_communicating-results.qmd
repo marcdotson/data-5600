@@ -61,7 +61,9 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 
 ## Presentation expectations
 
-Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist
+Your presentation needs to be tailored for a **mixed audience** where you will have 8 minutes to present
+
+[Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist]{.fragment}
 
 ::: {.incremental}
 - Explain the business problem
@@ -85,7 +87,7 @@ import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
 
 # Import soft launch and loyalty data
-sl_data = pl.read_parquet(os.path.join('..', '..', 'data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
@@ -410,7 +412,9 @@ With a larger loyalty dataset, we may be able to reduce uncertainty in our price
 
 ## Report expectations
 
-Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist
+Your report needs to be written for a **technical audience** and should be structured using the **modeling workflow**
+
+[Use the rubric as a **set of guiding principles** for communicating clearly rather than just a checklist]{.fragment}
 
 ::: {.incremental}
 - Detail the business objective
