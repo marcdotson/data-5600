@@ -1,0 +1,224 @@
+---
+title: "An Introduction <br>to Decision Science"
+subtitle: "Spring 2026, Huntsman Scholars Lab 2"
+author: Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: ../slides.scss  # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+  cache: false
+jupyter: python3
+---
+
+## {background-color="#288DC2"}
+
+### Case Task {.permanent-marker-font}
+
+Holbrook Pickleball has rapidly scaled, but continued success requires strategic decision-making
+
+- How can Holbrook further **differentiate itself in a competitive landscape**, and what are its **best opportunities for sustained growth**?
+- Create a framework to guide the company in the next 2 to 5 years with **specific, actionable recommendations** on what their focus should be
+
+::: {.fragment}
+How's it going so far?
+:::
+
+# Decision Science
+
+## {background-color="#D1CBBD"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_all.png){fig-align="center"}
+:::
+
+## {background-color="#D1CBBD" visibility="uncounted"}
+
+::: {.columns .v-center}
+![](../../figures/workflow_plan-build.png){fig-align="center"}
+:::
+
+## Clearly specify the business objective {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+To inform business decision-making, there needs to be a **clear objective** and **limited scope**
+
+::: {.fragment}
+What are some possible business objectives?
+:::
+
+::: {.incremental}
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+:::
+
+::: {.fragment}
+A clear objective and limited scope leads to **specific recommendations**
+:::
+:::
+
+::::
+
+## Clearly specify the business objective {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+To inform business decision-making, there needs to be a **clear objective** and **limited scope**
+
+What are some possible business objectives?
+
+- Maximize revenue/profit
+- Increase market share
+- Reduce customer churn
+- Improve user satisfaction
+
+A clear objective and limited scope leads to **specific recommendations**
+:::
+
+::: {.column .gray-box width="42%"}
+How can Holbrook Pickleball differentiate itself in a competitive landscape and identify best opportunities for sustained growth?
+
+What is the objective? Can you narrow the scope?
+
+::: {.incremental}
+- Low prices or niche products?
+- Reduce costs or increase revenue?
+- Repeat or new customers?
+:::
+:::
+
+::::
+
+## 
+
+:::: {.columns}
+::: {.column .gray-box width="92%"}
+In the case, let's assume our objective is to **maximize profit**, next we need to identify:
+
+::: {.incremental}
+- The **actions** we can take (e.g., launch a new product or not)
+- The relevant **unknowns** (e.g., demand for the new product)
+:::
+
+:::: {.columns}
+
+::: {.column width="55%"}
+::: {.fragment}
+|             | **Unknowns** |             |
+|-------------|------------|-------------|
+| **Actions** | Low Demand | High Demand |
+| Go          | -\$20,000  | \$70,000    |
+| No-Go       | \$0.00     | \$0.00      |
+:::
+:::
+
+::: {.column width="35%"}
+::: {.incremental}
+- If demand is low, what action should we take?
+- If demand is high, what action should we take?
+- Do we known demand? How can we learn?
+:::
+:::
+
+::::
+
+:::
+::::
+
+## Formalize the objective as a function {auto-animate=true}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+::: {.incremental}
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+:::
+
+::: {.fragment}
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
+:::
+:::
+
+::::
+
+## Formalize the objective as a function {auto-animate=true visibility="uncounted"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+A clearly specified objective can be translated into an objective function, which is often a **loss function**
+
+$$
+\LARGE{\ell(a, s)}
+$$
+
+- $a$ are **actions** we can take
+- $s$ are **states of the world**
+
+Using a loss function formalizes what we do implicitly when weighing pros and cons, exposing details and assumptions we might miss
+:::
+
+::: {.column .gray-box width="42%"}
+In the case, maximizing profit uses a **utility function**
+
+$$
+\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)
+$$
+
+::: {.incremental}
+- $\mathcal{D}(p)$ is demand
+- $p$ is price
+- $c$ is cost
+:::
+
+::: {.fragment}
+For different prices $p$ (actions), we can compute profit $\mathcal{P}$ given demand $\mathcal{D}$ (state of the world)
+:::
+:::
+
+::::
+
+## Decision science provides a formal framework
+
+**Decision science** (a.k.a., **decision theory**) provides a principled, unifying framework for **informing decision-making under uncertainty**
+
+::: {.incremental}
+1. Specifying the business objective
+2. Formalizing the objective as a function
+3. Using data to learn about the unknown states of the world
+4. Evaluating the possible actions given what we learn from data
+:::
+
+::: {.fragment}
+Decision science as a framework **motivates the use of data**, helps **identify the data we need**, and provides a way to evaluate what we learn from data (e.g., model selection) that is **consistent with our objective**
+:::
+
+# Questions?
+
+## {background-color="#288DC2"}
+
+### Case Work {.permanent-marker-font}
+
+- What is the business objective you'll focus on?
+- What are the actions you can take?
+- What are the relevant unknowns (states of the world)?
+- What data do you need to inform your decision-making?
+
