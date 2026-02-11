@@ -100,7 +100,7 @@ What is the objective? Can you narrow the scope?
 
 ::::
 
-## 
+## Clearly specify the business objective
 
 :::: {.columns}
 ::: {.column .gray-box width="92%"}
