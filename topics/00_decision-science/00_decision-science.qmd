@@ -221,4 +221,5 @@ Decision science as a framework **motivates the use of data**, helps **identify 
 - What are the actions you can take?
 - What are the relevant unknowns (states of the world)?
 - What data do you need to inform your decision-making?
+- Are you trying to minimize loss or maximize utility?
 
