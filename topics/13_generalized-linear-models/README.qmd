@@ -1,39 +1,37 @@
 ---
-title: "Asymmetric Loss"
+title: "Generalized Linear Models"
 format: gfm
 ---
 
 During this class we will:
 
-- Discuss the modeling workflow
-- Review decision-making under uncertainty
-- Extend symmetric loss to asymmetric loss
+- Review linear models
+- Generalize linear models beyond regression
 
-<!-- To share their solution for Exercise 11, the randomly selected student is **___**. -->
+To share their solution for Exercise 12, the randomly selected student is **___**.
 
 ## Learn
 
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
 
-With the benefit of your project experience, how does the modeling workflow help? Go the discussions to share before continuing with the lecture.
+Why is modeling the mean of a normal distribution with a linear function of predictors a good model? Go the discussions to share before continuing with the lecture.
 
-How does framing regression and machine learning within a decision problem help? Go the discussions to share before finishing the lecture.
-
-## Case Overview
-
-As a data analyst at MarketStar, you are tasked with running a lead qualification program as part of the sales efforts for an electronics company. The client will send over leads from various sources such as trade shows, online website hits, etc. and the MarketStar sales team works to convert the leads into qualified opportunities. This client runs B2B sales, meaning the sales reps on your team reach out to companies to see if they want to purchase electronics at scale. Once leads are qualified, the lead gets passed back to the client to close the sale.
-
-If a lead is converted into a qualified opportunity and then closes, the sales team earns a $1,000 commission on the sale. However, if a lead is not not converted to a qualified opportunity, the sales rep wastes time and resources trying to convert the lead, which is an additional $500 opportunity cost in addition to the lost commission. There are too many leads for the sales reps to try and convert them all in the time allotted. For the sales effort to be successful, your task is to identify and help your sales reps work on converting leads that are likely to be qualified.
+Discuss ideas as a group for your second project. What might the business objective and the data story be? Go the discussions to share before finishing the lecture.
 
 ## Apply
 
-### Exercise 12
+### Exercise 13
 
-1. Review the syllabus and consider revisiting your data stack
-2. Read the case and write how you might go about informing the decision (no more than one page), including specifying asymmetric loss (or utility) using the piecewise linear function
-3. Submit your response as a PDF on Canvas
+1. Simulate lead qualification data as a function of four or more predictors
+2. Instead of `y`, `x1`, etc. use meaningful variable names
+3. Assume `y` is distributed binomial with a linear model and logit link function
+4. Use different parameter values than we did in class (keep them small)
+5. Comment your code clearly
+6. Visualize the simulated data using at least two different plots
+7. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
+8. Submit your code and printed output as a PDF on Canvas
 
-### Milestone 12
+### Milestone 13
 
-Discuss the second project with your group. Identify a business problem that has data you can acquire and translate that problem into a piecewise loss (or utility) function. Note that the outcome of this project will be binary (1s and 0s), though you can take any continuous outcome and make it binary.
+Start with a narrative of where your data come from, a data story. Simulate data for your project consistent with this data story so you have data to work with as you finalize searching for a dataset you can use. Test your code and demonstrate you can recover parameters.
 
