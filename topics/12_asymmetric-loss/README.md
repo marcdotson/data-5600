@@ -1,6 +1,24 @@
 # Asymmetric Loss
 
 
+During this class we will:
+
+- Discuss the modeling workflow
+- Review decision-making under uncertainty
+- Extend symmetric loss to asymmetric loss
+
+## Learn
+
+You can also download the slides as an .html file. Once you’ve previewed
+the material and identified any questions, start watching the lecture.
+
+With the benefit of your project experience, how does the modeling
+workflow help? Go the discussions to share before continuing with the
+lecture.
+
+How does framing regression and machine learning within a decision
+problem help? Go the discussions to share before finishing the lecture.
+
 ## Case Overview
 
 As a data analyst at MarketStar, you are tasked with running a lead
@@ -22,3 +40,21 @@ leads for the sales reps to try and convert them all in the time
 allotted. For the sales effort to be successful, your task is to
 identify and help your sales reps work on converting leads that are
 likely to be qualified.
+
+## Apply
+
+### Exercise 12
+
+1.  Review the syllabus and consider revisiting your data stack
+2.  Read the case and write how you might go about informing the
+    decision (no more than one page), including specifying asymmetric
+    loss (or utility) using the piecewise linear function
+3.  Submit your response as a PDF on Canvas
+
+### Milestone 12
+
+Discuss the second project with your group. Identify a business problem
+that has data you can acquire and translate that problem into a
+piecewise loss (or utility) function. Note that the outcome of this
+project will be binary (1s and 0s), though you can take any continuous
+outcome and make it binary.

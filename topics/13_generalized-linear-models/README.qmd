@@ -9,6 +9,8 @@ During this class we will:
 - Review decision-making under uncertainty
 - Extend symmetric loss to asymmetric loss
 
+<!-- To share their solution for Exercise 11, the randomly selected student is **___**. -->
+
 ## Learn
 
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
