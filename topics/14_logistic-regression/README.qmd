@@ -3,6 +3,21 @@ title: "Logistic Regression"
 format: gfm
 ---
 
+During this class we will:
+
+- Review linear models
+- Generalize linear models beyond regression
+
+To share their solution for Exercise 12, the randomly selected student is **___**.
+
+## Learn
+
+You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
+
+Why is modeling the mean of a normal distribution with a linear function of predictors a good model? Go the discussions to share before continuing with the lecture.
+
+Discuss ideas as a group for your second project. What might the business objective and the data story be? Go the discussions to share before finishing the lecture.
+
 ## Data Dictionary
 
 Sales leads data for B2B electronic sales. Each of the rows represents one lead along with its resulting Stage (i.e., Qualified or Disqualified) along with various lead features.
@@ -48,4 +63,21 @@ leads = (pl.read_parquet(os.path.join('data', 'original_leads.parquet'))
 # Write data frames
 leads.write_parquet(os.path.join('data', 'leads.parquet'))
 ```
+
+## Apply
+
+### Exercise 13
+
+1. Simulate lead qualification data as a function of four or more predictors
+2. Instead of `y`, `x1`, etc. use meaningful variable names
+3. Assume `y` is distributed binomial with a linear model and logit link function
+4. Use different parameter values than we did in class (keep them small)
+5. Comment your code clearly
+6. Visualize the simulated data using at least two different plots
+7. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
+8. Submit your code and printed output as a PDF on Canvas
+
+### Milestone 13
+
+Start with a narrative of where your data come from, a data story. Simulate data for your project consistent with this data story so you have data to work with as you finalize searching for a dataset you can use. Test your code and demonstrate you can recover parameters.
 
