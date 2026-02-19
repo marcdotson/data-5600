@@ -251,7 +251,7 @@ $$
 
 ## Still keeping it as simple as possible
 
-A Binomial distribution is the **simplest** distribution (i.e., the **maximum entropy** distribution) to use to model a **binary** $y$ and a linear function is the **simplest** way to map predictors $X$ to a continuous $y$
+A binomial distribution is the **simplest** distribution (i.e., the **maximum entropy** distribution) to use to model a **binary** $y$ and a linear function is the **simplest** way to map predictors $X$ to a continuous $y$
 
 $$
 \Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
@@ -305,7 +305,7 @@ Where is the **link function** for linear regression?
 
 ## Generalized linear models
 
-There are lots of generalized linear models (GLMs) and they get their names from the **likelihood**, the **link function**, or the **inverse link function**
+There are lots of generalized linear models (GLMs) and they get their names from the **distribution**, the **link function**, or the **inverse link function**
 
 ::: {.fragment}
 $$
@@ -316,7 +316,7 @@ $$
 
 ## Generalized linear models {visibility="uncounted"}
 
-There are lots of generalized linear models (GLMs) and they get their names from the **likelihood**, the **link function**, or the **inverse link function**
+There are lots of generalized linear models (GLMs) and they get their names from the **distribution**, the **link function**, or the **inverse link function**
 
 $$
 \Large{y_i \sim \text{Binomial}(n_i, p_i)} \\
