@@ -262,7 +262,7 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 ::: {.fragment}
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 2. **Representativeness**: Data is representative of the data generating process or population
-3. **Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+3. **Linearity**: The mapping function from the predictors to the outcome is an additive, linear function of the parameters
 4. **Independence**: Observations are independent of each other
 5. **Constant Variance**: Homoscedasticity or constant variance of errors
 6. **Normality**: Variation or error is normally distributed
@@ -275,7 +275,7 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 
 1. **Validity**: Data is relevant to the objective and no predictors are missing
 2. **Representativeness**: Data is representative of the data generating process or population
-3. **Linearity**: The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+3. **Linearity**: The mapping function from the predictors to the outcome is an additive, linear function of the parameters
 4. **Independence**: Observations are independent of each other
 5. ~~**Constant Variance**: Homoscedasticity or constant variance of errors~~
 6. ~~**Normality**: Variation or error is normally distributed~~
@@ -306,7 +306,7 @@ Why should we care about **omitted variables**? [What about including variables 
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Get different data
@@ -339,7 +339,7 @@ Why should we care about the data being representative?
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Get different data
@@ -356,10 +356,10 @@ Why should we care about the data being representative?
 
 ## Functional form of the deterministic component
 
-The mapping function from the predictors to the outcome is additive and a linear function of the parameters
+The mapping function from the predictors to the outcome is an additive, linear function of the parameters
 
 ::: {.fragment}
-If the process or population isn't approximated by an additive and linear function, what happens to our inferences?
+If the process or population isn't approximated by an additive, linear function, what happens to our inferences?
 :::
 
 :::: {.columns}
@@ -374,7 +374,7 @@ If the process or population isn't approximated by an additive and linear functi
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Transform $X$
@@ -413,7 +413,7 @@ In what ways could this assumption be violated (and often is)?
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Include a predictor to control for the dependence
@@ -444,7 +444,7 @@ Why would this be a problem for identifiability (think about how we interpret th
 :::
 
 ::: {.fragment .column width="50%"}
-**Fixes**
+**Remedies**
 
 ::: {.incremental}
 - Drop some predictors
@@ -455,11 +455,16 @@ Why would this be a problem for identifiability (think about how we interpret th
 
 ::::
 
-## Compute variance inflation factors
+## Using OLS diagnostics
 
-VIF is based on $R^2$, but we don’t have a way to calculate $R^2$ in logistic regression (i.e., the loss function used to compute the point estimates isn't quadratic, so no sums of squares)
+We can still use OLS diagnostics for logistic regression **when we don't have a logistic regression-specific diagnostic**
 
-We can still run an OLS model to compute VIF for a model with a binary outcome since our its based on the relationship among predictors and the way the model is estimated isn't relevate to estimating collinearity
+[For example:]{.fragment}
+
+::: {.incremental}
+- VIF is based on $R^2$, but we don’t have a way to calculate $R^2$ in logistic regression (i.e., the loss function used to compute the point estimates isn't quadratic, so no sums of squares)
+- However, we can still run an OLS model to compute VIF for a model with a binary outcome since our its based on the relationship among predictors and the way the model is estimated isn't relevate to estimating collinearity
+:::
 
 ## {background-color="#006242"}
 
