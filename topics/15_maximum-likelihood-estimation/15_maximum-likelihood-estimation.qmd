@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -277,8 +278,7 @@ $$
 
 ### Exercise 15 {.lato-font}
 
-1. Clean up the leads data
-<!-- 1. Return to your data from the previous exercise (or start with the exercise solution) -->
+1. Return to your data from the previous exercise (or start with the exercise solution)
 2. Split the data into training and testing data using the `stratify` parameter, confirm any other feature engineering, and fit a model using MLE or a Bayesian model
 3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
 4. Submit your code, output, and interpretations as a single PDF on Canvas
