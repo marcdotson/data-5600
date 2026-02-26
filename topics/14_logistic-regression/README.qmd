@@ -5,10 +5,11 @@ format: gfm
 
 During this class we will:
 
-- Review linear models
-- Generalize linear models beyond regression
+- Interpret logistic regression coefficients
+- Review assumption diagnostics and remedies
+- Expand diagnostics and remedies to GLMs
 
-To share their solution for Exercise 12, the randomly selected student is **___**.
+To share their solution for Exercise 13, the randomly selected student is **___**.
 
 ## Learn
 
