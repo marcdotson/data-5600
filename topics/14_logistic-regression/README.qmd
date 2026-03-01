@@ -9,15 +9,15 @@ During this class we will:
 - Review assumption diagnostics and remedies
 - Expand diagnostics and remedies to GLMs
 
-To share their solution for Exercise 13, the randomly selected student is **___**.
+Start by downloading the leads data. To share their solution for Exercise 13, the randomly selected student is **___**.
 
 ## Learn
 
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
 
-Why is modeling the mean of a normal distribution with a linear function of predictors a good model? Go the discussions to share before continuing with the lecture.
+We want to keep our model as simple as possible, so why would we use multiple logistic regression? Go the discussions to share before continuing with the lecture.
 
-Discuss ideas as a group for your second project. What might the business objective and the data story be? Go the discussions to share before finishing the lecture.
+What data are you considering for your second project? Discuss validity and representativeness as a group. Go the discussions to share before finishing the lecture.
 
 ## Data Dictionary
 
@@ -41,44 +41,16 @@ Sales leads data for B2B electronic sales. Each of the rows represents one lead 
 - **ActivityTypeWeb Schedule**: Count of times Lead scheduling an appointment
 - **Amount**: Estimate of how much the Lead is worth if closed
 
-```{python}
-#| eval: false
-#| echo: true
-
-import os
-import polars as pl
-import polars.selectors as cs
-import seaborn.objects as so
-import statsmodels.formula.api as smf
-import bambi as bmb
-import arviz as az
-
-# Import data
-leads = (pl.read_parquet(os.path.join('data', 'original_leads.parquet'))
-    .select(['Stage', 'Industry', 'Employees', 'TimeZone', 'LeadSource',
-        'days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
-        'EmployeeId', cs.starts_with('ActivityType'), 'Amount'])
-    .select(pl.exclude(['ActivityTypeAbandon']))
-)
-
-# Write data frames
-leads.write_parquet(os.path.join('data', 'leads.parquet'))
-```
-
 ## Apply
 
-### Exercise 13
+### Exercise 14
 
-1. Simulate lead qualification data as a function of four or more predictors
-2. Instead of `y`, `x1`, etc. use meaningful variable names
-3. Assume `y` is distributed binomial with a linear model and logit link function
-4. Use different parameter values than we did in class (keep them small)
-5. Comment your code clearly
-6. Visualize the simulated data using at least two different plots
-7. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
-8. Submit your code and printed output as a PDF on Canvas
+1. Clean up the leads data
+2. Create two interesting visualizations that help you understand the data and its limitations
+3. Walk through the logistic regression model assumptions, use diagnostics, and justify whether or not they are satisfied for your cleaned data
+4. Submit your code, output, and explanations as a single PDF on Canvas
 
-### Milestone 13
+### Milestone 14
 
-Start with a narrative of where your data come from, a data story. Simulate data for your project consistent with this data story so you have data to work with as you finalize searching for a dataset you can use. Test your code and demonstrate you can recover parameters.
+Identify and acquire a dataset for your group project. Work through and validate all of the model assumptions for logistic regression.
 

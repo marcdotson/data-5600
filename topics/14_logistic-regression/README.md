@@ -1,6 +1,28 @@
 # Logistic Regression
 
 
+During this class we will:
+
+- Interpret logistic regression coefficients
+- Review assumption diagnostics and remedies
+- Expand diagnostics and remedies to GLMs
+
+Start by downloading the leads data. To share their solution for
+Exercise 13, the randomly selected student is \*\*\_\_\_\*\*.
+
+## Learn
+
+You can also download the slides as an .html file. Once you’ve previewed
+the material and identified any questions, start watching the lecture.
+
+We want to keep our model as simple as possible, so why would we use
+multiple logistic regression? Go the discussions to share before
+continuing with the lecture.
+
+What data are you considering for your second project? Discuss validity
+and representativeness as a group. Go the discussions to share before
+finishing the lecture.
+
 ## Data Dictionary
 
 Sales leads data for B2B electronic sales. Each of the rows represents
@@ -27,23 +49,19 @@ Disqualified) along with various lead features.
   appointment
 - **Amount**: Estimate of how much the Lead is worth if closed
 
-``` python
-import os
-import polars as pl
-import polars.selectors as cs
-import seaborn.objects as so
-import statsmodels.formula.api as smf
-import bambi as bmb
-import arviz as az
+## Apply
 
-# Import data
-leads = (pl.read_parquet(os.path.join('data', 'original_leads.parquet'))
-    .select(['Stage', 'Industry', 'Employees', 'TimeZone', 'LeadSource',
-        'days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
-        'EmployeeId', cs.starts_with('ActivityType'), 'Amount'])
-    .select(pl.exclude(['ActivityTypeAbandon']))
-)
+### Exercise 14
 
-# Write data frames
-leads.write_parquet(os.path.join('data', 'leads.parquet'))
-```
+1.  Clean up the leads data
+2.  Create two interesting visualizations that help you understand the
+    data and its limitations
+3.  Walk through the logistic regression model assumptions, use
+    diagnostics, and justify whether or not they are satisfied for your
+    cleaned data
+4.  Submit your code, output, and explanations as a single PDF on Canvas
+
+### Milestone 14
+
+Identify and acquire a dataset for your group project. Work through and
+validate all of the model assumptions for logistic regression.
