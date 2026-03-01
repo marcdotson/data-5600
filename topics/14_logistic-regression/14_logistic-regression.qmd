@@ -463,7 +463,7 @@ We can still use OLS diagnostics for logistic regression **when we don't have a 
 
 ::: {.incremental}
 - VIF is based on $R^2$, but we don’t have a way to calculate $R^2$ in logistic regression (i.e., the loss function used to compute the point estimates isn't quadratic, so no sums of squares)
-- However, we can still run an OLS model to compute VIF for a model with a binary outcome since our its based on the relationship among predictors and the way the model is estimated isn't relevate to estimating collinearity
+- However, we can still run an OLS model to compute VIF for a model with a binary outcome since its based on the relationship among predictors and the way the model is estimated isn't relevant to estimating collinearity
 :::
 
 ## {background-color="#006242"}
@@ -471,7 +471,7 @@ We can still use OLS diagnostics for logistic regression **when we don't have a 
 ### Exercise 14 {.lato-font}
 
 1. Clean up the leads data
-2. Create two interesting visualizations that help you understand the data and its limitations, including plotting a sigmoid curve
+2. Create two interesting visualizations that help you understand the data and its limitations
 3. Walk through the logistic regression model assumptions, use diagnostics, and justify whether or not they are satisfied for your cleaned data
 4. Submit your code, output, and explanations as a single PDF on Canvas
 
