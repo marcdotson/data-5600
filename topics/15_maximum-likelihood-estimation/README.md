@@ -1,0 +1,42 @@
+# Maximum Likelihood Estimation
+
+
+During this class we will:
+
+- Extend model fitting beyond ordinary least squares
+- Continue comparing frequentist and Bayesian inference
+
+To share their solution for Exercise 13, the randomly selected student
+is \*\*\_\_\_\*\*.
+
+## Learn
+
+You can also download the slides as an .html file. Once you’ve previewed
+the material and identified any questions, start watching the lecture.
+
+What are the pros and cons of fitting a model using ordinary least
+squares? Go the discussions to share before continuing with the lecture.
+
+What is the relationship between a maximum likelihood point estimate and
+a posterior distribution? Go the discussions to share before finishing
+the lecture.
+
+## Apply
+
+### Exercise 15
+
+1.  Return to your data from the previous exercise (or start with the
+    exercise solution)
+2.  Split the data into training and testing data using the `stratify`
+    parameter, confirm any other feature engineering, and fit a model
+    using MLE or a Bayesian model
+3.  Interpret the parameter estimates, being careful to track
+    transformed scales, reference levels, and the presence of multiple
+    predictors in the model
+4.  Submit your code, output, and interpretations as a single PDF on
+    Canvas
+
+### Milestone 15
+
+Using the data for your project, run an initial model and interpret the
+parameter estimates. What story is starting to take shape?
