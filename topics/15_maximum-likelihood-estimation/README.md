@@ -6,7 +6,7 @@ During this class we will:
 - Extend model fitting beyond ordinary least squares
 - Continue comparing frequentist and Bayesian inference
 
-To share their solution for Exercise 13, the randomly selected student
+To share their solution for Exercise 14, the randomly selected student
 is \*\*\_\_\_\*\*.
 
 ## Learn

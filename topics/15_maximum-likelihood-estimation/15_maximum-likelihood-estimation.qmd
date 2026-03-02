@@ -76,8 +76,8 @@ $$
 Point estimation is a type of decision problem
 
 ::: {.incremental}
-- the actions are the **parameter estimates** in the fitted model $\hat{y}$
-- the state we are uncertain about is the **parameters** in the model $y$
+- The actions are the **parameter estimates** in the fitted model $\hat{y}$
+- The state we are uncertain about is the **parameters** in the model $y$
 :::
 :::
 
