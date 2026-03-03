@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
