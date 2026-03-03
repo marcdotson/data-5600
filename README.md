@@ -150,11 +150,13 @@ own work. Each class begins with a student being called on at random to
 share their exercise solution. Additionally, for each exercise, every
 student will be randomly assigned to review one other student’s exercise
 solution, including rating their work from 1-3 (i.e., “Needs
-Improvement,” “Good,” “Excellent”).
+Improvement,” “Good,” “Excellent”), by the end of the week that the
+exercise was due.
 
 Students won’t get credit for an exercise if they don’t submit their
 exercise on time, aren’t prepared to share their exercise when called on
-at random, or don’t complete their randomly assigned exercise review.
+at random, or don’t complete their randomly assigned exercise review on
+time.
 
 ### Interviews (30%)
 
