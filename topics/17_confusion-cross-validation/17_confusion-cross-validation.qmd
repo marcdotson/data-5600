@@ -13,6 +13,7 @@ format:
 execute:
   eval: false
   echo: true
+  cache: false
 jupyter: python3
 ---
 
@@ -165,58 +166,97 @@ $$
 
 import os
 import polars as pl
-import seaborn.objects as so
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from sklearn.model_selection import train_test_split
 
-# Import data and clean
-# leads = (pl.read_parquet(os.path.join('data', 'leads.parquet'))
-leads = (pl.read_parquet(os.path.join('..', '..', 'data', 'leads.parquet'))
-    # Make the outcome binary where "Qualified" = 1
+# Collapse industries into aggregate categories
+industry_names = {
+    # Business
+    'Business': 'Business',
+    'Retail': 'Business',
+    'CPG': 'Business',
+    'Luxury': 'Business',
+    'eCommerce': 'Business',
+    'Airlines': 'Business',
+
+    # Tech
+    'Tech': 'Tech',
+    'Media': 'Tech',
+
+    # ProfessionalServices
+    'Professional Services': 'ProfessionalServices',
+    'Finance': 'ProfessionalServices',
+    'Marketing': 'ProfessionalServices',
+    'Consulting': 'ProfessionalServices',
+
+    # HealthcareEducation
+    'Medical': 'HealthcareEducation',
+    'Education': 'HealthcareEducation',
+
+    # Public
+    'Government & Non-Profits': 'Public',
+    'Utilities': 'Public',
+    'Construction & Manufacturing': 'Public'
+}
+
+leads_data = (pl.read_parquet(os.path.join('data', 'leads.parquet'))
+    # Collapse Industry into a smaller number of categories
+    .with_columns(
+        pl.col('Industry')
+        .replace(industry_names)
+        .alias('Industry')
+    )
+    # Drop rows with 'Other' and 'Unknown' values
+    .remove(
+        (pl.col('Industry') == 'Other') | (pl.col('TimeZone') == 'Unknown') |
+        (pl.col('Employees') == 'Unknown')
+    )
+    # Make the outcome binary where 'Qualified' = 1
     .with_columns(
         pl.when(pl.col('Stage') == 'Qualified').then(1)
         .when(pl.col('Stage') == 'Disqualified').then(0)
-        .alias('qualified')
+        .alias('Qualified')
     )
-    # Dummy code Industry, Employees, TimeZone, LeadSource, and EmployeeId
+    # Clean up activity type variable names
+    .rename({
+        'ActivityTypePhone Call': 'ActivityTypePhoneCall',
+        'ActivityTypeEmail Response': 'ActivityTypeEmailResponse',
+        'ActivityTypeLead Handraise': 'ActivityTypeLeadHandraise',
+        'ActivityTypeWeb Schedule': 'ActivityTypeWebSchedule'
+    })
+    # Exclude Amount
+    .select(pl.exclude('Amount'))
+)
+
+# Specify the design matrix and outcome
+X = leads_data.select(pl.exclude('Qualified'))
+y = leads_data.select('Qualified')
+
+# Split into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y.to_numpy())
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 45, stratify = y.to_numpy())
+
+X_train = (X_train
+    # Log-transform days_elapsed
+    .with_columns(
+        (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
+    )
+    # Dummy code discrete predictors
     .to_dummies(
         columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
         drop_first = False
     )
-    .select(pl.exclude('Stage', 'Amount', 'Industry_Business', 'Employees_Small', 'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'))
-)
-
-# Specify the design matrix and outcome
-X = leads.select(pl.exclude('qualified'))
-y = leads.select('qualified')
-
-# Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y.to_numpy())
-
-X_train = (X_train
-    # Log-transform all activity counts
-    .with_columns((pl.col('ActivityTypeEmail') + 1).log().alias('log_ActivityTypeEmail'))
-    .with_columns((pl.col('ActivityTypePhone Call') + 1).log().alias('log_ActivityTypePhoneCall'))
-    .with_columns((pl.col('ActivityTypeEmail Response') + 1).log().alias('log_ActivityTypeEmailResponse'))
-    .with_columns((pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting'))
-    .with_columns((pl.col('ActivityTypeLead Handraise') + 1).log().alias('log_ActivityTypeLeadHandraise'))
-    .with_columns((pl.col('ActivityTypeWeb Schedule') + 1).log().alias('log_ActivityTypeWebSchedule'))
-    # Rename columns to remove spaces
+    # Drop Stage and days_elapsed along with reference levels
+    .select(pl.exclude(
+        'Stage', 'days_elapsed', 'Industry_Business', 'Employees_Small', 
+        'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
+    ))
+    # Clean up lead source variable names
     .rename({
-        'Industry_Construction & Manufacturing': 'Industry_ConstructionManufacturing',
-        'Industry_Government & Non-Profits': 'Industry_GovernmentNonProfits',
-        'Industry_Professional Services': 'Industry_ProfessionalServices',
         'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
         'LeadSource_Web Registration': 'LeadSource_WebRegistration'
     })
-    # Remove the original activity count columns
-    .select(
-        pl.exclude(
-            'ActivityTypeEmail', 'ActivityTypePhone Call', 'ActivityTypeEmail Response', 
-            'ActivityTypeMeeting', 'ActivityTypeLead Handraise', 'ActivityTypeWeb Schedule'
-        )
-    )
 )
 
 # Combine y_train and X_train
@@ -226,25 +266,20 @@ leads_train = (pl.concat([y_train, X_train], how = 'horizontal')
 
 # Specify predictors
 predictors = [
-    'Industry_Airlines', 'Industry_CPG',
-    'Industry_ConstructionManufacturing', 'Industry_Consulting',
-    'Industry_Education', 'Industry_Finance', 'Industry_GovernmentNonProfits',
-    'Industry_Luxury', 'Industry_Marketing', 'Industry_Media', 'Industry_Medical',
-    'Industry_Other', 'Industry_ProfessionalServices', 'Industry_Retail',
-    'Industry_Tech', 'Industry_Utilities', 'Industry_eCommerce', 'Employees_Large',
-    'Employees_Medium', 'Employees_Unknown', 'TimeZone_CST', 'TimeZone_MST',
-    'TimeZone_PST', 'TimeZone_Unknown', 'LeadSource_TradeShowsandEvents',
-    'LeadSource_WebRegistration', 'days_elapsed', 'created_quarter',
-    'contact_quarter', 'latest_quarter', 'EmployeeId_2', 'EmployeeId_3',
-    'EmployeeId_4', 'EmployeeId_5', 'log_ActivityTypeEmail',
-    'log_ActivityTypePhoneCall', 'log_ActivityTypeEmailResponse',
-    'log_ActivityTypeMeeting', 'log_ActivityTypeLeadHandraise',
-    'log_ActivityTypeWebSchedule'
+    'Industry_HealthcareEducation', 'Industry_ProfessionalServices',
+    'Industry_Public', 'Industry_Tech', 
+    'Employees_Large', 'Employees_Medium',
+    'TimeZone_CST', 'TimeZone_MST', 'TimeZone_PST',
+    'LeadSource_TradeShowsandEvents', 'LeadSource_WebRegistration',
+    'log_days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
+    'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 'EmployeeId_5',
+    'ActivityTypeEmail', 'ActivityTypePhoneCall', 'ActivityTypeEmailResponse',
+    'ActivityTypeMeeting', 'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
 ]
 
 # Fit a frequentist logistic regression
 fr_fit = smf.glm(
-    'qualified ~ ' + ' + '.join(predictors), 
+    'Qualified ~ ' + ' + '.join(predictors), 
     data = leads_train, 
     family = sm.families.Binomial()
 ).fit()
@@ -261,28 +296,25 @@ from sklearn.metrics import confusion_matrix
 
 # Apply same transformations to test data
 X_test = (X_test
-    # Log-transform all activity counts
-    .with_columns((pl.col('ActivityTypeEmail') + 1).log().alias('log_ActivityTypeEmail'))
-    .with_columns((pl.col('ActivityTypePhone Call') + 1).log().alias('log_ActivityTypePhoneCall'))
-    .with_columns((pl.col('ActivityTypeEmail Response') + 1).log().alias('log_ActivityTypeEmailResponse'))
-    .with_columns((pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting'))
-    .with_columns((pl.col('ActivityTypeLead Handraise') + 1).log().alias('log_ActivityTypeLeadHandraise'))
-    .with_columns((pl.col('ActivityTypeWeb Schedule') + 1).log().alias('log_ActivityTypeWebSchedule'))
-    # Rename columns to remove spaces
+    # Log-transform days_elapsed
+    .with_columns(
+        (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
+    )
+    # Dummy code discrete predictors
+    .to_dummies(
+        columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
+        drop_first = False
+    )
+    # Drop Stage and days_elapsed along with reference levels
+    .select(pl.exclude(
+        'Stage', 'days_elapsed', 'Industry_Business', 'Employees_Small', 
+        'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
+    ))
+    # Clean up lead source variable names
     .rename({
-        'Industry_Construction & Manufacturing': 'Industry_ConstructionManufacturing',
-        'Industry_Government & Non-Profits': 'Industry_GovernmentNonProfits',
-        'Industry_Professional Services': 'Industry_ProfessionalServices',
         'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
         'LeadSource_Web Registration': 'LeadSource_WebRegistration'
     })
-    # Remove the original activity count columns
-    .select(
-        pl.exclude(
-            'ActivityTypeEmail', 'ActivityTypePhone Call', 'ActivityTypeEmail Response', 
-            'ActivityTypeMeeting', 'ActivityTypeLead Handraise', 'ActivityTypeWeb Schedule'
-        )
-    )
     .to_pandas()
 )
 ```
@@ -333,10 +365,10 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- How many **true positives** do we have? [`11`]{.fragment}
-- How many **true negatives** do we have? [`3545`]{.fragment}
-- How many **false positives** (i.e., **type I errors**) do we have? [`19`]{.fragment}
-- How many **false negatives** (i.e., **type II errors**) do we have? [`36`]{.fragment}
+- How many **true positives** do we have? [`25`]{.fragment}
+- How many **true negatives** do we have? [`28`]{.fragment}
+- How many **false positives** (i.e., **type I errors**) do we have? [`0`]{.fragment}
+- How many **false negatives** (i.e., **type II errors**) do we have? [`1`]{.fragment}
 :::
 :::
 
@@ -354,10 +386,10 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- **Accuracy** is the percent of correct predictions [`(11 + 3545)/3611 = 0.98`]{.fragment}
-- We can compare accuracy to the **baseline accuracy** of always predicting the majority class [`(3545 + 19)/3611 = 0.99`]{.fragment}
-- **Sensitivity** or **recall** is the percent of actual positives that were predicted correctly [`11/(11 + 36) = 0.23`]{.fragment}
-- **Specificity** is the percent of actual negatives that were predicted correctly [`3545/(3545 + 19) = 0.99`]{.fragment}
+- **Accuracy** is the percent of correct predictions [`(25 + 28)/54 = 0.98`]{.fragment}
+- We can compare accuracy to the **baseline accuracy** of always predicting the majority class [`(28 + 0)/54 = 0.52`]{.fragment}
+- **Sensitivity** or **recall** is the percent of actual positives that were predicted correctly [`25/(25 + 1) = 0.96`]{.fragment}
+- **Specificity** is the percent of actual negatives that were predicted correctly [`28/(28 + 0) = 1`]{.fragment}
 :::
 :::
 
@@ -375,8 +407,8 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 ::: {.column width="60%"}
 ::: {.incremental}
-- **Precision** or **positive predictive value** is the percent of predicted positives that were predicted correctly [`11/(11 + 19) = 0.37`]{.fragment}
-- **Negative predictive value** is the percent of predicted negatives that were predicted correctly [`3545/(3545 + 36) = 0.99`]{.fragment}
+- **Precision** or **positive predictive value** is the percent of predicted positives that were predicted correctly [`25/(25 + 0) = 1`]{.fragment}
+- **Negative predictive value** is the percent of predicted negatives that were predicted correctly [`28/(28 + 1) = 0.97`]{.fragment}
 :::
 :::
 
@@ -483,9 +515,7 @@ $k = 5$
 
 ## 
 
-::: {.v-center}
 ![](../../figures/meme_test-accuracy.png){fig-align="center"}
-:::
 
 # How would you implement cross-validation to tune the cutoff probability? {background-color="#006242"}
 
