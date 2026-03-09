@@ -1,0 +1,41 @@
+# Hyperparameters
+
+
+During this class we will:
+
+- Use prior predictive checks to set priors
+- Discuss using model selection to tune hyperparameters
+
+To share their solution for Exercise 15, the randomly selected student
+is \*\*\_\_\_\*\*.
+
+## Learn
+
+You can also download the slides as an .html file. Once you’ve previewed
+the material and identified any questions, start watching the lecture.
+
+Try specifying different priors. How does the prior predictive
+distribution change? Go the discussions to share before continuing with
+the lecture.
+
+Compare these two models using overall model fit. Which one predicts
+best? Go the discussions to share before finishing the lecture.
+
+## Apply
+
+### Exercise 16
+
+1.  Review the advanced materials from the course thus far
+2.  Identify lingering questions you have about the concepts covered
+3.  Use an AI tool to ask your questions and reflect on the responses
+    you receive
+4.  Identify at least two questions you feel have been answered and
+    share your prompts, the responses you received, and your reflections
+    on the responses
+5.  Submit your prompts, responses, and reflections as a single PDF on
+    Canvas
+
+### Milestone 16
+
+If you’re running a Bayesian model, consider using a prior predictive
+check to make sure you’re specifying reasonable hyperparameters.
