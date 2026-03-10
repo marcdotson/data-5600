@@ -328,7 +328,7 @@ What problems might this method have? [**Don't use it**]{.fragment}
 
 ::: {.incremental}
 1. Fit a model with all $p-1$ predictors
-2. Fit a second model with one predictor from the model
+2. Fit a second model with one predictor removed from the model
 3. Keep the second model if it improves overall model fit
 4. Repeat with the remaining $p-2$ predictors until removing predictors no longer improves overall model fit
 :::
@@ -342,7 +342,7 @@ Why is backward selection a better option than forward selection?
 ::: {.incremental}
 1. Start with an intercept-only model
 2. Take a forward step: Add a predictor to the model if the predictor improves overall model fit
-3. Take a backward step: Drop a predictor from the model if dropping the preditor improves overall model fit
+3. Take a backward step: Drop a predictor from the model if dropping the predictor improves overall model fit
 4. Iterate the forward and backward steps until the model stays the same
 :::
 
