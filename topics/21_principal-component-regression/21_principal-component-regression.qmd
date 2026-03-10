@@ -112,7 +112,7 @@ PCR, like PCA, is only useful when $k < p$, so how do we choose $k$? [Since we n
 
 # Using PCR
 
-<!-- TO DO: Combine this act with the previous one and use this time to wrap up the course -->
+<!-- TODO: Combine this act with the previous one and use this time to wrap up the course -->
 
 ## Simulate data with correlated predictors
 
