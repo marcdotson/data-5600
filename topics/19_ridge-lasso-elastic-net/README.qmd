@@ -1,0 +1,32 @@
+---
+title: "Ridge Regression, LASSO, and Elastic Net"
+format: gfm
+---
+
+During this class we will apply and compare specific regularization techniques.
+
+To share their solution for Exercise 18, the randomly selected student is **___**.
+
+## Learn
+
+You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
+
+Complexity penalties operate like priors, so how would the equivalent Bayesian model differ from ridge regression? Go the discussions to share before continuing with the lecture.
+
+Modify the ridge regression code to implement LASSO. Which model performs better on the test data? Go the discussions to share before finishing the lecture.
+
+## Apply
+
+### Exercise 19
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Use the penalized regression code to fit ridge regression, LASSO, and elastic net models
+3. Compare all three models based on overall accuracy on the test data using the tuned cutoff value
+4. Bootstrap the confidence intervals for the best-performing model and comment on how they differ from your previous non-regularized model output
+5. Using frequentist models is sufficient, though you are welcome to compare overall accuracy, interval estimates, and computational complexity with a Bayesian logistic regression using the relevant regularizing priors
+6. Submit your code, output, and commentary as a single PDF on Canvas
+
+### Milestone 19
+
+Apply all three penalized regression models to your project and compare with existing model runs. Consider running Bayesian equivalents without needing to tune regularization hyperparameters or bootstrap interval estimates. Which modeling approach works best?
+
