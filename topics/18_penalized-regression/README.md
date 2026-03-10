@@ -1,0 +1,47 @@
+# Penalized Regression
+
+
+During this class we will:
+
+- Introduce penalized regression and shrinkage estimates
+- Discuss cross-validation for tuning regularization hyperparameters
+- Walk through variable selection techniques as an alternative
+
+To share their solution for Exercise 17, the randomly selected student
+is \*\*\_\_\_\*\*.
+
+## Learn
+
+You can also download the slides as an .html file. Once you’ve previewed
+the material and identified any questions, start watching the lecture.
+
+When would we want to add bias to reduce variance in our parameter
+estimates? Go the discussions to share before continuing with the
+lecture.
+
+Holding everything else constant, why do we prefer model *parsimony*? Go
+the discussions to share before finishing the lecture.
+
+## Apply
+
+### Exercise 18
+
+1.  Return to your data from the previous exercise (or start with the
+    exercise solution)
+2.  Reuse the 5-fold cross-validation code to tune the regularization
+    hyperparameter for the `LogisticRegression()` model from
+    `scikit-learn` using the default `l2` complexity penalty (i.e.,
+    ridge regression) to maximize overall accuracy
+3.  To calculate overall accuracy, use the tuned cutoff value from the
+    previous exercise and, again, when splitting the data into training,
+    validation, and testing data, remember to use the `stratify`
+    parameter
+4.  Using MLE is sufficient, though you are welcome to compare overall
+    accuracy with a Bayesian logistic regression with regularizing
+    standard normal priors
+5.  Submit your code, output, and explanation as a single PDF on Canvas
+
+### Milestone 18
+
+Start applying penalized regression to your project work and compare
+with existing model runs.
