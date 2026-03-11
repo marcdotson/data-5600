@@ -44,7 +44,7 @@ jupyter: python3
 
 # Unsupervised Learning
 
-## Dealing with high-demensional data
+## Dealing with high-dimensional data
 
 There are a number of ways to **improve model parsimony** in the presence of multicollinearity, $p \approx n$, or $p \gt n$
 
@@ -192,7 +192,7 @@ $$
 ::: {.incremental}
 - The first principal component goes in the direction where the **observations vary the most**
 - The second principal component is **orthogonal to the first principal component** and goes in the direction of the **second largest variance of the observations**
-- Each subsequent principal component finds the **next** largest variance witch each **orthogonal to all previous principal components**
+- Each subsequent principal component finds the **next** largest variance where each is **orthogonal to all previous principal components**
 :::
 :::
 
