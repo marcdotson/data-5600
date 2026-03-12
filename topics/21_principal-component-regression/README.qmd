@@ -1,0 +1,32 @@
+---
+title: "Principal Component Regression"
+format: gfm
+---
+
+During this class we will connect PCA to regression via principal component regression (PCR).
+
+To share their solution for Exercise 20, the randomly selected student is **___**.
+
+## Learn
+
+You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
+
+Have you found a meaningful lower-dimensional representation of your project data? What do you expect? Go the discussions to share before continuing with the lecture.
+
+How might PCR serve as a useful conceptual bridge from interpretable models to black-box predictive models? Go the discussions to share before finishing the lecture.
+
+## Apply
+
+### Exercise 21
+
+1. Return to your data from the previous exercise (or start with the exercise solution)
+2. Fit PCR to the leads qualification data, including choosing the number of principal components using 5-fold cross-validation
+<!-- 3. Validate model assumptions after fitting PCR -->
+3. Also tune the classification cutoff separately using 5-fold cross-validation
+4. Name the principal components based on their loadings and interpret the interval estimates
+5. Submit your code, output, and interpretation as a single PDF on Canvas
+
+### Milestone 21
+
+Apply PCR to your project and compare it to penalized regression and logistic regression using cross-validated predictive or decision-theoretic fit. What is your best model so far?
+
