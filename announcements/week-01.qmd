@@ -1,0 +1,19 @@
+---
+title: "Week 01 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+Welcome to DATA 5600 for Summer 2026! I'm looking forward to working with and getting to know all of you. Some things to note as we get started this week, including a few changes to the syllabus that won't be reflected in the first lecture:
+
+- On the home page I've listed everything for each week in the order you should tackle it. Week 01 starts with a Pre-Survey, which is remotely proctored. Then the first topic is Regression and Machine Learning. Each topic page will include the slides and the recordings for each lecture, including breaks to engage in relevant discussions to prepare for interviews, the assigned exercise, and the associated project milestone.
+- The recorded lectures are essential! There is no assigned reading. The lectures include discussion breaks to help you prepare for interviews and code that you will be evaluated on using and adapting in your exercises and projects. If you need to watch a given lecture multiple times, please do so.
+- Pay careful attention to the syllabus. There are three types of assignments. **Exercises** are designed to help you practice what you learn in the lectures, give you the opportunity to evaluate code with the peer review assigned for each exercise, and provide an opportunity for you to talk about code when you record and upload a walkthrough of your solution when randomly assigned for a given exercise. **Interviews** take the place of exams and should be something you prepare for by engaging in the lectures, including the discussion breaks, and applying concepts and code to exercises and projects. **Projects** are the opportunity for you to, as a group, demonstrate mastery of the concepts and code we cover in class. New for this semester is a **recording due each week** where your group discusses your progress on working through the project milestones from that week.
+- On the home page, you'll see that my office hours will be Thursdays from 3-5 pm via Zoom or by appointment. Drop in for your first interview on Thursday during that time (if you have to wait it's because I'm meeting with another student) or schedule another time to meet with me. The TA office hours are also by appointment via Zoom.
+
+I've done my best to make sure your calendar and to do list help you get into the pattern of study each week: Working through lectures, practicing what you learn with the exercises, and applying what you learn to your group project via milestones. It's a lot, but this scaffolding is designed to help you stay on track and identify where you need help. I'm always ready to help answer any questions, so please don't be a stranger!
+
+Go Aggies!
+
+-Marc
