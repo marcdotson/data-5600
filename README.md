@@ -57,16 +57,18 @@ Inference, and DATA 5630 Deep Forecasting.
 Each student will need to bring a laptop, either their own or one rented
 from Utah State. While students are welcome to use their preferred
 tools, the following [data
-stack](https://github.com/marcdotson/data-stack) is recommended and
-certain tools are required, as indicated below.
+stack](https://github.com/marcdotson/data-stack) is **highly**
+recommended and certain tools are required, as indicated below.
 
 ### Python
 
 [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is
 a general purpose, open source programming language developed by
 computer scientists. It is the most commonly used programming language
-for data wrangling, visualizations, and modeling. Python will be
-required for the course. See the [data stack
+for data wrangling, visualizations, and modeling. Not only will Python
+be required for the course, but **students will be evaluated on their
+ability to use and adapt the code provided as part of the course**. See
+the [data stack
 training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-python)
 for details on how to best install and manage Python versions and
 project environments.
@@ -143,28 +145,36 @@ follows.
 ### Exercises (20%)
 
 Each lecture ends with an exercise designed to help students practice
-what was covered in class and prepare to apply it to their projects.
-Each exercise is due before the following class. While students are
-encouraged to work together, each student is required to submit their
-own work. Each class begins with a student being called on at random to
-share their exercise solution. Additionally, for each exercise, every
-student will be randomly assigned to review one other student’s exercise
-solution, including rating their work from 1-3 (i.e., “Needs
-Improvement,” “Good,” “Excellent”), by the end of the week that the
-exercise was due.
+what was covered in the lecture and prepare to apply it to their
+projects.
 
-Students won’t get credit for an exercise if they don’t submit their
-exercise on time, aren’t prepared to share their exercise when called on
-at random, or don’t complete their randomly assigned exercise review on
-time.
+- Each exercise is due before the following lecture. While students are
+  encouraged to work together, each student is required to submit their
+  own work. Students won’t get credit for an exercise if they don’t
+  submit their exercise on time.
+- Before each lecture, a student will be called on at random to share
+  their exercise solution, explaining what they did and why. This is an
+  opportunity for students to practice discussing code and concepts in
+  preparation for interviews and project presentations. Students won’t
+  get credit for an exercise if they don’t share their exercise solution
+  when called on at random.
+- For each exercise, every student will be randomly assigned to review
+  one other student’s exercise solution, including rating that student’s
+  work from 1-3 (i.e., “Needs Improvement,” “Good,” “Excellent”), by the
+  end of the week that the exercise was due. Code evaluation is a
+  critical skill for students to develop. Students won’t get credit for
+  an exercise if they don’t complete their randomly assigned peer review
+  on time.
 
 ### Interviews (30%)
 
 Interviews are an opportunity for students to demonstrate their personal
 understanding and prepare for future real-world job interviews. Designed
 to complement exercise practice and group project work, interviews will
-include questions about course concepts, exercise and project work
-(including code), and reflections on performance in the course.
+include questions about course concepts as applied to project work,
+including explaining project code, and reflections on performance in the
+course. Questions asked during each lecture are provided to students to
+help them prepare for interviews.
 
 Interviews with the instructor will occur at the beginning, middle, and
 end of the semester during office hours or by appointment.
@@ -178,10 +188,11 @@ Students will complete two group projects, one focused on regression and
 another focused on classification. The groups will both present and
 submit a report.
 
-The week before the presentations, groups will submit a draft of their
-slides to get feedback and have time for revision. The other students in
-the class, as well as the group members themselves, will help evaluate
-each of the presentations.
+At the end of each week, each group will share their progress on that
+week’s project milestones. The week before the presentations, groups
+will submit a draft of their slides to get feedback and have time for
+revision. The other students in the class, as well as the group members
+themselves, will help evaluate each of the presentations.
 
 ## Schedule
 
@@ -189,74 +200,72 @@ Please note that the instructor reserves the right to change the
 following schedule at any time and will provide students sufficient
 notice as it relates to assignment deadlines.
 
-### Week 01
+### Week 01 (May 3-9)
 
 - Regression and Machine Learning
 - Modeling Workflow
 
-### Week 02
+### Week 02 (May 10-16)
 
 - Decisions and Data
 - Probability and Statistics
 
-### Week 03
+### Week 03 (May 17-23)
 
 - Linear Models
 
-### Week 04
+### Week 04 (May 24-30)
 
 - Validity, Representativeness, and Linearity
 - Independence, Constant Variance, Normality, and Identifiability
 
-### Week 05
+### Week 05 (May 31-June 6)
 
 - Ordinary Least Squares
 - Frequentist and Bayesian Inference
 
-### Week 06
+### Week 06 (June 7-13)
 
 - Model Evaluation and Prediction
 - Communicating Results
 
-### Week 07
+### Week 07 (June 14-20)
 
 - Presentations
 
-### Week 08
+### Week 08 (June 21-27)
 
 - Asymmetric Loss
 - Generalized Linear Models
 
-### Week 09
+### Week 09 (June 28-July 4)
 
 - Logistic Regression
 - Maximum Likelihood Estimation
 
-### Week 10
+<!-- ### Week 10
+&#10;- Spring Break -->
 
-- Spring Break
-
-### Week 11
+### Week 10 (July 5-11)
 
 - Hyperparameters
 - Confusion and Cross-Validation
 
-### Week 12
+### Week 11 (July 12-18)
 
 - Penalized Regression
 - Ridge Regression, LASSO, and Elastic Net
 
-### Week 13
+### Week 12 (July 19-25)
 
 - Dimensionality Reduction
 - Principal Component Regression
 
-### Week 14
+### Week 13 (July 26-August 1)
 
 - Interactions
 - Multilevel Models
 
-### Week 15
+### Week 14 (August 2-7)
 
 - Presentations
-- Regression and Other Stories
