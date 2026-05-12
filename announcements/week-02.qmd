@@ -1,0 +1,29 @@
+---
+title: "Week 02 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+Welcome to Week 02! Remember that Interview 01 is due Friday! All lectures and assignments, up to and including Project 01's submission in Week 07, should now be available. Apologies for all the notifications.
+
+A few reminders as we start to build in some repetition:
+
+**Exercises**
+
+- Exercises are due on Tuesdays and Thursdays so you can apply what you learn from one lecture before advancing to the next.
+- Peer reviews of exercises from the week are due on Saturdays, including rating work from 1-3 (i.e., "Needs Improvement," "Good," "Excellent"). Apply this rating by comparing the work to the exercise solutions I post so you get some practice comparing and evaluating code.
+- When randomly selected, sharing your exercise solutions via a video recording from the week's exercises is also due on Saturdays. This is so you get practice explaining code and concepts throughout the semester.
+
+**Interviews**
+
+- Thanks to everyone who has been participating in the discussions so far. These questions are designed to help you discuss concepts in preparation for the interviews.
+- Interview 01 is due this Friday. I have office hours on Thursday from 3-5 pm (Zoom link on the Home page) or we can arrange another time to meet if you can't make it then. This is an opportunity to ask questions about the course and prepare for subsequent interviews where we'll discuss concepts and code as applied to each project.
+
+**Projects**
+
+- Project Milestones from the week are due on Saturdays in the form of a group video where you discuss progress on the project. This is so you get practice working through the project as a group, stay on track, and we can be sure to provide feedback and answer questions in a timely fashion.
+
+Please remember that assignments will not be accepted late, but you are welcome to submit work early! We've made some exceptions as we get up to speed and if there is ever a legitimate reason for needing to submit work late, please just let me know in advance.
+
+-Marc
