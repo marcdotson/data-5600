@@ -22,7 +22,7 @@ the material and identified any questions, start watching the lecture.
 
 ### Milestone 11
 
-Prepare as a group to submit a draft of your presentation slides that is
-as close to final as you can make it. You’ll get feedback in time to
-revise, but the more complete your draft is, the more helpful the
-feedback will be.
+Consider the feedback you receive from the draft of your presentation
+slides. How are you implementing the feedback and revising the
+presentation and, where relevant, the report? What questions do you have
+about the feedback?
