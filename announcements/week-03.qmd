@@ -1,0 +1,12 @@
+---
+title: "Week 03 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+I hope everyone is getting into the groove of the course. That said, please don't hesitate to ask questions!
+
+There is only one new topic this week, so it's a great time to catch up and get ahead. These first three weeks really form the foundation for the rest of the course, so don't be afraid of revisiting lectures and exercises as needed.
+
+-Marc
