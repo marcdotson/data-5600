@@ -1,0 +1,17 @@
+---
+title: "Week 04 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+First of all, thank you so much for the milestone videos! This is a new assignment type this semester, but its really encouraging to know you're meeting together at least once a week and getting into the cadence of working through the lectures, practicing with the exercises, and applying what you're learning to the project. Hopefully the feedback you're getting is helpful!
+
+Two reminders this week:
+
+- Remember that for each exercise you are randomly assigned to review one other student’s exercise solution. This peer review needs to include rating that student's work from 1-3 (i.e., "Needs Improvement," "Good," "Excellent"). To provide that rating, please compare to the exercise solution I provide. This code review process is an important part of learning to read and critique code. Also, the peer reviews are due the end of the week that the exercise is due.
+- Remember that at the beginning of each topic/lecture page, a student is called on at random to share their exercise solution. You share this in the form of a video walkthrough posted to the linked discussion. This is an opportunity to practice discussing code and concepts in preparation for interviews and project presentations. Stacy just completed one this week that was a great example of how to do this. He also pointed out that I may have messed up the permissions on the discussions so you may not have been able to see other walkthroughs. Check and make sure you can see his and then go back and watch the others! This is a great place to ask questions about the code! My apologies for messing it up. If you've had a grade zeroed out because you were randomly assigned but didn't post a video walkthrough, please post it this week and you can get credit for the exercise back.
+
+This week's material can be challenging. Honestly, nobody likes evaluating assumptions and every real data set, as you've discovered, deviates in some way from the ideal. Please know that it's fine -- we're going to do the best we can and be transparent with what we do to address assumption violations. No data perfectly meets all assumptions.
+
+-Marc
