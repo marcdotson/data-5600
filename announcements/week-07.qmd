@@ -1,0 +1,17 @@
+---
+title: "Week 07 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+After this week, we're halfway done! Some reminders:
+
+- This is a project week, so no new material. This is the time to finalize Project 01, both the presentation and the report. If things start clicking this week in a way they haven't before, you're in good company.
+- While the slides and the report are both due at the end of the week (moved to Saturday), for "class" you will be recording and uploading your group presenting (no more than 8 minutes) using your revised slides.
+- Along with your presentation, please note that I'm asking you to do a peer review along with asking any questions for the presenters to answer. Even though the presentation is due on Friday, the sooner you upload your recording during the week, the more time people will have to ask questions that might highlight something you need to improve for your report.
+- When you submit your project at the end of the week, please remember to include the PDF of your notebook/report with code and output shown, the .ipynb notebook or .qmd document, any data files needed to run your code, and your presentation slides.
+
+As promised, I will be making the material and assignments for the rest of the semester available this week, so apologies for all of the notifications. Happy project week!
+
+-Marc
