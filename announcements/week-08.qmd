@@ -1,0 +1,16 @@
+---
+title: "Week 08 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+Welcome to the second half of the semester! A few reminders:
+
+- Interview 02 is due this week! If you can't attend office hours, just reach out and we can schedule another time. Unlike Interview 01, Interview 02 and 03 take the place of exams. You need to study for the interview and be prepared to answer questions about how the concepts we've covered in the lectures and discussions applies to what you just produced for Project 01 -- including being able to explain your code.
+- Keep it up with exercises, including providing your assign peer reviews each week and posting a recorded walkthrough of your exercise solution when assigned at the beginning of each topic/lecture page.
+- Work on Project 02 starts this week! I'm assuming you'd like to keep the same groups. If you'd like to make a change, please let me know ASAP. Look through the requirements for the project. They'll look familiar. One big change is the outcome variable for this project must be binary instead of continuous.
+
+As always, when questions come up don't hesitate to reach out to me and the TAs.
+
+-Marc
