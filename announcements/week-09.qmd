@@ -1,0 +1,19 @@
+---
+title: "Week 09 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+I really enjoyed the interviews last week! Thank you for taking the time to meet with me, discuss your project work, and share your thoughts about the course. I hope you found it useful as well and got as much preparing for the interviews as you would have preparing for an exam.
+
+I've decided that Interview 03 will run a little differently. Instead of meeting with each of you one-on-one, the interviews will be as a group. Since we're talking about your projects, it makes sense to have the group discuss their work together. I'll provide more details as we get closer, but for now I want to give you a heads up and remind you that even if you divide up work on a project, which is natural, everyone in the group needs to know everything about the project, including the data and all of the code.
+
+Two other announcements:
+
+- I will not have regularly scheduled office hours this week.
+- Since Saturday is July 4 (Happy 250!) I've moved the deadlines for the Project 02 Week 09 Milestone and Week 09 Peer Reviews to Monday.
+
+As always, don't hesitate to ask your peers, me, and the TAs for help!
+
+-Marc

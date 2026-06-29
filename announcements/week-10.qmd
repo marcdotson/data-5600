@@ -1,0 +1,12 @@
+---
+title: "Week 10 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+With logistic regression and maximum likelihood estimation in hand, we are ready to bridge into the final set of models for the course. I hope the connections between confusion matrices and asymmetric loss are especially helpful this week.
+
+I will not have regularly scheduled office hours this week. That said, please don't hesitate to ask for help!
+
+-Marc

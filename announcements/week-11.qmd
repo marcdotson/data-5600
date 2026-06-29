@@ -1,0 +1,12 @@
+---
+title: "Week 11 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+We've talked a lot this semester about stories. Part of the narrative structure of storytelling is the climax -- what everything has been building up to. That's this week. This makes it the right time to make connections and, if needed, catch up conceptually. This is also when navigating both frequentist and Bayesian approaches should pay off as we discover how penalized regression and Bayesian models are the same.
+
+I also appreciate it can be a lot, so please continue to participate in the discussions, ask questions, and reach out to me and the TAs for help. Again, this is the week to make sure you have a solid understanding of the concepts we've covered and how they continue to apply to Project 02.
+
+-Marc
