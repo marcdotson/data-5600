@@ -1,0 +1,17 @@
+---
+title: "Week 12 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+With penalized regression behind us, the narrative climax of the semester's story, these final three weeks are the denouement -- the narrative resolution where we just have a handful of additional topics to cover to wrap things up along with Project 02. Continuing from last week, this is the time to make sure you have a solid understanding of the concepts we've covered and how they apply as you complete your project work.
+
+A few reminders:
+
+- A (nearly finalized) draft of your presentation slides for Project 02 is due at the end of next week. Please carefully work through the requirements for Project 02 as you finalize your work.
+- The final week will be packed with assignments but no new content, including presentation videos and Interview 03. Remember that Interview 03 will be as a group, so be sure that everyone in groups knows everything about the project, including the data and all of the code.
+
+As always, please ask questions and reach out to me and the TAs for help!
+
+-Marc
