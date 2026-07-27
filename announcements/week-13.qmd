@@ -1,0 +1,17 @@
+---
+title: "Week 13 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+Welcome to the last week of instruction! There's a lot going on for the end of the semester, starting with IDEA Student Evaluations. Please take a moment to complete this. It's essential that I get feedback from everyone, so thank you in advance!
+
+A few reminders:
+
+- A (nearly finalized) draft of your presentation slides for Project 02 is due on Friday! Please carefully work through the requirements for Project 02 as you finalize your work. I will give you feedback as quickly as I can so that you can improve your presentation and report.
+- As you work on Project 02, please remember that Interview 03 next week will be as a group, so be sure that everyone in your group knows everything about the project, including the specifics of the data and all of the code.
+
+Finally, I won't have regular office hours this week. But, as always, please ask questions and reach out to me and the TAs for help and, if needed, we can set up a time to meet that works for you!
+
+-Marc
