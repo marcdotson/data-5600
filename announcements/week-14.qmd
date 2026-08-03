@@ -1,0 +1,20 @@
+---
+title: "Week 14 Announcements"
+format: gfm
+---
+
+Hi, everyone:
+
+Congratulations on making it to the end of the semester! There's a lot to do this week to wrap things up:
+
+- Complete your IDEA Student Evaluation (if you haven't already) and the Summer 2026 Post-Survey. These two evaluations are crucial to our efforts to continue to improve the course -- so thank you for taking the time to complete both of them!
+- Incorporate the feedback on your slide decks and finalize, record, and upload your Project 02 Presentations. While you have until Friday, the sooner you get these uploaded the sooner your peers, TAs, and I can provide feedback that may help with the report.
+- Finalize and submit your Project 02 Presentation and Report, including the slide deck, code (Python notebook or Quarto document), report PDF, and data. As always, carefully review the instructions and ensure all requirements are met.
+- Schedule Interview 03 with me as a group. Ideally this would be after you finish Project 02, but the summer being one week shorter really constrains us. All of that to say, I will be available at any time prior to Friday, including at night.
+
+I know that's a lot, so I'd recommend starting with the IDEA Student Evaluation, Summer 2026 Post-Survey, and scheduling Interview 03. Remember that every group member should understand and be prepared to answer any questions about the concepts of the course and how they apply to your project, including explaining project code.
+
+Teaching and learning online is difficult, but I have been genuinely impressed with all of your hard work and what you've accomplished. I'm excited to see your final projects and what comes next for all of you! Don't be a stranger.
+
+-Marc
+
