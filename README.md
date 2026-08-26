@@ -2,9 +2,6 @@
 
 # DATA 5600 Introduction to Regression and Machine Learning for Analytics
 
-<!-- - Monday and Wednesday 1:30-2:45 pm
-- Huntsman Hall 260 -->
-
 This course introduces machine learning for business analytics,
 including linear, logistic, and penalized regression. Emphasis is on
 building interpretable models, evaluating assumptions, and communicating
@@ -55,23 +52,8 @@ Inference, and DATA 5630 Deep Forecasting.
 ## Data Stack
 
 Each student will need to bring a laptop, either their own or one rented
-from Utah State. While students are welcome to use their preferred
-tools, the following [data
-stack](https://github.com/marcdotson/data-stack) is **highly**
-recommended and certain tools are required, as indicated below.
-
-### Python
-
-[Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is
-a general purpose, open source programming language developed by
-computer scientists. It is the most commonly used programming language
-for data wrangling, visualizations, and modeling. Not only will Python
-be required for the course, but **students will be evaluated on their
-ability to use and adapt the code provided as part of the course**. See
-the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-python)
-for details on how to best install and manage Python versions and
-project environments.
+from Utah State, and use the following [data
+stack](https://github.com/marcdotson/data-stack).
 
 ### Positron
 
@@ -86,6 +68,28 @@ with essential data tools common to language-specific IDEs. See the
 training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron)
 for a summary of Positron’s data-friendly features.
 
+### Python
+
+[Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is
+a general purpose, open source programming language developed by
+computer scientists. It is the most commonly used programming language
+for data wrangling, visualizations, and modeling. Students will be
+evaluated on their ability to use and adapt the code provided as part of
+the course. See the [data stack
+training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-python)
+for how to install and manage Python versions and project environments.
+
+### Quarto
+
+[Quarto](https://quarto.org) is an open source publishing system that
+combines text, code, and output. Quarto documents are similar to Jupyter
+notebooks, except the content can be rendered into a variety of formats,
+including PDFs, Word documents, PowerPoint presentations, Revealjs slide
+decks, interactive dashboards, websites, etc. Students will be required
+to submit code and output in Quarto and PDF formats. See the [data stack
+training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-quarto)
+for more details on Quarto.
+
 ### GitHub
 
 [GitHub](https://github.com/about) is an online hosting service for
@@ -96,22 +100,10 @@ collaboration on a single code base and enables students to organize an
 online portfolio of work. See the [data stack
 training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-github)
 for the basics of using Git and GitHub and a [project
-template](https://github.com/marcdotson/project-template).
+template](https://github.com/marcdotson/project-template) for the course
+projects.
 
-### Quarto
-
-[Quarto](https://quarto.org) is an open source publishing system that
-combines text, code, and output. Quarto documents are similar to Jupyter
-notebooks, except the content can be rendered into a variety of formats,
-including PDFs, Word documents, PowerPoint presentations, Revealjs slide
-decks, interactive dashboards, websites, etc. While Quarto is not
-required for the course, students will be required to submit code and
-output in a PDF format. See the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-quarto)
-for more details on Quarto, including how to use Quarto to render a
-Jupyter notebook into a PDF.
-
-### Copilot
+### AI
 
 Students may use their preferred AI to assist in studying and completing
 assignments. All students have access to
@@ -166,19 +158,6 @@ projects.
   an exercise if they don’t complete their randomly assigned peer review
   on time.
 
-### Interviews (30%)
-
-Interviews are an opportunity for students to demonstrate their personal
-understanding and prepare for future real-world job interviews. Designed
-to complement exercise practice and group project work, interviews will
-include questions about course concepts as applied to project work,
-including explaining project code, and reflections on performance in the
-course. Questions asked during each lecture are provided to students to
-help them prepare for interviews.
-
-Interviews with the instructor will occur at the beginning, middle, and
-end of the semester during office hours or by appointment.
-
 ### Projects (50%)
 
 Projects are the focus of learning by doing in the course, serving as
@@ -194,51 +173,66 @@ will submit a draft of their slides to get feedback and have time for
 revision. The other students in the class, as well as the group members
 themselves, will help evaluate each of the presentations.
 
+### Interviews (30%)
+
+Interviews are an opportunity for students to demonstrate their
+understanding of the course material as applied to their project work
+and prepare for future real-world job interviews. Designed to complement
+exercise practice and group project work, interviews will be conducted
+as a group and will include questions randomly assigned to group members
+about course concepts as applied to project work, including explaining
+project code. Questions asked during each lecture are provided to
+students to help them prepare for interviews. AI may not be used during
+interviews.
+
+Interviews with the instructor will occur at the beginning, middle, and
+end of the semester during office hours or by appointment.
+
 ## Schedule
 
 Please note that the instructor reserves the right to change the
 following schedule at any time and will provide students sufficient
 notice as it relates to assignment deadlines.
 
-### Week 01 (May 3-9)
+### Week 01 (August 31-September 5)
 
 - Regression and Machine Learning
 - Modeling Workflow
 
-### Week 02 (May 10-16)
+### Week 02 (September 6-12)
 
 - Decisions and Data
+
+### Week 03 (September 13-19)
+
 - Probability and Statistics
-
-### Week 03 (May 17-23)
-
 - Linear Models
 
-### Week 04 (May 24-30)
+### Week 04 (September 20-26)
 
 - Validity, Representativeness, and Linearity
 - Independence, Constant Variance, Normality, and Identifiability
 
-### Week 05 (May 31-June 6)
+### Week 05 (September 27-October 3)
 
 - Ordinary Least Squares
 - Frequentist and Bayesian Inference
 
-### Week 06 (June 7-13)
+### Week 06 (October 4-10)
 
 - Model Evaluation and Prediction
 - Communicating Results
 
-### Week 07 (June 14-20)
+### Week 07 (October 11-17)
 
 - Presentations
 
-### Week 08 (June 21-27)
+### Week 08 (October 18-24)
 
 - Asymmetric Loss
 - Generalized Linear Models
 
-### Week 09 (June 28-July 4)
+### Week 09 (October 25-31)
 
 - Logistic Regression
 - Maximum Likelihood Estimation
@@ -246,26 +240,30 @@ notice as it relates to assignment deadlines.
 <!-- ### Week 10
 &#10;- Spring Break -->
 
-### Week 10 (July 5-11)
+### Week 10 (November 1-7)
 
 - Hyperparameters
 - Confusion and Cross-Validation
 
-### Week 11 (July 12-18)
+### Week 11 (November 8-14)
 
 - Penalized Regression
 - Ridge Regression, LASSO, and Elastic Net
 
-### Week 12 (July 19-25)
+### Week 12 (November 15-21)
 
 - Dimensionality Reduction
 - Principal Component Regression
 
-### Week 13 (July 26-August 1)
+### Week 13 (November 22-28)
+
+- Thanksgiving Break
+
+### Week 14 (November 29-December 5)
 
 - Interactions
 - Multilevel Models
 
-### Week 14 (August 2-7)
+### Week 15 (December 6-December 11)
 
 - Presentations
