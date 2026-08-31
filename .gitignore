@@ -1,22 +1,25 @@
-# Python
-.venv
+# Folders
+/.venv/
+/.quarto/
+/.posit/
+/output/*
+/private/*
 
-# R
+# Files
+**/*.quarto_ipynb
+**/*.quarto_ipynb_*
+*.pdf
+/code/src/*
+!/code/src/*.R
+!/code/src/*.py
+!/code/src/*.cpp
+!/code/src/*.stan
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-
-# Apple
 .DS_Store
 
-# Folders
-assignments/*
-private/*
-/.quarto/
-
-# Files
-*.pdf
+# Custom
+/assignments/*
 *.html
-**/*.quarto_ipynb
-
