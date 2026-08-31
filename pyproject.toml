@@ -1,5 +1,5 @@
 [project]
-name = "DATA 5600"
+name = ""
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -12,6 +12,7 @@ dependencies = [
     "numpy>=2.3.1",
     "polars>=1.31.0",
     "pyarrow>=21.0.0",
+    "pyhere>=1.0.3",
     "scikit-learn>=1.7.2",
     "seaborn>=0.13.2",
     "statsmodels>=0.14.5",
