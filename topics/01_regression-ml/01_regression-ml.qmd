@@ -32,13 +32,28 @@ jupyter: python3
 
 ## DATA 5600
 
-This course introduces machine learning for **business analytics**, including linear, logistic, and penalized regression. Emphasis is on building **interpretable models**, evaluating assumptions, and communicating results, with **real-world projects** connecting modeling techniques to **business decision-making**. Prerequisites: DATA 3100 and **DATA 3300**
+This course introduces machine learning for **business analytics**, including linear, logistic, and penalized regression. Emphasis is on building **interpretable models**, evaluating assumptions, and communicating results, with **real-world projects** connecting modeling techniques to **business decision-making**. Prerequisites: DATA 3100 and DATA 3300
 
 By the end of this course, students will be able to:
 
 1. Build, evaluate, and interpret models to inform decision-making for non-technical stakeholders.
 2. Diagnose and address violations of model assumptions to ensure appropriate model use.
 3. Communicate model results clearly in a business context.
+
+## Learning objectives
+
+The [IDEA](https://www.ideaedu.org) essential learning objectives for this course are:
+
+::: {.incremental}
+- Gaining a basic **understanding** of the subject (e.g., factual knowledge, methods, principles, generalizations, theories)
+- Learning to **apply** course material (to improve thinking, problem solving, and decisions)
+- Developing specific **skills**, competencies, and points of view needed by professionals in the field most closely related to this course
+- Learning appropriate methods for collecting, **analyzing**, and interpreting numerical information
+:::
+
+::: {.fragment}
+Since applying conceptual understanding and skills to data analytics problems in practice is a **group effort**, effective group work will be a critical part of student assessment in this course
+:::
 
 ## 
 
@@ -55,16 +70,18 @@ By the end of this course, students will be able to:
 - Worked in marketing research
 - Studied quantitative marketing
 - Eight years teaching at BYU
-- Second year teaching at Utah State
-- Rachel teaches high school English
-- Four kids aged 8 to 18
+- Third year teaching at Utah State
+- Rachel teaches middle school English
+- Four kids aged 9 to 19
 - Once compared by a student to "a nerdy Spider-Man villain"
 :::
 :::
 
 ::::
 
-# What are you studying? What business problems are you interested in? What is your dream job? {background-color="#006242"}
+# What are you studying? What business problems are you interested in? {background-color="#006242"}
+
+<!-- Self-organize into groups and introduce yourselves, including sharing photos to get to know each other -->
 
 # Study and Success
 
@@ -72,16 +89,18 @@ By the end of this course, students will be able to:
 
 :::: {.columns .v-center}
 
-::: {.column width="60%"}
-Success in this course is demonstrating conceptual understanding and skill mastery by applying the modeling workflow in your chosen business context and as part of a group
-
-::: {.fragment}
-You are each an essential member of our community of learners; please consider me a teacher and a mentor
-:::
-:::
-
 ::: {.column width="40%"}
 ![](../../figures/logo_asc.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.fragment}
+Success in this course is demonstrating **conceptual understanding** and **skill mastery** by applying the modeling workflow in your chosen **business context** as **part of a group**
+:::
+
+::: {.fragment}
+You are each an essential member of your groups and our community of learners
+:::
 :::
 
 ::::
@@ -92,7 +111,7 @@ You are each an essential member of our community of learners; please consider m
 2. Engage during class by asking questions, taking notes, and actively coding
 3. Apply what you learn in class by completing exercises and working on projects
 4. Evaluate what you're learning by reviewing and reflecting on course materials and exercise solutions
-5. Reinforce what you're learning by utilizing office hours and working with classmates
+5. Reinforce what you're learning by utilizing office hours and working with group members
 
 ## 
 
@@ -102,30 +121,41 @@ You are each an essential member of our community of learners; please consider m
 
 ## 
 
+:::: {.columns .v-center}
+
+::: {.column width="40%"}
+![](../../figures/qr-code_dmc.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+### Dare Mighty Careers {.lato-font}
+:::
+
+::::
+
+## 
+
 ::: {.v-center}
 ![](../../figures/modeling-sequence.png){fig-align="center"}
 :::
 
 # Data Stack
 
+## AI
+
+Every modern data stack includes AI tools and all Utah State students have **access to a specific set** (see [usu.edu/ai/tools](https://www.usu.edu/ai/tools))
+
+::: {.incremental}
+- AI can help learning, including helping to draft and debug code, explain concepts in new ways, and practice for interviews
+- AI can harm learning when we use AI to think for us, especially when we **don't know enough** about a topic to evaluate what the AI generates
+- Be careful and transparent if you use AI, including **reviewing** what the AI generates and **citing** the tool you use
+:::
+
 ## 
 
-:::: {.columns .v-center}
-
-::: {.column width="60%"}
-::: {.incremental}
-- [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is a general purpose, open source programming language
-- It is the most commonly used programming language for data analytics
-- Python will be required for the course
-- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-python) for details on how to best install and manage Python versions and project environments
+::: {.v-center}
+![](../../figures/meme_ai-learning.png){fig-align="center"}
 :::
-:::
-
-::: {.column width="40%"}
-![](../../figures/logo_python.png){fig-align="center"}
-:::
-
-::::
 
 ## 
 
@@ -138,8 +168,8 @@ You are each an essential member of our community of learners; please consider m
 ::: {.column width="60%"}
 ::: {.incremental}
 - A code editor or integrated development environment (IDE) is a critical data tool
-- I recommend [Positron](https://positron.posit.co), a next-generation data science IDE
-- Positron combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs
+- [Positron](https://positron.posit.co) is a next-generation data science IDE
+- It combines the multilingual extensibility of [VS Code](https://code.visualstudio.com/) with essential data tools common to language-specific IDEs
 - See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron) for a summary of Positron's data-friendly features
 :::
 :::
@@ -150,17 +180,17 @@ You are each an essential member of our community of learners; please consider m
 
 :::: {.columns .v-center}
 
-::: {.column width="60%"}
-::: {.incremental}
-- [GitHub](https://github.com/about) hosts version-controlled project repositories managed with Git
-- It is the industry standard for software development and data projects
-- Using GitHub enables collaboration and the creation of a portfolio of work
-- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-github) for the basics of using Git and GitHub and a [project template](https://github.com/marcdotson/project-template)
-:::
+::: {.column width="40%"}
+![](../../figures/logo_python.png){fig-align="center"}
 :::
 
-::: {.column width="40%"}
-![](../../figures/logo_github.png){fig-align="center"}
+::: {.column width="60%"}
+::: {.incremental}
+- [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) is a general purpose, open source programming language
+- It is the most commonly used programming language for data analytics
+- You will be evaluated on using and adapting the code provided as part of the course
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-python) for details on how to best install and manage Python versions and project environments
+:::
 :::
 
 ::::
@@ -177,8 +207,8 @@ You are each an essential member of our community of learners; please consider m
 ::: {.incremental}
 - [Quarto](https://quarto.org) is an open source publishing system that combines text, code, and output
 - Quarto documents are similar to Jupyter notebooks that can be rendered into a variety of formats
-- Quarto is not required for the course, but you will be required to submit code and output in a PDF format
-- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-quarto) for more details on Quarto, including how to use Quarto to render a Jupyter notebook into a PDF
+- You will submit code and output in Quarto and PDF formats
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-quarto) for more details on Quarto
 :::
 :::
 
@@ -188,27 +218,20 @@ You are each an essential member of our community of learners; please consider m
 
 :::: {.columns .v-center}
 
-::: {.column width="60%"}
-::: {.incremental}
-- You may use your preferred AI to assist in studying and completing assignments, but you have access to [Copilot](https://copilot.usu.edu/)
-- Please remember that the objective of this course is learning
-- AI can contribute to learning, including helping to debug code and explain concepts
-- AI can be a detriment to learning, including when students use AI to think for them
-- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-copilot) for details on getting access to AI and a discussion on using AI responsibly
-:::
+::: {.column width="40%"}
+![](../../figures/logo_github.png){fig-align="center"}
 :::
 
-::: {.column width="40%"}
-![](../../figures/logo_copilot.png){fig-align="center"}
+::: {.column width="60%"}
+::: {.incremental}
+- [GitHub](https://github.com/about) hosts version-controlled project repositories managed with Git
+- It is the industry standard for software development and data projects
+- Using GitHub enables collaboration and the creation of a portfolio of work
+- See the [data stack training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-github) for the basics of using Git and GitHub and a [project template](https://github.com/marcdotson/project-template)
+:::
 :::
 
 ::::
-
-## 
-
-::: {.v-center}
-![](../../figures/meme_ai-learning.png){fig-align="center"}
-:::
 
 # Assessment
 
@@ -237,36 +260,38 @@ Each lecture ends with an exercise designed to help you practice what was covere
 
 ::: {.incremental}
 - Each exercise is due before the following class
-- You are encouraged to work together, but you are required to submit your own work
+- You are encouraged to work together as a group, but you are required to submit your own work
 - Each class begins with one of you being called on at random to share your exercise solution
 - For each exercise, you will be randomly assigned to review one other student’s exercise solution, including rating their work from 1-3 (i.e., "Needs Improvement," "Good," "Excellent")
 - You won’t get credit for an exercise if you don’t submit your exercise on time, aren’t prepared to share your exercise solution when called on at random, or don’t complete your randomly assigned exercise review
 :::
 
-## Interviews (30%)
-
-Interviews are an opportunity for you to demonstrate your personal understanding and prepare for future real-world job interviews
-
-::: {.incremental}
-- Designed to complement exercise practice and group project work
-- Includes questions about course concepts, exercise and project work (including code), and reflections on your performance in the course
-- Interviews with me will occur at the beginning, middle, and end of the semester during office hours or by appointment
-:::
-
 ## Projects (50%)
 
-Projects are the focus of learning by doing in the course, serving as the means for you to apply your conceptual understanding and skill mastery both as a group and within your business domain of interest
+Projects are the focus of learning by doing in the course, serving as the means for you to apply your conceptual understanding and skill mastery as a group within your business domain of interest
 
 ::: {.incremental}
-- You will complete two group projects, one focused on regression and another focused on classification
-- Groups will both present and submit a report
-- The week before the presentations, groups will submit a draft of their slides to get feedback and have time for revision
+- Groups will complete two group projects, which includes a presentation and report, one focused on regression and another focused on classification
+- Each week groups will submit a recording sharing their progress on that week's project milestones, including what they've pushed to GitHub
+- The week before presentations, groups will submit a draft of their slides to get feedback and have time for revision
 - The other students in the class, as well as the group members themselves, will help evaluate each of the presentations
 :::
 
 ## 
 
 ![](../../figures/meme_project-iceberg.png){fig-align="center"}
+
+## Interviews (30%)
+
+Interviews are an opportunity for you to demonstrate your understanding of the course material as applied to your project work and prepare for future real-world job interviews
+
+::: {.incremental}
+- Designed to complement exercise practice and project work
+- Interviews will be conducted as a group and will include questions randomly assigned to group members about course concepts as applied to project work, including explaining project code
+- Questions asked during each lecture are provided to help you prepare for interviews
+- Interviews with me will occur at the beginning, middle, and end of the semester during office hours or by appointment
+- AI may not be used during interviews
+:::
 
 # Review the syllabus. What questions do you have? What about the course makes you excited or nervous? {background-color="#006242"}
 
@@ -438,7 +463,7 @@ We use models to **extract information** from data and inform decisions in the p
 1. Take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
 2. Start setting up your data stack
 3. Read the case and write how you might go about informing the decision (no more than one page)
-4. Include in your response the members of your group
+4. Include in your response the members of your group and a photo you've shared with your group to get to know each other
 5. Submit your response as a PDF on Canvas
 
 ## {background-color="#288DC2"}
