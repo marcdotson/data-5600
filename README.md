@@ -16,13 +16,30 @@ By the end of this course, students will be able to:
     appropriate model use.
 3.  Communicate model results clearly in a business context.
 
+## Learning Objectives
+
+The [IDEA](https://www.ideaedu.org) essential learning objectives for
+this course are:
+
+- Gaining a basic understanding of the subject (e.g., factual knowledge,
+  methods, principles, generalizations, theories).
+- Learning to apply course material (to improve thinking, problem
+  solving, and decisions).
+- Developing specific skills, competencies, and points of view needed by
+  professionals in the field most closely related to this course.
+- Learning appropriate methods for collecting, analyzing, and
+  interpreting numerical information.
+
+Since applying conceptual understanding and skills to data analytics
+problems in practice is a group effort, effective group work will be a
+critical part of student assessment in this course.
+
 ## Study and Success
 
 Successful students in this course will demonstrate conceptual
 understanding and skill mastery by applying the modeling workflow within
-their chosen business context and as part of a group. Each student is an
-essential member of a community of learners and should consider the
-instructor as both a teacher and a mentor.
+their chosen business context as part of a group. Each student is an
+essential member of a group and community of learners.
 
 Students can focus on learning by using the following study tips:
 
@@ -34,7 +51,7 @@ Students can focus on learning by using the following study tips:
 4.  Evaluate what you’re learning by reviewing and reflecting on course
     materials and exercise solutions.
 5.  Reinforce what you’re learning by utilizing office hours and working
-    with classmates.
+    with group members.
 
 After completing the course, student resumes should reflect the tools,
 skills, and methods they have learned and showcase the projects they
@@ -54,6 +71,16 @@ Inference, and DATA 5630 Deep Forecasting.
 Each student will need to bring a laptop, either their own or one rented
 from Utah State, and use the following [data
 stack](https://github.com/marcdotson/data-stack).
+
+Every modern data stack includes AI tools. All Utah State students have
+[access to a specific set](https://www.usu.edu/ai/tools). While AI can
+help learning and productivity (e.g., drafting and debugging code,
+explaining concepts in new ways, practicing for interviews), it can be
+harmful when we use it to replace rather than supplement thinking and
+decision-making—especially when we don’t know enough about a topic to
+evaluate what the AI generates. If students use AI tools, they should be
+thoughtful and transparent, including reviewing what the AI generates
+and citing the AI tool they use.
 
 ### Positron
 
@@ -103,19 +130,6 @@ for the basics of using Git and GitHub and a [project
 template](https://github.com/marcdotson/project-template) for the course
 projects.
 
-### AI
-
-Students may use their preferred AI to assist in studying and completing
-assignments. All students have access to
-[Copilot](https://copilot.usu.edu/) through Utah State. However,
-students must remember that the objective of this course is learning. AI
-can contribute to learning, including helping to debug code and explain
-concepts in new ways. AI can also be a detriment to learning, including
-when students use AI to think for them. See the [data stack
-training](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-copilot)
-for details on getting access to AI and a discussion on using AI
-responsibly.
-
 ## Assessment
 
 Assignments are designed to be aligned with what students will be
@@ -141,9 +155,9 @@ what was covered in the lecture and prepare to apply it to their
 projects.
 
 - Each exercise is due before the following lecture. While students are
-  encouraged to work together, each student is required to submit their
-  own work. Students won’t get credit for an exercise if they don’t
-  submit their exercise on time.
+  encouraged to work together as a group, each student is required to
+  submit their own work. Students won’t get credit for an exercise if
+  they don’t submit their exercise on time.
 - Before each lecture, a student will be called on at random to share
   their exercise solution, explaining what they did and why. This is an
   opportunity for students to practice discussing code and concepts in
@@ -167,19 +181,20 @@ Students will complete two group projects, one focused on regression and
 another focused on classification. The groups will both present and
 submit a report.
 
-At the end of each week, each group will share their progress on that
-week’s project milestones. The week before the presentations, groups
-will submit a draft of their slides to get feedback and have time for
-revision. The other students in the class, as well as the group members
-themselves, will help evaluate each of the presentations.
+At the end of each week, each group will submit a recording to share
+their progress on that week’s project milestones, including what they’ve
+pushed to GitHub. The week before the presentations, groups will submit
+a draft of their slides to get feedback and have time for revision. The
+other students in the class, as well as the group members themselves,
+will help evaluate each of the presentations.
 
 ### Interviews (30%)
 
 Interviews are an opportunity for students to demonstrate their
 understanding of the course material as applied to their project work
 and prepare for future real-world job interviews. Designed to complement
-exercise practice and group project work, interviews will be conducted
-as a group and will include questions randomly assigned to group members
+exercise practice and project work, interviews will be conducted as a
+group and will include questions randomly assigned to group members
 about course concepts as applied to project work, including explaining
 project code. Questions asked during each lecture are provided to
 students to help them prepare for interviews. AI may not be used during
