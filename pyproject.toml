@@ -12,6 +12,7 @@ dependencies = [
     "jupyter>=1.1.1",
     "numpy>=2.3.1",
     "playwright>=1.62.0",
+    "plotnine>=0.15.2",
     "polars>=1.31.0",
     "pyarrow>=21.0.0",
     "pyhere>=1.0.3",
