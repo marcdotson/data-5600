@@ -333,10 +333,10 @@ rng = np.random.default_rng(42)
 
 # Specify a function to simulate data
 def sim_data(n, beta_0, beta_price):
-    price = rng.normal(2, 1, size=n)
-    error = rng.normal(0, 1, size=n)
-    units = (beta_0 + beta_price * price + error).round(0)
-    return price, units
+  price = rng.normal(2, 1, size=n)
+  error = rng.normal(0, 1, size=n)
+  units = (beta_0 + beta_price * price + error).round(0)
+  return price, units
 
 sim_data(n = 5, beta_0 = 2, beta_price = -0.3)
 ```
@@ -699,6 +699,7 @@ Eventually we'll select our best-fitting model(s) and make predictions directly 
 ::: {.incremental}
 - In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
 - Without being honest about uncertainty, we will mislead rather than inform decision-making
+- It is often beneficial to present predictions for different scenarios
 :::
 :::
 
