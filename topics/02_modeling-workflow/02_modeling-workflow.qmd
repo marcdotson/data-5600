@@ -211,17 +211,17 @@ Using a loss function formalizes what we do implicitly when weighing pros and co
 In the case, we want to maximize profit (so $-\ell(a, s)$)
 
 $$
-\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)
+P(p, D) = D(p) \times (p - c)
 $$
 
 ::: {.incremental}
-- $\mathcal{D}(p)$ is demand
+- $D(p)$ is demand
 - $p$ is price
 - $c$ is cost
 :::
 
 ::: {.fragment}
-For different prices $p$ (actions), we can compute profit $\mathcal{P}$ given demand $\mathcal{D}$ (states of the world)
+For different prices $p$ (actions), we can compute profit $P$ given demand $D$ (states of the world)
 :::
 :::
 
@@ -251,7 +251,7 @@ But what do we know about the inputs to this function?
 
 ::: {.incremental}
 - Price $p$ is something we can set (action), cost $c$ is known or knowable
-- Demand $\mathcal{D}$ is unknown or known with uncertainty (state of the world)
+- Demand $D$ is unknown or known with uncertainty (state of the world)
 :::
 
 ::: {.fragment}
@@ -270,7 +270,7 @@ A model is the mapping function $f: X \rightarrow Y$ where $Y$, $X$, and their r
 
 ::: {.fragment}
 $$
-\large{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\large{f(X, Y | \theta) = L(\theta | X, Y)}
 $$
 :::
 
@@ -293,7 +293,7 @@ We will see that this same model is used to determine *likely* values of $\theta
 A model is the mapping function $f: X \rightarrow Y$ where $Y$, $X$, and their relationship is consistent with the objective
 
 $$
-\large{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\large{f(X, Y | \theta) = L(\theta | X, Y)}
 $$
 
 $\theta$ is the **weights** or **parameters** of the mapping function from $X$ to $Y$ and the information we want to extract from the data
@@ -418,22 +418,23 @@ I recommend visualization libraries that follow the [grammar of graphics](https:
 ```{python}
 #| code-line-numbers: "|1-3|5-6|8-9|11-15|12|13|14"
 
-import os
 import polars as pl
-import seaborn.objects as so
+from plotnine import *
+from pyhere import here
 
 # Import data
-sl_data = pl.read_parquet(os.path.join('soft_launch.parquet'))
+sl_data = pl.read_parquet(here('data', 'soft_launch.parquet'))
 
 # Peanut butter purchases
 pb_data = sl_data.filter(pl.col('units') > 0)
 
 # Visualize price and units
-(so.Plot(pb_data, x = 'price', y = 'units')
-    .add(so.Dot(alpha = 0.2), so.Jitter(x = 0.5, y = 0.5))
-    .add(so.Line(), so.PolyFit(order=1))
+(ggplot(pb_data, aes(x = 'price', y = 'units'))
+  + geom_jitter(width = 0.2, alpha = 0.2)
+  + geom_smooth(method = 'lm', se = False)
 )
 ```
+
 :::
 
 ::::
@@ -513,14 +514,15 @@ Feature engineering (a.k.a., preprocessing data) is data cleaning or wrangling f
 
 # Preprocess data
 lm_data = pb_data.to_dummies(
-    # Dummy code brand
-    columns = ['brand'], drop_first = True
+  # Dummy code brand
+  columns = ['brand'], drop_first = True
 ).with_columns(
-    # Log units and price
-    (pl.col('units') + 1).log().alias('log_units'),
-    (pl.col('price') + 1).log().alias('log_price')
+  # Log units and price
+  (pl.col('units') + 1).log().alias('log_units'),
+  (pl.col('price') + 1).log().alias('log_price')
 ).to_pandas()
 ```
+
 :::
 
 ::::
@@ -610,6 +612,7 @@ ba_fit = bmb.Model(
   data = lm_data
 ).fit()
 ```
+
 :::
 
 ::::
@@ -710,12 +713,13 @@ Eventually we'll select our best-fitting model(s) and make predictions directly 
 
 - In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
 - Without being honest about uncertainty, we will mislead rather than inform decision-making
+- It is often beneficial to present predictions for different scenarios
 :::
 
 ::: {.column .gray-box width="42%"}
-In the case, we discover that accounting for uncertainty in the price elasticity estimate (i.e., the parameter measuring the relationship between `price` and `units`) leads to a wide range of profit outcomes
+In the case, we discover that accounting for uncertainty in the price elasticity estimate (i.e., the parameter measuring the relationship between `price` and `units`) leads to predicted monthly profits of $146,000 to $377,300
 
-However, all of the predictions are positive, which supports the decision to launch the new private label
+All of the predictions are positive, which supports the decision to launch the new private label
 :::
 
 ::::
@@ -756,7 +760,7 @@ Your job as a data analyst is to **serve as a bridge** between the data and tech
 ### Exercise 02 {.lato-font}
 
 1. Last chance to take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
-2. Finish setting up your data stack
+2. Finish setting up your [data stack](https://github.com/marcdotson/data-stack) 
 3. Write about what the ideal data for the case study might look like
 4. Submit your response as a PDF on Canvas
 
