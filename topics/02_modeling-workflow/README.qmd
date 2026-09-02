@@ -5,30 +5,28 @@ format: gfm
 
 During this class we will walk through a high-level overview of a modeling workflow.
 
-To share their solution for Exercise 01, the randomly selected student is **___**.
-
 Running statistical models.
 
 ```{python}
 #| eval: false
 #| echo: true
 
-import os
 import polars as pl
-import seaborn.objects as so
 import statsmodels.formula.api as smf
 import bambi as bmb
+from plotnine import *
+from pyhere import here
 
 # Import data
-sl_data = pl.read_parquet(os.path.join('data', 'original_df.parquet'))
+sl_data = pl.read_parquet(here('data', 'original_df.parquet'))
 
 # Peanut butter purchases
 pb_data = sl_data.filter(pl.col('units') > 0)
 
 # Visualize price and units
-(so.Plot(pb_data, x = 'price', y = 'units')
-    .add(so.Dot(alpha = 0.2), so.Jitter(x = 0.2))
-    .add(so.Line(), so.PolyFit(order=1))
+(ggplot(pb_data, aes(x = 'price', y = 'units'))
+  + geom_jitter(width = 0.2, alpha = 0.2)
+  + geom_smooth(method = 'lm', se = False)
 )
 
 # Preprocess data
@@ -101,7 +99,7 @@ What is your preferred task when working with data: Data wrangling, visualizing 
 ### Exercise 02
 
 1. Last chance to take the [course pre-survey](https://usu.instructure.com/courses/783437/quizzes/1377927)
-2. Finish setting up your data stack
+2. Finish setting up your [data stack](https://github.com/marcdotson/data-stack) 
 3. Write about what the ideal data for the case study might look like
 4. Submit your response as a PDF on Canvas
 
