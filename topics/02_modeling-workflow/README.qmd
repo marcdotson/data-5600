@@ -88,6 +88,8 @@ plt.show()
 
 ## Learn
 
+View the slides:
+
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
 
 Go to the discussions to discuss ideas as a group for your first project, including what might the business objective and the data story be, before continuing with the lecture.

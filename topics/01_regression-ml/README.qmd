@@ -12,6 +12,8 @@ Welcome to DATA 5600 Introduction to Regression and Machine Learning! During thi
 
 ## Learn
 
+View the slides:
+
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
 
 Go to the discussions to introduce yourself and starting forming groups of **two students each** before continuing with the lecture.
