@@ -6,10 +6,9 @@ During this class we will:
 - Discuss decision-making under uncertainty
 - Start modeling data generating processes
 
-To share their solution for Exercise 02, the randomly selected student
-is \*\*\_\_\_\*\*.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
@@ -33,7 +32,8 @@ finishing the lecture.
 4.  Use different parameter values than we did in class
 5.  Comment your code clearly
 6.  Visualize the simulated data using at least two different plots
-7.  Submit your code and printed output as a PDF on Canvas
+7.  Submit both your Quarto document and your code and printed output as
+    a PDF on Canvas
 
 ### Milestone 03
 

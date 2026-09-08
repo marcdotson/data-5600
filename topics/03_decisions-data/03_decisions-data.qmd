@@ -258,11 +258,11 @@ $$
 $$
 
 ::: {.incremental}
-- Our **profit function** $\mathcal{P}(p, \mathcal{D}) = \mathcal{D}(p) \times (p - c)$ is a linear utility function
+- Our **profit function** $P(p, D) = D(p) \times (p - c)$ is a linear utility function
 - Linear utility is also **symmetric** and assumes the decision-maker is **risk neutral**
 :::
 
-# What actions, states of the world, and loss/utility function might be relevant for your project? Make it specific. {background-color="#006242"}
+# How does misspecifying the objective function relate to the "alignment" problem? {background-color="#006242"}
 
 # Data Generating Processes
 
@@ -401,7 +401,9 @@ def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
 sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
 ```
 
-# What might $Y$, $X$, and their relationships be for your project? Try drawing a graph. Keep it simple. {background-color="#006242"}
+[Simulating data is ***forward* generative modeling** as captured by $f(X, Y | \beta)$]{.fragment}
+
+# Copy the code to simulate data and try different parameter values. How does the simulated data change? {background-color="#006242"}
 
 # Uncertainty
 
@@ -438,7 +440,7 @@ For interpretable models, we **assume a mapping function exists** and try to car
 4. Use different parameter values than we did in class
 5. Comment your code clearly
 6. Visualize the simulated data using at least two different plots
-7. Submit your code and printed output as a PDF on Canvas
+7. Submit both your Quarto document and your code and printed output as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 
