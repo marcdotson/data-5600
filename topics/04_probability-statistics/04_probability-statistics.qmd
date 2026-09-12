@@ -155,7 +155,7 @@ We can compute a probability distribution **analytically** (i.e., using the actu
 
 import numpy as np
 import polars as pl
-import seaborn.objects as so
+from plotnine import *
 
 # Set randomization seed and n
 rng = np.random.default_rng(42)
@@ -166,17 +166,18 @@ disc_unif = np.random.randint(1, 7, size=n)
 draws = pl.DataFrame(disc_unif, schema=['disc_unif'])
 
 disc_unif_p = (draws
-    .group_by(pl.col('disc_unif'))
-    .agg(n = pl.len())
-    .with_columns(p = pl.col('n') / pl.col('n').sum())
-    .sort('disc_unif')
+  .group_by(pl.col('disc_unif'))
+  .agg(n = pl.len())
+  .with_columns(p = pl.col('n') / pl.col('n').sum())
+  .sort('disc_unif')
 )
 
-(so.Plot(disc_unif_p, x = 'disc_unif', y = 'p')
-    .add(so.Bar())
-    .label(x='support', y='p')
+(ggplot(disc_unif_p, aes(x = 'disc_unif', y = 'p'))
+  + geom_col()
+  + labs(x = 'support', y = 'p')
 )
 ```
+
 :::
 
 ::::
@@ -199,16 +200,17 @@ disc_unif_p = (draws
 
 # Continuous uniform distribution
 draws = (draws
-    .with_columns(
-        pl.Series('cont_unif', rng.uniform(1, 6, size=n))
-    )
+  .with_columns(
+    pl.Series('cont_unif', rng.uniform(1, 6, size=n))
+  )
 )
 
-(so.Plot(draws, x='cont_unif')
-    .add(so.Area(alpha=0.5), so.Hist(stat='density'))
-    .label(x='support', y='density')
+(ggplot(draws, aes(x = 'cont_unif'))
+  + geom_area(stat = 'bin', alpha = 0.5)
+  + labs(x = 'support', y = 'density')
 )
 ```
+
 :::
 
 ::::
@@ -231,16 +233,17 @@ draws = (draws
 
 # Normal distribution
 draws = (draws
-    .with_columns(
-        pl.Series('norm', rng.normal(10, 5, size=n))
-    )
+  .with_columns(
+    pl.Series('norm', rng.normal(10, 5, size=n))
+  )
 )
 
-(so.Plot(draws, x='norm')
-    .add(so.Area(alpha=0.5), so.Hist(stat='density'))
-    .label(x='support', y='density')
+(ggplot(draws, aes(x = 'norm'))
+  + geom_area(stat = 'bin', alpha = 0.5)
+  + labs(x = 'support', y = 'density')
 )
 ```
+
 :::
 
 ::::
@@ -263,24 +266,25 @@ draws = (draws
 
 # Binomial distribution
 draws = (draws
-    .with_columns(
-        pl.Series('binom', rng.binomial(1, 0.20, size=n))
-    )
+  .with_columns(
+    pl.Series('binom', rng.binomial(1, 0.20, size=n))
+  )
 )
 
 binom_p = (draws
-    .group_by(pl.col('binom'))
-    .agg(n = pl.len())
-    .with_columns(p = pl.col('n') / pl.col('n').sum())
-    .with_columns(pl.col('binom').cast(pl.Utf8))
-    .sort('binom')
+  .group_by(pl.col('binom'))
+  .agg(n = pl.len())
+  .with_columns(p = pl.col('n') / pl.col('n').sum())
+  .with_columns(pl.col('binom').cast(pl.Utf8))
+  .sort('binom')
 )
 
-(so.Plot(binom_p, x = 'binom', y = 'p')
-    .add(so.Bar())
-    .label(x='support', y='p')
+(ggplot(binom_p, aes(x = 'binom', y = 'p'))
+  + geom_col()
+  + labs(x = 'support', y = 'p')
 )
 ```
+
 :::
 
 ::::
@@ -351,21 +355,21 @@ are the same **linear regression** model -- how? What does this model mean?
 
 ## Using statistics to estimate parameters
 
-Our parametric model of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
+Our parametric model of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $L(\theta | X, Y)$ or **data distribution**
 
 $$
-\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\LARGE{f(X, Y | \theta) = L(\theta | X, Y)}
 $$
 
 ::: {.incremental}
-- $f(X, Y | \theta)$: If you give a likelihood function parameters $\theta$, it can simulate plausible data $X$ and $Y$
-- $\mathcal{L}(\theta | X, Y)$: If you give a likelihood function data $X$ and $Y$, it can determine plausible parameters $\theta$
+- $f(X, Y | \theta)$: If you give a likelihood function parameters $\theta$, it can simulate plausible data $X$ and $Y$ (i.e., **forward** generative modeling)
+- $L(\theta | X, Y)$: If you give a likelihood function data $X$ and $Y$, it can determine plausible parameters $\theta$ (i.e., **backward** generative modeling)
 :::
 
 ## Simulate data $f(X, Y | \theta)$
 
 ```{python}
-#| code-line-numbers: "|1|3-4|6-12|14-15|16"
+#| code-line-numbers: "|1|3-4|6-12|14-15|17"
 #| eval: true
 
 import numpy as np
@@ -375,18 +379,19 @@ rng = np.random.default_rng(42)
 
 # Specify a function to simulate data
 def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
-    x1 = rng.normal(10, 3, size=n)
-    x2 = rng.binomial(1, 0.5, size=n)
-    error = rng.normal(0, sigma, size=n)
-    y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
-    return y, x1, x2
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  error = rng.normal(0, sigma, size=n)
+  y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
+  return y, x1, x2
 
 # Call the function and save as an array
 data = sim_data(n = 5, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
+
 data
 ```
 
-## Estimate parameters $\mathcal{L}(\theta | X, Y)$
+## Estimate parameters $L(\theta | X, Y)$
 
 ```{python}
 #| code-line-numbers: "|1|3-5|7-8|10-11|13-14|16"
@@ -395,8 +400,8 @@ data
 from scipy.stats import norm
 
 def log_likelihood(y, x1, x2, beta_0, beta_x1, beta_x2, sigma):
-    mu = beta_0 + beta_x1 * x1 + beta_x2 * x2
-    return np.sum(norm.logpdf(y, loc=mu, scale=sigma))
+  mu = beta_0 + beta_x1 * x1 + beta_x2 * x2
+  return np.sum(norm.logpdf(y, loc=mu, scale=sigma))
 
 # Create an array to hold the likelihood of different sets of parameters
 likelihood = np.zeros(2)
@@ -412,14 +417,14 @@ likelihood
 
 ## Using statistics to estimate parameters
 
-Our parametric model of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
+Our parametric model of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $L(\theta | X, Y)$ or **data distribution**
 
 $$
-\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\LARGE{f(X, Y | \theta) = L(\theta | X, Y)}
 $$
 
-- $f(X, Y | \theta)$: If you give a likelihood function parameters $\theta$, it can simulate plausible data $X$ and $Y$
-- $\mathcal{L}(\theta | X, Y)$: If you give a likelihood function data $X$ and $Y$, it can determine plausible parameters $\theta$
+- $f(X, Y | \theta)$: If you give a likelihood function parameters $\theta$, it can simulate plausible data $X$ and $Y$ (i.e., **forward** generative modeling)
+- $L(\theta | X, Y)$: If you give a likelihood function data $X$ and $Y$, it can determine plausible parameters $\theta$ (i.e., **backward** generative modeling)
 
 ::: {.fragment}
 How we use the likelihood function to estimate parameters **depends on what we assume is a random variable** (i.e., how we interpret probability)
@@ -488,9 +493,9 @@ $$
 :::
 
 ::: {.incremental}
-- Use Bayes' theorem to combine the likelihood function with a **prior distribution** $p(\theta)$
+- Use Bayes' theorem to combine the likelihood function (i.e., **data distribution**) with a **prior distribution** $p(\theta)$
 - This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
-- Instead of computing this distribution analytically, we typically draw samples from it using **Markov chain Monte Carlo** (MCMC)
+- Draw samples from the posterior distribution using **Markov chain Monte Carlo** (MCMC)
 :::
 :::
 
@@ -500,7 +505,7 @@ $$
 
 ::: {.v-center}
 $$
-\LARGE{\mathcal{L}(\theta | X, Y)}
+\LARGE{L(\theta | X, Y)}
 $$
 :::
 
@@ -556,24 +561,63 @@ When we simulate data, we know we're using the correct model (i.e., no model unc
 
 ```{python}
 #| code-line-numbers: "|1-5|7-8|10-16|18-19|21-22"
-#| eval: true
+#| eval: false
 
+import arviz as az
+import bambi as bmb
 import numpy as np
 import polars as pl
 import statsmodels.formula.api as smf
-import bambi as bmb
-import arviz as az
 
 # Set randomization seed
 rng = np.random.default_rng(42)
 
 # Specify a function to simulate data
 def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
-    x1 = rng.normal(10, 3, size=n)
-    x2 = rng.binomial(1, 0.5, size=n)
-    error = rng.normal(0, sigma, size=n)
-    y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
-    return y, x1, x2
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  error = rng.normal(0, sigma, size=n)
+  y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
+  return y, x1, x2
+
+# Call the function and save as an array
+data_arr = sim_data(n = 100, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
+
+# Convert to a dataframe
+data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2']).to_pandas()
+```
+
+```{python}
+#| eval: true
+#| echo: false
+
+################################################################
+# Temporary fix for a mismatch between macOS xcode and pytensor.
+################################################################
+
+import arviz as az
+import bambi as bmb
+import numpy as np
+import polars as pl
+################################################################
+import pytensor
+################################################################
+import statsmodels.formula.api as smf
+
+################################################################
+pytensor.config.cxx = ""
+################################################################
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_x1, beta_x2, sigma):
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  error = rng.normal(0, sigma, size=n)
+  y = beta_0 + beta_x1 * x1 + beta_x2 * x2 + error
+  return y, x1, x2
 
 # Call the function and save as an array
 data_arr = sim_data(n = 100, beta_0 = 2, beta_x1 = -0.3, beta_x2 = 4, sigma = 5)
@@ -586,7 +630,22 @@ data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2']).to_pandas()
 
 ```{python}
 #| code-line-numbers: "|1-2|4-5"
+#| eval: false
+
+# Fit a frequentist linear regression
+fr_fit = smf.ols('y ~ x1 + x2', data = data_df).fit()
+
+# Fit a Bayesian linear regression
+ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit() # Use progressbar=False
+```
+
+```{python}
 #| eval: true
+#| echo: false
+
+################################################################
+# Temporary fix for a mismatch between macOS xcode and pytensor.
+################################################################
 
 # Fit a frequentist linear regression
 fr_fit = smf.ols('y ~ x1 + x2', data = data_df).fit()
@@ -608,7 +667,7 @@ fr_fit.conf_int()  # Interval estimates
 ```{python}
 #| eval: true
 
-az.summary(ba_fit) # Posterior estimates
+az.summary(ba_fit, ci_kind = 'hdi', ci_prob = 0.95) # Posterior estimates
 ```
 
 ## {background-color="#006242"}
@@ -618,7 +677,7 @@ az.summary(ba_fit) # Posterior estimates
 1. Return to your simulated sales data from the previous exercise (or start with the exercise solution)
 2. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
 3. Reflect on how the interval estimates of the two approaches differ and how you might interpret each of them
-4. Submit your code, output, and reflection as a single PDF on Canvas
+4. Submit both your Quarto document and your code, printed output, and reflection as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 
