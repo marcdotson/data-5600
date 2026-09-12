@@ -636,7 +636,7 @@ data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2']).to_pandas()
 fr_fit = smf.ols('y ~ x1 + x2', data = data_df).fit()
 
 # Fit a Bayesian linear regression
-ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit() # Use progressbar=False
+ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit()
 ```
 
 ```{python}
@@ -651,7 +651,7 @@ ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit() # Use progressbar=False
 fr_fit = smf.ols('y ~ x1 + x2', data = data_df).fit()
 
 # Fit a Bayesian linear regression
-ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit() # Use progressbar=False
+ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit()
 ```
 
 ## Did we recover the parameters?
