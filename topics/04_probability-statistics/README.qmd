@@ -201,7 +201,7 @@ fr_fit.conf_int() # Interval estimates
 # Fit a Bayesian linear regression
 ba_fit = bmb.Model('y ~ x1 + x2', data = data_df).fit()
 
-az.summary(ba_fit) # Posterior estimates
+az.summary(ba_fit, ci_kind = 'hdi', ci_prob = 0.95) # Posterior estimates
 ```
 
 View the slides:
