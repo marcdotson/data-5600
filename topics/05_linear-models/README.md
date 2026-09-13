@@ -3,10 +3,9 @@
 
 During this class we will formally introduce linear regression.
 
-To share their solution for Exercise 04, the randomly selected student
-is \*\*\_\_\_\*\*.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
@@ -25,13 +24,13 @@ the lecture.
 
 1.  Review the materials from the course thus far
 2.  Identify lingering questions you have about the concepts covered
-3.  Use an AI tool to ask your questions and reflect on the responses
-    you receive
+3.  Use an AI tool or talk with a TA to ask your questions and reflect
+    on the responses you receive
 4.  Identify at least two questions you feel have been answered and
-    share your prompts, the responses you received, and your reflections
-    on the responses
-5.  Submit your prompts, responses, and reflections as a single PDF on
-    Canvas
+    share your questions, the responses you received, and your
+    reflections on the responses
+5.  Submit both your Quarto document and your questions, responses, and
+    reflections as a single PDF on Canvas
 
 ### Milestone 05
 

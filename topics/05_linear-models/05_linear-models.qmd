@@ -45,27 +45,44 @@ If we don't have real data or want to test our code, we can simulate data
 
 import numpy as np
 import polars as pl
-import seaborn as sns
-import seaborn.objects as so
+from plotnine import *
 
 # Set randomization seed
 rng = np.random.default_rng(42)
 
 # Specify a function to simulate data
 def sim_data(n, beta_0, beta_price, beta_discount, beta_online, beta_promo, sigma):
-    price = rng.normal(4, 2, size=n)
-    discount = rng.normal(2, 1, size=n)
-    online = rng.binomial(1, 0.7, size=n)
-    promo = rng.binomial(1, 0.2, size=n)
-    error = rng.normal(0, sigma, size=n)
-    sales = beta_0 + beta_price * price + beta_discount * discount + beta_online * online + beta_promo * promo + error
+  price = rng.normal(4, 2, size=n)
+  discount = rng.normal(2, 1, size=n)
+  online = rng.binomial(1, 0.7, size=n)
+  promo = rng.binomial(1, 0.2, size=n)
+  error = rng.normal(0, sigma, size=n)
+  sales = (
+    beta_0 + beta_price * price + beta_discount * discount + 
+    beta_online * online + beta_promo * promo + error
+  )
 
-    # Return the output
-    return sales, price, discount, online, promo
+  # Return the output
+  return sales, price, discount, online, promo
+```
+
+## Simulate data
+
+If we don't have real data or want to test our code, we can simulate data
+
+```{python}
+#| eval: true
 
 # Call the function and convert to a dataframe
-data_arr = sim_data(n = 100, beta_0 = 10, beta_price = -2, beta_discount = 3, beta_online = 5, beta_promo = 3, sigma = 5)
-data_df = pl.DataFrame(data_arr, schema = ['sales', 'price', 'discount', 'online', 'promo'])
+data_arr = sim_data(
+  n = 100, beta_0 = 10, beta_price = -2, beta_discount = 3, 
+  beta_online = 5, beta_promo = 3, sigma = 5
+)
+
+data_df = pl.DataFrame(
+  data_arr, 
+  schema = ['sales', 'price', 'discount', 'online', 'promo']
+)
 ```
 
 ## Observations and variables {.scrollable}
@@ -150,8 +167,11 @@ Does it look like a line might be a good approximation of this relationship?
 #| eval: true
 #| output-location: column
 
-(so.Plot(data_df, x = 'price', y = 'sales')
-    .add(so.Dot())
+(ggplot(
+    data_df, 
+    aes(x = 'price', y = 'sales')
+  )
+  + geom_point()
 )
 ```
 
@@ -163,9 +183,14 @@ Is this line a good approximation of the relationship? What is this line?
 #| eval: true
 #| output-location: column
 
-(so.Plot(data_df, x = 'price', y = 'sales')
-    .add(so.Dot())
-    .add(so.Line(), so.PolyFit(order=0))
+(ggplot(
+    data_df, 
+    aes(x = 'price', y = 'sales')
+  )
+  + geom_point()
+  + geom_hline(
+      yintercept = data_df['sales'].mean()
+  )
 )
 ```
 
@@ -177,9 +202,12 @@ Is this line a good approximation of the relationship? What is this line?
 #| eval: true
 #| output-location: column
 
-(so.Plot(data_df, x = 'price', y = 'sales')
-    .add(so.Dot())
-    .add(so.Line(), so.PolyFit(order=1))
+(ggplot(
+    data_df, 
+    aes(x = 'price', y = 'sales')
+  )
+  + geom_point()
+  + geom_smooth(method = 'lm', se = False)
 )
 ```
 
@@ -285,9 +313,12 @@ For simple linear regression, the slope $\beta_1$ is related to the correlation 
 #| eval: true
 #| output-location: column
 
-(so.Plot(data_df, x = 'price', y = 'sales')
-    .add(so.Dot())
-    .add(so.Line(), so.PolyFit(order=1))
+(ggplot(
+    data_df, 
+    aes(x = 'price', y = 'sales')
+  )
+  + geom_point()
+  + geom_smooth(method = 'lm', se = False)
 )
 ```
 
@@ -299,9 +330,12 @@ For simple linear regression, the slope $\beta_1$ is related to the correlation 
 #| eval: true
 #| output-location: column
 
-(so.Plot(data_df, x = 'discount', y = 'sales')
-    .add(so.Dot())
-    .add(so.Line(), so.PolyFit(order=1))
+(ggplot(
+    data_df, 
+    aes(x = 'discount', y = 'sales')
+  )
+  + geom_point()
+  + geom_smooth(method = 'lm', se = False)
 )
 ```
 
@@ -395,11 +429,29 @@ For multiple linear regression, each slope $\beta_1, \cdots, \beta_p$ is no long
 #| output-location: column
 
 cont_df = (data_df
-    .select(['sales', 'price', 'discount'])
-    .to_pandas()
+  .with_row_index('id')
+  .select(['id', 'sales', 'price', 'discount'])
+  .unpivot(
+    on = ['sales', 'price', 'discount'], 
+    index = 'id', 
+    variable_name = 'cont_vars', 
+    value_name = 'cont_vals'
+  )
 )
+corr_df = cont_df.join(cont_df, on = 'id')
 
-sns.pairplot(cont_df)
+(ggplot(
+    corr_df, 
+    aes(x = 'cont_vals', y = 'cont_vals_right')
+  )
+  + geom_point()
+  + geom_smooth(method = 'lm', se = False)
+  + facet_wrap(
+    '~ cont_vars + cont_vars_right', 
+    scales = 'free'
+  )
+  + labs(x = '', y = '')
+)
 ```
 
 ## 
@@ -460,9 +512,9 @@ $$
 
 1. Review the materials from the course thus far
 2. Identify lingering questions you have about the concepts covered
-3. Use an AI tool to ask your questions and reflect on the responses you receive
-4. Identify at least two questions you feel have been answered and share your prompts, the responses you received, and your reflections on the responses
-5. Submit your prompts, responses, and reflections as a single PDF on Canvas
+3. Use an AI tool or talk with a TA to ask your questions and reflect on the responses you receive
+4. Identify at least two questions you feel have been answered and share your questions, the responses you received, and your reflections on the responses
+5. Submit both your Quarto document and your questions, responses, and reflections as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
