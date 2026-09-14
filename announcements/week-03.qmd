@@ -7,6 +7,12 @@ Hi, everyone:
 
 I hope everyone is getting into the groove of the course. That said, please don't hesitate to ask questions!
 
-There is only one new topic this week, so it's a great time to catch up and get ahead. These first three weeks really form the foundation for the rest of the course, so don't be afraid of revisiting lectures and exercises as needed.
+These first three weeks really form the foundation for the rest of the course, so don't be afraid of revisiting lectures and exercises as needed. A few reminders and announcements:
+
+- Please remember that your exercise peer reviews from a given week are due by the end of that week.
+- Because of the Marketing Analytics Club kickoff Thursday from 2:30-3:30 pm, office hours will start at 3:30 pm.
+- I've attached some cheat sheets you can use a helpful reference for learning Positron, Polars, and Plotnine.
+
+The TAs will be teaching this week while I'm at a conference through Wednesday. Please see the attached fliers for upcoming events.
 
 -Marc
