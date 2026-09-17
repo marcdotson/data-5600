@@ -1,0 +1,403 @@
+---
+title: "Diagnostic Assumptions"
+format: typst
+---
+
+## Purpose
+
+This guide provides Plotnine-based diagnostics for linear regression assumptions. These are diagnostic tools, not automatic pass/fail tests. Interpret them using what you know about the data and model.
+
+## Setup
+
+```{python}
+import pandas as pd
+import polars as pl
+import statsmodels.formula.api as smf
+from plotnine import *
+```
+
+```{python}
+pb = pl.read_parquet("data/soft_launch.parquet")
+
+pb.head()
+```
+
+```{python}
+brand_names = {
+    'JIF': 'Jif',
+    'Jiff': 'Jif',
+    'SKIPPY': 'Skippy',
+    'Skipy': 'Skippy',
+    'Skipp': 'Skippy',
+    'Peter Pan': 'PeterPan',
+    "Harmon's": 'Harmons'
+}
+
+pb = (
+    pb
+    .with_columns(
+        pl.col('brand')
+        .cast(pl.Utf8)
+        .replace(brand_names)
+        .alias('brand')
+    )
+    .drop_nans(['units', 'sales'])
+    .remove(
+        (pl.col('brand') == "None") |
+        (pl.col('loyal') == "None") |
+        (pl.col('texture') == "None") |
+        (pl.col('size') == "None")
+    )
+    .with_columns([
+        pl.col('price').cast(pl.Float64),
+        pl.col('loyal').cast(pl.Int64),
+        pl.col('promo').cast(pl.Int64)
+    ])
+    .unique()
+    .filter(pl.col('units') > 0)
+)
+
+pb_train = (
+    pb
+    .with_columns([
+        (pl.col('units') + 1).log().alias('log_units'),
+        (pl.col('price') + 1).log().alias('log_price')
+    ])
+    .to_dummies(
+        columns=['brand', 'texture', 'size'],
+        drop_first=False
+    )
+    .select(
+        pl.exclude(
+            'units',
+            'price',
+            'brand_Jif',
+            'texture_Smooth',
+            'size_16'
+        )
+    )
+    .to_pandas()
+)
+
+pb_train.head()
+```
+
+```{python}
+predictors = [
+    "brand_Harmons",
+    "brand_PeterPan",
+    "brand_Skippy",
+    "coupon",
+    "ad",
+    "texture_Chunky",
+    "size_12",
+    "log_price"
+]
+
+fit = smf.ols(
+    "log_units ~ " + " + ".join(predictors),
+    data=pb_train
+).fit()
+
+fit.summary()
+```
+
+Fit your OLS model before using the diagnostics. Then identify the fitted model and **predictors** you want to examine.
+
+```{python}
+model = fit
+linearity_predictors = ["log_price",
+    "coupon",
+    "ad"]  # CHOOSE the predictors you want to observe
+
+diagnostic_data = model.model.data.frame.copy()
+outcome = model.model.endog_names
+
+diagnostic_data["residuals"] = model.resid
+diagnostic_data["fittedvalues"] = model.fittedvalues
+```
+
+# 1. Validity
+
+> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
+> limitations, and possible remedies.
+
+
+# 2. Representativeness
+
+> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
+> limitations, and possible remedies.
+
+# 3. Linearity
+
+## What is the assumption?
+
+The mapping from the predictors to the outcome should be adequately represented by an additive, linear function of the model parameters. Look for relationships that are **roughly linear or cloud-like**, without obvious nonlinear patterns.
+
+We will use four checks: outcome vs. predictor, residuals vs. predictor, residuals vs. fitted values, and a partial regression plot.
+
+## 3A. Outcome vs. Predictor
+
+```{python}
+for predictor in linearity_predictors:
+
+    outcome_predictor = (
+        ggplot(diagnostic_data, aes(x=predictor, y=outcome))
+        + geom_point(alpha=0.25, color="#3B6EA8")
+        + geom_smooth(method="lm", se=False, color="#8B3A4A")
+        + labs(
+            title=f"Linearity: {outcome} vs. {predictor}",
+            subtitle="Look for a roughly linear or cloud-like relationship",
+            x=predictor,
+            y=outcome
+        )
+        + theme_minimal()
+    )
+
+    outcome_predictor.show()
+```
+
+**What to look for:** The relationship should be reasonably represented by a straight line. Obvious curves or other systematic nonlinear shapes suggest that the functional form may need attention.
+
+**Note:** For binary predictors, the observations will appear in two groups (0 and 1) rather than forming a continuous cloud of points.
+
+## 3B. Residuals vs. Predictor
+
+Residuals show what the model did not explain. If a nonlinear pattern remains in the residuals, the model may be missing part of the relationship with that predictor.
+
+```{python}
+for predictor in linearity_predictors:
+
+    residuals_predictor = (
+        ggplot(diagnostic_data, aes(x=predictor, y="residuals"))
+        + geom_point(alpha=0.25, color="#3B6EA8")
+        + geom_hline(yintercept=0, linetype="dashed", color="gray")
+        + labs(
+            title=f"Linearity: Residuals vs. {predictor}",
+            subtitle="Look for obvious curved or systematic patterns",
+            x=predictor,
+            y="Residuals"
+        )
+        + theme_minimal()
+    )
+
+    residuals_predictor.show()
+```
+
+**What to look for:** Residuals should be scattered around zero without an obvious curved or systematic pattern.
+
+## 3C. Residuals vs. Fitted Values
+
+```{python}
+residuals_fitted = (
+    ggplot(diagnostic_data, aes(x="fittedvalues", y="residuals"))
+    + geom_point(alpha=0.25, color="#3B6EA8")
+    + geom_hline(yintercept=0, linetype="dashed", color="gray")
+    + geom_smooth(method="lowess", se=False, color="#8B3A4A")
+    + labs(
+        title="Linearity: Residuals vs. Fitted Values",
+        subtitle="Look for random scatter around zero without obvious patterns",
+        x="Fitted Values",
+        y="Residuals"
+    )
+    + theme_minimal()
+)
+
+residuals_fitted.show()
+```
+
+**What to look for:** There should not be an obvious systematic relationship between the fitted values and residuals. Look for roughly random scatter around zero without obvious curved patterns.
+
+## 3D. Partial Regression Plot
+A partial regression plot examines the relationship between one predictor and the outcome after accounting for the other predictors in the model. Look for a roughly linear relationship without obvious curved or systematic patterns.
+
+```{python}
+def plot_partial_regression(model, predictor):
+    """Create a Plotnine partial regression plot for one predictor."""
+
+    data = model.model.data.frame.copy()
+    outcome = model.model.endog_names
+
+    # Extract predictors from a simple additive formula
+    formula = model.model.formula
+    rhs = formula.split("~", 1)[1]
+    predictors = [term.strip() for term in rhs.split("+")]
+
+    if predictor not in predictors:
+        raise ValueError(f"{predictor} is not a predictor in the model.")
+
+    other_predictors = [term for term in predictors if term != predictor]
+
+    if not other_predictors:
+        raise ValueError("Partial regression requires at least one other predictor.")
+
+    other_formula = " + ".join(other_predictors)
+
+    y_partial_fit = smf.ols(
+        f"{outcome} ~ {other_formula}", data=data
+    ).fit()
+
+    x_partial_fit = smf.ols(
+        f"{predictor} ~ {other_formula}", data=data
+    ).fit()
+
+    partial_data = pd.DataFrame({
+        "x_residuals": x_partial_fit.resid,
+        "y_residuals": y_partial_fit.resid
+    })
+
+    return (
+        ggplot(partial_data, aes(x="x_residuals", y="y_residuals"))
+        + geom_point(alpha=0.25, color="#3B6EA8")
+        + geom_smooth(
+            method="lm",
+            se=False,
+            linetype="dashed",
+            color="#8B3A4A"
+        )
+        + geom_smooth(
+            method="lowess",
+            se=False,
+            color="#8B3A4A"
+        )
+        + labs(
+            title=f"Partial Regression Plot: {predictor}",
+            subtitle="After accounting for the other predictors",
+            x=f"Remaining Variation in {predictor}",
+            y=f"Remaining Variation in {outcome}"
+        )
+        + theme_minimal()
+    )
+```
+
+```{python}
+for predictor in linearity_predictors:
+    plot_partial_regression(model, predictor).show()
+```
+
+**What to look for:** The partial relationship should be roughly linear or cloud-like. Look for obvious curved or systematic patterns that may suggest nonlinearity.
+
+> **Note:** This helper is intended for simple additive Statsmodels formulas. Interactions, transformations written directly in the formula, or other advanced terms may require additional handling.
+
+### Linearity conclusion
+
+> The linearity assumption appears __________ because __________.
+
+Possible remedies include transforming X, transforming y, or using a nonlinear model.
+
+# 4. Independence
+
+## What is the assumption?
+
+Observations should be independent of one another. If the observations have a meaningful sequence, such as time or another meaningful ordering, that sequence can also be examined for evidence of dependence.
+
+Before making a plot, ask:
+
+- Is the data a random sample?
+- Is each observation a different unit, or are there repeated measurements?
+- Are observations clustered, such as within groups, locations, or a hierarchy?
+- Is there a meaningful sequence, such as time?
+
+Independence depends heavily on **how the data were collected**. A plot cannot establish independence by itself.
+
+## Sequential Residual Plot
+
+Use this diagnostic **only when the observations have a meaningful sequence**. If the data have a real sequence variable, such as date or time, use that variable rather than arbitrary row order.
+
+```{python}
+independence_data = pd.DataFrame({
+    "sequence": range(1, len(model.resid) + 1),
+    "residuals": model.resid
+})
+
+independence_plot = (
+    ggplot(independence_data, aes(x="sequence", y="residuals"))
+    + geom_line(alpha=0.6, color="#3B6EA8")
+    + geom_hline(yintercept=0, linetype="dashed", color="gray")
+    + labs(
+        title="Independence Check: Residuals Over Observation Sequence",
+        subtitle="Use when observations have a meaningful sequence",
+        x="Observation Sequence",
+        y="Residuals"
+    )
+    + theme_minimal()
+)
+
+independence_plot.show()
+```
+
+**What to look for:** There should not be an obvious trend in the mean or variance of the residuals across the meaningful sequence. Long runs, cycles, trends, or changing variability deserve investigation.
+
+If row order is arbitrary, this plot is not informative. Instead, justify independence using the sampling design and whether repeated measurements, clustering, spatial dependence, or another dependency structure exists.
+
+### Independence conclusion
+
+> The independence assumption appears __________ because __________.
+
+Possible remedies include adding a predictor that controls for the dependence or using a model that accounts for the dependence, such as a multilevel, spatial, or time-series model.
+
+# 5. Constant Variance
+
+## What is the assumption?
+
+Constant variance, or **homoscedasticity**, means that the variance of the errors is approximately constant. Because errors are not directly observed, we inspect the model residuals.
+
+We can check this by plotting the residuals against the fitted values and looking for changes in the spread of the residuals.
+
+## Residuals vs. Fitted Values
+
+```{python}
+constant_variance_plot = (
+    ggplot(diagnostic_data, aes(x="fittedvalues", y="residuals"))
+    + geom_point(alpha=0.25, color="#3B6EA8")
+    + geom_hline(yintercept=0, linetype="dashed", color="gray")
+    + labs(
+        title="Constant Variance Check: Residuals vs. Fitted Values",
+        subtitle="Look for a roughly constant spread of residuals",
+        x="Fitted Values",
+        y="Residuals"
+    )
+    + theme_minimal()
+)
+
+constant_variance_plot.show()
+```
+
+**What to look for:** Focus on the **vertical spread** of the points. The spread should remain roughly constant as fitted values change. A funnel or cone shape—where residuals systematically widen or narrow—is evidence worth investigating for heteroscedasticity.
+
+Do not focus on whether the residuals form a straight line here. For constant variance, the key question is whether the **amount of variation** changes.
+
+### Constant variance conclusion
+
+> The constant variance assumption appears __________ because __________.
+
+Possible remedies include transforming y, transforming X, or using a model that accounts for non-constant variance.
+
+# 6. Normality
+
+> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
+> limitations, and possible remedies.
+
+
+# 7. Identifiability
+
+> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
+> limitations, and possible remedies.
+
+# Diagnostic Quick Reference
+
+| Assumption | Main question | Evidence | What to look for |
+|---|---|---|---|
+| Validity | TODO | TODO | TODO |
+| Representativeness | TODO | TODO | TODO |
+| Linearity | Is the functional form adequately linear? | Outcome/predictor, residual plots, partial regression | No obvious systematic curvature |
+| Independence | Are observations/errors independent or exchangeable? | Data collection + sequential residual plot when appropriate | No dependence from repeated measures, clustering, or sequence; no sequential trends |
+| Constant variance | Is residual variability roughly constant? | Residuals vs. fitted | Roughly equal spread; no funnel/cone shape |
+| Normality | TODO | TODO | TODO |
+| Identifiability | TODO | TODO | TODO |
+
+## Final reminder
+
+Diagnostics provide evidence about assumptions; they do not automatically prove that an assumption is satisfied. Interpret the plots in the context of the data-generating process, the model, and the purpose of the analysis.
+
+
