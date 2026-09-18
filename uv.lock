@@ -344,6 +344,7 @@ dependencies = [
     { name = "plotnine", version = "0.15.8", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
     { name = "polars" },
     { name = "pyarrow" },
+    { name = "pyhere" },
     { name = "scikit-learn" },
     { name = "seaborn" },
     { name = "statsmodels" },
@@ -359,6 +360,7 @@ requires-dist = [
     { name = "plotnine", specifier = ">=0.15.3" },
     { name = "polars", specifier = ">=1.31.0" },
     { name = "pyarrow", specifier = ">=21.0.0" },
+    { name = "pyhere", specifier = ">=1.0.3" },
     { name = "scikit-learn", specifier = ">=1.7.2" },
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "statsmodels", specifier = ">=0.14.5" },
@@ -1425,7 +1427,7 @@ name = "pexpect"
 version = "4.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "ptyprocess", marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
+    { name = "ptyprocess" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/42/92/cc564bf6381ff43ce1f4d06852fc19a2f11d180f23dc32d9588bee2f149d/pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f", size = 166450, upload-time = "2023-11-25T09:07:26.339Z" }
 wheels = [
@@ -1504,12 +1506,12 @@ resolution-markers = [
     "python_full_version < '3.14' and sys_platform == 'emscripten'",
 ]
 dependencies = [
-    { name = "matplotlib", marker = "python_full_version < '3.14' and sys_platform == 'emscripten'" },
-    { name = "mizani", marker = "python_full_version < '3.14' and sys_platform == 'emscripten'" },
-    { name = "numpy", marker = "python_full_version < '3.14' and sys_platform == 'emscripten'" },
-    { name = "pandas", marker = "python_full_version < '3.14' and sys_platform == 'emscripten'" },
-    { name = "scipy", marker = "python_full_version < '3.14' and sys_platform == 'emscripten'" },
-    { name = "statsmodels", marker = "python_full_version < '3.14' and sys_platform == 'emscripten'" },
+    { name = "matplotlib" },
+    { name = "mizani" },
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "scipy" },
+    { name = "statsmodels" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/63/d5/4eeed62b101aa879b87e9bbc9d0650700b5ebd1ffa743902286b039135a2/plotnine-0.15.3.tar.gz", hash = "sha256:2e8130db4673e0daccb1fd1dfc9f2a6cd2e7843b14f861f4ab861dde1639045f", size = 6788365, upload-time = "2026-01-28T16:35:34.708Z" }
 wheels = [
@@ -1524,12 +1526,12 @@ resolution-markers = [
     "python_full_version >= '3.14' or sys_platform != 'emscripten'",
 ]
 dependencies = [
-    { name = "matplotlib", marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
-    { name = "mizani", marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
-    { name = "numpy", marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
-    { name = "pandas", marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
-    { name = "scipy", marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
-    { name = "statsmodels", marker = "python_full_version >= '3.14' or sys_platform != 'emscripten'" },
+    { name = "matplotlib" },
+    { name = "mizani" },
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "scipy" },
+    { name = "statsmodels" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9f/5d/3471689cf15cf2b6ebb6ebdebc7e33831fb35d85e2323875b5a0e150505d/plotnine-0.15.8.tar.gz", hash = "sha256:d3859997c3abd6edff6dee376d912716e75bbe0b0099b7054176d84fe11e8e20", size = 6863148, upload-time = "2026-08-14T16:27:49.399Z" }
 wheels = [
@@ -1642,6 +1644,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b0/77/a5b8c569bf593b0140bde72ea885a803b82086995367bf2037de0159d924/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887", size = 4968631, upload-time = "2025-06-21T13:39:12.283Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c7/21/705964c7812476f378728bdf590ca4b771ec72385c533964653c68e86bdc/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b", size = 1225217, upload-time = "2025-06-21T13:39:07.939Z" },
+]
+
+[[package]]
+name = "pyhere"
+version = "1.0.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/34/e2/79dca2aa113e3be3bac013ec3c6d21fde79783f62866312012d787026e0c/pyhere-1.0.3.tar.gz", hash = "sha256:dbea60e83cbcaef41c4da429c1372b7780c580bc0714801c6c5957df06208cdf", size = 4329, upload-time = "2024-07-26T18:59:55.937Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/e6/80f613b0f6d5079950083f274f2f19a2bf2870c0376ccd4a63851ef53f43/pyhere-1.0.3-py3-none-any.whl", hash = "sha256:7c39f5ab806d332ce9812b74e4486c0753e2c5416265758c7251f1bbe0946f69", size = 4395, upload-time = "2024-07-26T18:59:54.56Z" },
 ]
 
 [[package]]
