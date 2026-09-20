@@ -1,17 +1,18 @@
 ---
-title: "Validity, Representativeness, and Linearity"
+title: "Validity and Representativeness"
 format: gfm
 ---
 
 During this class we will:
-
 - Start working with real data
-- Quickly review exploratory data analysis
+- Review exploratory data analysis
 - Begin reconciling the data and the model
 
-Start by downloading the soft launch data. To share their solution for Exercise 05, the randomly selected student is **___**.
+Start by downloading the soft launch data.
 
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
 
@@ -41,8 +42,8 @@ Transaction data from a one-week peanut butter soft launch test in a single desi
 
 1. Clean up the soft launch data
 2. Create two interesting visualizations that help you understand the data and its limitations
-3. Walk through the validity, representativeness, and linearity assumptions and justify whether or not they are satisfied for your cleaned data
-4. Submit your code, output, and explanations as a single PDF on Canvas
+3. Walk through the validity and representativeness assumptions and justify whether or not they are satisfied for your cleaned data
+4. Submit both your Quarto document and your code, output, and explanations as a single PDF on Canvas
 
 ### Milestone 06
 

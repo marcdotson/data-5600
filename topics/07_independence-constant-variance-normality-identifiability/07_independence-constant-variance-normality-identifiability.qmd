@@ -1,5 +1,5 @@
 ---
-title: "Independence, Constant Variance, Normality, and Identifiability"
+title: "Linearity to Identifiability"
 subtitle: "DATA 5600 Introduction to Regression and Machine Learning for Analytics"
 author: Marc Dotson
 title-slide-attributes:
@@ -24,7 +24,7 @@ jupyter: python3
 #### Last Time
 
 - Started working with real data
-- Quickly reviewed exploratory data analysis
+- Reviewed exploratory data analysis
 - Began reconciling the data and the model
 
 #### Preview
@@ -36,6 +36,212 @@ jupyter: python3
 ::: {.columns .v-center}
 ![](../../figures/workflow_reconcile.png){fig-align="center"}
 :::
+
+# Linearity
+
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="60%"}
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} + \epsilon_i \\
+\text{where } \epsilon_i \sim \text{Normal}(0, \sigma^2)
+$$
+
+$$
+y_i \sim \text{Normal}(\mu_i, \sigma^2) \\
+\mu_i = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i}
+$$
+:::
+
+::: {.column width="40%"}
+The mapping function from the predictors to the outcome is an additive, linear function **of the parameters**
+:::
+
+::::
+
+## Functional form of the deterministic component
+
+The mapping function from the predictors to the outcome is an additive, linear function of the parameters
+
+::: {.fragment}
+If the process or population isn't approximated by an additive, linear function, what happens to our inferences?
+:::
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+**Diagnostics**
+
+::: {.incremental}
+- Scatterplot of outcome and predictor(s)
+- Scatterplot of residuals and predictor(s)
+- Scatterplot of residuals and fitted values
+- Partial regression plots
+:::
+:::
+
+::: {.fragment .column width="50%"}
+**Remedies**
+
+::: {.incremental}
+- Transform $X$
+- Transform $y$
+- Use a nonlinear model
+:::
+:::
+
+::::
+
+## Scatterplot of outcome and predictor(s)
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+#| code-line-numbers: "|1"
+
+(so.Plot(pb_data, x = 'price', y = 'units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## 
+
+![](../../figures/meme_log-transform.png){fig-align="center"}
+
+## Scatterplot of outcome and predictor(s) {visibility="uncounted"}
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| echo: false
+
+pb_data = (pb_data
+  .with_columns(
+    (pl.col('price') + 1).log().alias('log_price')
+  )
+)
+```
+
+```{python}
+#| eval: true
+#| output-location: column
+#| code-line-numbers: "|1"
+
+(so.Plot(pb_data, x = 'log_price', y = 'units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## Scatterplot of outcome and predictor(s) {visibility="uncounted"}
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+#| code-line-numbers: "|1"
+
+(so.Plot(pb_data, x = 'price', y = 'log_units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## Scatterplot of outcome and predictor(s) {visibility="uncounted"}
+
+The relationship between the outcome and predictor(s) should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+#| code-line-numbers: "|1"
+
+(so.Plot(pb_train, x = 'log_price', y = 'log_units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## Scatterplot of residuals and predictor(s)
+
+The relationship between the residuals and predictor(s) should also be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+
+# Save the residuals and fitted values
+pb_train['residuals'] = fit_01.resid
+pb_train['fittedvalues'] = fit_01.fittedvalues
+
+(so.Plot(pb_train, x = 'residuals', y = 'log_units')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## Scatterplot of residuals and fitted values
+
+There shouldn't be a relationship between the residuals and fitted values, where a fitted line would be roughly horizontal
+
+```{python}
+#| eval: true
+#| output-location: column
+
+(so.Plot(pb_train, x = 'residuals', y = 'fittedvalues')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit())
+)
+```
+
+## Partial regression plots
+
+A partial regression plot for a specific predictor has a slope that is the same as the multiple regression coefficient for that predictor
+
+::: {.fragment}
+How is that different from a scatterplot of the outcome and the same predictor?
+:::
+
+::: {.incremental}
+- Partial regression plots attempt to show the effect of adding each new predictor to the model (given that one or more predictors are already in the model)
+- For each new predictor, we take whatever is leftover after the fit of the other predictors and look to see if adding the new predictor matters
+:::
+
+::: {.fragment}
+If the linearity assumption is met, each of the partial regression plots should be roughly linear
+:::
+
+## Partial regression plots
+
+The relationship in the partial regression plots should be roughly linear or cloud-like (i.e., no obvious non-linear patterns)
+
+```{python}
+#| eval: true
+#| output-location: column
+
+predictors = [
+  'log_price', 'brand_Jif', 'brand_Skippy', 
+  'brand_PeterPan', 'promo_true', 'texture_Smooth', 
+  'size_12'
+]
+
+fig = plt.figure(figsize = (7,7))
+sm.graphics.plot_partregress_grid(
+  fit_01, 
+  exog_idx = list(predictors), 
+  grid = (4, 2), 
+  fig = fig
+)
+fig.tight_layout()
+plt.show()
+```
 
 # Independence and Constant Variance
 
