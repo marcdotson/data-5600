@@ -14,10 +14,11 @@ import pandas as pd
 import polars as pl
 import statsmodels.formula.api as smf
 from plotnine import *
+from pyhere import here
 ```
 
 ```{python}
-pb = pl.read_parquet("data/soft_launch.parquet")
+pb = pl.read_parquet(here("data/soft_launch.parquet"))
 
 pb.head()
 ```
@@ -117,14 +118,175 @@ diagnostic_data["fittedvalues"] = model.fittedvalues
 
 # 1. Validity
 
-> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
-> limitations, and possible remedies.
+## What is the assumption?
 
+We need to ensure the data is relevant to the objective and no predictors are missing. Easy to overlook and arrive at unreliable solutions due to inappropriate model selection.
+
+We're checking three things: (1) the relevance of data to the objective, (2) how well the data matches the ideal data, and (3) how well simulated and real outcomes compare. **The third is what we can actually measure.**
+
+## 1A. Simulated vs. Real Outcomes
+
+```{python}
+import numpy as np
+import pandas as pd
+
+rng = np.random.default_rng(42)
+y_sim = rng.normal(model.fittedvalues.to_numpy()[:, None], np.sqrt(model.scale), size=(int(model.nobs), 50))
+sims = pl.DataFrame(y_sim).unpivot(variable_name="sim", value_name="y")
+(ggplot()
+  + geom_density(sims, aes(x="y", group="sim"), color="lightblue")
+  + geom_density(pl.DataFrame({"y": model.model.endog}), aes(x="y"), size=1))
+
+```
+
+**Idea** If our model is a good description of how the data was generated, then data generated from the model should look like the real data.
+
+**Limitations** check_predictions() only works for linear regression fit with smf.ols().
+
+**Remedies** Find different or additional data or justify proxy variables.
 
 # 2. Representativeness
 
-> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
-> limitations, and possible remedies.
+## What is the assumption?
+
+The data should be representative of the data-generating process or population we care about. If the sample differs from that population, the model will learn patterns that won't hold for the cases we want to make decisions about.
+
+Before making a plot, ask:
+
+- How were the data collected?
+- Are the data representative of the process or population we care about?
+- Are data missing at random or is missingness related to the outcome or the predictors?
+
+Similar to independence, these are questions about how data was collected and a plot cannot answer them by itself.
+
+What we can check with the model is if a few observations have an undue influence on the results.
+
+- **Outlier:** an observation whose outcome ($y$) doesn't follow the general trend of the rest of the data.
+- **Leverage point:** an observation with unusual predictor values ($X$).
+- **Influential point:** an observation that noticeably changes the model's estimates or fit when it is removed. Outliers and leverage points are both potential influential points.
+
+Scatterplots can reveal outliers and leverage points when there are only one or two predictors. With several predictors, a point can be unusual only in combination without being extreme on any single variable. Therefore we use model-based measures to check how much results would change if an observation were removed.
+
+- **DFFITS** measures how much an observation's own fitted value changes. Gives one number per observation.
+- **DFBETAS** measures how much each coefficient changes. Gives one number per observation, per coefficient.
+
+## 2A. DFFITS
+
+DFFITS tells us how different would a fitted value $\hat{y}_i$ be if observation $i$ weren't used to fit the model.
+
+A rule of thumb when flagging observations as potentially influential:
+
+- $|\text{DFFITS}_i| > 1$ for $n \leq 30$
+- $|\text{DFFITS}_i| > 2\sqrt{p/n}$ for $n > 30$
+
+where $p$ is the number of $\beta$s in the model, including the intercept.
+
+```{python}
+import numpy as np
+
+influence = model.get_influence().summary_frame()
+
+diagnostic_data["abs_dffits"] = influence["dffits"].abs()
+diagnostic_data["observation"] = range(1, len(diagnostic_data) + 1)
+
+n, p = model.nobs, len(model.params)
+dffits_threshold = 1 if n <= 30 else 2 * np.sqrt(p / n)
+
+dffits_plot = (
+    ggplot(diagnostic_data, aes(x="observation", y="abs_dffits"))
+    + geom_point(alpha=0.25, color="#3B6EA8")
+    + geom_hline(
+        yintercept=dffits_threshold,
+        linetype="dashed",
+        color="#8B3A4A"
+    )
+    + labs(
+        title="Representativeness: DFFITS",
+        subtitle="Points above the dashed line are potentially influential",
+        x="Observation",
+        y="|DFFITS|"
+    )
+    + theme_minimal()
+)
+
+dffits_plot.show()
+```
+
+**What to look for:** Points above the dashed line are potentially influential. Note how many points cross the line and how far above it they sit. The x-axis is  row order, so any pattern along it is meaningless unless the data have a real sequence.
+
+## 2B. DFBETAS
+
+DFFITS summarizes an observation's influence on the whole fit. DFBETAS breaks that influence down by coefficient. This matters whenever a specific coefficient drives the decision such as how an observation can shift a key coefficient without standing out in DFFITS.
+
+A common rule of thumb flags $|\text{DFBETAS}_{ij}| > 2/\sqrt{n}$.
+
+```{python}
+coefficients_of_interest = ["log_price"]  # CHOOSE coefficients the decision depends on
+
+dfbetas_threshold = 2 / np.sqrt(n)
+
+for coef in coefficients_of_interest:
+    column = f"abs_dfb_{coef}"
+    diagnostic_data[column] = influence[f"dfb_{coef}"].abs()
+
+    dfbetas_plot = (
+        ggplot(diagnostic_data, aes(x="observation", y=column))
+        + geom_point(alpha=0.25, color="#3B6EA8")
+        + geom_hline(
+        yintercept=dfbetas_threshold,
+        linetype="dashed",
+        color="#8B3A4A"
+    )
+        + labs(
+            title=f"Representativeness: DFBETAS for {coef}",
+            subtitle="Points above the dashed line noticeably shift this coefficient",
+            x="Observation",
+            y=f"|DFBETAS| ({coef})"
+        )
+        + theme_minimal()
+    )
+
+    dfbetas_plot.show()
+```
+
+**What to look for:** Similar to DFFITS, we are paying attention to how many points cross the line, and by how much. In this case, crossing the line means the observation noticeably moves this coefficient.
+
+**Use cases:** Use DFFITS as a first screen of overall influence. Use DFBETAS for the coefficients you plan to interpret or base a decision on.
+
+## 2C. Investigate flagged points
+
+An observation might be influential but that doesn't mean it should be removed. It means we should look and decide whether it is representative.
+
+```{python}
+flagged = (
+    diagnostic_data[diagnostic_data["abs_dffits"] > dffits_threshold]
+    .sort_values("abs_dffits", ascending=False)
+)
+
+# ADD any predictors you want to inspect
+columns_to_show = [
+    "customer_id", outcome, "fittedvalues", "residuals", "abs_dffits"
+]
+
+flagged[columns_to_show].round(3).head()
+```
+
+**What to look for:** For each flagged observation, ask:
+
+- Is it a data error (a typo, a duplicate, an impossible value)?
+- Is it a real but unusual case that belongs in the population we're modeling?
+- Is it a sign the model is missing something, such as a predictor, an interaction, or a transformation?
+
+**Considerations:** 
+
+Influential does not mean wrong. Removing points because they are influential might mean better model performance but will ultimately making it less representative. Only remove observations when you can justify it doesn't belong in the population. Make sure to report the error as well.
+
+Different influence rules flag different observations. In this case, DFFITS, Cook's distance, leverage, and studentized residuals disagree, and there's no observation flagged by all four. We should treat these rules as a screening proces.
+
+These diagnostics are for linear regression fit with `smf.ols()`. For logistic regression, the influence output from statsmodels doesn't include the `dffits` column used here.
+
+**Remedies:**
+This includes; getting different data, dropping or imputing missing data, and investigating influential points as well as considering** whether to remove them.
 
 # 3. Linearity
 
@@ -373,11 +535,19 @@ Possible remedies include transforming y, transforming X, or using a model that 
 
 # 6. Normality
 
+## What is the assumption?
+
+Variation or error is normally distributed
+
 > **TODO:** Add student-friendly explanation, diagnostics, interpretation,
 > limitations, and possible remedies.
 
 
 # 7. Identifiability
+
+## What is the assumption?
+
+Data allows for parameters to be estimated, including no strong multicollinearity
 
 > **TODO:** Add student-friendly explanation, diagnostics, interpretation,
 > limitations, and possible remedies.
