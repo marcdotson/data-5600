@@ -537,32 +537,187 @@ Possible remedies include transforming y, transforming X, or using a model that 
 
 ## What is the assumption?
 
+The normality assumption states that the **errors of the model are approximately normally distributed**.
+
+Because we cannot directly observe the true errors, we use the model's **residuals** as an estimate of those errors.
+
+> **Important:** The normality assumption does **not** mean that the outcome variable must be normally distributed.
+
+We will check normality using:
+
+1. A **histogram of the residuals**
+2. A **Q-Q plot of the residuals**
+
 Variation or error is normally distributed
 
-> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
-> limitations, and possible remedies.
+## 6A. Histogram of the Residuals
 
+```{python}
+(
+    ggplot(diagnostic_data, aes(x="residuals"))
+    + geom_histogram(bins=30)
+    + labs(
+        title="Distribution of Residuals",
+        x="Residuals",
+        y="Count"
+    )
+    + theme_minimal()
+)
+```
+
+### What to look for
+
+If the normality assumption is reasonable, the residuals should form a roughly
+**symmetric, bell-shaped distribution centered near zero**.
+
+Look for:
+
+- Strong skewness
+- Very long or uneven tails
+- Extreme outliers
+- Multiple distinct peaks
+
+Small deviations from a perfect bell shape are expected. The histogram should
+be considered together with the Q-Q plot below.
+
+## 6B. Q-Q Plot of the Residuals
+
+```{python}
+(
+    ggplot(diagnostic_data, aes(sample="residuals"))
+    + stat_qq()
+    + stat_qq_line()
+    + labs(
+        title="Normal Q-Q Plot",
+        x="Theoretical Quantiles",
+        y="Sample Quantiles"
+    )
+    + theme_minimal()
+)
+```
+
+### What to look for
+
+If the residuals are approximately normally distributed, the points should
+roughly follow the diagonal reference line.
+
+Look for:
+
+- Points that generally follow the reference line → normality is reasonable
+- Systematic curves or an S-shape → the residual distribution may differ from normality
+- Large departures at the ends → possible problems in the tails or extreme observations
+
+Small deviations from the line are expected. Focus on clear, systematic departures
+rather than expecting every point to fall exactly on the line.
+
+### Normality conclusion
+
+Use the histogram and Q-Q plot together to evaluate normality.
+
+> The normality assumption appears __________ because __________.
+
+Evidence that supports normality includes:
+- A roughly symmetric, bell-shaped distribution of residuals
+- Q-Q plot points that generally follow the reference line
+
+Evidence of a possible violation includes:
+- Strong skewness or unusual tails in the residual distribution
+- Systematic departures from the reference line in the Q-Q plot
+
+### If normality is violated
+
+Possible remedies include:
+
+- **Transform the outcome (`y`)**
+- **Transform one or more predictors (`X`)**
+- **Use a generalized linear model (GLM)** if a normal-error model is not appropriate
+
+After making changes to the model, check the diagnostics again to determine
+whether the problem has improved.
 
 # 7. Identifiability
 
 ## What is the assumption?
 
-Data allows for parameters to be estimated, including no strong multicollinearity
+The identifiability assumption means that the data contain enough information
+to estimate the model's parameters.
 
-> **TODO:** Add student-friendly explanation, diagnostics, interpretation,
-> limitations, and possible remedies.
+One common threat to identifiability is **multicollinearity**, which occurs when
+two or more predictors are highly related to each other. When predictors contain
+very similar information, it becomes difficult for the model to separate their
+individual effects.
+
+We will check for multicollinearity using **Variance Inflation Factors (VIF)**.
+
+## 7A. Calculating VIF
+
+```{python}
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+X = model.model.exog
+predictor_names = model.model.exog_names
+
+vif_data = pl.DataFrame({
+    "predictor": predictor_names,
+    "VIF": [
+        variance_inflation_factor(X, i)
+        for i in range(X.shape[1])
+    ]
+})
+
+vif_data
+```
+
+### What to look for
+
+VIF measures how much the variance of a coefficient is increased because of
+relationships among the predictors.
+
+As a rough rule of thumb:
+
+- **VIF near 1** → little evidence of multicollinearity
+- **Larger VIF values** → increasing evidence of multicollinearity
+- **VIF much greater than 10** → potentially problematic multicollinearity
+
+Also consider the VIF values together. A mean VIF much greater than 1 may
+indicate that multicollinearity deserves further investigation.
+
+The goal is not necessarily for every VIF to equal 1. Instead, look for
+predictors with unusually large VIF values that may contain highly overlapping
+information.
+
+### Identifiability conclusion
+
+Use the VIF values to evaluate whether multicollinearity may be making it
+difficult to estimate the individual effects of the predictors.
+
+> The identifiability assumption appears __________ because __________.
+
+Evidence of a possible problem includes one or more predictors with very large
+VIF values, indicating that they contain highly overlapping information.
+
+### If identifiability is violated
+
+Possible remedies include:
+
+- **Drop one or more highly correlated predictors**
+- **Use penalized regression**
+- **Combine correlated predictors**, such as with Principal Components Regression (PCR)
+
+After modifying the model, calculate the VIF values again to determine whether
+the multicollinearity has improved.
 
 # Diagnostic Quick Reference
 
-| Assumption | Main question | Evidence | What to look for |
-|---|---|---|---|
-| Validity | TODO | TODO | TODO |
-| Representativeness | TODO | TODO | TODO |
-| Linearity | Is the functional form adequately linear? | Outcome/predictor, residual plots, partial regression | No obvious systematic curvature |
-| Independence | Are observations/errors independent or exchangeable? | Data collection + sequential residual plot when appropriate | No dependence from repeated measures, clustering, or sequence; no sequential trends |
-| Constant variance | Is residual variability roughly constant? | Residuals vs. fitted | Roughly equal spread; no funnel/cone shape |
-| Normality | TODO | TODO | TODO |
-| Identifiability | TODO | TODO | TODO |
+| Assumption | Diagnostic | What to Look For |
+|---|---|---|
+| **Validity** | Compare simulated and observed outcomes | Observed outcomes should be reasonably consistent with outcomes generated by the fitted model. Large systematic differences may indicate model misspecification. |
+| **Representativeness** | DFFITS and DFBETAS | Look for observations with unusually large influence on fitted values or coefficient estimates. Investigate influential observations rather than automatically removing them. |
+| **Linearity** | Outcome vs. predictor, residual plots, and partial regression plots | Look for curvature or other systematic patterns. Residuals should be randomly scattered around zero rather than following a clear pattern. |
+| **Independence** | Residuals in observation/order sequence and knowledge of data collection | Look for trends, cycles, clusters, or other patterns suggesting that errors may be related across observations. |
+| **Constant Variance** | Residuals vs. fitted values | The vertical spread of residuals should remain approximately constant across fitted values. Funnel or fan shapes may indicate nonconstant variance. |
+| **Normality** | Residual histogram and Q-Q plot | Residuals should be roughly symmetric and bell-shaped, and Q-Q plot points should generally follow the reference line. |
+| **Identifiability** | Variance Inflation Factor (VIF) | Very large VIF values may indicate that predictors contain highly overlapping information and that multicollinearity is a concern. |
 
 ## Final reminder
 
