@@ -420,10 +420,10 @@ I recommend visualization libraries that follow the [grammar of graphics](https:
 
 import polars as pl
 from plotnine import *
-from pyhere import here
+from pyprojroot.here import here
 
 # Import data
-sl_data = pl.read_parquet(here('data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(here('data/soft_launch.parquet'))
 
 # Peanut butter purchases
 pb_data = sl_data.filter(pl.col('units') > 0)

@@ -1,27 +1,25 @@
-# Validity, Representativeness, and Linearity
+# Validity and Representativeness
 
 
-During this class we will:
+During this class we will: - Start working with real data - Review
+exploratory data analysis - Begin reconciling the data and the model
 
-- Start working with real data
-- Quickly review exploratory data analysis
-- Begin reconciling the data and the model
-
-Start by downloading the soft launch data. To share their solution for
-Exercise 05, the randomly selected student is \*\*\_\_\_\*\*.
+Start by downloading the soft launch data.
 
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
 
-Visualize a different variable or set of variables, using some of this
-example code or your own. What do you discover? Go the discussions to
-share before continuing with the lecture.
+Visualize a different variable or set of variables, modifying some of
+this example code. What do you discover? Go the discussions to share
+before continuing with the lecture.
 
-Why are both validity and representativeness the most essential of the
-linear regression assumptions? Go the discussions to share before
-finishing the lecture.
+Change a parameter value or remove a predictor. How does the comparison
+between simulated and real outcomes change? Go the discussions to share
+before finishing the lecture.
 
 ## Data Dictionary
 
@@ -49,10 +47,10 @@ period.
 1.  Clean up the soft launch data
 2.  Create two interesting visualizations that help you understand the
     data and its limitations
-3.  Walk through the validity, representativeness, and linearity
-    assumptions and justify whether or not they are satisfied for your
-    cleaned data
-4.  Submit your code, output, and explanations as a single PDF on Canvas
+3.  Walk through the validity and representativeness assumptions and
+    justify whether or not they are satisfied for your cleaned data
+4.  Submit both your Quarto document and your code, output, and
+    explanations as a single PDF on Canvas
 
 ### Milestone 06
 

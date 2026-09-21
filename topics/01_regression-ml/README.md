@@ -47,7 +47,7 @@ whether the customer was enrolled in Harmons’ loyalty program.
 ``` python
 import numpy as np
 import polars as pl
-from pyhere import here
+from pyprojroot.here import here
 
 # Randomization seed
 rng = np.random.default_rng(42)
@@ -229,8 +229,8 @@ X_df = X_df.with_columns(
 raw_df = raw_df.with_columns(X_df['units', 'sales', 'promo'])
 
 # Write data frames
-raw_df.write_parquet(here('data', 'original_df.parquet'))
-X_df.write_parquet(here('data', 'X_df.parquet'))
+raw_df.write_parquet(here('data/original_df.parquet'))
+X_df.write_parquet(here('data/X_df.parquet'))
 
 # Add missing values at random
 missing_loyal_mask = rng.choice([True, False], size=n, p=[0.05, 0.95])
@@ -308,8 +308,8 @@ loyalty_df = (raw_df.select([
 ]).filter(pl.col('loyal') == '1'))
 
 # Write data frames
-transaction_df.write_parquet(here('data', 'soft_launch.parquet'))
-loyalty_df.write_parquet(here('data', 'loyalty.parquet'))
+transaction_df.write_parquet(here('data/soft_launch.parquet'))
+loyalty_df.write_parquet(here('data/loyalty.parquet'))
 ```
 
 ## Apply

@@ -15,10 +15,10 @@ import polars as pl
 import statsmodels.formula.api as smf
 import bambi as bmb
 from plotnine import *
-from pyhere import here
+from pyprojroot.here import here
 
 # Import data
-sl_data = pl.read_parquet(here('data', 'original_df.parquet'))
+sl_data = pl.read_parquet(here('data/original_df.parquet'))
 
 # Peanut butter purchases
 pb_data = sl_data.filter(pl.col('units') > 0)

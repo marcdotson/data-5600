@@ -16,6 +16,7 @@ dependencies = [
     "polars>=1.31.0",
     "pyarrow>=21.0.0",
     "pyhere>=1.0.3",
+    "pyprojroot>=0.3.0",
     "pytensor>=3.3.1",
     "scikit-learn>=1.7.2",
     "seaborn>=0.13.2",

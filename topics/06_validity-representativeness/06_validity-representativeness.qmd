@@ -121,10 +121,10 @@ Apache Parquet is an open source, **column-oriented data file format** designed 
 import numpy as np
 import polars as pl
 from plotnine import *
-from pyhere import here
+from pyprojroot.here import here
 
 # Import data
-pb_data = (pl.read_parquet(here('data', 'original_df.parquet'))
+pb_data = (pl.read_parquet(here('data/original_df.parquet'))
   .select('customer_id', 'units', 'sales', 'brand', 'promo', 'loyal', 'texture', 'size', 'price')
   .cast({'size': pl.String})
   .filter(pl.col('units') > 0)
@@ -137,10 +137,12 @@ pb_data = (pl.read_parquet(here('data', 'original_df.parquet'))
 import numpy as np
 import polars as pl
 from plotnine import *
-from pyhere import here
+from pyprojroot.here import here
 
 # Import data
-pb_data = pl.read_parquet(here('data', 'soft_launch.parquet')).filter(pl.col('units') > 0)
+pb_data = (pl.read_parquet(here('data/soft_launch.parquet'))
+  .filter(pl.col('units') > 0)
+)
 ```
 
 ::: {.fragment}

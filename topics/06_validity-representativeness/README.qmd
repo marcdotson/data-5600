@@ -16,9 +16,9 @@ View the slides:
 
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
 
-Visualize a different variable or set of variables, using some of this example code or your own. What do you discover? Go the discussions to share before continuing with the lecture.
+Visualize a different variable or set of variables, modifying some of this example code. What do you discover? Go the discussions to share before continuing with the lecture.
 
-Why are both validity and representativeness the most essential of the linear regression assumptions? Go the discussions to share before finishing the lecture.
+Change a parameter value or remove a predictor. How does the comparison between simulated and real outcomes change? Go the discussions to share before finishing the lecture.
 
 ## Data Dictionary
 
