@@ -106,9 +106,7 @@ Fit your OLS model before using the diagnostics. Then identify the fitted model 
 
 ```{python}
 model = fit
-linearity_predictors = ["log_price",
-    "coupon",
-    "ad"]  # CHOOSE the predictors you want to observe
+linearity_predictors = []  # CHOOSE the predictors you want to observe
 
 diagnostic_data = model.model.data.frame.copy()
 outcome = model.model.endog_names
