@@ -42,6 +42,16 @@ If we don't have real data or want to test our code, we can simulate data
 
 ```{python}
 #| eval: true
+#| echo: false
+
+from plotnine import *
+
+# Set a default plot size
+theme_update(figure_size=(5, 5))
+```
+
+```{python}
+#| eval: true
 
 import numpy as np
 import polars as pl

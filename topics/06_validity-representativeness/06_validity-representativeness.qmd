@@ -8,6 +8,7 @@ format:
   revealjs:
     theme: ../slides.scss  # Modified slides theme
     code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
     embed-resources: true  # Render to a single HTML file
 execute:
   eval: false
@@ -122,6 +123,9 @@ import numpy as np
 import polars as pl
 from plotnine import *
 from pyprojroot.here import here
+
+# Set a default plot size
+theme_update(figure_size=(5, 5))
 
 # Import data
 pb_data = (pl.read_parquet(here('data/original_df.parquet'))
@@ -563,13 +567,16 @@ sm_data = sim_data(
 # Compare the simulated and real outcomes
 (ggplot()
   + geom_density(
-    sm_data, 
-    aes(x = 'sales'), 
+    sm_data, aes(x = 'sales'), 
     color = 'red'
   )
-  + geom_density(
-    pb_data, 
-    aes(x = 'sales')
+  + geom_density(pb_data, aes(x = 'sales'))
+  + labs(
+    title = 
+      'Validity: Simulated vs. Real Outcomes',
+    subtitle = 
+      'Investigate structural differences',
+    x = 'outcome'
   )
 )
 ```
@@ -712,7 +719,6 @@ dffits_cutoff = 1 if n <= 30 else 2 * np.sqrt(p / n)
     x = 'Observation',
     y = 'Absolute Value of DFFITS'
   )
-  + theme_minimal()
 )
 ```
 
