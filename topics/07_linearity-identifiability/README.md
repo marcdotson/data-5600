@@ -21,13 +21,13 @@ distributed? Go the discussions to share before finishing the lecture.
 1.  Return to your cleaned soft launch data from the previous exercise
     (or start with the exercise solution)
 2.  Walk through the linearity, independence, constant variance,
-    normality, and identifiabiliy assumptions and justify whether or not
-    they are satisfied for your cleaned data
+    normality, and identifiability assumptions and justify whether or
+    not they are satisfied for your cleaned data
 3.  Submit both your Quarto document and your code, output, and
     explanations as a single PDF on Canvas
 
 ### Milestone 07
 
 Finish the diagnostics for your project and walk through the linearity,
-independence, constant variance, normality, and identifiabiliy
+independence, constant variance, normality, and identifiability
 assumptions and justify whether or not they are satisfied.
