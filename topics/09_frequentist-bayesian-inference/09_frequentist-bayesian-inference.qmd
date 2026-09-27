@@ -38,59 +38,83 @@ jupyter: python3
 
 # Estimating Model Parameters
 
-## Data cleaning and feature engineering {.scrollable}
+## Data cleaning and feature engineering
 
 Before we return to fitting models, let's start with data cleaning and feature engineering completed
 
 ```{python}
 #| eval: true
 
-import os
-import polars as pl
-from sklearn.model_selection import train_test_split
-import statsmodels.formula.api as smf
-import bambi as bmb
 import arviz as az
+import bambi as bmb
+import polars as pl
+import statsmodels.formula.api as smf
+from pyprojroot.here import here
+from sklearn.model_selection import train_test_split
 
-sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(here('data/soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
-    # Jif
-    'JIF': 'Jif', 'Jiff': 'Jif',
-    # Skippy
-    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
-    # PeterPan
-    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
-    # Harmons
-    "Harmon's": 'Harmons',
+  # Jif
+  'JIF': 'Jif', 'Jiff': 'Jif',
+  # Skippy
+  'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+  # PeterPan
+  'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+  # Harmons
+  "Harmon's": 'Harmons'
 }
+```
 
+```{python}
+#| eval: true
+#| echo: false
+
+################################################################
+# Temporary fix for a mismatch between macOS xcode and pytensor.
+################################################################
+
+import pytensor
+
+pytensor.config.cxx = ""
+```
+
+## Data cleaning and feature engineering
+
+Before we return to fitting models, let's start with data cleaning and feature engineering completed
+
+```{python}
+#| eval: true
+
+# Clean the data
 pb_data = (sl_data
-    # Fix brand naming variants
-    .with_columns([
-        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
-    ])
-    # Drop rows with missing values
-    .drop_nans(['units', 'sales'])
-    # Drop rows with "None" values
-    .remove(
-        (pl.col('brand') == "None") | (pl.col('loyal') == "None") | 
-        (pl.col('texture') == "None") | (pl.col('size') == "None")
-    )
-    # Make price numeric
-    .with_columns([
-        pl.col('price').cast(pl.Float64).alias('price'),
-        pl.col('loyal').cast(pl.Int64).alias('loyal'),
-        pl.col('promo').cast(pl.Int64).alias('promo')
-    ])
-    # Drop duplicate
-    .unique()
-    # Filter for only peanut butter purchases
-    .filter(pl.col('units') > 0)
-    # Select relevant columns
-    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+  # Fix brand naming variants
+  .with_columns(pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand'))
+  # Drop rows with missing values
+  .drop_nans(['units', 'sales'])
+  # Drop rows with "None" values
+  .remove(
+    (pl.col('brand') == 'None') | (pl.col('loyal') == 'None') | 
+    (pl.col('texture') == 'None') | (pl.col('size') == 'None')
+  )
+  # Make price numeric
+  .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+  # Drop duplicates (keep order)
+  .unique(maintain_order = True)
+  # Filter for only peanut butter purchases
+  .filter(pl.col('units') > 0)
+  # Select relevant columns
+  .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
 )
+```
+
+## Data cleaning and feature engineering
+
+Before we return to fitting models, let's start with data cleaning and feature engineering completed
+
+```{python}
+#| eval: true
 
 # Specify the design matrix and outcome
 X = pb_data.select(pl.exclude('units'))
@@ -101,21 +125,19 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 
 # Transform units
 y_train = (y_train
-    .with_columns((pl.col('units') + 1).log().alias('log_units'))
-    .select('log_units')
+  .with_columns(log_units = (pl.col('units') + 1).log())
+  .select('log_units')
 )
 
 # Transform price and dummy code discrete predictors
 X_train = (X_train
-    .with_columns((pl.col('price') + 1).log().alias('log_price'))
-    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
-    .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
+  .with_columns((pl.col('price') + 1).log().alias('log_price'))
+  .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+  .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
 )
 
 # Combine y_train and X_train
-pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
-    .to_pandas()
-)
+pb_train = pl.concat([y_train, X_train], how = 'horizontal_extend').to_pandas()
 ```
 
 ## Ordinary least squares {auto-animate=true}
@@ -232,14 +254,14 @@ If we don't specify priors, most **probabilistic programming languages** (PPLs) 
 
 # Specify predictors
 predictors = [
-    'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
-    'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
+  'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
+  'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
 ]
 
 # Specify a Bayesian linear regression
 ba_model = bmb.Model(
-    'log_units ~ ' + ' + '.join(predictors), 
-    data = pb_train
+  'log_units ~ ' + ' + '.join(predictors), 
+  data = pb_train
 )
 
 ba_model
@@ -255,9 +277,9 @@ What information could we have about the parameters outside of what's included i
 
 # Specify priors
 priors_dict = {
-    'Intercept': bmb.Prior("Uniform", lower=-100, upper=100),
-    **{term: bmb.Prior("Uniform", lower=-100, upper=100) for term in predictors},
-    'sigma': bmb.Prior("Exponential", lam=1)
+  'Intercept': bmb.Prior('Uniform', lower = -100, upper = 100),
+  **{term: bmb.Prior('Uniform', lower = -100, upper = 100) for term in predictors},
+  'sigma': bmb.Prior('Exponential', lam = 1)
 }
 
 ba_model.set_priors(priors = priors_dict)
@@ -277,8 +299,8 @@ OLS can be seen as a simple **point estimate approximation** to a Bayesian poste
 
 # Fit a frequentist linear regression
 fr_fit = smf.ols(
-    'log_units ~ ' + ' + '.join(predictors), 
-    data = pb_train
+  'log_units ~ ' + ' + '.join(predictors), 
+  data = pb_train
 ).fit()
 
 # Fit a Bayesian linear regression
@@ -290,7 +312,7 @@ ba_fit = ba_model.fit()
 ```{python}
 #| eval: true
 
-fr_fit.summary()
+fr_fit.conf_int()
 ```
 
 ## Frequentist models as an approximation {.scrollable}
@@ -298,7 +320,7 @@ fr_fit.summary()
 ```{python}
 #| eval: true
 
-az.summary(ba_fit)
+az.summary(ba_fit, ci_kind = 'hdi', ci_prob = 0.95)
 ```
 
 ## Bayesian updating is *learning*
@@ -311,7 +333,7 @@ $$
 
 ::: {.incremental}
 1. Start with a prior distribution over the possible parameter values
-2. **Update that prior distribution** using data and the likelihod function
+2. **Update that prior distribution** using data and the likelihood function
 3. Which produces a posterior distribution over the possible parameter values
 :::
 
@@ -376,7 +398,7 @@ $$
 :::
 
 ::: {.incremental}
-- Consider what point estimates we would expect to get if we had many hypothetical datasets so that our interval estimate is based on the **asymptotic properties of the procedure** used to produce our point estimate
+- Use the **asymptotic properties of the procedure** for getting our point estimate to get an interval of point estimates from many hypothetical databases
 - **Indirectly use probability** to describe uncertainty as a repeatable event under identical conditions
 :::
 :::
@@ -460,11 +482,10 @@ A $p$-value is the **probability of observing something as or more extreme**, as
 
 ### Exercise 09 {.lato-font}
 
-1. Harmon's has made a portion of their loyalty CRM data available: Consider what should be included in the model
-2. Iterate on the model using these new predictors, including EDA, checking model assumptions, and feature engineering
-3. Fit the model using the additional data using OLS and, if you can, a Bayesian model with uniform priors
-4. Interpret the interval estimates, being careful to track transformed scales, reference levels, the presence of multiple predictors in the model, and the differences between credible and confidence intervals
-5. Submit your code, output, and interpretations as a single PDF on Canvas
+1. Harmon's has made a portion of their loyalty CRM data available, but after walking through the assumption diagnostics, I've found that only `gender`, `email`, and `points` (logged) should be included as additional predictors
+2. Join the two data sets, split into training and testing data, update the feature engineering, and fit a new model with the additional predictors using OLS and, if you can, a Bayesian model with uniform priors
+3. Interpret the interval estimates, being careful to track transformed scales, reference levels, the presence of multiple predictors in the model, statistical significance, and the differences between credible and confidence intervals
+4. Submit both your Quarto document and your code, output, and interpretations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
