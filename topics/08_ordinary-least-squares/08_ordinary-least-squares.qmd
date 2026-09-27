@@ -72,54 +72,68 @@ Feature engineering (a.k.a., **preprocessing data**) is data cleaning or wrangli
 Neural networks are a black-box of **feature engineering automation** to improve predictive fit
 :::
 
-## Training and testing split {.scrollable}
+## Training and testing split
 
 Before we do any feature engineering, we need to split the data into **training** data to fit the model and **testing** data to evaluate the model's predictive fit
 
 ```{python}
 #| eval: true
 
-import os
 import polars as pl
-import seaborn.objects as so
 import statsmodels.api as sm
+from plotnine import *
+from pyprojroot.here import here
 from sklearn.model_selection import train_test_split
 
-sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+sl_data = pl.read_parquet(here('data/soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
-    # Jif
-    'JIF': 'Jif', 'Jiff': 'Jif',
-    # Skippy
-    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
-    # PeterPan
-    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
-    # Harmons
-    "Harmon's": 'Harmons',
+  # Jif
+  'JIF': 'Jif', 'Jiff': 'Jif',
+  # Skippy
+  'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+  # PeterPan
+  'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+  # Harmons
+  "Harmon's": 'Harmons'
 }
+```
+
+```{python}
+#| eval: true
+#| echo: false
+
+# Set a default plot size
+theme_update(figure_size=(5, 5))
+```
+
+## Training and testing split
+
+Before we do any feature engineering, we need to split the data into **training** data to fit the model and **testing** data to evaluate the model's predictive fit
+
+```{python}
+#| eval: true
 
 # Clean the data
 pb_data = (sl_data
-    # Fix brand naming variants
-    .with_columns([
-        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
-    ])
-    # Drop rows with missing values
-    .drop_nans(['units'])
-    .remove(
-        (pl.col('brand') == "None") | 
-        (pl.col('texture') == "None") | 
-        (pl.col('size') == "None")
-    )
-    # Make price numeric
-    .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
-    # Drop duplicate rows
-    .unique()
-    # Filter for only peanut butter purchases
-    .filter(pl.col('units') > 0)
-    # Select relevant columns
-    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+  # Fix brand naming variants
+  .with_columns(pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand'))
+  # Drop rows with missing values
+  .drop_nans(['units', 'sales'])
+  # Drop rows with "None" values
+  .remove(
+    (pl.col('brand') == 'None') | (pl.col('loyal') == 'None') | 
+    (pl.col('texture') == 'None') | (pl.col('size') == 'None')
+  )
+  # Make price numeric
+  .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+  # Drop duplicates (keep order)
+  .unique(maintain_order = True)
+  # Filter for only peanut butter purchases
+  .filter(pl.col('units') > 0)
+  # Select relevant columns
+  .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
 )
 ```
 
@@ -135,7 +149,7 @@ X = pb_data.select(pl.exclude('units'))
 y = pb_data.select('units')
 
 # Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
 ```
 
 ## Transforming continuous $y$ and $X$
@@ -177,14 +191,13 @@ When performing a log transformation, remember to include an **offset** to avoid
 
 y_train = (y_train
   .with_columns(
-    (pl.col('units') + 1).log().alias('log_units')
+    log_units = (pl.col('units') + 1).log()
   )
   .select('log_units')
-  .to_pandas()
 )
 
-(so.Plot(y_train, x = 'log_units')
-  .add(so.Bars(), so.Hist(bins = 10))
+(ggplot(y_train, aes(x = 'log_units'))
+  + geom_histogram(bins = 10)
 )
 ```
 
@@ -213,9 +226,9 @@ One of the most common feature engineering steps is **dummy coding** (a.k.a., in
 #| eval: true
 
 X_train = (X_train
-    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
-    .select(pl.exclude('brand_Jif', 'texture_Smooth', 'size_16'))
-    .to_pandas()
+  .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+  .select(pl.exclude('brand_Jif', 'texture_Smooth', 'size_16'))
+  .to_pandas()
 )
 ```
 
@@ -358,9 +371,9 @@ fit_04.summary()
 ::: {.fragment}
 **Bayesian**
 
-- Use Bayes' theorem to combine the likelihood with a **prior distribution** $p(\theta)$
+- Use Bayes' theorem to combine the likelihood function (i.e., **data distribution**) with a **prior distribution** $p(\theta)$
 - This produces a **posterior distribution** $p(\theta | X)$ of the random variable $\theta$
-- Instead of computing this distribution analytically, we draw samples from it using **Markov chain Monte Carlo** (MCMC)
+- Draw samples from the posterior distribution using **Markov chain Monte Carlo** (MCMC)
 :::
 :::
 
@@ -373,7 +386,7 @@ fit_04.summary()
 1. Return to your data from the previous exercise (or start with the exercise solution)
 2. Split the data into training and testing data, confirm any other feature engineering, and fit a model using OLS
 3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
-4. Submit your code, output, and interpretations as a single PDF on Canvas
+4. Submit both your Quarto document and your code, output, and interpretations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 

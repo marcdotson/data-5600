@@ -6,10 +6,9 @@ During this class we will:
 - Complete feature engineering
 - Begin detailing model estimation
 
-To share their solution for Exercise 07, the randomly selected student
-is \*\*\_\_\_\*\*.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
@@ -31,8 +30,8 @@ squares? Go the discussions to share before finishing the lecture.
 3.  Interpret the parameter estimates, being careful to track
     transformed scales, reference levels, and the presence of multiple
     predictors in the model
-4.  Submit your code, output, and interpretations as a single PDF on
-    Canvas
+4.  Submit both your Quarto document and your code, output, and
+    interpretations as a single PDF on Canvas
 
 ### Milestone 08
 
