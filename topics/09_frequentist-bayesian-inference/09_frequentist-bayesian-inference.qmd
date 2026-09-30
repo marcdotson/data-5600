@@ -312,7 +312,7 @@ ba_fit = ba_model.fit()
 ```{python}
 #| eval: true
 
-fr_fit.conf_int()
+fr_fit.summary()
 ```
 
 ## Frequentist models as an approximation {.scrollable}
