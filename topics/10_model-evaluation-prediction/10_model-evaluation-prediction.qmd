@@ -156,52 +156,57 @@ $$
 #| eval: true
 #| echo: false
 
-import os
+import arviz as az
+import bambi as bmb
 import numpy as np
 import polars as pl
 import statsmodels.formula.api as smf
-import bambi as bmb
-import arviz as az
+from plotnine import *
+from pyprojroot.here import here
 from sklearn.model_selection import train_test_split
 
-sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+# Set a default plot size
+theme_update(figure_size=(5, 5))
+
+################################################################
+# Temporary fix for a mismatch between macOS xcode and pytensor.
+import pytensor
+pytensor.config.cxx = ""
+################################################################
+
+sl_data = pl.read_parquet(here('data/soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
-    # Jif
-    'JIF': 'Jif', 'Jiff': 'Jif',
-    # Skippy
-    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
-    # PeterPan
-    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
-    # Harmons
-    "Harmon's": 'Harmons',
+  # Jif
+  'JIF': 'Jif', 'Jiff': 'Jif',
+  # Skippy
+  'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+  # PeterPan
+  'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+  # Harmons
+  "Harmon's": 'Harmons'
 }
 
+# Clean the data
 pb_data = (sl_data
-    # Fix brand naming variants
-    .with_columns([
-        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
-    ])
-    # Drop rows with missing values
-    .drop_nans(['units', 'sales'])
-    # Drop rows with "None" values
-    .remove(
-        (pl.col('brand') == "None") | (pl.col('loyal') == "None") | 
-        (pl.col('texture') == "None") | (pl.col('size') == "None")
-    )
-    # Make price numeric
-    .with_columns([
-        pl.col('price').cast(pl.Float64).alias('price'),
-        pl.col('loyal').cast(pl.Int64).alias('loyal'),
-        pl.col('promo').cast(pl.Int64).alias('promo')
-    ])
-    # Drop duplicate
-    .unique()
-    # Filter for only peanut butter purchases
-    .filter(pl.col('units') > 0)
-    # Select relevant columns
-    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+  # Fix brand naming variants
+  .with_columns(pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand'))
+  # Drop rows with missing values
+  .drop_nans(['units', 'sales'])
+  # Drop rows with "None" values
+  .remove(
+    (pl.col('brand') == 'None') | (pl.col('loyal') == 'None') | 
+    (pl.col('texture') == 'None') | (pl.col('size') == 'None')
+  )
+  # Make price numeric
+  .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+  # Drop duplicates (keep order)
+  .unique(maintain_order = True)
+  # Filter for only peanut butter purchases
+  .filter(pl.col('units') > 0)
+  # Select relevant columns
+  .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
 )
 
 # Specify the design matrix and outcome
@@ -213,45 +218,43 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 
 # Transform units
 y_train = (y_train
-    .with_columns((pl.col('units') + 1).log().alias('log_units'))
-    .select('log_units')
+  .with_columns((pl.col('units') + 1).log().alias('log_units'))
+  .select('log_units')
 )
 
 # Transform price and dummy code discrete predictors
 X_train = (X_train
-    .with_columns((pl.col('price') + 1).log().alias('log_price'))
-    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
-    .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
+  .with_columns((pl.col('price') + 1).log().alias('log_price'))
+  .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+  .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
 )
 
 # Combine y_train and X_train
-pb_train = (pl.concat([y_train, X_train], how = 'horizontal')
-    .to_pandas()
-)
+pb_train = pl.concat([y_train, X_train], how = 'horizontal_extend').to_pandas()
 
 # Specify predictors
 predictors = [
-    'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
-    'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
+  'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
+  'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
 ]
 
 # Fit a frequentist linear regression
 fr_fit = smf.ols(
-    'log_units ~ ' + ' + '.join(predictors), 
-    data = pb_train
+  'log_units ~ ' + ' + '.join(predictors), 
+  data = pb_train
 ).fit()
 
 # Specify a Bayesian linear regression
 ba_model = bmb.Model(
-    'log_units ~ ' + ' + '.join(predictors), 
-    data = pb_train
+  'log_units ~ ' + ' + '.join(predictors), 
+  data = pb_train
 )
 
 # Specify priors
 priors_dict = {
-    'Intercept': bmb.Prior("Uniform", lower=-100, upper=100),
-    **{term: bmb.Prior("Uniform", lower=-100, upper=100) for term in predictors},
-    'sigma': bmb.Prior("Exponential", lam=1)
+  'Intercept': bmb.Prior('Uniform', lower = -100, upper = 100),
+  **{term: bmb.Prior('Uniform', lower = -100, upper = 100) for term in predictors},
+  'sigma': bmb.Prior('Exponential', lam = 1)
 }
 ba_model.set_priors(priors = priors_dict)
 
@@ -263,22 +266,20 @@ Following our original model (i.e., without loyalty data)
 
 ```{python}
 #| eval: true
-#| code-line-numbers: "|1|3-8|10-15|17-18|20-21"
+#| code-line-numbers: "|1|3-7|9-13|15-16|18-19"
 
 from sklearn.metrics import mean_squared_error
 
 # Apply same transformations to y_test and X_test
 y_test = (y_test
-    .with_columns((pl.col('units') + 1).log().alias('log_units'))
-    .select('log_units')
-    .to_pandas()
+  .with_columns((pl.col('units') + 1).log().alias('log_units'))
+  .select('log_units')
 )
 
 X_test = (X_test
-    .with_columns((pl.col('price') + 1).log().alias('log_price'))
-    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
-    .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
-    .to_pandas()
+  .with_columns((pl.col('price') + 1).log().alias('log_price'))
+  .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+  .select(pl.exclude('price','brand_Jif', 'texture_Smooth', 'size_16'))
 )
 
 # Use test data to predict
@@ -340,23 +341,23 @@ Let's specify our objective function and create a new data frame where **each ro
 
 # Specify a profit function
 def profit(price, units, cost, scale):
-    profit = units * (price - cost)
-    return profit * scale
+  profit = units * (price - cost)
+  return profit * scale
 
 # Construct a new design matrix for prediction
 X_new = (pl.DataFrame({
-    'brand_Harmons': [1, 1, 1, 1, 1, 1],
-    'brand_PeterPan': [0, 0, 0, 0, 0, 0],
-    'brand_Skippy': [0, 0, 0, 0, 0, 0],
-    'coupon': [0, 0, 0, 0, 0, 0],
-    'ad': [0, 0, 0, 0, 0, 0],
-    'texture_Chunky': [0, 0, 0, 0, 0, 0],
-    'size_12': [1, 1, 1, 0, 0, 0],
-    'price': [3.00, 3.50, 4.00, 3.00, 3.50, 4.00]
+  'brand_Harmons': [1, 1, 1, 1, 1, 1],
+  'brand_PeterPan': [0, 0, 0, 0, 0, 0],
+  'brand_Skippy': [0, 0, 0, 0, 0, 0],
+  'coupon': [0, 0, 0, 0, 0, 0],
+  'ad': [0, 0, 0, 0, 0, 0],
+  'texture_Chunky': [0, 0, 0, 0, 0, 0],
+  'size_12': [1, 1, 1, 0, 0, 0],
+  'price': [3.00, 3.50, 4.00, 3.00, 3.50, 4.00]
   }).with_columns(
-      pl.col('price').log().alias('log_price')
+    pl.col('price').log().alias('log_price')
   ).select(pl.exclude('price'))
-).to_pandas()
+)
 
 X_new
 ```
@@ -367,21 +368,25 @@ We can use predictions to compute expected profit (i.e., negative expected loss)
 
 ```{python}
 #| eval: true
-#| code-line-numbers: "|1-2|4-10|12-13"
+#| code-line-numbers: "|3-4|6-13|16-17"
 
-# Get preditions for X_new
-fr_pred = fr_fit.predict(X_new)
-
-# Calculate profit for each action
-fr_pred['profit'] = profit(
-    price = np.exp(X_new['log_price']),
-    units = np.exp(fr_pred),
-    cost = 1.50,
-    scale = 10_000
+# Get preditions for X_new and calculate profits
+X_new = (X_new
+  .with_columns(
+    fr_pred = pl.Series(fr_fit.predict(X_new))
+  )
+  .with_columns(
+    profit = profit(
+      price = np.exp(pl.col('log_price')),
+      units = np.exp(pl.col('fr_pred')),
+      cost = 1.50,
+      scale = 10_000
+    )
+  )
 )
 
 # Average across actions
-print(np.mean(fr_pred['profit']))
+X_new['profit'].mean()
 ```
 
 # After deciding on a best model, we should re-run that model using the full dataset before interpreting results. Why? {background-color="#006242"}
@@ -394,7 +399,7 @@ Eventually we'll select our best-fitting model(s) and make predictions directly 
 
 ::: {.incremental}
 - In all of these predictions, its critical that we **propagate uncertainty** from the parameter estimates into the predictions
-- Without being honest about uncertainty, we will mislead rather than inform decision-making
+- Without being **honest about uncertainty**, we will mislead rather than inform decision-making
 - When we make predictions, be careful with **extrapolation** or making predictions outside the range of the data used to fit the model
 :::
 
@@ -428,7 +433,7 @@ We can get both confidence and prediction intervals, just note that we should us
 #| eval: true
 
 # Confidence and prediction intervals
-fr_fit.get_prediction(X_new).summary_frame(alpha=0.05)
+fr_fit.get_prediction(X_new).summary_frame(alpha = 0.05)
 ```
 
 ## Posterior predictive distributions
@@ -437,17 +442,59 @@ For Bayesian models, since the **parameters are random** there is no difference 
 
 ```{python}
 #| eval: true
+
+# Draw from the posterior predictive distribution
+ba_model.predict(ba_fit, kind = 'response')
+
+# Extract a subsample of posterior predictive draws
+ppc_array = (
+  az.extract(
+    ba_fit, group = 'posterior_predictive', 
+    var_names = 'log_units', num_samples = 100
+  )
+  .to_numpy()
+)
+
+# Reshape to a long format with a draw ID
+ppc_data = pl.DataFrame({
+  'log_units': ppc_array.flatten(order = 'F'),
+  'draw': np.repeat(np.arange(ppc_array.shape[1]), ppc_array.shape[0]),
+})
+```
+
+## Posterior predictive distributions
+
+This comparison between predicted and real outcomes provides another chance to evaluate the validity of our data and what else we might need to reconcile with our model
+
+```{python}
+#| eval: true
 #| output-location: column
 
-ba_model.predict(ba_fit, kind="response")
-az.plot_ppc(ba_fit)
+# Compare the predicted and real outcomes
+(ggplot()
+  + geom_density(
+    ppc_data, 
+    aes(x = 'log_units', group = 'draw'),
+    color = 'red', alpha = 0.1, size = 0.3
+  )
+  + geom_density(
+    pb_train, aes(x = 'log_units')
+  )
+  + labs(
+    title = 
+      'Predicted vs. Real Outcomes',
+    subtitle = 
+      'Investigate structural differences',
+    x = 'outcome'
+  )
+)
 ```
 
 ## From parameter estimates to predictions
 
 We can interpret parameter estimates and we can make predictions to demonstrate the implications of those estimates
 
-For example, Harmon's interval estimate is (-0.188, 0.489) and log-price is (-1.040, 0.351), but what does that mean?
+For example, if Harmon's interval estimate is (-0.188, 0.489) and log-price is (-1.040, 0.351), what does that mean?
 
 ```{python}
 #| eval: true
@@ -455,21 +502,21 @@ For example, Harmon's interval estimate is (-0.188, 0.489) and log-price is (-1.
 
 # Construct a new design matrix for prediction
 X_new = (pl.DataFrame({
-    'brand_Harmons': 1,
-    'brand_PeterPan': 0,
-    'brand_Skippy': 0,
-    'coupon': 0,
-    'ad': 0,
-    'texture_Chunky': 0,
-    'size_12': 0,
-    'price': 3.50
+  'brand_Harmons': 1,
+  'brand_PeterPan': 0,
+  'brand_Skippy': 0,
+  'coupon': 0,
+  'ad': 0,
+  'texture_Chunky': 0,
+  'size_12': 0,
+  'price': 3.50
   }).with_columns(
-      pl.col('price').log().alias('log_price') 
+    pl.col('price').log().alias('log_price') 
   ).select(pl.exclude('price'))
-).to_pandas()
+)
 
 # Confidence and prediction intervals
-fr_fit.get_prediction(X_new).summary_frame(alpha=0.05)
+fr_fit.get_prediction(X_new).summary_frame(alpha = 0.05)
 ```
 
 ## {background-color="#006242"}
@@ -479,7 +526,7 @@ fr_fit.get_prediction(X_new).summary_frame(alpha=0.05)
 1. Compare the models from the previous two exercises: the model that didn't include the loyalty data and the model that did
 2. Choose the best-fitting model and re-run it using the full dataset
 3. Update your interpretation of the interval estimates and produce predictions relevant to the business objective using this final, best-fitting model
-4. Submit your code, output, and commentary as a single PDF on Canvas
+4. Submit both your Quarto document and your code, output, and commentary as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
