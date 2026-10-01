@@ -79,69 +79,65 @@ Your presentation needs to be tailored for a **mixed audience** where you will h
 #| eval: true
 #| echo: false
 
-import os
 import numpy as np
 import polars as pl
-import seaborn.objects as so
-import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
+from plotnine import *
+from pyprojroot.here import here
 
-# Import soft launch and loyalty data
-sl_data = pl.read_parquet(os.path.join('data', 'soft_launch.parquet'))
+# Set a default plot size
+theme_update(figure_size=(5, 5))
+
+# Import soft launch data
+sl_data = pl.read_parquet(here('data/soft_launch.parquet'))
 
 # Standardize brand names
 brand_names = {
-    # Jif
-    'JIF': 'Jif', 'Jiff': 'Jif',
-    # Skippy
-    'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
-    # PeterPan
-    'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
-    # Harmons
-    "Harmon's": 'Harmons',
+  # Jif
+  'JIF': 'Jif', 'Jiff': 'Jif',
+  # Skippy
+  'SKIPPY': 'Skippy', 'Skipy': 'Skippy', 'Skipp': 'Skippy',
+  # PeterPan
+  'Peter Pan': 'PeterPan', 'Peter Pa': 'PeterPan',
+  # Harmons
+  "Harmon's": 'Harmons'
 }
 
-# Join the loyalty data and the cleaned soft launch data
+# Clean the data
 pb_data = (sl_data
-    # Fix brand naming variants
-    .with_columns([
-        pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand')
-    ])
-    # Drop rows with missing values
-    .drop_nans(['units', 'sales'])
-    # Drop rows with "None" values
-    .remove(
-        (pl.col('brand') == "None") | (pl.col('loyal') == "None") | 
-        (pl.col('texture') == "None") | (pl.col('size') == "None")
-    )
-    # Make price numeric
-    .with_columns([
-        pl.col('price').cast(pl.Float64).alias('price'),
-        pl.col('loyal').cast(pl.Int64).alias('loyal'),
-        pl.col('promo').cast(pl.Int64).alias('promo')
-    ])
-    # Drop duplicate
-    .unique()
-    # Filter for only peanut butter purchases
-    .filter(pl.col('units') > 0)
-    # Select relevant columns
-    .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
+  # Fix brand naming variants
+  .with_columns(pl.col('brand').cast(pl.Utf8).replace(brand_names).alias('brand'))
+  # Drop rows with missing values
+  .drop_nans(['units', 'sales'])
+  # Drop rows with "None" values
+  .remove(
+    (pl.col('brand') == 'None') | (pl.col('loyal') == 'None') | 
+    (pl.col('texture') == 'None') | (pl.col('size') == 'None')
+  )
+  # Make price numeric
+  .with_columns(pl.col('price').cast(pl.Float64).alias('price'))
+  # Drop duplicates (keep order)
+  .unique(maintain_order = True)
+  # Filter for only peanut butter purchases
+  .filter(pl.col('units') > 0)
+  # Select relevant columns
+  .select('units', 'brand', 'coupon', 'ad', 'texture', 'size', 'price')
 )
 
 # Feature engineering for training
 pb_train = (pb_data
-    .with_columns([
-        (pl.col('units') + 1).log().alias('log_units'),
-        (pl.col('price') + 1).log().alias('log_price')
-    ])
-    .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
-    .select(pl.exclude('units', 'price', 'brand_Jif', 'texture_Smooth', 'size_16'))
+  .with_columns([
+    (pl.col('units') + 1).log().alias('log_units'),
+    (pl.col('price') + 1).log().alias('log_price')
+  ])
+  .to_dummies(columns = ['brand', 'texture', 'size'], drop_first = False)
+  .select(pl.exclude('units', 'price', 'brand_Jif', 'texture_Smooth', 'size_16'))
 )
 
 # Specify predictors
 predictors = [
-    'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
-    'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
+  'brand_Harmons', 'brand_PeterPan', 'brand_Skippy',
+  'coupon', 'ad', 'texture_Chunky', 'size_12', 'log_price'
 ]
 
 # Fit the final model
@@ -156,25 +152,30 @@ We don't want to share the model output table in the presentation (outside of an
 ```{python}
 #| eval: true
 #| output-location: column
-#| code-line-numbers: "|1-7|10|11-16|17"
 
 # Construct confidence interval data frame
 df_01 = pl.DataFrame({
-    'term': fit_06.conf_int().index.tolist(),
-    'coef': fit_06.params.tolist(),
-    'conf_low': fit_06.conf_int().loc[:, 0].tolist(),
-    'conf_high': fit_06.conf_int().loc[:, 1].tolist()
+  'term': fit_06.conf_int().index.tolist(),
+  'coef': fit_06.params.tolist(),
+  'conf_low': (fit_06
+    .conf_int().loc[:, 0].tolist()),
+  'conf_high': (fit_06
+    .conf_int().loc[:, 1].tolist())
 })
 
-# Plotting the confidence interval
-df = df_01
-plt.figure(figsize=(4, 4))
-plt.errorbar(df['coef'], df['term'],
-    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
-    fmt='o', 
-    capsize=5, 
-    label='Estimates')
-plt.axvline(0, color='red', linestyle='--', label='y=0')
+# Plot the confidence intervals
+(ggplot(df_01, aes(x = 'coef', y = 'term'))
+  + geom_point()
+  + geom_errorbarh(
+    aes(xmin = 'conf_low', xmax = 'conf_high'), 
+    height = 0.2
+  )
+  + geom_vline(
+    xintercept = 0, 
+    color = 'red', linetype = '--'
+  )
+  + labs(x = '', y = '')
+)
 ```
 
 ## Visualizing interval estimates
@@ -184,20 +185,25 @@ We often want to visualize **some subset of the interval estimates**
 ```{python}
 #| eval: true
 #| output-location: column
-#| code-line-numbers: "|1-2|5"
 
 # Selecting just slopes
-df_02 = df_01.filter(pl.col('term') != 'Intercept')
+df_02 = (df_01
+  .filter(pl.col('term') != 'Intercept')
+)
 
-# Plotting the confidence interval
-df = df_02
-plt.figure(figsize=(4, 4))
-plt.errorbar(df['coef'], df['term'],
-    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
-    fmt='o', 
-    capsize=5, 
-    label='Estimates')
-plt.axvline(0, color='red', linestyle='--', label='y=0')
+# Plot the confidence intervals
+(ggplot(df_02, aes(x = 'coef', y = 'term'))
+  + geom_point()
+  + geom_errorbarh(
+    aes(xmin = 'conf_low', xmax = 'conf_high'), 
+    height = 0.2
+  )
+  + geom_vline(
+    xintercept = 0, 
+    color = 'red', linetype = '--'
+  )
+  + labs(x = '', y = '')
+)
 ```
 
 # Launching Harmons Private Label Peanut Butter {background-color="#288DC2"}
@@ -255,10 +261,10 @@ After cleaning, including filtering the data just for those customers who made a
 #| echo: false
 #| fig-align: center
 
-(so.Plot(pb_data, x = 'units')
-    .add(so.Bars(), so.Hist(bins = 10))
-    .label(x="Peanut Butter Units Sold", y="Count")
-    .layout(size=(8, 6))
+(ggplot(pb_data, aes(x = 'units'))
+  + geom_histogram(bins = 10, fill = 'darkblue', color = 'white')
+  + labs(x = 'Peanut Butter Units Sold', y = 'Count')
+  + theme(figure_size=(8, 6))
 )
 ```
 
@@ -269,10 +275,10 @@ After cleaning, including filtering the data just for those customers who made a
 #| echo: false
 #| fig-align: center
 
-(so.Plot(pb_data, x = 'units', color = 'brand')
-    .add(so.Area(), so.Hist(bins=10))
-    .label(x="Peanut Butter Units Sold", y="Count")
-    .layout(size=(8, 6))
+(ggplot(pb_data, aes(x = 'units', fill = 'brand'))
+  + geom_density(alpha = 0.25)
+  + labs(x = 'Peanut Butter Units Sold', y = 'Count')
+  + theme(figure_size=(8, 6))
 )
 ```
 
@@ -283,14 +289,11 @@ After cleaning, including filtering the data just for those customers who made a
 #| echo: false
 #| fig-align: center
 
-(so.Plot(pb_data, x = 'price', y = 'units')
-    .add(
-        so.Dot(alpha = 0.25), 
-        so.Jitter(x = 0.25, y = 0.25)
-    )
-    .add(so.Line(), so.PolyFit(order = 1))
-    .label(x="Peanut Butter Prices", y="Peanut Butter Units Sold")
-    .layout(size=(8, 6))
+(ggplot(pb_data, aes(x = 'price', y = 'units'))
+  + geom_jitter(alpha = 0.25, size = 3, fill = 'darkblue')
+  + geom_smooth(method = 'lm', se = False)
+  + labs(x = 'Peanut Butter Prices', y = 'Peanut Butter Units Sold')
+  + theme(figure_size=(8, 6))
 )
 ```
 
@@ -301,16 +304,12 @@ After cleaning, including filtering the data just for those customers who made a
 #| echo: false
 #| fig-align: center
 
-(so.Plot(pb_data, x = 'price', y = 'units')
-    .facet(col = 'brand')
-    .share(x=False, y=False)
-    .add(
-        so.Dot(alpha = 0.25), 
-        so.Jitter(x = 0.25, y = 0.25)
-    )
-    .add(so.Line(), so.PolyFit(order = 1))
-    .label(x="Price", y="Peanut Butter Units Sold")
-    .layout(size=(12, 6))
+(ggplot(pb_data, aes(x = 'price', y = 'units'))
+  + geom_jitter(alpha = 0.25, size = 3, fill = 'darkblue')
+  + geom_smooth(method = 'lm', se = False)
+  + facet_wrap('brand', nrow = 1, scales = 'free_x')
+  + labs(x = 'Price', y = 'Peanut Butter Units Sold')
+  + theme(figure_size=(12, 6))
 )
 ```
 
@@ -336,19 +335,25 @@ We investigated including loyalty data in the model, but it didn't improve predi
 ```{python}
 #| eval: true
 #| echo: false
+#| fig-align: center
 
 # Selecting just brands
 df_02 = df_01.slice(1, 3)
 
-# Plotting the confidence interval
-df = df_02
-plt.figure(figsize=(6, 4))
-plt.errorbar(df['coef'], df['term'],
-    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
-    fmt='o', 
-    capsize=5, 
-    label='Estimates')
-plt.axvline(0, color='red', linestyle='--', label='y=0')
+# Plot the confidence intervals
+(ggplot(df_02, aes(x = 'coef', y = 'term'))
+  + geom_point()
+  + geom_errorbarh(
+    aes(xmin = 'conf_low', xmax = 'conf_high'), 
+    height = 0.2
+  )
+  + geom_vline(
+    xintercept = 0, 
+    color = 'red', linetype = '--'
+  )
+  + labs(x = '', y = '')
+  + theme(figure_size=(8, 6))
+)
 ```
 
 ## Promotions and texture matter most
@@ -356,20 +361,25 @@ plt.axvline(0, color='red', linestyle='--', label='y=0')
 ```{python}
 #| eval: true
 #| echo: false
+#| fig-align: center
 
 # Selecting just brands
-# df_02 = df_01.filter(pl.col('term') != 'Intercept')
 df_03 = df_01.slice(4, 4)
 
-# Plotting the confidence interval
-df = df_03
-plt.figure(figsize=(6, 4))
-plt.errorbar(df['coef'], df['term'],
-    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
-    fmt='o', 
-    capsize=5, 
-    label='Estimates')
-plt.axvline(0, color='red', linestyle='--', label='y=0')
+# Plot the confidence intervals
+(ggplot(df_03, aes(x = 'coef', y = 'term'))
+  + geom_point()
+  + geom_errorbarh(
+    aes(xmin = 'conf_low', xmax = 'conf_high'), 
+    height = 0.2
+  )
+  + geom_vline(
+    xintercept = 0, 
+    color = 'red', linetype = '--'
+  )
+  + labs(x = '', y = '')
+  + theme(figure_size=(8, 6))
+)
 ```
 
 ## Price sensitivity is uncertain
@@ -377,19 +387,25 @@ plt.axvline(0, color='red', linestyle='--', label='y=0')
 ```{python}
 #| eval: true
 #| echo: false
+#| fig-align: center
 
 # Selecting just brands
 df_04 = df_01.filter(pl.col('term') != 'Intercept')
 
-# Plotting the confidence interval
-df = df_04
-plt.figure(figsize=(6, 4))
-plt.errorbar(df['coef'], df['term'],
-    xerr=[df['coef'] - df['conf_low'], df['conf_high'] - df['coef']], 
-    fmt='o', 
-    capsize=5, 
-    label='Estimates')
-plt.axvline(0, color='red', linestyle='--', label='y=0')
+# Plot the confidence intervals
+(ggplot(df_04, aes(x = 'coef', y = 'term'))
+  + geom_point()
+  + geom_errorbarh(
+    aes(xmin = 'conf_low', xmax = 'conf_high'), 
+    height = 0.2
+  )
+  + geom_vline(
+    xintercept = 0, 
+    color = 'red', linetype = '--'
+  )
+  + labs(x = '', y = '')
+  + theme(figure_size=(8, 6))
+)
 ```
 
 ## Go for launch

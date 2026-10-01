@@ -3,10 +3,9 @@
 
 During this class we will demonstrate communicating model results.
 
-To share their solution for Exercise 10, the randomly selected student
-is \*\*\_\_\_\*\*.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
