@@ -9,6 +9,8 @@ During this class we will:
 
 ## Learn
 
+View the slides:
+
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
 
