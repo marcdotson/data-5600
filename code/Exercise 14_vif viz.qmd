@@ -1,0 +1,302 @@
+---
+format: 
+  typst: 
+    mainfont: "Lato"
+---
+
+## Exercise 14
+
+1. Clean up the leads data
+2. Create two interesting visualizations that help you understand the data and its limitations
+3. Walk through the logistic regression model assumptions, use diagnostics, and justify whether or not they are satisfied for your cleaned data
+4. Submit your code, output, and explanations as a single PDF on Canvas
+
+## Solution
+
+First, let's import and clean up the leads data. Here are some issues that I found:
+
+- There are some `Industry` levels with very few qualified leads. We should combine some of these levels or drop them from the analysis (especially anticipating splitting the data into training vs. testing).
+- `Other` for `Industry` and `Unknown` for both `TimeZone` and `Employees` are functionally missing values that appear to be missing at random and can be dropped.
+- We'll need to recode the `Stage` variable into a binary variable for whether or not the lead is qualified.
+- There are a few activity type variable names with spaces that we can rename to avoid future problems.
+- We can't use `Amount` since this only populated for qualified leads.
+
+```{python}
+import os
+import numpy as np
+import polars as pl
+import seaborn.objects as so
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+# Collapse industries into aggregate categories
+industry_names = {
+    # Business
+    'Business': 'Business',
+    'Retail': 'Business',
+    'CPG': 'Business',
+    'Luxury': 'Business',
+    'eCommerce': 'Business',
+    'Airlines': 'Business',
+
+    # Tech
+    'Tech': 'Tech',
+    'Media': 'Tech',
+
+    # ProfessionalServices
+    'Professional Services': 'ProfessionalServices',
+    'Finance': 'ProfessionalServices',
+    'Marketing': 'ProfessionalServices',
+    'Consulting': 'ProfessionalServices',
+
+    # HealthcareEducation
+    'Medical': 'HealthcareEducation',
+    'Education': 'HealthcareEducation',
+
+    # Public
+    'Government & Non-Profits': 'Public',
+    'Utilities': 'Public',
+    'Construction & Manufacturing': 'Public'
+}
+
+leads_data = (pl.read_parquet(os.path.join('data', 'leads.parquet'))
+    # Collapse Industry into a smaller number of categories
+    .with_columns(
+        pl.col('Industry')
+        .replace(industry_names)
+        .alias('Industry')
+    )
+    # Drop rows with 'Other' and 'Unknown' values
+    .remove(
+        (pl.col('Industry') == 'Other') | (pl.col('TimeZone') == 'Unknown') |
+        (pl.col('Employees') == 'Unknown')
+    )
+    # Make the outcome binary where 'Qualified' = 1
+    .with_columns(
+        pl.when(pl.col('Stage') == 'Qualified').then(1)
+        .when(pl.col('Stage') == 'Disqualified').then(0)
+        .alias('Qualified')
+    )
+    # Clean up activity type variable names
+    .rename({
+        'ActivityTypePhone Call': 'ActivityTypePhoneCall',
+        'ActivityTypeEmail Response': 'ActivityTypeEmailResponse',
+        'ActivityTypeLead Handraise': 'ActivityTypeLeadHandraise',
+        'ActivityTypeWeb Schedule': 'ActivityTypeWebSchedule'
+    })
+    # Exclude Amount
+    .select(pl.exclude('Amount'))
+)
+```
+
+In terms of lead qualification, there are a few potentially interesting relationships. First, let's try and plot the relationship between `days_elapsed` and `Qualified`, our binary outcome.
+
+```{python}
+# Scatterplot of days_elapsed and Stage
+(so.Plot(leads_data.to_pandas(), x = 'days_elapsed', y = 'Qualified')
+    .add(so.Dot(alpha = 0.25))
+    .add(so.Line(), so.PolyFit(order = 1))
+)
+```
+
+Note that we are plotting the binary outcome `Qualified` to get this visualization and not the raw `Stage`. Also, I had an error requiring converting the DataFrame to pandas for this plot specifically. 
+
+We might expect `days_elapsed` to matter since the longer a lead has been in the system the less likely it is to be qualified, and that's certainly what we see. This plot also illustrates how logistic regression is different than linear regression. While I've fit a line to this data, logistic regression will try to fit an s-shaped sigmoid, which will level off at 0 and at 1 to capture the changing probability of being qualified as a function of the predictors in our model.
+
+What about the relationship between `Industry` and `Stage`? Are certain industries more likely to produce qualified leads than others?
+
+```{python}
+# Bar plot of Industry by Stage
+industry_count = (leads_data
+  .group_by(pl.col(['Industry', 'Stage']))
+  .agg(n = pl.len())
+)
+
+(so.Plot(industry_count, x = 'n', y = 'Industry')
+  .facet('Stage').share(x = False)
+  .add(so.Bar())
+)
+```
+
+It doesn't look like there's an industry that is more or less likely to produce qualified leads than others. The order is the same by industry for both qualified and disqualified leads, at least without controlling for other predictors in the data.
+
+In terms of model assumptions, we have reason to believe that the data is valid given it is collected specifically to inform the lead qualification problem. Whether or not there are omitted variables is always a concern, but since we are not domain experts we can't say for sure. All we know is that this is the data used to guide lead qualifiication. The representativeness assumption is similarly justified given how the data is used. We've already justified dropping data that appears to be missing at random. Let's use our diagnostics to check for influential points.
+
+As with linear regression, our set of diagnostics rely on running models. We'll first need to (at least) dummy code the discrete predictors. Note that, as discussed in class, since we don't have diagnostics specific to logistic regression, we'll be reusing the diagnostics we used for linear regression.
+
+```{python}
+# Dummy code discrete predictors
+leads_train = (leads_data
+    .to_dummies(
+        columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
+        drop_first = False
+    )
+    # Drop Stage (since we have Qualified) along with reference levels
+    .select(pl.exclude('Stage', 'Industry_Business', 'Employees_Small', 'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'))
+    # Clean up lead source variable names
+    .rename({
+        'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
+        'LeadSource_Web Registration': 'LeadSource_WebRegistration'
+    })
+    .to_pandas()
+)
+
+# Specify predictors
+predictors = [
+    'Industry_HealthcareEducation', 'Industry_ProfessionalServices',
+    'Industry_Public', 'Industry_Tech', 
+    'Employees_Large', 'Employees_Medium',
+    'TimeZone_CST', 'TimeZone_MST', 'TimeZone_PST',
+    'LeadSource_TradeShowsandEvents', 'LeadSource_WebRegistration',
+    'days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
+    'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 'EmployeeId_5',
+    'ActivityTypeEmail', 'ActivityTypePhoneCall', 'ActivityTypeEmailResponse',
+    'ActivityTypeMeeting', 'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
+]
+
+# Fit a model
+fit_01 = smf.ols(
+    'Qualified ~ ' + ' + '.join(predictors),
+    data = leads_train
+).fit()
+
+# Check for influential points
+sm.graphics.influence_plot(fit_01, criterion = 'dffits')
+```
+
+Row 69 appears to be influential, clearly far removed from the body of points.
+
+```{python}
+# Investigate potential influential point
+leads_data.slice(68,1)
+```
+
+This point doesn't appear to be unusual. It looks like it's simply a rare combination of a number of discrete predictors (i.e., a small firm from Tech that is qualified via trade shows). I don't see a reason to drop it.
+
+That confirms representativeness. Let's move on to checking linearity.
+
+```{python}
+# Check partial regression plots
+fig = plt.figure(figsize = (7,7))
+sm.graphics.plot_partregress_grid(
+    fit_01, 
+    exog_idx = list(predictors), 
+    grid = (13, 2), 
+    fig = fig
+)
+fig.tight_layout()
+```
+
+There might be some deviations from linearity in the partial regression plots. Remember, this is complicated by using linear regression to check for issues with logistic regression.
+
+To double check, let's take a closer look at our continuous predictors. There are a lot of them, so let's restructure our data to make a single visualization.
+
+```{python}
+# Specify continuous predictors
+cont_predictors = [
+  'days_elapsed', 
+  'ActivityTypeEmail', 'ActivityTypePhoneCall', 'ActivityTypeEmailResponse', 
+  'ActivityTypeMeeting', 'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
+]
+
+# Restructure data into a long format
+leads_long = (leads_data
+    .select(cont_predictors)
+    .melt(variable_name = 'variable', value_name = 'value')
+)
+
+# Check for skew
+(so.Plot(leads_long, x = 'value')
+    .facet('variable', wrap = 3).share(x = False)
+    .add(so.Bars(), so.Hist())
+)
+```
+
+Looks like `days_elapsed` is right skewed, but the counts for the activities are so small that they're essentially binary. Let's transform `days_elapsed` and check the linearity assumption again.
+
+```{python}
+# Transform days_elapsed
+leads_train = (pl.from_pandas(leads_train)
+    .with_columns(
+        (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
+    )
+    .to_pandas()
+)
+
+# Updated predictors
+predictors = [
+    'Industry_HealthcareEducation', 'Industry_ProfessionalServices',
+    'Industry_Public', 'Industry_Tech', 
+    'Employees_Large', 'Employees_Medium',
+    'TimeZone_CST', 'TimeZone_MST', 'TimeZone_PST',
+    'LeadSource_TradeShowsandEvents', 'LeadSource_WebRegistration',
+    'log_days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
+    'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 'EmployeeId_5',
+    'ActivityTypeEmail', 'ActivityTypePhoneCall', 'ActivityTypeEmailResponse',
+    'ActivityTypeMeeting', 'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
+]
+
+# Fit another model
+fit_02 = smf.ols(
+    'Qualified ~ ' + ' + '.join(predictors),
+    data = leads_train
+).fit()
+
+# Check partial regression plots
+fig = plt.figure(figsize = (7,7))
+sm.graphics.plot_partregress_grid(
+    fit_02, 
+    exog_idx = list(predictors), 
+    grid = (13, 2), 
+    fig = fig
+)
+fig.tight_layout()
+```
+
+I don't see any other issues. We can say that the linearity assumption is satisfied.
+
+Based on the description of the data in the case (i.e., there is only one observation per customer), we can assume that the independence assumption is satisfied so long as we control for industry, the obvious grouping structure in the data. To be sure there isn't an obvious seasonality, let's check a sequence plot of the residuals.
+
+```{python}
+leads_train['residuals'] = fit_02.resid
+x_values = range(1, len(leads_train) + 1)
+plt.plot(x_values, leads_train['residuals'], linestyle='-')
+plt.xlabel("Order in Data Set")
+plt.show()
+```
+
+There may be some trends in the residuals as a function of lead qualification seasonality, but it seems to be more or less under control by including the quarter variables in the model. We can say that the independence assumption is probably satisfied, but be sure to note that this could be an issue.
+
+The last assumption for logistic regression is identifiability. We can check this with a variance inflation factor (VIF) table.
+
+```{python}
+# Produce a VIF table
+X_train = (pl.from_pandas(leads_train)
+  .select(predictors)
+  .to_pandas()
+)
+
+vif = np.zeros(len(X_train.columns))
+for i in range(0, len(X_train.columns)):
+  vif[i] = variance_inflation_factor(X_train, i)
+
+pl.DataFrame({
+  'predictors': predictors,
+  'vif': vif
+})
+```
+
+There aren't any VIF scores greater than 10.
+
+```{python}
+# Compute the mean VIF
+pl.DataFrame({
+  'predictors': predictors,
+  'vif': vif
+}).select('vif').mean()
+```
+
+However, the mean VIF may be "much more" than 1. However, given the sparsity of the data, I'm reticent to drop a variable. We'll be covering penalized regression soon and will use those more advanced modeling techniques to address this issue, among others. For now, it looks like identifiability is probably satisfied.
+
