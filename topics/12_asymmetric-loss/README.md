@@ -44,20 +44,20 @@ identify and help your sales reps work on converting leads that are
 likely to be qualified.
 
 ``` python
-import os
 import numpy as np
 import polars as pl
 import polars.selectors as cs
+from pyprojroot.here import here
 
 # Set simulation seed
 rng = np.random.default_rng(42)
 
 # Import data
-leads = (pl.read_parquet(os.path.join('data', 'original_leads.parquet'))
-    .select(['Stage', 'Industry', 'Employees', 'TimeZone', 'LeadSource',
-        'days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
-        'EmployeeId', cs.starts_with('ActivityType'), 'Amount'])
-    .select(pl.exclude(['ActivityTypeAbandon']))
+leads = (pl.read_parquet(here('data/original_leads.parquet'))
+  .select(['Stage', 'Industry', 'Employees', 'TimeZone', 'LeadSource',
+    'days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
+    'EmployeeId', cs.starts_with('ActivityType'), 'Amount'])
+  .select(pl.exclude(['ActivityTypeAbandon']))
 )
 
 # Downsample Disqualified leads to correct imbalance
@@ -68,12 +68,12 @@ disq_sampled = disq_leads.sample(fraction = frac, seed = 42)
 
 # Overwrite leads with balanced data, shuffle rows
 leads = pl.concat([
-    leads.filter(pl.col('Stage') == 'Qualified'),
-    disq_sampled
+  leads.filter(pl.col('Stage') == 'Qualified'),
+  disq_sampled
 ]).sample(fraction = 1, seed=42)
 
 # Write data frame
-leads.write_parquet(os.path.join('data', 'leads.parquet'))
+leads.write_parquet(here('data/leads.parquet'))
 ```
 
 ## Apply
