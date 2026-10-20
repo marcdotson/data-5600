@@ -170,15 +170,15 @@ Modeling the mean $\mu$ of a **normal distribution** using a **linear function**
 
 ## A model is a likelihood function
 
-Our **parametric model** of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
+Our **parametric model** of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $L(\theta | X, Y)$
 
 $$
-\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\LARGE{f(X, Y | \theta) = L(\theta | X, Y)}
 $$
 
 ::: {.incremental}
-- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$
-- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$
+- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$ (i.e., **forward** generative modeling)
+- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$ (i.e., **backward** generative modeling)
 :::
 
 ::: {.fragment}
@@ -357,26 +357,26 @@ Remember, we can pretend our model *is* the data generation process and **simula
 #| code-line-numbers: "|1-6|8-9|12|13-14|15-18|19|20|22"
 #| eval: true
 
+import arviz as az
+import bambi as bmb
 import numpy as np
 import polars as pl
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
-import bambi as bmb
-import arviz as az
 
 # Set randomization seed
 rng = np.random.default_rng(42)
 
 # Specify a function to simulate data
 def sim_data(n, beta_0, beta_x1, beta_x2):
-    x1 = rng.normal(10, 3, size=n)
-    x2 = rng.binomial(1, 0.5, size=n)
-    prob_y = (
-      np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / 
-      (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
-    )
-    y = rng.binomial(1, prob_y, size=n)
-    return y, x1, x2
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  prob_y = (
+    np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / 
+    (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
+  )
+  y = rng.binomial(1, prob_y, size=n)
+  return y, x1, x2
 
 data_arr = sim_data(n = 500, beta_0 = 0.25, beta_x1 = -0.15, beta_x2 = 0.75)
 ```
@@ -394,7 +394,7 @@ data_df = pl.DataFrame(data_arr, schema = ['y', 'x1', 'x2']).to_pandas()
 
 # Fit a frequentist logistic regression
 fr_fit = smf.glm('y ~ x1 + x2', data = data_df, family = sm.families.Binomial()).fit()
-print(fr_fit.summary())
+fr_fit.conf_int()
 ```
 
 ## Recover parameters with a Bayesian model
@@ -402,12 +402,23 @@ print(fr_fit.summary())
 I set `beta_0 = 0.25`, `beta_x1 = -0.15`, and `beta_x2 = 0.75`
 
 ```{python}
+#| eval: true
+#| echo: false
+
+################################################################
+# Temporary fix for a mismatch between macOS xcode and pytensor.
+import pytensor
+pytensor.config.cxx = ""
+################################################################
+```
+
+```{python}
 #| code-line-numbers: "|2"
 #| eval: true
 
 # Fit a Bayesian logistic regression
 ba_fit = bmb.Model('y ~ x1 + x2', data = data_df, family = 'bernoulli').fit(progressbar=False)
-print(az.summary(ba_fit))
+az.summary(ba_fit, ci_kind = 'hdi', ci_prob = 0.95)
 ```
 
 ## {background-color="#006242"}
@@ -421,7 +432,7 @@ print(az.summary(ba_fit))
 5. Comment your code clearly
 6. Visualize the simulated data using at least two different plots
 7. Demonstrate that you can recover the parameters you used to simulate the data using either a frequentist or Bayesian model
-8. Submit your code and printed output as a PDF on Canvas
+8. Submit both your Quarto document and your code and printed output as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 

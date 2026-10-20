@@ -6,10 +6,9 @@ During this class we will:
 - Review linear models
 - Generalize linear models beyond regression
 
-To share their solution for Exercise 12, the randomly selected student
-is \*\*\_\_\_\*\*.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
@@ -37,7 +36,8 @@ before finishing the lecture.
 6.  Visualize the simulated data using at least two different plots
 7.  Demonstrate that you can recover the parameters you used to simulate
     the data using either a frequentist or Bayesian model
-8.  Submit your code and printed output as a PDF on Canvas
+8.  Submit both your Quarto document and your code and printed output as
+    a PDF on Canvas
 
 ### Milestone 13
 
