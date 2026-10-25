@@ -281,6 +281,35 @@ We need to use **diagnostics** to confirm the model assumptions are met, and **r
 6. ~~**Normality**: Variation or error is normally distributed~~
 7. **Identifiability**: Data allows for parameters to be estimated, including no strong multicollinearity
 
+## Residual-based diagnostics
+
+Since many of our assumption diagnostics are residual-based but residuals are produced by OLS and not MLE, we can either **simulate residuals** or use OLS to run a **linear probability model** as an approximation
+
+```{python}
+#| eval: false
+#| echo: true
+
+import numpy as np
+import polars as pl
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# Fit a linear probability model
+fit_01 = smf.ols(
+  'Qualified ~ ' + ' + '.join(predictors),
+  data = leads_train
+).fit()
+
+# Save output for the diagnostics
+leads_train = (leads_train
+  .with_columns(dffits_01 = fit_01.get_influence().dffits[0])
+  .with_columns(abs_dffits_01 = pl.col('dffits').abs())
+  .with_columns(residuals_01 = pl.Series(fit_01.resid))
+  .with_columns(fitted_values_01 = pl.Series(fit_01.fittedvalues))
+  .with_row_index('observation')
+)
+```
+
 # We want to keep our model as simple as possible, so why would we use multiple logistic regression? {background-color="#006242"}
 
 # Validity and Representativeness
@@ -301,7 +330,7 @@ Why should we care about **omitted variables**? [What about including variables 
 ::: {.incremental}
 - Is the data relevant to the objective?
 - How well does the data match the ideal data?
-- How do the simulated and real outcomes compare?
+- How do the simulated and real outcomes compare? [What visualization will work best for a **binary** outcome? What "structural differences" are we looking for?]{.fragment}
 :::
 :::
 
@@ -368,7 +397,8 @@ If the process or population isn't approximated by an additive, linear function,
 **Diagnostics**
 
 ::: {.incremental}
-- Scatterplot of **log-odds** and predictor(s)
+- Scatterplot of residuals vs. fitted values
+- Scatterplot of log-odds and predictors
 - Partial regression plots
 :::
 :::
@@ -385,11 +415,9 @@ If the process or population isn't approximated by an additive, linear function,
 
 ::::
 
-## Scatterplot of *log-odds* and predictor(s)
-
-The relationship between the **log-odds** and predictor(s) should be roughly linear and **monotone** (i.e., always increasing or always decreasing) in probability
-
-![](../../figures/temp_linearity.png){fig-align="center"}
+::: {.fragment}
+Using a linear probability model as an approximation is going to make this **messy**, so we're going to be liberal with what a "roughly horizontal" line looks like
+:::
 
 ## Independence and exchangeability
 
@@ -455,17 +483,6 @@ Why would this be a problem for identifiability (think about how we interpret th
 
 ::::
 
-## Using OLS diagnostics
-
-We can still use OLS diagnostics for logistic regression **when we don't have a logistic regression-specific diagnostic**
-
-[For example:]{.fragment}
-
-::: {.incremental}
-- VIF is based on $R^2$, but we don’t have a way to calculate $R^2$ in logistic regression (i.e., the loss function used to compute the point estimates isn't quadratic, so no sums of squares)
-- However, we can still run an OLS model to compute VIF for a model with a binary outcome since its based on the relationship among predictors and the way the model is estimated isn't relevant to estimating collinearity
-:::
-
 ## {background-color="#006242"}
 
 ### Exercise 14 {.lato-font}
@@ -473,7 +490,7 @@ We can still use OLS diagnostics for logistic regression **when we don't have a 
 1. Clean up the leads data
 2. Create two interesting visualizations that help you understand the data and its limitations
 3. Walk through the logistic regression model assumptions, use diagnostics, and justify whether or not they are satisfied for your cleaned data
-4. Submit your code, output, and explanations as a single PDF on Canvas
+4. Submit both your Quarto document and your code, output, and explanations as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 

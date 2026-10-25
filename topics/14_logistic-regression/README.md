@@ -7,10 +7,11 @@ During this class we will:
 - Review assumption diagnostics and remedies
 - Expand diagnostics and remedies to GLMs
 
-Start by downloading the leads data. To share their solution for
-Exercise 13, the randomly selected student is \*\*\_\_\_\*\*.
+Start by downloading the leads data.
 
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
@@ -59,7 +60,8 @@ Disqualified) along with various lead features.
 3.  Walk through the logistic regression model assumptions, use
     diagnostics, and justify whether or not they are satisfied for your
     cleaned data
-4.  Submit your code, output, and explanations as a single PDF on Canvas
+4.  Submit both your Quarto document and your code, output, and
+    explanations as a PDF on Canvas
 
 ### Milestone 14
 
