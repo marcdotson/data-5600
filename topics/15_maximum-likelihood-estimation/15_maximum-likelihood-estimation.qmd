@@ -87,16 +87,73 @@ Point estimation is a type of decision problem
 
 ## A model is a likelihood function
 
-Our **parametric model** of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $\mathcal{L}(\theta | X, Y)$
+Our **parametric model** of the data $f(X, Y | \theta)$ is used to determine *likely* values of $\theta$ and is also called a **likelihood function** $L(\theta | X, Y)$
 
 $$
-\LARGE{f(X, Y | \theta) = \mathcal{L}(\theta | X, Y)}
+\LARGE{f(X, Y | \theta) = L(\theta | X, Y)}
 $$
 
 ::: {.incremental}
-- If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$
-- If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$
+- $f(X, Y | \theta)$: If you give a likelihood function parameters $\theta$ and $X$, it can produce plausible observations $Y$ (i.e., **forward** generative modeling)
+- $L(\theta | X, Y)$: If you give a likelihood function observations $Y$ and $X$, it can determine plausible parameters $\theta$ (i.e., **backward** generative modeling)
 :::
+
+## Simulate data $f(X, Y | \theta)$
+
+```{python}
+#| code-line-numbers: "|10-13|14"
+#| eval: true
+
+import numpy as np
+
+# Set randomization seed
+rng = np.random.default_rng(42)
+
+# Specify a function to simulate data
+def sim_data(n, beta_0, beta_x1, beta_x2):
+  x1 = rng.normal(10, 3, size=n)
+  x2 = rng.binomial(1, 0.5, size=n)
+  prob_y = (
+    np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / 
+    (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
+  )
+  y = rng.binomial(1, prob_y, size=n)
+  return y, x1, x2
+
+data = sim_data(n = 10, beta_0 = 0.25, beta_x1 = -0.15, beta_x2 = 0.75)
+data
+```
+
+## Estimate parameters $L(\theta | X, Y)$
+
+```{python}
+#| code-line-numbers: "|1|4-7|8|10-11|13-16|18-21|23"
+#| eval: true
+
+from scipy.stats import binom
+
+def log_likelihood(y, x1, x2, beta_0, beta_x1, beta_x2):
+  prob_y = (
+    np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2) / 
+    (1 + np.exp(beta_0 + beta_x1 * x1 + beta_x2 * x2))
+  )
+  return np.sum(binom.logpmf(y, n = 1, p = prob_y))
+
+# Create an array to hold the likelihood of different sets of parameters
+likelihood = np.zeros(2)
+
+# How likely are a random set of parameter values?
+likelihood[0] = log_likelihood(y = data[0], x1 = data[1], x2 = data[2], 
+  beta_0 = -0.50, beta_x1 = 0.35, beta_x2 = 0.15
+)
+
+# How likely are the true values?
+likelihood[1] = log_likelihood(y = data[0], x1 = data[1], x2 = data[2], 
+  beta_0 = 0.25, beta_x1 = -0.15, beta_x2 = 0.75
+)
+
+likelihood
+```
 
 ## Using the likelihood to estimate parameters {auto-animate=true}
 
@@ -126,7 +183,7 @@ $$
 Choosing the $\hat{\theta}$s that maximize the likelihood is equivalent to choosing the $\hat{\theta}$s that **minimize the negative log-likelihood**
 
 $$
-\LARGE{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i)}
+\LARGE{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i)}
 $$
 
 ::: {.incremental}
@@ -212,7 +269,7 @@ $$
 :::
 
 ::: {.incremental}
-- Consider what point estimates we would expect to get if we had many hypothetical datasets so that our interval estimate is based on the **asymptotic properties of the estimator**, the procedure used to get our point estimate
+- Use the **asymptotic properties of the procedure** for getting our point estimate to get an interval of point estimates from many hypothetical databases
 - **Indirectly use probability** to describe uncertainty as a repeatable event under identical conditions
 :::
 :::
@@ -278,10 +335,10 @@ $$
 
 ### Exercise 15 {.lato-font}
 
-1. Return to your data from the previous exercise (or start with the exercise solution)
+1. Start with the previous exercise solution
 2. Split the data into training and testing data using the `stratify` parameter, confirm any other feature engineering, and fit a model using MLE or a Bayesian model
 3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
-4. Submit your code, output, and interpretations as a single PDF on Canvas
+4. Submit both your Quarto document and your code, output, and interpretations as a PDF on Canvas
 
 ## {background-color="#288DC2"}
 

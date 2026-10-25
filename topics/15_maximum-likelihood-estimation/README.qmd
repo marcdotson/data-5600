@@ -8,9 +8,9 @@ During this class we will:
 - Extend model fitting beyond ordinary least squares
 - Continue comparing frequentist and Bayesian inference
 
-To share their solution for Exercise 14, the randomly selected student is **___**.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you've previewed the material and identified any questions, start watching the lecture.
 
@@ -22,10 +22,10 @@ What is the relationship between a maximum likelihood point estimate and a poste
 
 ### Exercise 15
 
-1. Return to your data from the previous exercise (or start with the exercise solution)
+1. Start with the previous exercise solution
 2. Split the data into training and testing data using the `stratify` parameter, confirm any other feature engineering, and fit a model using MLE or a Bayesian model
 3. Interpret the parameter estimates, being careful to track transformed scales, reference levels, and the presence of multiple predictors in the model
-4. Submit your code, output, and interpretations as a single PDF on Canvas
+4. Submit both your Quarto document and your code, output, and interpretations as a PDF on Canvas
 
 ### Milestone 15
 
