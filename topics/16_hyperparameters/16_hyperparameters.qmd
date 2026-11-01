@@ -56,7 +56,7 @@ $$
 ::: {.incremental}
 - Parameters are **random variables**
 - The **likelihood** $p(X, Y | \theta)$ is combined with a **prior** $p(\theta)$ to create a **posterior** $p(\theta | X, Y)$
-- We sample draws from the posterior using **MCMC**
+- We sample draws from the resulting posterior distribution using **MCMC**
 :::
 :::
 
@@ -72,14 +72,17 @@ Both frequentist and Bayesian models use **likelihood functions**, so how does a
 $$
 y_i \sim \text{Binomial}(1, p_i) \\
 \log\left({p_i \over 1 - p_i}\right) = \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_p x_{p,i} \\
-\beta \sim \text{Normal}(0, 10)
+\beta_0 \sim \text{Normal}(0, 100) \\
+\beta_1 \sim \text{Normal}(0, 100) \\
+\vdots \\
+\beta_p \sim \text{Normal}(0, 100)
 $$
 :::
 
 ::: {.column width="40%"}
 - Parameters are **random variables**
 - The **likelihood** $p(X, Y | \theta)$ is combined with a **prior** $p(\theta)$ to create a **posterior** $p(\theta | X, Y)$
-- We sample draws from the posterior using **MCMC**
+- We sample draws from the resulting posterior distribution using **MCMC**
 :::
 
 ::::
@@ -88,210 +91,151 @@ $$
 ### How do we specify priors?
 :::
 
-## Priors are part of the model
-
-A prior distribution's parameters are known as **hyperparameters** and should be set to reflect what information we have about the parameters outside the data
-
-::: {.fragment}
-If we don't specify priors, most **probabilistic programming languages** (PPLs) will use default priors
-
-```{python}
-#| eval: true
-#| echo: false
-
-import os
-import numpy as np
-import polars as pl
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-import bambi as bmb
-import arviz as az
-from sklearn.model_selection import train_test_split
-
-# Set randomization seed
-rng = np.random.default_rng(42)
-
-# Specify a function to simulate data
-def sim_data(n, beta_0, beta_price, beta_discount, beta_online, beta_promo, sigma):
-    price = rng.normal(4, 2, size=n)
-    discount = rng.normal(2, 1, size=n)
-    online = rng.binomial(1, 0.7, size=n)
-    promo = rng.binomial(1, 0.2, size=n)
-    error = rng.normal(0, sigma, size=n)
-    sales = beta_0 + beta_price * price + beta_discount * discount + beta_online * online + beta_promo * promo + error
-
-    # Return the output
-    return sales, price, discount, online, promo
-
-# Call the function and convert to a dataframe
-data_arr = sim_data(n = 100, beta_0 = 10, beta_price = -2, beta_discount = 3, beta_online = 5, beta_promo = 3, sigma = 5)
-data_df = pl.DataFrame(data_arr, schema = ['sales', 'price', 'discount', 'online', 'promo']).to_pandas()
-```
-
-```{python}
-#| eval: true
-#| output-location: slide
-
-# Specify predictors
-predictors = [
-  'price', 'discount', 'online', 'promo'
-]
-
-# Specify a Bayesian linear regression
-ba_model = bmb.Model(
-  'sales ~ ' + ' + '.join(predictors), 
-  data = data_df
-)
-
-ba_model
-```
-:::
-
 ## 
 
 ::: {.v-center}
 ![](../../figures/meme_frequentists-priors.png){fig-align="center"}
 :::
 
-## Start with a prior predictive distribution
-
-What information could we have about the parameters outside of what's included in the data? [What is the minimum amount of data we need?]{.fragment}
-
-::: {.fragment}
-A **prior predictive distribution** (a.k.a., a prior predictive check) is the distribution of possible outcomes based on the likelihood and prior specifications alone
+## Start with the previous exercise solution {.scrollable}
 
 ```{python}
 #| eval: true
-#| output-location: slide
-#| code-line-numbers: "|1-6|8|10-13|11|12|13"
 
-# Specify priors
-priors_dict = {
-  'Intercept': bmb.Prior('Normal', mu = 0, sigma = 10),
-  **{term: bmb.Prior('Normal', mu = 0, sigma = 10) for term in predictors},
-  'sigma': bmb.Prior("Exponential", lam=1)
-}
-
-ba_model.set_priors(priors = priors_dict)
-
-# Prior predictive sampling
-ba_model.build()
-ba_ppc = ba_model.prior_predictive()
-az.plot_ppc(ba_ppc, group = 'prior')
-```
-:::
-
-## Prior and posterior predictive distributions
-
-The "updated" version of the prior predictive distribution is the **posterior predictive distribution**, which incorporates information from the data as well
-
-::: {.fragment}
-We can use the prior predictive distribution to check if our model is **reasonable** before estimation and the posterior predictive distribution to check if our model is **missing something** after estimation
-
-```{python}
-#| eval: true
-#| echo: false
+import arviz as az
+import bambi as bmb
+import numpy as np
+import polars as pl
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from pyprojroot.here import here
+from sklearn.model_selection import train_test_split
 
 # Collapse industries into aggregate categories
 industry_names = {
-    # Business
-    'Business': 'Business',
-    'Retail': 'Business',
-    'CPG': 'Business',
-    'Luxury': 'Business',
-    'eCommerce': 'Business',
-    'Airlines': 'Business',
+  # Business
+  'Business': 'Business',
+  'Retail': 'Business',
+  'CPG': 'Business',
+  'Luxury': 'Business',
+  'eCommerce': 'Business',
+  'Airlines': 'Business',
 
-    # Tech
-    'Tech': 'Tech',
-    'Media': 'Tech',
+  # Tech
+  'Tech': 'Tech',
+  'Media': 'Tech',
 
-    # ProfessionalServices
-    'Professional Services': 'ProfessionalServices',
-    'Finance': 'ProfessionalServices',
-    'Marketing': 'ProfessionalServices',
-    'Consulting': 'ProfessionalServices',
+  # ProfessionalServices
+  'Professional Services': 'ProfessionalServices',
+  'Finance': 'ProfessionalServices',
+  'Marketing': 'ProfessionalServices',
+  'Consulting': 'ProfessionalServices',
 
-    # HealthcareEducation
-    'Medical': 'HealthcareEducation',
-    'Education': 'HealthcareEducation',
+  # HealthcareEducation
+  'Medical': 'HealthcareEducation',
+  'Education': 'HealthcareEducation',
 
-    # Public
-    'Government & Non-Profits': 'Public',
-    'Utilities': 'Public',
-    'Construction & Manufacturing': 'Public'
+  # Public
+  'Government & Non-Profits': 'Public',
+  'Utilities': 'Public',
+  'Construction & Manufacturing': 'Public'
 }
 
-leads_train = (pl.read_parquet(os.path.join('data', 'leads.parquet'))
-    # Collapse Industry into a smaller number of categories
-    .with_columns(
-        pl.col('Industry')
-        .replace(industry_names)
-        .alias('Industry')
-    )
-    # Drop rows with 'Other' and 'Unknown' values
-    .remove(
-        (pl.col('Industry') == 'Other') | (pl.col('TimeZone') == 'Unknown') |
-        (pl.col('Employees') == 'Unknown')
-    )
-    # Make the outcome binary where 'Qualified' = 1
-    .with_columns(
-        pl.when(pl.col('Stage') == 'Qualified').then(1)
-        .when(pl.col('Stage') == 'Disqualified').then(0)
-        .alias('Qualified')
-    )
-    # Clean up activity type variable names
-    .rename({
-        'ActivityTypePhone Call': 'ActivityTypePhoneCall',
-        'ActivityTypeEmail Response': 'ActivityTypeEmailResponse',
-        'ActivityTypeLead Handraise': 'ActivityTypeLeadHandraise',
-        'ActivityTypeWeb Schedule': 'ActivityTypeWebSchedule'
-    })
-    # Exclude Amount
-    .select(pl.exclude('Amount'))
-    # Log-transform days_elapsed
-    .with_columns(
-        (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
-    )
-    # Dummy code discrete predictors
-    .to_dummies(
-        columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
-        drop_first = False
-    )
-    # Drop Stage and days_elapsed along with reference levels
-    .select(pl.exclude(
-        'Stage', 'days_elapsed', 'Industry_Business', 'Employees_Small', 
-        'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
-    ))
-    # Clean up lead source variable names
-    .rename({
-        'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
-        'LeadSource_Web Registration': 'LeadSource_WebRegistration'
-    })
-    # Convert to pandas
-    .to_pandas()
+leads_data = (pl.read_parquet(here('data/leads.parquet'))
+  # Collapse Industry into a smaller number of categories
+  .with_columns(
+    pl.col('Industry')
+    .replace(industry_names)
+    .alias('Industry')
+  )
+  # Drop rows with 'Other' and 'Unknown' values
+  .remove(
+    (pl.col('Industry') == 'Other') | (pl.col('TimeZone') == 'Unknown') |
+    (pl.col('Employees') == 'Unknown')
+  )
+  # Make the outcome binary where 'Qualified' = 1
+  .with_columns(
+    pl.when(pl.col('Stage') == 'Qualified').then(1)
+    .when(pl.col('Stage') == 'Disqualified').then(0)
+    .alias('Qualified')
+  )
+  # Clean up activity type variable names
+  .rename({
+    'ActivityTypePhone Call': 'ActivityTypePhoneCall',
+    'ActivityTypeEmail Response': 'ActivityTypeEmailResponse',
+    'ActivityTypeLead Handraise': 'ActivityTypeLeadHandraise',
+    'ActivityTypeWeb Schedule': 'ActivityTypeWebSchedule'
+  })
+  # Exclude Amount
+  .select(pl.exclude('Amount'))
+)
+
+# Specify the design matrix and outcome
+X = leads_data.select(pl.exclude('Qualified'))
+y = leads_data.select('Qualified')
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y.to_numpy())
+
+# Overwrite X_train with feature engineering for training data
+X_train = (X_train
+  # Log-transform
+  .with_columns(
+    ((pl.col('ActivityTypeEmailResponse') + 1).log().alias('log_ActivityTypeEmailResponse')),
+    ((pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting')),
+    ((pl.col('ActivityTypePhoneCall') + 1).log().alias('log_ActivityTypePhoneCall')),
+    ((pl.col('days_elapsed') + 1).log().alias('log_days_elapsed'))
+  )
+  # Dummy code discrete predictors
+  .to_dummies(
+    columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
+    drop_first = False
+  )
+  # Drop Stage and raw variables along with reference levels
+  .select(pl.exclude(
+    'Stage', 'days_elapsed', 'ActivityTypeEmailResponse', 'ActivityTypeMeeting',
+    'ActivityTypePhoneCall', 'Industry_Business', 'Employees_Small', 
+    'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
+  ))
+  # Clean up lead source variable names
+  .rename({
+    'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
+    'LeadSource_Web Registration': 'LeadSource_WebRegistration'
+  })
+)
+
+# Combine y_train and X_train
+leads_train = (pl.concat([y_train, X_train], how = 'horizontal_extend')
+  .to_pandas()
 )
 ```
 
+## Priors are part of the model {.scrollable}
+
+A prior distribution's parameters are known as **hyperparameters** and should be set to reflect what information we have about the parameters outside the data
+
+[What information could we have about the parameters outside the data?]{.fragment}
+
+::: {.fragment}
 ```{python}
 #| eval: true
 #| output-location: slide
 
-# Specify predictors
-predictors = [
+predictors_01 = [
   'Industry_HealthcareEducation', 'Industry_ProfessionalServices',
-  'Industry_Public', 'Industry_Tech', 'Employees_Large', 'Employees_Medium',
+  'Industry_Public', 'Industry_Tech', 
+  'Employees_Large', 'Employees_Medium',
   'TimeZone_CST', 'TimeZone_MST', 'TimeZone_PST',
   'LeadSource_TradeShowsandEvents', 'LeadSource_WebRegistration',
-  'log_days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
-  'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 'EmployeeId_5',
-  'ActivityTypeEmail', 'ActivityTypePhoneCall', 'ActivityTypeEmailResponse',
-  'ActivityTypeMeeting', 'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
+  'log_days_elapsed', 'created_quarter', 'contact_quarter', 
+  'latest_quarter', 'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 
+  'EmployeeId_5', 'ActivityTypeEmail', 'log_ActivityTypePhoneCall', 
+  'log_ActivityTypeEmailResponse', 'log_ActivityTypeMeeting', 
+  'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
 ]
 
-# Specify a Bayesian logistic regression
 ba_model = bmb.Model(
-  'Qualified ~ ' + ' + '.join(predictors), 
+  'Qualified ~ ' + ' + '.join(predictors_01), 
   data = leads_train,
   family = 'bernoulli'
 )
@@ -300,18 +244,28 @@ ba_model
 ```
 :::
 
-## Propagating uncertainty into our predictions
+## Prior and posterior predictive distributions
 
-How will the uncertainty we have about our parameters be reflected in the prior vs. posterior predictive distributions?
+![](../../figures/bayesian-triptych.png){fig-align="center"}
+
+[We previously compared the **posterior predictive distribution** (i.e., the distribution of predictions based on the whole posterior) and compared it to the real data as another model diagnostic]{.fragment}
+
+[A **prior predictive distribution** (a.k.a., a prior predictive check) is the distribution of predictions based on the likelihood and prior specifications *alone* and can help us specify priors]{.fragment}
+
+## Visualize the prior predictive distribution
+
+By default the prior predictive distribution is a distribution of **predicted outcomes** (i.e., a binary outcome for our sales leads case study)
 
 ```{python}
 #| eval: true
+#| code-line-numbers: "|1-5|7|10|11|12"
 #| output-location: slide
+#| fig-align: center
 
 # Specify priors
 priors_dict = {
-  'Intercept': bmb.Prior('Normal', mu = 0, sigma = 10),
-  **{term: bmb.Prior('Normal', mu = 0, sigma = 10) for term in predictors}
+  'Intercept': bmb.Prior('Normal', mu = 0, sigma = 100),
+  **{term: bmb.Prior('Normal', mu = 0, sigma = 100) for term in predictors_01}
 }
 
 ba_model.set_priors(priors = priors_dict)
@@ -319,28 +273,25 @@ ba_model.set_priors(priors = priors_dict)
 # Prior predictive sampling
 ba_model.build()
 ba_ppc = ba_model.prior_predictive()
-az.plot_ppc(ba_ppc, group = 'prior')
+az.plot_ppc_dist(ba_ppc, group = 'prior_predictive')
 ```
 
-## 
+## Visualize the prior predictive distribution
 
-:::: {.columns .v-center}
+What do the predicted probabilities of lead qualification suggest?
 
-::: {.column width="100%"}
-![](../../figures/frequentist-panel.png){fig-align="center"}
-:::
+```{python}
+#| eval: true
+#| output-location: column
 
-::::
-
-## 
-
-:::: {.columns .v-center}
-
-::: {.column width="100%"}
-![](../../figures/bayesian-triptych.png){fig-align="center"}
-:::
-
-::::
+# Visualize the predicted probabilities
+az.plot_dist(
+  ba_ppc, 
+  group = 'prior', 
+  var_names = ['p'], 
+  sample_dims = ['chain', 'draw', '__obs__']
+)
+```
 
 # Try specifying different priors. How does the prior predictive distribution change? {background-color="#006242"}
 
@@ -351,11 +302,11 @@ az.plot_ppc(ba_ppc, group = 'prior')
 In general, **hyperparameters** are parameters that are not directly estimated when we fit the model
 
 ::: {.fragment}
-What "hyperparameters" have we already seen?
+What sort of "hyperparameters" have already been suggested?
 
 ::: {.incremental}
-- Prior distribution hyperparameters (e.g., $\mu$ and $\sigma^2$ for a normal prior)
-- Deciding on what predictors to include in the model, including **interactions**
+- Prior distribution hyperparameters (e.g., $\mu$ and $\sigma^2$ for normal priors)
+- Deciding on what predictors to include in the model (including eventually **interactions**)
 - Feature engineering decisions (e.g., whether or not to **standardize/normalize**)
 - Choosing between different likelihood and link functions
 :::
@@ -367,7 +318,7 @@ Predictive models often have **many** hyperparameters, so how do we set them?
 
 ## Overall model fit and hyperparameter tuning
 
-We can use **overall model fit** to compare models with different hyperparameters and choose the one that predicts best, a process known as **hyperparameter tuning**
+We can use **overall model fit** to compare models with different hyperparameters and choose the best one, a process known as **hyperparameter tuning**
 
 ```{python}
 #| eval: false
@@ -375,38 +326,49 @@ We can use **overall model fit** to compare models with different hyperparameter
 # Specify a second set of predictors (without activity types)
 predictors_02 = [
   'Industry_HealthcareEducation', 'Industry_ProfessionalServices',
-  'Industry_Public', 'Industry_Tech', 'Employees_Large', 'Employees_Medium',
+  'Industry_Public', 'Industry_Tech', 
+  'Employees_Large', 'Employees_Medium',
   'TimeZone_CST', 'TimeZone_MST', 'TimeZone_PST',
   'LeadSource_TradeShowsandEvents', 'LeadSource_WebRegistration',
-  'log_days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
-  'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 'EmployeeId_5'
+  'log_days_elapsed', 'created_quarter', 'contact_quarter', 
+  'latest_quarter', 'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 'EmployeeId_5'
 ]
 
 # Fit two frequentist logistic regressions
 fr_fit_01 = smf.glm(
-    'Qualified ~ ' + ' + '.join(predictors), 
-    data = leads_train, 
-    family = sm.families.Binomial()
+  'Qualified ~ ' + ' + '.join(predictors_01), 
+  data = leads_train, 
+  family = sm.families.Binomial()
 ).fit()
 
 fr_fit_02 = smf.glm(
-    'Qualified ~ ' + ' + '.join(predictors_02), 
-    data = leads_train, 
-    family = sm.families.Binomial()
+  'Qualified ~ ' + ' + '.join(predictors_02), 
+  data = leads_train, 
+  family = sm.families.Binomial()
 ).fit()
 ```
 
 # Compare these two models using overall model fit. Which one predicts best? {background-color="#006242"}
 
-# Accuracy
+# Accuracy and Intuition
 
 ## Discrete outcomes and overall model fit
 
-::: {.incremental}
-- What measure of overall model fit is appropriate when you have a discrete outcome?
-- Do we want to rely on in-sample, predictive, or decision-theoretic fit?
-- What could go wrong with using the test data to tune hyperparameters?
-:::
+For classification models we don't have residuals, $R^2$, Adjusted $R^2$, F-statistic, MSE, or RMSE
+
+[**Accuracy** is the overall percent of correct predictions]{.fragment} [and we compare it to the baseline accuracy of always predicting the majority class]{.fragment}
+
+[We count how many times our predictions are correct (and incorrect) by class (i.e., 0 and 1) in a **confusion matrix**]{.fragment}[, which we will find is directly related to **asymmetric loss**]{.fragment}
+
+## Model fit, hyperparameter tuning, and bias
+
+We've reviewed and focused on strengthening understanding as we approach some of the most important topics of the semester
+
+To prepare for what's next, consider the following
+
+1. Do we want to rely on in-sample, predictive, or decision-theoretic fit?
+2. What could go wrong with using the test data to tune hyperparameters?
+3. Why were more informative priors better than uninformative priors? What does that mean for frequentist models?
 
 ## {background-color="#006242"}
 
@@ -414,9 +376,9 @@ fr_fit_02 = smf.glm(
 
 1. Review the advanced materials from the course thus far
 2. Identify lingering questions you have about the concepts covered
-3. Use an AI tool to ask your questions and reflect on the responses you receive
+3. Use an AI tool or talk with a TA to ask your questions and reflect on the responses you receive
 4. Identify at least two questions you feel have been answered and share your prompts, the responses you received, and your reflections on the responses
-5. Submit your prompts, responses, and reflections as a single PDF on Canvas
+5. Submit both your Quarto document and your questions, responses, and reflections as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
