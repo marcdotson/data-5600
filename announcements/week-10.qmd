@@ -5,8 +5,8 @@ format: gfm
 
 Hi, everyone:
 
-With logistic regression and maximum likelihood estimation in hand, we are ready to bridge into the final set of models for the course. I hope the connections between confusion matrices and asymmetric loss are especially helpful this week.
+With logistic regression and maximum likelihood estimation in hand, we are ready to bridge into the final set of models for the course. Our discussion about informative priors will prepare us for penalized regression and the introduction of confusion matrices will connect directly to asymmetric loss.
 
-I will not have regularly scheduled office hours this week. That said, please don't hesitate to ask for help!
+Also, don't forget that peer reviews are no longer required! Announcement flyers attached.
 
 -Marc
