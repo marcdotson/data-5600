@@ -39,7 +39,7 @@ jupyter: python3
 
 # It's only confusing because you're paying attention
 
-# Confusion Matrices
+# Model Evaluation
 
 ## Interpret results and revise as needed
 
@@ -58,9 +58,7 @@ Just like with the reconcile step, what we discover may prompt **additional expl
 
 ## 
 
-::: {.columns .v-center}
 ![](../../figures/theory-model-evidence.png){fig-align="center"}
-:::
 
 ## Comparing and choosing between models
 
@@ -85,7 +83,7 @@ For classification models we don't use sum of squares (i.e., quadratic loss), we
 The **log-likelihood** is a measure of how well the model fits the training data
 
 $$
-\LARGE{\text{Log-Likelihood} = \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i)}
+\LARGE{\text{Log-Likelihood} = \sum_{i=1}^n \log L(\theta | X_i, Y_i)}
 $$
 
 ::: {.incremental}
@@ -97,9 +95,144 @@ $$
 
 ## In-sample fit: Log-Likelihood
 
-::: {.v-center}
-![](../../figures/mle_in-sample-fit.png){fig-align="center"}
-:::
+```{python}
+#| eval: true
+#| echo: false
+
+import polars as pl
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from pyprojroot.here import here
+from plotnine import *
+from sklearn.model_selection import train_test_split
+
+# Set a default plot size
+theme_update(figure_size=(5, 5))
+
+# Collapse industries into aggregate categories
+industry_names = {
+  # Business
+  'Business': 'Business',
+  'Retail': 'Business',
+  'CPG': 'Business',
+  'Luxury': 'Business',
+  'eCommerce': 'Business',
+  'Airlines': 'Business',
+
+  # Tech
+  'Tech': 'Tech',
+  'Media': 'Tech',
+
+  # ProfessionalServices
+  'Professional Services': 'ProfessionalServices',
+  'Finance': 'ProfessionalServices',
+  'Marketing': 'ProfessionalServices',
+  'Consulting': 'ProfessionalServices',
+
+  # HealthcareEducation
+  'Medical': 'HealthcareEducation',
+  'Education': 'HealthcareEducation',
+
+  # Public
+  'Government & Non-Profits': 'Public',
+  'Utilities': 'Public',
+  'Construction & Manufacturing': 'Public'
+}
+
+leads_data = (pl.read_parquet(here('data/leads.parquet'))
+  # Collapse Industry into a smaller number of categories
+  .with_columns(
+    pl.col('Industry')
+    .replace(industry_names)
+    .alias('Industry')
+  )
+  # Drop rows with 'Other' and 'Unknown' values
+  .remove(
+    (pl.col('Industry') == 'Other') | (pl.col('TimeZone') == 'Unknown') |
+    (pl.col('Employees') == 'Unknown')
+  )
+  # Make the outcome binary where 'Qualified' = 1
+  .with_columns(
+    pl.when(pl.col('Stage') == 'Qualified').then(1)
+    .when(pl.col('Stage') == 'Disqualified').then(0)
+    .alias('Qualified')
+  )
+  # Clean up activity type variable names
+  .rename({
+    'ActivityTypePhone Call': 'ActivityTypePhoneCall',
+    'ActivityTypeEmail Response': 'ActivityTypeEmailResponse',
+    'ActivityTypeLead Handraise': 'ActivityTypeLeadHandraise',
+    'ActivityTypeWeb Schedule': 'ActivityTypeWebSchedule'
+  })
+  # Exclude Amount
+  .select(pl.exclude('Amount'))
+)
+
+# Specify the design matrix and outcome
+X = leads_data.select(pl.exclude('Qualified'))
+y = leads_data.select('Qualified')
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 45, stratify = y.to_numpy())
+
+X_train = (X_train
+  # Log-transform
+  .with_columns(
+    (pl.col('ActivityTypeEmailResponse') + 1).log().alias('log_ActivityTypeEmailResponse'),
+    (pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting'),
+    (pl.col('ActivityTypePhoneCall') + 1).log().alias('log_ActivityTypePhoneCall'),
+    (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
+  )
+  # Dummy code discrete predictors
+  .to_dummies(
+    columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
+    drop_first = False
+  )
+  # Drop Stage and raw variables along with reference levels
+  .select(pl.exclude(
+    'Stage', 'days_elapsed', 'ActivityTypeEmailResponse', 'ActivityTypeMeeting',
+    'ActivityTypePhoneCall', 'Industry_Business', 'Employees_Small', 
+    'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
+  ))
+  # Clean up lead source variable names
+  .rename({
+    'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
+    'LeadSource_Web Registration': 'LeadSource_WebRegistration'
+  })
+)
+
+# Combine y_train and X_train
+leads_train = (pl.concat([y_train, X_train], how = 'horizontal_extend')
+  .to_pandas()
+)
+
+# Specify predictors
+predictors = [
+  'Industry_HealthcareEducation', 'Industry_ProfessionalServices',
+  'Industry_Public', 'Industry_Tech', 
+  'Employees_Large', 'Employees_Medium',
+  'TimeZone_CST', 'TimeZone_MST', 'TimeZone_PST',
+  'LeadSource_TradeShowsandEvents', 'LeadSource_WebRegistration',
+  'log_days_elapsed', 'created_quarter', 'contact_quarter', 
+  'latest_quarter', 'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 
+  'EmployeeId_5', 'ActivityTypeEmail', 'log_ActivityTypePhoneCall', 
+  'log_ActivityTypeEmailResponse', 'log_ActivityTypeMeeting', 
+  'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
+]
+
+# Fit a frequentist logistic regression
+fr_fit = smf.glm(
+  'Qualified ~ ' + ' + '.join(predictors), 
+  data = leads_train, 
+  family = sm.families.Binomial()
+).fit()
+```
+
+```{python}
+#| eval: true
+
+print(fr_fit.summary())
+```
 
 ## In-sample fit: Pseudo $R^2$
 
@@ -119,9 +252,11 @@ $$
 
 ## In-sample fit: Pseudo $R^2$
 
-::: {.v-center}
-![](../../figures/mle_in-sample-fit.png){fig-align="center"}
-:::
+```{python}
+#| eval: true
+
+print(fr_fit.summary())
+```
 
 ## In-sample fit: $\chi^2$-statistic
 
@@ -134,9 +269,11 @@ The $\chi^2$-statistic is the test statistic of the null hypothesis that **all r
 
 ## In-sample fit: $\chi^2$-statistic
 
-::: {.v-center}
-![](../../figures/mle_in-sample-fit.png){fig-align="center"}
-:::
+```{python}
+#| eval: true
+
+print(fr_fit.summary())
+```
 
 ## Predictive fit: Confusion matrix
 
@@ -158,164 +295,40 @@ $$
 - Predictions of 0 when the actual value is 1 are **false negatives**
 :::
 
-## Predictive fit: Confusion matrix
-
-```{python}
-#| eval: true
-#| echo: false
-
-import os
-import polars as pl
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-from sklearn.model_selection import train_test_split
-
-# Collapse industries into aggregate categories
-industry_names = {
-    # Business
-    'Business': 'Business',
-    'Retail': 'Business',
-    'CPG': 'Business',
-    'Luxury': 'Business',
-    'eCommerce': 'Business',
-    'Airlines': 'Business',
-
-    # Tech
-    'Tech': 'Tech',
-    'Media': 'Tech',
-
-    # ProfessionalServices
-    'Professional Services': 'ProfessionalServices',
-    'Finance': 'ProfessionalServices',
-    'Marketing': 'ProfessionalServices',
-    'Consulting': 'ProfessionalServices',
-
-    # HealthcareEducation
-    'Medical': 'HealthcareEducation',
-    'Education': 'HealthcareEducation',
-
-    # Public
-    'Government & Non-Profits': 'Public',
-    'Utilities': 'Public',
-    'Construction & Manufacturing': 'Public'
-}
-
-leads_data = (pl.read_parquet(os.path.join('data', 'leads.parquet'))
-    # Collapse Industry into a smaller number of categories
-    .with_columns(
-        pl.col('Industry')
-        .replace(industry_names)
-        .alias('Industry')
-    )
-    # Drop rows with 'Other' and 'Unknown' values
-    .remove(
-        (pl.col('Industry') == 'Other') | (pl.col('TimeZone') == 'Unknown') |
-        (pl.col('Employees') == 'Unknown')
-    )
-    # Make the outcome binary where 'Qualified' = 1
-    .with_columns(
-        pl.when(pl.col('Stage') == 'Qualified').then(1)
-        .when(pl.col('Stage') == 'Disqualified').then(0)
-        .alias('Qualified')
-    )
-    # Clean up activity type variable names
-    .rename({
-        'ActivityTypePhone Call': 'ActivityTypePhoneCall',
-        'ActivityTypeEmail Response': 'ActivityTypeEmailResponse',
-        'ActivityTypeLead Handraise': 'ActivityTypeLeadHandraise',
-        'ActivityTypeWeb Schedule': 'ActivityTypeWebSchedule'
-    })
-    # Exclude Amount
-    .select(pl.exclude('Amount'))
-)
-
-# Specify the design matrix and outcome
-X = leads_data.select(pl.exclude('Qualified'))
-y = leads_data.select('Qualified')
-
-# Split into training and testing sets
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y.to_numpy())
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 45, stratify = y.to_numpy())
-
-X_train = (X_train
-    # Log-transform days_elapsed
-    .with_columns(
-        (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
-    )
-    # Dummy code discrete predictors
-    .to_dummies(
-        columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
-        drop_first = False
-    )
-    # Drop Stage and days_elapsed along with reference levels
-    .select(pl.exclude(
-        'Stage', 'days_elapsed', 'Industry_Business', 'Employees_Small', 
-        'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
-    ))
-    # Clean up lead source variable names
-    .rename({
-        'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
-        'LeadSource_Web Registration': 'LeadSource_WebRegistration'
-    })
-)
-
-# Combine y_train and X_train
-leads_train = (pl.concat([y_train, X_train], how = 'horizontal')
-    .to_pandas()
-)
-
-# Specify predictors
-predictors = [
-    'Industry_HealthcareEducation', 'Industry_ProfessionalServices',
-    'Industry_Public', 'Industry_Tech', 
-    'Employees_Large', 'Employees_Medium',
-    'TimeZone_CST', 'TimeZone_MST', 'TimeZone_PST',
-    'LeadSource_TradeShowsandEvents', 'LeadSource_WebRegistration',
-    'log_days_elapsed', 'created_quarter', 'contact_quarter', 'latest_quarter',
-    'EmployeeId_2', 'EmployeeId_3', 'EmployeeId_4', 'EmployeeId_5',
-    'ActivityTypeEmail', 'ActivityTypePhoneCall', 'ActivityTypeEmailResponse',
-    'ActivityTypeMeeting', 'ActivityTypeLeadHandraise', 'ActivityTypeWebSchedule'
-]
-
-# Fit a frequentist logistic regression
-fr_fit = smf.glm(
-    'Qualified ~ ' + ' + '.join(predictors), 
-    data = leads_train, 
-    family = sm.families.Binomial()
-).fit()
-```
+## Predictive fit: Confusion matrix {.scrollable}
 
 Following the latest exercise solution
 
 ```{python}
 #| eval: true
 
-import seaborn as sns
-import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 
 # Apply same transformations to test data
 X_test = (X_test
-    # Log-transform days_elapsed
-    .with_columns(
-        (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
-    )
-    # Dummy code discrete predictors
-    .to_dummies(
-        columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
-        drop_first = False
-    )
-    # Drop Stage and days_elapsed along with reference levels
-    .select(pl.exclude(
-        'Stage', 'days_elapsed', 'Industry_Business', 'Employees_Small', 
-        'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
-    ))
-    # Clean up lead source variable names
-    .rename({
-        'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
-        'LeadSource_Web Registration': 'LeadSource_WebRegistration'
-    })
-    .to_pandas()
+  # Log-transform
+  .with_columns(
+    (pl.col('ActivityTypeEmailResponse') + 1).log().alias('log_ActivityTypeEmailResponse'),
+    (pl.col('ActivityTypeMeeting') + 1).log().alias('log_ActivityTypeMeeting'),
+    (pl.col('ActivityTypePhoneCall') + 1).log().alias('log_ActivityTypePhoneCall'),
+    (pl.col('days_elapsed') + 1).log().alias('log_days_elapsed')
+  )
+  # Dummy code discrete predictors
+  .to_dummies(
+    columns = ['Industry', 'Employees', 'TimeZone', 'LeadSource', 'EmployeeId'], 
+    drop_first = False
+  )
+  # Drop Stage and raw variables along with reference levels
+  .select(pl.exclude(
+    'Stage', 'days_elapsed', 'ActivityTypeEmailResponse', 'ActivityTypeMeeting',
+    'ActivityTypePhoneCall', 'Industry_Business', 'Employees_Small', 
+    'TimeZone_EST', 'LeadSource_Purchased List', 'EmployeeId_1'
+  ))
+  # Clean up lead source variable names
+  .rename({
+    'LeadSource_Trade Shows and Events': 'LeadSource_TradeShowsandEvents',
+    'LeadSource_Web Registration': 'LeadSource_WebRegistration'
+  })
 )
 ```
 
@@ -323,6 +336,7 @@ X_test = (X_test
 
 ```{python}
 #| eval: true
+#| code-line-numbers: "|2|3|6|"
 
 # Use test data to predict
 p_pred = fr_fit.predict(X_test)
@@ -333,24 +347,48 @@ conf_mat = confusion_matrix(y_test, y_pred)
 conf_mat
 ```
 
+::: {.fragment}
+```{python}
+#| eval: true
+
+# Convert confusion matrix into a DataFrame
+conf_df = pl.DataFrame({
+  'actual': ['Disqualified', 'Disqualified', 'Qualified', 'Qualified'],
+  'predicted': ['Disqualified', 'Qualified', 'Disqualified', 'Qualified'],
+  'count': conf_mat.flatten().tolist(),
+})
+```
+:::
+
 ## Predictive fit: Confusion matrix
 
 ```{python}
 #| eval: true
 #| output-location: column
 
-# Confusion matrix with labels
-plt.figure(figsize = (4, 4))
-sns.heatmap(
-    conf_mat, 
-    annot = True, 
-    fmt = ".0f", 
-    square = True, 
-    cmap = 'Blues_r'
+(ggplot(conf_df, 
+  aes(
+    x = 'predicted', 
+    y = 'actual', 
+    fill = 'count'
+  ))
+  + geom_tile()
+  + geom_text(aes(label = 'count'))
+  + scale_y_discrete(
+      limits = ['Qualified', 'Disqualified']
+    )
+  + scale_fill_gradient(
+      low = 'white', 
+      high = '#288DC2'
+    )
+  + coord_equal()
+  + labs(
+      x = 'Predicted', 
+      y = 'Actual', 
+      fill = 'Count'
+    )
+  + theme(legend_position = 'none')
 )
-plt.ylabel('Actual Label')
-plt.xlabel('Predicted Label')
-plt.show()
 ```
 
 ## Predictive fit: Confusion matrix
@@ -359,11 +397,38 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 :::: {.columns}
 
-::: {.column width="40%"}
-![](../../figures/confusion-matrix.png){fig-align="center"}
+::: {.column width="50%"}
+```{python}
+#| eval: true
+#| echo: false
+
+(ggplot(conf_df, 
+  aes(
+    x = 'predicted', 
+    y = 'actual', 
+    fill = 'count'
+  ))
+  + geom_tile()
+  + geom_text(aes(label = 'count'))
+  + scale_y_discrete(
+      limits = ['Qualified', 'Disqualified']
+    )
+  + scale_fill_gradient(
+      low = 'white', 
+      high = '#288DC2'
+    )
+  + coord_equal()
+  + labs(
+      x = 'Predicted', 
+      y = 'Actual', 
+      fill = 'Count'
+    )
+  + theme(legend_position = 'none')
+)
+```
 :::
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 ::: {.incremental}
 - How many **true positives** do we have? [`25`]{.fragment}
 - How many **true negatives** do we have? [`28`]{.fragment}
@@ -380,11 +445,38 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 :::: {.columns}
 
-::: {.column width="40%"}
-![](../../figures/confusion-matrix.png){fig-align="center"}
+::: {.column width="50%"}
+```{python}
+#| eval: true
+#| echo: false
+
+(ggplot(conf_df, 
+  aes(
+    x = 'predicted', 
+    y = 'actual', 
+    fill = 'count'
+  ))
+  + geom_tile()
+  + geom_text(aes(label = 'count'))
+  + scale_y_discrete(
+      limits = ['Qualified', 'Disqualified']
+    )
+  + scale_fill_gradient(
+      low = 'white', 
+      high = '#288DC2'
+    )
+  + coord_equal()
+  + labs(
+      x = 'Predicted', 
+      y = 'Actual', 
+      fill = 'Count'
+    )
+  + theme(legend_position = 'none')
+)
+```
 :::
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 ::: {.incremental}
 - **Accuracy** is the percent of correct predictions [`(25 + 28)/54 = 0.98`]{.fragment}
 - We can compare accuracy to the **baseline accuracy** of always predicting the majority class [`(28 + 0)/54 = 0.52`]{.fragment}
@@ -401,14 +493,88 @@ We can use the confusion matrix to compute a number of different measures of pre
 
 :::: {.columns}
 
-::: {.column width="40%"}
-![](../../figures/confusion-matrix.png){fig-align="center"}
+::: {.column width="50%"}
+```{python}
+#| eval: true
+#| echo: false
+
+(ggplot(conf_df, 
+  aes(
+    x = 'predicted', 
+    y = 'actual', 
+    fill = 'count'
+  ))
+  + geom_tile()
+  + geom_text(aes(label = 'count'))
+  + scale_y_discrete(
+      limits = ['Qualified', 'Disqualified']
+    )
+  + scale_fill_gradient(
+      low = 'white', 
+      high = '#288DC2'
+    )
+  + coord_equal()
+  + labs(
+      x = 'Predicted', 
+      y = 'Actual', 
+      fill = 'Count'
+    )
+  + theme(legend_position = 'none')
+)
+```
 :::
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 ::: {.incremental}
 - **Precision** or **positive predictive value** is the percent of predicted positives that were predicted correctly [`25/(25 + 0) = 1`]{.fragment}
 - **Negative predictive value** is the percent of predicted negatives that were predicted correctly [`28/(28 + 1) = 0.97`]{.fragment}
+:::
+:::
+
+::::
+
+## Decision theoretic fit: Expected loss
+
+We can also use the confusion matrix to compute the decision theoretic expected loss
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{python}
+#| eval: true
+#| echo: false
+
+(ggplot(conf_df, 
+  aes(
+    x = 'predicted', 
+    y = 'actual', 
+    fill = 'count'
+  ))
+  + geom_tile()
+  + geom_text(aes(label = 'count'))
+  + scale_y_discrete(
+      limits = ['Qualified', 'Disqualified']
+    )
+  + scale_fill_gradient(
+      low = 'white', 
+      high = '#288DC2'
+    )
+  + coord_equal()
+  + labs(
+      x = 'Predicted', 
+      y = 'Actual', 
+      fill = 'Count'
+    )
+  + theme(legend_position = 'none')
+)
+```
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+- For every lead that we don't convert that could have been, we lose $1,000 in unrealized commission [`$1,000 * 1 = $1,000`]{.fragment}
+- For every lead that we do convert, we don't lose anything [`$0`]{.fragment}
+- For every lead that we try and convert that won't be, we lose a total of $1,500 in wasted time and lost commission [`$1,500 * 0 = $0`]{.fragment}
 :::
 :::
 
@@ -437,7 +603,7 @@ $$
 
 ## ROC/AUC
 
-For the cutoff probability hyperparameter, we can see how well our model does across all cutoff values using the **receiver operating characterstic** (ROC) curve
+For the cutoff probability hyperparameter, we can see how well our model does across all cutoff values using the **receiver operating characteristic** (ROC) curve
 
 ![](../../figures/roc.png){fig-align="center"}
 
@@ -535,31 +701,21 @@ $$
 While MLE (including OLS) are unbiased, low variance point and interval estimators **when the model assumptions are met**, it is often useful to use a biased estimator if it reduces our variance
 :::
 
-## Model complexity and total error
+## Regularizing parameter estimates
 
-This central machine learning idea is called the **bias-variance tradeoff**
+This central machine learning idea is called the **bias-variance tradeoff** and is navigated by **regularizing** our parameter estimates
 
-![](../../figures/bias-variance-01.png){fig-align="center"}
-
-## Model complexity and total error {visibility="uncounted"}
-
-This central machine learning idea is called the **bias-variance tradeoff**
-
-![](../../figures/bias-variance-02.png){fig-align="center"}
-
-::: {.fragment}
-When might we want to add bias to reduce variance?
-:::
+![](../../figures/bias-variance.png){fig-align="center"}
 
 ## {background-color="#006242"}
 
 ### Exercise 17 {.lato-font}
 
-1. Return to your data from the latest coding exercise (or start with that exercise's solution)
+1. Start with the latest coding exercise solution
 2. Implement 5-fold cross-validation to tune the cutoff probability hyperparameter so that you maximize overall accuracy
 3. When splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
 4. Given the computational expense of cross-validation, using MLE is sufficient
-5. Submit your code, output, and explanation as a single PDF on Canvas
+5. Submit both your Quarto document and your code, output, and explanation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
