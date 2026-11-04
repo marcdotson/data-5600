@@ -14,8 +14,8 @@ View the slides:
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
 
-What could go wrong with using the test data to choose the cutoff
-probability? Go the discussions to share before continuing with the
+How does a confusion matrix map onto your project’s asymmetric loss
+function? Go the discussions to share before continuing with the
 lecture.
 
 How would you implement cross-validation to tune the cutoff probability?

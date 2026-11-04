@@ -281,10 +281,10 @@ For a discrete outcome, instead of measuring **how close** our predictions are t
 
 $$
 \large{\text{Confusion Matrix} = \begin{cases}
-\sum_{i=1}^n (y^*_i = 1) & \text{when } \hat{y}_i = 1 \\
-\sum_{i=1}^n (y^*_i = 0) & \text{when } \hat{y}_i = 0 \\
-\sum_{i=1}^n (y^*_i = 1) & \text{when } \hat{y}_i = 0 \\
-\sum_{i=1}^n (y^*_i = 0) & \text{when } \hat{y}_i = 1
+\sum_{i=1}^n (y^*_i = 1) & \text{when } y_i = 1 \\
+\sum_{i=1}^n (y^*_i = 0) & \text{when } y_i = 0 \\
+\sum_{i=1}^n (y^*_i = 1) & \text{when } y_i = 0 \\
+\sum_{i=1}^n (y^*_i = 0) & \text{when } y_i = 1
 \end{cases}}
 $$
 
@@ -580,6 +580,8 @@ We can also use the confusion matrix to compute the decision theoretic expected 
 
 ::::
 
+# How does a confusion matrix map onto your project's asymmetric loss function? {background-color="#006242"}
+
 ## Classification requires a cutoff
 
 Logistic regression **doesn't predict classes** (i.e., 0 or 1), it **predicts probabilities** (i.e., between 0 and 1), so we need to choose a cutoff probability in order to classify
@@ -601,6 +603,10 @@ $$
 $$
 :::
 
+::: {.fragment}
+How do we choose the cutoff probability?
+:::
+
 ## ROC/AUC
 
 For the cutoff probability hyperparameter, we can see how well our model does across all cutoff values using the **receiver operating characteristic** (ROC) curve
@@ -612,8 +618,6 @@ For the cutoff probability hyperparameter, we can see how well our model does ac
 We can summarize an ROC curve by finding the **area under the curve** (AUC), where AUC is the rate of successful classification across all cutoff values
 
 ![](../../figures/roc.png){fig-align="center"}
-
-# What could go wrong with using the test data to choose the cutoff probability? {background-color="#006242"}
 
 # Cross-Validation
 
