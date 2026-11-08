@@ -7,10 +7,9 @@ During this class we will:
 - Discuss cross-validation for tuning regularization hyperparameters
 - Walk through variable selection techniques as an alternative
 
-To share their solution for Exercise 17, the randomly selected student
-is \*\*\_\_\_\*\*.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
@@ -26,8 +25,7 @@ the discussions to share before finishing the lecture.
 
 ### Exercise 18
 
-1.  Return to your data from the previous exercise (or start with the
-    exercise solution)
+1.  Start with the latest exercise solution
 2.  Reuse the 5-fold cross-validation code to tune the regularization
     hyperparameter for the `LogisticRegression()` model from
     `scikit-learn` using the default `l2` complexity penalty (i.e.,
@@ -39,7 +37,8 @@ the discussions to share before finishing the lecture.
 4.  Using MLE is sufficient, though you are welcome to compare overall
     accuracy with a Bayesian logistic regression with regularizing
     standard normal priors
-5.  Submit your code, output, and explanation as a single PDF on Canvas
+5.  Submit both your Quarto document and your code, output, and
+    explanation as a single PDF on Canvas
 
 ### Milestone 18
 

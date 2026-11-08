@@ -126,17 +126,11 @@ $$
 While MLE (including OLS) are unbiased, low variance estimators **when the model assumptions are met**, it is often useful to use a biased estimator if it reduces our variance
 :::
 
-## Model complexity and total error
+## Regularizing parameter estimates
 
-This central machine learning idea is called the **bias-variance tradeoff**
+This central machine learning idea is called the **bias-variance tradeoff** and is navigated by **regularizing** our parameter estimates
 
-![](../../figures/bias-variance-01.png){fig-align="center"}
-
-## Model complexity and total error {visibility="uncounted"}
-
-This central machine learning idea is called the **bias-variance tradeoff**
-
-![](../../figures/bias-variance-02.png){fig-align="center"}
+![](../../figures/bias-variance.png){fig-align="center"}
 
 # When would we want to add bias to reduce variance in our parameter estimates? {background-color="#006242"}
 
@@ -148,7 +142,7 @@ Point estimates are chosen by **minimizing the loss** on the training data, but 
 
 ::: {.fragment}
 $$
-\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i)}
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i)}
 $$
 :::
 
@@ -157,7 +151,7 @@ $$
 Point estimates are chosen by **minimizing the loss** on the training data, but that's no guarantee it will have low loss on future data (i.e., **generalize**) thus overfitting remains a problem
 
 $$
-\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda C(\theta)}
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i) + \lambda C(\theta)}
 $$
 
 ::: {.fragment}
@@ -199,7 +193,7 @@ There is a **one-to-one correspondence** between complexity penalties and prior 
 There is a **one-to-one correspondence** between complexity penalties and prior distributions
 
 $$
-\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} \theta_k^2}
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} \theta_k^2}
 $$
 
 ::: {.fragment}
@@ -211,7 +205,7 @@ $$
 There is a **one-to-one correspondence** between complexity penalties and prior distributions
 
 $$
-\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} | \theta_k |}
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} | \theta_k |}
 $$
 
 ::: {.fragment}
@@ -223,7 +217,7 @@ $$
 There is a **one-to-one correspondence** between complexity penalties and prior distributions
 
 $$
-\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda_1 \sum_{k=1}^{p-1} \theta_k^2 + \lambda_2 \sum_{k=1}^{p-1} | \theta_k |
+\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i) + \lambda_1 \sum_{k=1}^{p-1} \theta_k^2 + \lambda_2 \sum_{k=1}^{p-1} | \theta_k |
 $$
 
 ::: {.fragment}
@@ -354,11 +348,11 @@ How does this *approximate* the best subset method?
 
 ### Exercise 18 {.lato-font}
 
-1. Return to your data from the previous exercise (or start with the exercise solution)
+1. Start with the latest exercise solution
 2. Reuse the 5-fold cross-validation code to tune the regularization hyperparameter for the `LogisticRegression()` model from `scikit-learn` using the default `l2` complexity penalty (i.e., ridge regression) to maximize overall accuracy
 3. To calculate overall accuracy, use the tuned cutoff value from the previous exercise and, again, when splitting the data into training, validation, and testing data, remember to use the `stratify` parameter
 4. Using MLE is sufficient, though you are welcome to compare overall accuracy with a Bayesian logistic regression with regularizing standard normal priors
-5. Submit your code, output, and explanation as a single PDF on Canvas
+5. Submit both your Quarto document and your code, output, and explanation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
