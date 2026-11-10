@@ -61,7 +61,7 @@ Let's simulate data to test our penalized regression code
 
 import numpy as np
 import polars as pl
-import matplotlib.pyplot as plt
+from plotnine import *
 
 # Set randomization seed
 rng = np.random.default_rng(42)
@@ -84,6 +84,14 @@ X = np.column_stack([x1, x2, x3])
 predictors = ['x1', 'x2', 'x3']
 ```
 
+```{python}
+#| eval: true
+#| echo: false
+
+# Set a default plot size
+theme_update(figure_size=(5, 5))
+```
+
 # Ridge Regression
 
 ## $\ell_2$ complexity penalty, normal prior
@@ -91,7 +99,7 @@ predictors = ['x1', 'x2', 'x3']
 **Ridge regression** uses an $\ell_2$ (i.e., quadratic) complexity penalty which corresponds to a **normal prior**
 
 $$
-\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} \theta_k^2}
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} \theta_k^2}
 $$
 
 ::: {.incremental}
@@ -108,11 +116,11 @@ A **pipeline** is a scikit-learn object that combines feature engineering (i.e.,
 #| code-line-numbers: "|1-6|8-11|13-17|15|16"
 #| eval: true
 
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.utils import resample
 
 # Split data into train and test
@@ -270,23 +278,25 @@ int_est = pl.DataFrame({
 })
 
 # Plot the confidence intervals
-plt.figure(figsize=(4, 4))
-plt.errorbar(
-  int_est['point_est'], 
-  int_est['predictors'],
-  xerr=[
-    int_est['point_est'] - int_est['ci_lower'], 
-    int_est['ci_upper'] - int_est['point_est']
-  ], 
-  fmt='o', 
-  capsize=5, 
-  label='Estimates')
-plt.axvline(0, color='red', linestyle='--', label='y=0')
+(ggplot(int_est, 
+    aes(x = 'point_est', y = 'predictors')
+  )
+  + geom_point()
+  + geom_errorbarh(
+    aes(xmin = 'ci_lower', xmax = 'ci_upper'), 
+    height = 0.2
+  )
+  + geom_vline(
+    xintercept = 0, 
+    color = 'red', linetype = '--'
+  )
+  + labs(x = '', y = '')
+)
 ```
 
 ## Evaluate model performance on the test data
 
-Since `GridSearchCV()` already refit the best model using all training data, we can use that model to get a **final prediction on the test data**
+Since `GridSearchCV()` already refit the best model using all training data, we can use that model to get a **final prediction on the test data** (assuming that we've finished model comparison and this is indeed our best-performing model)
 
 ```{python}
 #| code-line-numbers: "|1-3|5-7"
@@ -316,7 +326,7 @@ print(
 **LASSO** (i.e., Least Absolute Shrinkage and Selection Operator) uses an $\ell_1$ complexity penalty which corresponds to a **Laplace prior**
 
 $$
-\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} | \theta_k |}
+\large{\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i) + \lambda \sum_{k=1}^{p-1} | \theta_k |}
 $$
 
 ::: {.incremental}
@@ -351,7 +361,7 @@ The **amount of regularizing** changes as the regularization hyperparameter $\la
 
 ::::
 
-# Modify the ridge regression code to implement LASSO. Which model performs better on the test data? {background-color="#006242"}
+# Modify the ridge regression code to implement LASSO. Which model performs better on the validation data? {background-color="#006242"}
 
 # Elastic Net
 
@@ -360,7 +370,7 @@ The **amount of regularizing** changes as the regularization hyperparameter $\la
 **Elastic net** uses a combined $\ell_1$ and $\ell_2$ complexity penalty which corresponds to a **normal/Laplace mixture prior**
 
 $$
-\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log \mathcal{L}(\theta | X_i, Y_i) + \lambda_1 \sum_{k=1}^{p-1} \theta_k^2 + \lambda_2 \sum_{k=1}^{p-1} | \theta_k |
+\ell(\hat{\theta}, \theta) = \underset{\theta}{\text{argmin}} - \sum_{i=1}^n \log L(\theta | X_i, Y_i) + \lambda_1 \sum_{k=1}^{p-1} \theta_k^2 + \lambda_2 \sum_{k=1}^{p-1} | \theta_k |
 $$
 
 ::: {.incremental}
@@ -379,7 +389,8 @@ $$
 
 ```{python}
 #| code-line-numbers: "|4-7|10-14"
-#| eval: true
+#| eval: false
+#| echo: true
 
 # Create an elastic net pipeline
 elastic_pipe = Pipeline([
@@ -402,6 +413,39 @@ tune = GridSearchCV(
   cv = kfold_cv, n_jobs = -1, refit = True
 )
 tune.fit(X_train, y_train)
+```
+
+```{python}
+#| eval: true
+#| echo: false
+
+# Create an elastic net pipeline
+elastic_pipe = Pipeline([
+  ('feature_engineering', StandardScaler()),
+  ('classification', LogisticRegression(
+    penalty = 'elasticnet', 
+    solver = 'saga', max_iter=5000, random_state=42
+  ))
+])
+
+# Create a grid that includes both hyperparameters
+hyper_grid = {
+  'classification__C': np.logspace(-10, 10, 30),
+  'classification__l1_ratio': [0.1, 0.25, 0.5, 0.75, 0.9]
+}
+
+# Use the grid to tune both hyperparameters via cross-validation
+tune = GridSearchCV(
+  elastic_pipe, hyper_grid, scoring = 'accuracy', 
+  cv = kfold_cv, n_jobs = -1, refit = True
+)
+_ = tune.fit(X_train, y_train)
+```
+
+## Accounting for $\lambda_1$ and $\lambda_2$
+
+```{python}
+#| eval: true
 
 # Extract the best hyperparameters and CV accuracy
 best_C = tune.best_params_['classification__C']
@@ -440,12 +484,12 @@ The **amount of regularizing** changes as the regularization hyperparameters $\l
 
 ### Exercise 19 {.lato-font}
 
-1. Return to your data from the previous exercise (or start with the exercise solution)
+1. Start with the latest exercise solution
 2. Use the penalized regression code to fit ridge regression, LASSO, and elastic net models
-3. Compare all three models based on overall accuracy on the test data using the tuned cutoff value
+3. Compare all three models based on overall accuracy on the validation data using the tuned cutoff value, rerun the best-performing model on the complete training data, and compute overall accuracy on the test data
 4. Bootstrap the confidence intervals for the best-performing model and comment on how they differ from your previous non-regularized model output
 5. Using frequentist models is sufficient, though you are welcome to compare overall accuracy, interval estimates, and computational complexity with a Bayesian logistic regression using the relevant regularizing priors
-6. Submit your code, output, and commentary as a single PDF on Canvas
+6. Submit both your Quarto document and your code, output, and commentary as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
