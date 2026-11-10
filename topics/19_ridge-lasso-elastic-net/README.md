@@ -25,7 +25,8 @@ before finishing the lecture.
 
 1.  Start with the latest exercise solution
 2.  Use the penalized regression code to fit ridge regression, LASSO,
-    and elastic net models
+    and elastic net models (start a code cell with `#| warning: false`
+    to suppress warnings)
 3.  Compare all three models based on overall accuracy on the validation
     data using the tuned cutoff value, rerun the best-performing model
     on the complete training data, and compute overall accuracy on the
