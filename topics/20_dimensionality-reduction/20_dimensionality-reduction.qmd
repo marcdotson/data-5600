@@ -336,8 +336,8 @@ The **loadings** are the best tool for naming the principal components, starting
 
 # Create a loadings data frame
 pca_loadings = pl.DataFrame(
-  pca_steps.components_[:2].T,
-  schema=[f"PC{i}" for i in range(1, 3)],
+  pca_steps.components_.T,
+  schema = [f"PC{i}" for i in range(1, pca_steps.n_components_ + 1)],
 )
 
 # Print the first principal component
@@ -356,7 +356,7 @@ pca_loadings = pl.DataFrame(
 2. Fit a PCA model to the standardized predictors (not the outcome)
 3. Create a scree plot to choose $k$, the number of principal components to keep
 4. Using the chosen $k$, visualize a two-dimensional projection of the data
-5. Try and name the principal components based on the projection and their loadings
+5. Try and name the principal components based on their loadings
 6. Submit both your Quarto document and your code, output, and interpretation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}

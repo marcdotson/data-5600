@@ -30,8 +30,7 @@ discussions to share before finishing the lecture.
     components to keep
 4.  Using the chosen $k$, visualize a two-dimensional projection of the
     data
-5.  Try and name the principal components based on the projection and
-    their loadings
+5.  Try and name the principal components based on their loadings
 6.  Submit both your Quarto document and your code, output, and
     interpretation as a single PDF on Canvas
 
