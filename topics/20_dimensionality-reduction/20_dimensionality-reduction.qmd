@@ -126,7 +126,7 @@ Dimensionality (e.g., dimension) reduction refers to unsupervised learning metho
 Each of these methods has advantages and disadvantages when applied as **feature engineering**, but our focus will be on PCA
 :::
 
-# Which approach seems best for your project: removing variables, penalized regression, or dimensionality reduction? {background-color="#006242"}
+# Which approach seems best for your project: Removing variables, penalized regression, or dimensionality reduction? {background-color="#006242"}
 
 # Principal Component Analysis
 
@@ -202,6 +202,12 @@ $$
 
 ![](../../figures/plot_pca-02.png){fig-align="center"}
 
+## 
+
+::: {.v-center}
+![](../../figures/meme_pca-01.png){fig-align="center"}
+:::
+
 # PCA is only useful when $k < p$, so how do we choose $k$? {background-color="#006242"}
 
 ## Simulate data with correlated predictors
@@ -213,8 +219,8 @@ Let's simulate data to test our PCA code
 #| eval: true
 
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
+import polars as pl
+from plotnine import *
 
 # Set randomization seed
 rng = np.random.default_rng(42)
@@ -231,7 +237,18 @@ def sim_data(n):
   return np.column_stack([x1, x2, x3, x4, x5, x6, x7])
 
 # Simulate data
-X = sim_data(n = 500)
+X = pl.DataFrame(
+  sim_data(n = 500), 
+  schema = ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7']
+)
+```
+
+```{python}
+#| eval: true
+#| echo: false
+
+# Set a default plot size
+theme_update(figure_size=(5, 5))
 ```
 
 ## Combine standardizing and model specification
@@ -239,13 +256,13 @@ X = sim_data(n = 500)
 Remember, a **pipeline** is a scikit-learn object that combines feature engineering (i.e., transformations) and the model (e.g., PCA)
 
 ```{python}
-#| code-line-numbers: "|4|7|12"
+#| code-line-numbers: "|1|7|12"
 #| eval: true
 
+from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
 
 # Split data into train and test
 X_train, X_test = train_test_split(X, test_size = 0.2, random_state = 42)
@@ -284,32 +301,63 @@ It's easiest to visualize at what point adding additional principal components d
 #| output-location: column
 
 # Create scree plot
-sns.lineplot(
-  x = np.arange(1, X_train.shape[1] + 1), 
-  y = pca_scores
+scree_df = pl.DataFrame({
+  'component': np.arange(
+    1, X_train.shape[1] + 1
+  ),
+  'variance_explained': pca_scores
+})
+
+(ggplot(scree_df, 
+  aes(
+    x = 'component', 
+    y = 'variance_explained')
+  )
+  + geom_line()
+  + labs(
+    x = 'Number of Principal Components',
+    y = 'Proportion of Variance Explained',
+    title = 'Scree Plot'
+  )
 )
-plt.xlabel('Number of Principal Components')
-plt.ylabel('Proportion of Variance Explained')
-plt.title('Scree Plot')
-plt.show()
 ```
 
 ## 
 
-::: {.v-center}
-![](../../figures/meme_pca.png){fig-align="center"}
-:::
+![](../../figures/meme_pca-02.png){fig-align="center"}
+
+## Name the principal components {.scrollable}
+
+The **loadings** are the best tool for naming the principal components, starting with the **first principal component**
+
+```{python}
+#| eval: true
+#| code-line-numbers: "|1-5|8|9|10|11|"
+
+# Create a loadings data frame
+pca_loadings = pl.DataFrame(
+  pca_steps.components_[:2].T,
+  schema=[f"PC{i}" for i in range(1, 3)],
+)
+
+# Print the first principal component
+(pca_loadings
+  .with_columns(variable = pl.Series(X.columns))
+  .select('PC1', 'variable')
+  .sort('PC1', descending = True)
+)
+```
 
 ## {background-color="#006242"}
 
 ### Exercise 20 {.lato-font}
 
-1. Return to your data from the previous exercise (or start with the exercise solution)
+1. Start with the latest exercise solution
 2. Fit a PCA model to the standardized predictors (not the outcome)
 3. Create a scree plot to choose $k$, the number of principal components to keep
 4. Using the chosen $k$, visualize a two-dimensional projection of the data
 5. Try and name the principal components based on the projection and their loadings
-6. Submit your code, output, and interpretation as a single PDF on Canvas
+6. Submit both your Quarto document and your code, output, and interpretation as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 
