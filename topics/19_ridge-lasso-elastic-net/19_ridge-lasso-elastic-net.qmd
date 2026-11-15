@@ -376,7 +376,7 @@ $$
 ::: {.incremental}
 - The combined $\ell_1$ and $\ell_2$ complexity penalty **shrinks** parameter estimates toward zero, including **exactly** zero
 - Since elastic net can shrink coefficients to exactly zero, like LASSO it also performs **variable selection**
-- Overcomes some of ridge and LASSO limitations with adding the complexity of two regularization hyperparamters
+- Overcomes some of ridge and LASSO limitations with adding the complexity of two regularization hyperparameters
 :::
 
 ## 
