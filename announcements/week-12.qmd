@@ -9,9 +9,11 @@ With penalized regression behind us, the narrative climax of the semester's stor
 
 A few reminders:
 
-- A (nearly finalized) draft of your presentation slides for Project 02 is due at the end of next week. Please carefully work through the requirements for Project 02 as you finalize your work.
-- The final week will be packed with assignments but no new content, including presentation videos and Interview 03. Remember that Interview 03 will be as a group, so be sure that everyone in groups knows everything about the project, including the data and all of the code.
+- There will be no class next week! Happy Thanksgiving!
+- The week after Thanksgiving a (nearly finalized) draft of your presentation slides for Project 02 is due. Please carefully work through the requirements for Project 02 as you finalize your work.
 
-As always, please ask questions and reach out to me and the TAs for help!
+Note that I just updated Exercise 20 and removed the step where you visualize a two-dimensional projection of the data.
+
+As always, please ask questions and reach out to me and the TAs for help! Additional announcement flyers attached.
 
 -Marc
