@@ -103,7 +103,7 @@ PCR, like PCA, is only useful when $k < p$, so how do we choose $k$? [Since we n
 
 ::: {.column width="50%"}
 ::: {.incremental}
-- It is typical for $k$ to be selected that results in the simplest model that is no more than **one standard error** above the best model
+- It is typical for $k$ to be selected that results in the simplest model that is no more than **one standard error** away from the best model
 - Why is this used as a heuristic?
 :::
 :::
@@ -154,14 +154,14 @@ Remember that a **pipeline** is a scikit-learn object that combines feature engi
 #| code-line-numbers: "|17-18|19"
 #| eval: true
 
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+import polars as pl
+from plotnine import *
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, roc_auc_score
+from sklearn.model_selection import GridSearchCV, StratifiedKFold, train_test_split 
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 # Split data into train and test
 X_train, X_test, y_train, y_test = train_test_split(
@@ -172,7 +172,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 pcr_pipe = Pipeline([
   ('scaler', StandardScaler()),
   ('pca', PCA(random_state = 42)),
-  ('classify', LogisticRegression(fit_intercept = False, penalty = None)),
+  ('classify', LogisticRegression(fit_intercept = False, penalty = None))
 ])
 ```
 
@@ -185,7 +185,7 @@ Again, the set of possible hyperparameter values is called a **grid**
 #| eval: true
 
 # Create a hyperparameter grid for number of PCA components
-hyper_grid = {"pca__n_components": np.arange(1, X_train.shape[1], 1)}
+hyper_grid = {'pca__n_components': np.arange(1, X_train.shape[1], 1)}
 
 # Use the grid to tune hyperparameters via cross-validation
 kfold_cv = StratifiedKFold(n_splits = 5)
@@ -208,7 +208,7 @@ print(
 
 ## Visualizing the one-standard-error rule
 
-Since there is no measure of uncertainty for the tuned hyperparameters, it is typical to apply the **one-standard-error rule** for frequentist models and select the hyperparameter that results in the simplest model no more than **one standard error** from the best model
+Since there is no measure of uncertainty for the tuned hyperparameters, it is typical to apply the **one-standard-error rule** for frequentist models and select the hyperparameter that results in the simplest model no more than **one standard error** away from the best model
 
 ```{python}
 #| eval: true
@@ -231,43 +231,53 @@ def best_low_complexity(cv_results):
 
 ## Visualizing the one-standard-error rule {visibility="uncounted"}
 
+Since there is no measure of uncertainty for the tuned hyperparameters, it is typical to apply the **one-standard-error rule** for frequentist models and select the hyperparameter that results in the simplest model no more than **one standard error** away from the best model
+
 ```{python}
-#| code-line-numbers: "|1-3|5-12|14-25|27-32"
-#| output-location: slide
+#| code-line-numbers: "|1-5|7-11"
 #| eval: true
 
 # Extracted cross-validation results
-n_components = tune.cv_results_['param_pca__n_components']
-mean_test_score = tune.cv_results_['mean_test_score']
+cv_df = pl.DataFrame({
+  'n_components': np.asarray(tune.cv_results_['param_pca__n_components'], dtype = int),
+  'mean_test_score': tune.cv_results_['mean_test_score']
+})
+
+# Lines for best score and one-standard-error rule
+lines_df = pl.DataFrame({
+  'rule': ['Best Score', 'Best Score - 1 SE'],
+  'score': [cv_df['mean_test_score'].max(), lower_bound(tune.cv_results_)]
+})
+```
+
+## Visualizing the one-standard-error rule {visibility="uncounted"}
+
+```{python}
+#| output-location: slide
+#| eval: true
 
 # Visualize cross-validated results
-plt.figure(figsize = (12, 5))
-plt.bar(n_components, 
-  mean_test_score, 
-  width = 1,
-  color = 'grey',
-  edgecolor = 'black'
+(ggplot(cv_df, aes(x = 'n_components', y = 'mean_test_score'))
+  + geom_col()
+  + geom_hline(
+    aes(yintercept = 'score', color = 'rule', linetype = 'rule'),
+    data = lines_df
+  )
+  + scale_color_manual(values = {'Best Score': 'blue', 'Best Score - 1 SE': 'red'})
+  + scale_linetype_manual(values = {'Best Score': 'solid', 'Best Score - 1 SE': 'dashed'})
+  + scale_x_continuous(breaks = cv_df['n_components'].to_list())
+  + labs(
+    title = 'Balancing Model Complexity and Cross-Validated Accuracy',
+    x = 'Number of PCA Components Used',
+    y = 'Accuracy',
+    color = '',
+    linetype = ''
+  )
+  + theme(
+    figure_size = (12, 5),
+    legend_position = 'bottom'
+  )
 )
-
-# Add lines for best score and one-standard-error rule
-lower = lower_bound(tune.cv_results_)
-plt.axhline(np.max(mean_test_score), 
-  linestyle = '-', 
-  color = 'blue', 
-  label = 'Best Score'
-)
-plt.axhline(lower, 
-  linestyle = '--',
-  color = 'red', 
-  label = 'Best Score - 1 SE'
-)
-
-# Add title, labels, and legend
-plt.title('Balancing Model Complexity and Cross-Validated Accuracy')
-plt.xlabel('Number of PCA Components Used')
-plt.ylabel('Accuracy')
-plt.xticks(n_components.tolist())
-plt.legend(loc = 'lower right')
 ```
 
 ## Evaluate model performance on the test data
@@ -275,14 +285,14 @@ plt.legend(loc = 'lower right')
 If using the one-standard-error rule results in a different hyperparameter, we'll have to refit the model to get a **final prediction on the test data**
 
 ```{python}
-#| code-line-numbers: "|1-7|4"
+#| code-line-numbers: "|1-7|4|5"
 #| eval: true
 
 # Update the pipeline and refit the model
 pcr_pipe = Pipeline([
   ('scaler', StandardScaler()),
   ('pca', PCA(random_state = 42, n_components = 2)),
-  ('classify', LogisticRegression(fit_intercept = False, penalty = None)),
+  ('classify', LogisticRegression(fit_intercept = False, penalty = None))
 ])
 pcr_pipe.fit(X_train, y_train)
 
@@ -303,7 +313,7 @@ print(
 
 ## Model assumptions, hyperparameters, and fit
 
-Note that since PCR uses PCA as feature engineering, we will need to **validate model assumptions** on the lower-dimensional representation of the data (yes, VIF scores will be all 1)
+Note that since PCR uses PCA as feature engineering (with **no intercept**), we will need to **validate model assumptions** on the lower-dimensional representation of the data (yes, VIF scores will be all 1)
 
 ::: {.fragment}
 What hyperparameter have we not tuned yet that is common to all our classification models? [The classification cutoff will need to be tuned **simultaneously or separately**]{.fragment}
@@ -317,12 +327,12 @@ Fitting many models and comparing them is common in machine learning, so how do 
 
 ### Exercise 21 {.lato-font}
 
-1. Return to your data from the previous exercise (or start with the exercise solution)
-2. Fit PCR to the leads qualification data, including choosing the number of principal components using 5-fold cross-validation
-<!-- 3. Validate model assumptions after fitting PCR -->
-3. Also tune the classification cutoff separately using 5-fold cross-validation
-4. Name the principal components based on their loadings and interpret the interval estimates
-5. Submit your code, output, and interpretation as a single PDF on Canvas
+1. Start with the latest exercise solution
+2. Fit PCR to the leads qualification data, including tuning the number of principal components using 5-fold cross-validation (start a code cell with `#| warning: false` to suppress warnings)
+3. Tune the classification cutoff separately using 5-fold cross-validation
+4. Evaluate model performance on the test data using both tuned hyperparameters
+5. Refit the model on the complete dataset and bootstrap interval estimates
+6. Submit both your Quarto document and your code, output, and interpretations as a single PDF on Canvas
 
 ## {background-color="#288DC2"}
 

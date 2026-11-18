@@ -4,10 +4,9 @@
 During this class we will connect PCA to regression via principal
 component regression (PCR).
 
-To share their solution for Exercise 20, the randomly selected student
-is \*\*\_\_\_\*\*.
-
 ## Learn
+
+View the slides:
 
 You can also download the slides as an .html file. Once you’ve previewed
 the material and identified any questions, start watching the lecture.
@@ -24,17 +23,18 @@ before finishing the lecture.
 
 ### Exercise 21
 
-1.  Return to your data from the previous exercise (or start with the
-    exercise solution)
-2.  Fit PCR to the leads qualification data, including choosing the
-    number of principal components using 5-fold cross-validation
-    <!-- 3. Validate model assumptions after fitting PCR -->
-3.  Also tune the classification cutoff separately using 5-fold
+1.  Start with the latest exercise solution
+2.  Fit PCR to the leads qualification data, including tuning the number
+    of principal components using 5-fold cross-validation (start a code
+    cell with `#| warning: false` to suppress warnings)
+3.  Tune the classification cutoff separately using 5-fold
     cross-validation
-4.  Name the principal components based on their loadings and interpret
-    the interval estimates
-5.  Submit your code, output, and interpretation as a single PDF on
-    Canvas
+4.  Evaluate model performance on the test data using both tuned
+    hyperparameters
+5.  Refit the model on the complete dataset and bootstrap interval
+    estimates
+6.  Submit both your Quarto document and your code, output, and
+    interpretations as a single PDF on Canvas
 
 ### Milestone 21
 
